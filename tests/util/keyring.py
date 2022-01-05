@@ -2,9 +2,9 @@ import os
 import shutil
 import tempfile
 
-from shibgreen.util.file_keyring import FileKeyring
-from shibgreen.util.keychain import Keychain, default_keychain_service, default_keychain_user, get_private_key_user
-from shibgreen.util.keyring_wrapper import KeyringWrapper
+from littlelambocoin.util.file_keyring import FileKeyring
+from littlelambocoin.util.keychain import Keychain, default_keychain_service, default_keychain_user, get_private_key_user
+from littlelambocoin.util.keyring_wrapper import KeyringWrapper
 from functools import wraps
 from keyring.util import platform_
 from keyrings.cryptfile.cryptfile import CryptFileKeyring  # pyright: reportMissingImports=false
@@ -49,7 +49,7 @@ def setup_mock_file_keyring(mock_configure_backend, temp_file_keyring_dir, popul
             f.write(
                 # Encrypted using DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE. Data holds an empty keyring.
                 "data: xtcxYOWtbeO9ruv4Nkwhw1pcTJCNh/fvPSdFxez/L0ysnag=\n"
-                "nonce: 17exshib58deb7a392fccef49e\n"
+                "nonce: 17ellc58deb7a392fccef49e\n"
                 "salt: b1aa32d5730288d653e82017e4a4057c\n"
                 "version: 1"
             )
@@ -100,7 +100,7 @@ class TempKeyring:
         self,
         *,
         user: str = "testing-1.8.0",
-        service: str = "testing-shibgreen-1.8.0",
+        service: str = "testing-littlelambocoin-1.8.0",
         populate: bool = False,
         setup_cryptfilekeyring: bool = False,
         existing_keyring_path: str = None,
@@ -131,13 +131,13 @@ class TempKeyring:
         existing_keyring_dir = Path(existing_keyring_path).parent if existing_keyring_path else None
         temp_dir = existing_keyring_dir or tempfile.mkdtemp(prefix="test_keyring_wrapper")
 
-        mock_supports_keyring_passphrase_patch = patch("shibgreen.util.keychain.supports_keyring_passphrase")
+        mock_supports_keyring_passphrase_patch = patch("littlelambocoin.util.keychain.supports_keyring_passphrase")
         mock_supports_keyring_passphrase = mock_supports_keyring_passphrase_patch.start()
 
         # Patch supports_keyring_passphrase() to return True
         mock_supports_keyring_passphrase.return_value = True
 
-        mock_supports_os_passphrase_storage_patch = patch("shibgreen.util.keychain.supports_os_passphrase_storage")
+        mock_supports_os_passphrase_storage_patch = patch("littlelambocoin.util.keychain.supports_os_passphrase_storage")
         mock_supports_os_passphrase_storage = mock_supports_os_passphrase_storage_patch.start()
 
         # Patch supports_os_passphrase_storage() to return use_os_credential_store

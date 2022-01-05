@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from '@lingui/macro';
 import { useSelector } from 'react-redux';
 import { Box, Typography } from '@material-ui/core';
-import { FormatLargeNumber } from '@shibgreen/core';
+import { FormatLargeNumber } from '@littlelambocoin/core';
 import type { RootState } from '../../modules/rootReducer';
 
 export default function WalletStatusCard() {

@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.protocols.full_node_protocol import RespondBlock
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
-from shibgreen.types.full_block import FullBlock
-from shibgreen.util.api_decorators import api_request
-from shibgreen.util.ints import uint8
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.protocols.full_node_protocol import RespondBlock
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.util.api_decorators import api_request
+from littlelambocoin.util.ints import uint8
 
 
 class FullNodeSimulator(FullNodeAPI):

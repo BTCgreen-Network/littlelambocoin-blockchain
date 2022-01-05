@@ -2,15 +2,15 @@ import asyncio
 import random
 from typing import Any, List, Optional, Tuple
 
-from shibgreen.server.ws_connection import WSSHIBgreenConnection
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 
 
 async def send_all_first_reply(
-    func: str, arg: Any, peers: List[WSSHIBgreenConnection], timeout=15
-) -> Optional[Tuple[Any, WSSHIBgreenConnection]]:
+    func: str, arg: Any, peers: List[WSLittlelambocoinConnection], timeout=15
+) -> Optional[Tuple[Any, WSLittlelambocoinConnection]]:
     """performs an API request to peers and returns the result of the first response and the peer that sent it."""
 
-    async def do_func(peer_x: WSSHIBgreenConnection, func_x: str, arg_x: Any):
+    async def do_func(peer_x: WSLittlelambocoinConnection, func_x: str, arg_x: Any):
         method_to_call = getattr(peer_x, func_x)
         result_x = await method_to_call(arg_x)
         if result_x is not None:
@@ -37,10 +37,10 @@ async def send_all_first_reply(
         return None
 
 
-async def send_to_random(func: str, arg: Any, peers: List[WSSHIBgreenConnection]) -> Optional[Tuple[Any, WSSHIBgreenConnection]]:
+async def send_to_random(func: str, arg: Any, peers: List[WSLittlelambocoinConnection]) -> Optional[Tuple[Any, WSLittlelambocoinConnection]]:
     """performs an API request to peers and returns the result of the first response and the peer that sent it."""
 
-    async def do_func(peer_x: WSSHIBgreenConnection, func_x: str, arg_x: Any):
+    async def do_func(peer_x: WSLittlelambocoinConnection, func_x: str, arg_x: Any):
         method_to_call = getattr(peer_x, func_x)
         result_x = await method_to_call(arg_x)
         if result_x is not None:

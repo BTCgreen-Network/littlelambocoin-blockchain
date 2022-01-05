@@ -1,11 +1,11 @@
 import asyncio
 import socket
 
-from shibgreen.server.server import SHIBgreenServer
-from shibgreen.types.peer_info import PeerInfo
+from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.types.peer_info import PeerInfo
 
 
-def start_reconnect_task(server: SHIBgreenServer, peer_info_arg: PeerInfo, log, auth: bool):
+def start_reconnect_task(server: LittlelambocoinServer, peer_info_arg: PeerInfo, log, auth: bool):
     """
     Start a background task that checks connection and reconnects periodically to a peer.
     """

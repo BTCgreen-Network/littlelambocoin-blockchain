@@ -1,17 +1,17 @@
 const units = {
-  shibgreen: 1,
+  littlelambocoin: 1,
   mojo: 1 / 1e3,
   colouredcoin: 1 / 1e9,
 };
 
 const aliases = {
-  shibgreen: ['ch', 'shibgreen', 'SHIBgreen'],
+  littlelambocoin: ['ch', 'littlelambocoin', 'Littlelambocoin'],
   mojo: ['mj', 'mojo'],
   colouredcoin: ['cc', 'colouredcoin'],
 };
 
 const display = {
-  shibgreen: {
+  littlelambocoin: {
     format: '{amount} CH',
     fractionDigits: 12,
   },

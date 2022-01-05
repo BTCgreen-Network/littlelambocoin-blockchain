@@ -5,20 +5,20 @@ from typing import Callable, List, Tuple
 
 from blspy import AugSchemeMPL, G2Element, G1Element
 
-from shibgreen.consensus.pot_iterations import calculate_iterations_quality, calculate_sp_interval_iters
-from shibgreen.harvester.harvester import Harvester
-from shibgreen.plotting.util import PlotInfo, parse_plot_info
-from shibgreen.protocols import harvester_protocol
-from shibgreen.protocols.farmer_protocol import FarmingInfo
-from shibgreen.protocols.harvester_protocol import Plot
-from shibgreen.protocols.protocol_message_types import ProtocolMessageTypes
-from shibgreen.server.outbound_message import make_msg
-from shibgreen.server.ws_connection import WSSHIBgreenConnection
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.api_decorators import api_request, peer_required
-from shibgreen.util.ints import uint8, uint32, uint64
-from shibgreen.wallet.derive_keys import master_sk_to_local_sk
+from littlelambocoin.consensus.pot_iterations import calculate_iterations_quality, calculate_sp_interval_iters
+from littlelambocoin.harvester.harvester import Harvester
+from littlelambocoin.plotting.util import PlotInfo, parse_plot_info
+from littlelambocoin.protocols import harvester_protocol
+from littlelambocoin.protocols.farmer_protocol import FarmingInfo
+from littlelambocoin.protocols.harvester_protocol import Plot
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import make_msg
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.api_decorators import api_request, peer_required
+from littlelambocoin.util.ints import uint8, uint32, uint64
+from littlelambocoin.wallet.derive_keys import master_sk_to_local_sk
 
 
 class HarvesterAPI:
@@ -46,7 +46,7 @@ class HarvesterAPI:
     @peer_required
     @api_request
     async def new_signage_point_harvester(
-        self, new_challenge: harvester_protocol.NewSignagePointHarvester, peer: WSSHIBgreenConnection
+        self, new_challenge: harvester_protocol.NewSignagePointHarvester, peer: WSLittlelambocoinConnection
     ):
         """
         The harvester receives a new signage point from the farmer, this happens at the start of each slot.

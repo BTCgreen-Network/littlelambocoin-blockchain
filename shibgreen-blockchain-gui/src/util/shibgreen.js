@@ -12,7 +12,7 @@ const convert = (amount, from, to) => {
   return Number.parseFloat(amountInFromUnit.div(units.getUnit(to)));
 };
 
-class SHIBgreen {
+class Littlelambocoin {
   constructor(value, unit) {
     this._value = value;
     this._unit = unit;
@@ -73,42 +73,42 @@ class SHIBgreen {
   }
 }
 
-export const shibgreen_formatter = (value, unit) => new SHIBgreen(value, unit);
+export const littlelambocoin_formatter = (value, unit) => new Littlelambocoin(value, unit);
 
-shibgreen_formatter.convert = convert;
-shibgreen_formatter.setDisplay = units.setDisplay;
-shibgreen_formatter.setUnit = units.setUnit;
-shibgreen_formatter.getUnit = units.getUnit;
-shibgreen_formatter.setFiat = (currency, rate, display = null) => {
+littlelambocoin_formatter.convert = convert;
+littlelambocoin_formatter.setDisplay = units.setDisplay;
+littlelambocoin_formatter.setUnit = units.setUnit;
+littlelambocoin_formatter.getUnit = units.getUnit;
+littlelambocoin_formatter.setFiat = (currency, rate, display = null) => {
   units.setUnit(currency, 1 / rate, display);
 };
 
-export const mojo_to_shibgreen = (mojo) => {
-  return shibgreen_formatter(Number.parseInt(mojo), 'mojo').to('shibgreen').value();
+export const mojo_to_littlelambocoin = (mojo) => {
+  return littlelambocoin_formatter(Number.parseInt(mojo), 'mojo').to('littlelambocoin').value();
 };
 
-export const shibgreen_to_mojo = (shibgreen) => {
-  return shibgreen_formatter(Number.parseFloat(Number(shibgreen)), 'shibgreen')
+export const littlelambocoin_to_mojo = (littlelambocoin) => {
+  return littlelambocoin_formatter(Number.parseFloat(Number(littlelambocoin)), 'littlelambocoin')
     .to('mojo')
     .value();
 };
 
-export const mojo_to_shibgreen_string = (mojo) => {
-  return shibgreen_formatter(Number(mojo), 'mojo').to('shibgreen').toString();
+export const mojo_to_littlelambocoin_string = (mojo) => {
+  return littlelambocoin_formatter(Number(mojo), 'mojo').to('littlelambocoin').toString();
 };
 
 export const mojo_to_colouredcoin = (mojo) => {
-  return shibgreen_formatter(Number.parseInt(mojo), 'mojo')
+  return littlelambocoin_formatter(Number.parseInt(mojo), 'mojo')
     .to('colouredcoin')
     .value();
 };
 
 export const colouredcoin_to_mojo = (colouredcoin) => {
-  return shibgreen_formatter(Number.parseFloat(Number(colouredcoin)), 'colouredcoin')
+  return littlelambocoin_formatter(Number.parseFloat(Number(colouredcoin)), 'colouredcoin')
     .to('mojo')
     .value();
 };
 
 export const mojo_to_colouredcoin_string = (mojo) => {
-  return shibgreen_formatter(Number(mojo), 'mojo').to('colouredcoin').toString();
+  return littlelambocoin_formatter(Number(mojo), 'mojo').to('colouredcoin').toString();
 };

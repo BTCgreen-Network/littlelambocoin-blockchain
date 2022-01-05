@@ -3,18 +3,18 @@ from typing import List
 
 import pytest
 
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.full_node.mempool_manager import MempoolManager
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint32, uint64
-from shibgreen.wallet.cc_wallet.cc_utils import cc_puzzle_hash_for_inner_puzzle_hash
-from shibgreen.wallet.cc_wallet.cc_wallet import CCWallet
-from shibgreen.wallet.puzzles.cc_loader import CC_MOD
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.full_node.mempool_manager import MempoolManager
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint32, uint64
+from littlelambocoin.wallet.cc_wallet.cc_utils import cc_puzzle_hash_for_inner_puzzle_hash
+from littlelambocoin.wallet.cc_wallet.cc_wallet import CCWallet
+from littlelambocoin.wallet.puzzles.cc_loader import CC_MOD
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
 from tests.setup_nodes import setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 

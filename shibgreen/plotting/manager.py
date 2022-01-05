@@ -10,8 +10,8 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from blspy import G1Element
 from chiapos import DiskProver
 
-from shibgreen.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR, _expected_plot_size
-from shibgreen.plotting.util import (
+from littlelambocoin.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR, _expected_plot_size
+from littlelambocoin.plotting.util import (
     PlotInfo,
     PlotRefreshResult,
     PlotsRefreshParameter,
@@ -21,12 +21,12 @@ from shibgreen.plotting.util import (
     stream_plot_info_pk,
     stream_plot_info_ph,
 )
-from shibgreen.util.ints import uint16
-from shibgreen.util.path import mkdir
-from shibgreen.util.streamable import Streamable, streamable
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.wallet.derive_keys import master_sk_to_local_sk
+from littlelambocoin.util.ints import uint16
+from littlelambocoin.util.path import mkdir
+from littlelambocoin.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.wallet.derive_keys import master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 

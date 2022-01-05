@@ -5,8 +5,8 @@ In this puzzle program, the solution must be a reveal of the puzzle with the giv
 hash along with its solution.
 """
 
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 
 from .load_clvm import load_clvm
 

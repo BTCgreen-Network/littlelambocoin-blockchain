@@ -5,14 +5,14 @@ from typing import List
 
 import aiosqlite
 
-from shibgreen.consensus.blockchain import Blockchain
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.types.full_block import FullBlock
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.path import mkdir
+from littlelambocoin.consensus.blockchain import Blockchain
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.path import mkdir
 
 from tests.setup_nodes import bt
 
@@ -47,8 +47,8 @@ def persistent_blocks(
 ):
     # try loading from disc, if not create new blocks.db file
     # TODO hash fixtures.py and blocktool.py, add to path, delete if the files changed
-    block_path_dir = Path("~/.shibgreen/blocks").expanduser()
-    file_path = Path(f"~/.shibgreen/blocks/{db_name}").expanduser()
+    block_path_dir = Path("~/.littlelambocoin/blocks").expanduser()
+    file_path = Path(f"~/.littlelambocoin/blocks/{db_name}").expanduser()
     if not path.exists(block_path_dir):
         mkdir(block_path_dir.parent)
         mkdir(block_path_dir)

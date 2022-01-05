@@ -1,8 +1,8 @@
 from typing import Tuple
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.util.ints import uint128
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.util.ints import uint128
 
 
 def get_prev_transaction_block(

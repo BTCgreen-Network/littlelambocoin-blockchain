@@ -5,16 +5,16 @@ from typing import List, Tuple
 from blspy import G2Element
 from clvm_tools import binutils
 
-from shibgreen.types.blockchain_format.program import Program, INFINITE_COST
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.condition_tools import ConditionOpcode
+from littlelambocoin.types.blockchain_format.program import Program, INFINITE_COST
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.condition_tools import ConditionOpcode
 
-from shibgreen.util.ints import uint64
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 
 from tests.core.full_node.test_conditions import bt, check_spend_bundle_validity, initial_blocks
 

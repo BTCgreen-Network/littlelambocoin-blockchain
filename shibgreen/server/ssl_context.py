@@ -23,8 +23,8 @@ def private_ssl_ca_paths(path: Path, config: Dict):
     )
 
 
-def shibgreen_ssl_ca_paths(path: Path, config: Dict):
+def littlelambocoin_ssl_ca_paths(path: Path, config: Dict):
     return (
-        path / config["shibgreen_ssl_ca"]["crt"],
-        path / config["shibgreen_ssl_ca"]["key"],
+        path / config["littlelambocoin_ssl_ca"]["crt"],
+        path / config["littlelambocoin_ssl_ca"]["key"],
     )

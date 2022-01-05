@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

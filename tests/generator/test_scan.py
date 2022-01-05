@@ -1,9 +1,9 @@
 from unittest import TestCase
-from shibgreen.full_node.bundle_tools import (
+from littlelambocoin.full_node.bundle_tools import (
     match_standard_transaction_at_any_index,
     match_standard_transaction_exactly_and_return_pubkey,
 )
-from shibgreen.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.byte_types import hexstr_to_bytes
 
 
 gen1 = hexstr_to_bytes(

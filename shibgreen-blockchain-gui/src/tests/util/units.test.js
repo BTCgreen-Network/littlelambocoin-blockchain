@@ -2,8 +2,8 @@ const units = require('../../util/units');
 
 describe('units', () => {
   describe('#getUnit', () => {
-    it('gets unit of shibgreen', () => {
-      const result = units.getUnit('shibgreen');
+    it('gets unit of littlelambocoin', () => {
+      const result = units.getUnit('littlelambocoin');
 
       expect(result).toBe(1);
     });
@@ -22,7 +22,7 @@ describe('units', () => {
 
       expect(result).toBe(1);
     });
-    it('gets unit of shibgreen using alias', () => {
+    it('gets unit of littlelambocoin using alias', () => {
       const result = units.getUnit('ch');
 
       expect(result).toBe(1);
@@ -46,8 +46,8 @@ describe('units', () => {
     });
   });
   describe('#getDisplay', () => {
-    it('gets display of shibgreen', () => {
-      const result = units.getDisplay('shibgreen');
+    it('gets display of littlelambocoin', () => {
+      const result = units.getDisplay('littlelambocoin');
 
       expect(result).toEqual({
         format: '{amount} CH',
@@ -87,13 +87,13 @@ describe('units', () => {
       expect(result).toEqual(1);
     });
     it('modifies an existing unit', () => {
-      units.setUnit('shibgreen', 9);
+      units.setUnit('littlelambocoin', 9);
 
-      const result = units.getUnit('shibgreen');
+      const result = units.getUnit('littlelambocoin');
 
       expect(result).toEqual(9);
 
-      units.setUnit('shibgreen', 1);
+      units.setUnit('littlelambocoin', 1);
     });
   });
   describe('#setDisplay', () => {
@@ -111,15 +111,15 @@ describe('units', () => {
       });
     });
     it('updates an existing display', () => {
-      units.setDisplay('shibgreen', {
-        format: '{amount} TXSHIB',
+      units.setDisplay('littlelambocoin', {
+        format: '{amount} TLLC',
         fractionDigits: 0,
       });
 
-      const result = units.getDisplay('shibgreen');
+      const result = units.getDisplay('littlelambocoin');
 
       expect(result).toEqual({
-        format: '{amount} TXSHIB',
+        format: '{amount} TLLC',
         fractionDigits: 0,
       });
     });

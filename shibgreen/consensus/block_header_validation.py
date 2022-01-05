@@ -5,31 +5,31 @@ from typing import Optional, Tuple
 
 from blspy import AugSchemeMPL
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.deficit import calculate_deficit
-from shibgreen.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
-from shibgreen.consensus.get_block_challenge import final_eos_is_already_included, get_block_challenge
-from shibgreen.consensus.make_sub_epoch_summary import make_sub_epoch_summary
-from shibgreen.consensus.pot_iterations import (
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.deficit import calculate_deficit
+from littlelambocoin.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
+from littlelambocoin.consensus.get_block_challenge import final_eos_is_already_included, get_block_challenge
+from littlelambocoin.consensus.make_sub_epoch_summary import make_sub_epoch_summary
+from littlelambocoin.consensus.pot_iterations import (
     calculate_ip_iters,
     calculate_iterations_quality,
     calculate_sp_interval_iters,
     calculate_sp_iters,
     is_overflow_block,
 )
-from shibgreen.consensus.vdf_info_computation import get_signage_point_vdf_info
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot, SubSlotProofs
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.unfinished_header_block import UnfinishedHeaderBlock
-from shibgreen.util.errors import Err, ValidationError
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.consensus.vdf_info_computation import get_signage_point_vdf_info
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot, SubSlotProofs
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.unfinished_header_block import UnfinishedHeaderBlock
+from littlelambocoin.util.errors import Err, ValidationError
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 
 log = logging.getLogger(__name__)
 

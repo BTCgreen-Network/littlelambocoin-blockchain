@@ -1,22 +1,22 @@
 import logging
 from typing import Optional, Union
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.deficit import calculate_deficit
-from shibgreen.consensus.difficulty_adjustment import (
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.deficit import calculate_deficit
+from littlelambocoin.consensus.difficulty_adjustment import (
     _get_next_difficulty,
     _get_next_sub_slot_iters,
     can_finish_sub_and_full_epoch,
     get_next_sub_slot_iters_and_difficulty,
     height_can_be_first_in_epoch,
 )
-from shibgreen.consensus.pot_iterations import calculate_ip_iters, calculate_sp_iters, is_overflow_block
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.consensus.pot_iterations import calculate_ip_iters, calculate_sp_iters, is_overflow_block
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 
 log = logging.getLogger(__name__)
 

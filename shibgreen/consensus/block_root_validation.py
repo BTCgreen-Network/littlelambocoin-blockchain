@@ -1,9 +1,9 @@
 from typing import Dict, List, Optional
 
-from shibgreen.types.blockchain_format.coin import Coin, hash_coin_list
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.errors import Err
-from shibgreen.util.merkle_set import MerkleSet
+from littlelambocoin.types.blockchain_format.coin import Coin, hash_coin_list
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.merkle_set import MerkleSet
 
 
 def validate_block_merkle_roots(

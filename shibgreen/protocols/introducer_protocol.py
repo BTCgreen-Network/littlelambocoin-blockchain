@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.types.peer_info import TimestampedPeerInfo
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.peer_info import TimestampedPeerInfo
+from littlelambocoin.util.streamable import Streamable, streamable
 
 """
 Protocol to introducer

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import SerializedProgram, INFINITE_COST
-from shibgreen.util.chain_utils import additions_for_solution, fee_for_solution
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import SerializedProgram, INFINITE_COST
+from littlelambocoin.util.chain_utils import additions_for_solution, fee_for_solution
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

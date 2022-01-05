@@ -2,21 +2,21 @@ from typing import Dict, List, Optional, Tuple, Any
 
 from blspy import AugSchemeMPL, G2Element, PrivateKey
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.util.hash import std_hash
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.clvm import int_from_bytes, int_to_bytes
-from shibgreen.util.condition_tools import conditions_by_opcode, conditions_for_solution
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.wallet.derive_keys import master_sk_to_wallet_sk
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.clvm import int_from_bytes, int_to_bytes
+from littlelambocoin.util.condition_tools import conditions_by_opcode, conditions_for_solution
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.wallet.derive_keys import master_sk_to_wallet_sk
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
     puzzle_for_pk,

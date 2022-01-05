@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useWatch } from 'react-hook-form';
 import { t, Trans } from '@lingui/macro';
-import { CardStep, Select } from '@shibgreen/core';
+import { CardStep, Select } from '@littlelambocoin/core';
 import {
   FormControl,
   FormHelperText,
@@ -34,7 +34,7 @@ export default function PlotAddChoosePlotter(props: Props) {
 
   function displayablePlotters(plotters: PlotterMap<PlotterName, Plotter>): PlotterName[] {
     const displayablePlotters = Object.keys(plotters) as PlotterName[];
-    // Sort shibgreenpos to the top of the list
+    // Sort littlelambocoinpos to the top of the list
     displayablePlotters.sort((a, b) => a == PlotterName.SHIBGREENPOS ? -1 : a.localeCompare(b));
     return displayablePlotters;
   }
@@ -95,8 +95,8 @@ export default function PlotAddChoosePlotter(props: Props) {
       <Typography variant="subtitle1">
         <Trans>
             Depending on your system configuration, you may find that an alternative plotter
-            produces plots faster than the default SHIBgreen Proof of Space plotter. If unsure,
-            use the default SHIBgreen Proof of Space plotter.
+            produces plots faster than the default Littlelambocoin Proof of Space plotter. If unsure,
+            use the default Littlelambocoin Proof of Space plotter.
         </Trans>
       </Typography>
 

@@ -3,9 +3,9 @@ from typing import List, Optional
 
 from blspy import AugSchemeMPL, G1Element, G2Element, GTElement
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes48
-from shibgreen.util.hash import std_hash
-from shibgreen.util.lru_cache import LRUCache
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes48
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.lru_cache import LRUCache
 
 
 def get_pairings(cache: LRUCache, pks: List[bytes48], msgs: List[bytes], force_cache: bool) -> List[GTElement]:

@@ -1,5 +1,5 @@
 import click
-from shibgreen.plotters.plotters import call_plotters
+from littlelambocoin.plotters.plotters import call_plotters
 
 
 @click.command(

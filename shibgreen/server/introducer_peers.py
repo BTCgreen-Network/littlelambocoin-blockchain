@@ -3,8 +3,8 @@ import time
 from typing import Set, List, Optional
 from dataclasses import dataclass
 
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint64, uint16
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint64, uint16
 
 
 @dataclass(frozen=False)

@@ -1,6 +1,6 @@
 import pytest
-from shibgreen.util.misc import format_bytes
-from shibgreen.util.misc import format_minutes
+from littlelambocoin.util.misc import format_bytes
+from littlelambocoin.util.misc import format_minutes
 
 
 class TestMisc:

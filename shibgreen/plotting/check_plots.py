@@ -7,8 +7,8 @@ from typing import List
 from blspy import G1Element
 from chiapos import Verifier
 
-from shibgreen.plotting.manager import PlotManager
-from shibgreen.plotting.util import (
+from littlelambocoin.plotting.manager import PlotManager
+from littlelambocoin.plotting.util import (
     PlotRefreshResult,
     PlotsRefreshParameter,
     PlotRefreshEvents,
@@ -16,10 +16,10 @@ from shibgreen.plotting.util import (
     find_duplicate_plot_IDs,
     parse_plot_info,
 )
-from shibgreen.util.config import load_config
-from shibgreen.util.hash import std_hash
-from shibgreen.util.keychain import Keychain
-from shibgreen.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_local_sk
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.keychain import Keychain
+from littlelambocoin.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -189,5 +189,5 @@ def check_plots(root_path, num, challenge_start, grep_string, list_duplicates, d
         log.warning(
             f"There are {len(plot_manager.no_key_filenames)} plots with a farmer or pool public key that "
             f"is not on this machine. The farmer private key must be in the keychain in order to "
-            f"farm them, use 'shibgreen keys' to transfer keys. The pool public keys must be in the config.yaml"
+            f"farm them, use 'littlelambocoin keys' to transfer keys. The pool public keys must be in the config.yaml"
         )

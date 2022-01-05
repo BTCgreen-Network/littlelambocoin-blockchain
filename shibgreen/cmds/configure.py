@@ -3,8 +3,8 @@ from typing import Dict
 
 import click
 
-from shibgreen.util.config import load_config, save_config, str2bool
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.config import load_config, save_config, str2bool
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
 
 
 def configure(
@@ -93,8 +93,8 @@ def configure(
         if testnet == "true" or testnet == "t":
             print("Setting Testnet")
             testnet_port = "58444"
-            testnet_introducer = "beta1_introducer.shibgreen.com"
-            testnet_dns_introducer = "dns-introducer-testnet7.shibgreen.com"
+            testnet_introducer = "beta1_introducer.littlelambocoin.com"
+            testnet_dns_introducer = "dns-introducer-testnet7.littlelambocoin.com"
             testnet = "testnet7"
             config["full_node"]["port"] = int(testnet_port)
             config["full_node"]["introducer_peer"]["port"] = int(testnet_port)
@@ -120,8 +120,8 @@ def configure(
         elif testnet == "false" or testnet == "f":
             print("Setting Mainnet")
             mainnet_port = "7442"
-            mainnet_introducer = "introducer.shibgreen.com"
-            mainnet_dns_introducer = "dns-introducer.shibgreen.com"
+            mainnet_introducer = "introducer.littlelambocoin.com"
+            mainnet_dns_introducer = "dns-introducer.littlelambocoin.com"
             net = "mainnet"
             config["full_node"]["port"] = int(mainnet_port)
             config["full_node"]["introducer_peer"]["port"] = int(mainnet_port)
@@ -151,7 +151,7 @@ def configure(
         change_made = True
 
     if change_made:
-        print("Restart any running shibgreen services for changes to take effect")
+        print("Restart any running littlelambocoin services for changes to take effect")
         save_config(root_path, "config.yaml", config)
     return 0
 

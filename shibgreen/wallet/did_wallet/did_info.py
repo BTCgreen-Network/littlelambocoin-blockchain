@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint64
-from shibgreen.util.streamable import streamable, Streamable
-from shibgreen.wallet.lineage_proof import LineageProof
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.streamable import streamable, Streamable
+from littlelambocoin.wallet.lineage_proof import LineageProof
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.coin import Coin
 
 
 @dataclass(frozen=True)

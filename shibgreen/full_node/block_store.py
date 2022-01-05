@@ -3,14 +3,14 @@ from typing import Dict, List, Optional, Tuple
 
 import aiosqlite
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint32
-from shibgreen.util.lru_cache import LRUCache
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.util.lru_cache import LRUCache
 
 log = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 [submodule "mozilla-ca"]
 	path = mozilla-ca
 	url = https://github.com/Chia-Network/mozilla-ca/
-[submodule "shibgreen-blockchain-gui"]
-	path = shibgreen-blockchain-gui
-	url = https://github.com/dominick01234/shibgreen-blockchain-gui
+[submodule "littlelambocoin-blockchain-gui"]
+	path = littlelambocoin-blockchain-gui
+	url = https://github.com/dominick01234/littlelambocoin-blockchain-gui

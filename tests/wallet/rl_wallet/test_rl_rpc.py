@@ -2,15 +2,15 @@ import asyncio
 
 import pytest
 
-from shibgreen.rpc.wallet_rpc_api import WalletRpcApi
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.bech32m import encode_puzzle_hash
-from shibgreen.util.ints import uint16
-from shibgreen.wallet.util.wallet_types import WalletType
+from littlelambocoin.rpc.wallet_rpc_api import WalletRpcApi
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.bech32m import encode_puzzle_hash
+from littlelambocoin.util.ints import uint16
+from littlelambocoin.wallet.util.wallet_types import WalletType
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 from tests.wallet.sync.test_wallet_sync import wallet_height_at_least
@@ -139,7 +139,7 @@ class TestRLWallet:
         assert await wallet.get_confirmed_balance() == fund_owners_initial_balance - 101
         assert await check_balance(api_user, user_wallet_id) == 100
         receiving_wallet = wallet_node_2.wallet_state_manager.main_wallet
-        address = encode_puzzle_hash(await receiving_wallet.get_new_puzzlehash(), "xshib")
+        address = encode_puzzle_hash(await receiving_wallet.get_new_puzzlehash(), "llc")
         assert await receiving_wallet.get_spendable_balance() == 0
         val = await api_user.send_transaction({"wallet_id": user_wallet_id, "amount": 3, "fee": 2, "address": address})
         await asyncio.sleep(2)
@@ -160,7 +160,7 @@ class TestRLWallet:
         await time_out_assert(15, wallet_height_at_least, True, wallet_node, 68)
         assert await check_balance(api_user, user_wallet_id) == 195
         # test spending
-        puzzle_hash = encode_puzzle_hash(await receiving_wallet.get_new_puzzlehash(), "xshib")
+        puzzle_hash = encode_puzzle_hash(await receiving_wallet.get_new_puzzlehash(), "llc")
         val = await api_user.send_transaction(
             {"wallet_id": user_wallet_id, "amount": 105, "fee": 0, "address": puzzle_hash}
         )

@@ -7,11 +7,11 @@ from pathlib import Path
 import aiosqlite
 import pytest
 
-from shibgreen.consensus.blockchain import Blockchain
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.util.db_wrapper import DBWrapper
+from littlelambocoin.consensus.blockchain import Blockchain
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.util.db_wrapper import DBWrapper
 from tests.setup_nodes import bt, test_constants
 
 log = logging.getLogger(__name__)

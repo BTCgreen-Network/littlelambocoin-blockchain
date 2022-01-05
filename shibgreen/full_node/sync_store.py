@@ -2,8 +2,8 @@ import asyncio
 import logging
 from typing import Dict, List, Optional, Set, Tuple
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint32, uint128
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint32, uint128
 
 log = logging.getLogger(__name__)
 

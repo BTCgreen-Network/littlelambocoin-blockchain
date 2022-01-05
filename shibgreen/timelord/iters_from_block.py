@@ -1,9 +1,9 @@
 from typing import Optional, Tuple, Union
 
-from shibgreen.consensus.pot_iterations import calculate_ip_iters, calculate_iterations_quality, calculate_sp_iters
-from shibgreen.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint64
+from littlelambocoin.consensus.pot_iterations import calculate_ip_iters, calculate_iterations_quality, calculate_sp_iters
+from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint64
 
 
 def iters_from_block(

@@ -2,19 +2,19 @@ import pathlib
 from multiprocessing import freeze_support
 from typing import Dict, Optional
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.rpc.wallet_rpc_api import WalletRpcApi
-from shibgreen.server.outbound_message import NodeType
-from shibgreen.server.start_service import run_service
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.config import load_config_cli, load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.keychain import Keychain
-from shibgreen.wallet.wallet_node import WalletNode
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.rpc.wallet_rpc_api import WalletRpcApi
+from littlelambocoin.server.outbound_message import NodeType
+from littlelambocoin.server.start_service import run_service
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.config import load_config_cli, load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.keychain import Keychain
+from littlelambocoin.wallet.wallet_node import WalletNode
 
 # See: https://bugs.python.org/issue29288
-from shibgreen.wallet.wallet_node_api import WalletNodeAPI
+from littlelambocoin.wallet.wallet_node_api import WalletNodeAPI
 
 "".encode("idna")
 

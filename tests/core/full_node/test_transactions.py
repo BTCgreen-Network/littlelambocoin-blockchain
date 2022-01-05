@@ -4,13 +4,13 @@ from typing import Optional
 
 import pytest
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.protocols import full_node_protocol
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint32
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.protocols import full_node_protocol
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint32
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 

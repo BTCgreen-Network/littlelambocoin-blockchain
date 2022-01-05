@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

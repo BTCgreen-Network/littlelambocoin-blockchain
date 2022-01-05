@@ -6,27 +6,27 @@ import random
 from concurrent.futures.process import ProcessPoolExecutor
 from typing import Dict, List, Optional, Tuple
 
-from shibgreen.consensus.block_header_validation import validate_finished_header_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.deficit import calculate_deficit
-from shibgreen.consensus.full_block_to_block_record import header_block_to_sub_block_record
-from shibgreen.consensus.pot_iterations import (
+from littlelambocoin.consensus.block_header_validation import validate_finished_header_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.deficit import calculate_deficit
+from littlelambocoin.consensus.full_block_to_block_record import header_block_to_sub_block_record
+from littlelambocoin.consensus.pot_iterations import (
     calculate_ip_iters,
     calculate_iterations_quality,
     calculate_sp_iters,
     is_overflow_block,
 )
-from shibgreen.consensus.vdf_info_computation import get_signage_point_vdf_info
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import VDFInfo
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.weight_proof import (
+from littlelambocoin.consensus.vdf_info_computation import get_signage_point_vdf_info
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.weight_proof import (
     SubEpochChallengeSegment,
     SubEpochData,
     SubSlotData,
@@ -34,10 +34,10 @@ from shibgreen.types.weight_proof import (
     SubEpochSegments,
     RecentChainData,
 )
-from shibgreen.util.block_cache import BlockCache
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.streamable import dataclass_from_dict, recurse_jsonify
+from littlelambocoin.util.block_cache import BlockCache
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.streamable import dataclass_from_dict, recurse_jsonify
 
 log = logging.getLogger(__name__)
 

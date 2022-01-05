@@ -4,26 +4,26 @@ from typing import Any, Dict, List, Optional, Set
 
 from blspy import G1Element
 
-from shibgreen.consensus.cost_calculator import calculate_cost_of_program, NPCResult
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.hash import std_hash
-from shibgreen.wallet.derivation_record import DerivationRecord
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from littlelambocoin.consensus.cost_calculator import calculate_cost_of_program, NPCResult
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.wallet.derivation_record import DerivationRecord
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
     puzzle_for_pk,
     solution_for_conditions,
 )
-from shibgreen.wallet.puzzles.puzzle_utils import (
+from littlelambocoin.wallet.puzzles.puzzle_utils import (
     make_assert_coin_announcement,
     make_assert_puzzle_announcement,
     make_assert_my_coin_id_condition,
@@ -33,13 +33,13 @@ from shibgreen.wallet.puzzles.puzzle_utils import (
     make_create_coin_condition,
     make_reserve_fee_condition,
 )
-from shibgreen.wallet.secret_key_store import SecretKeyStore
-from shibgreen.wallet.sign_coin_spends import sign_coin_spends
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.transaction_type import TransactionType
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
-from shibgreen.wallet.wallet_info import WalletInfo
+from littlelambocoin.wallet.secret_key_store import SecretKeyStore
+from littlelambocoin.wallet.sign_coin_spends import sign_coin_spends
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.transaction_type import TransactionType
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.wallet.wallet_info import WalletInfo
 
 
 class Wallet:
@@ -437,14 +437,14 @@ class Wallet:
         await self.wallet_state_manager.add_pending_transaction(tx)
 
     # This is to be aggregated together with a coloured coin offer to ensure that the trade happens
-    async def create_spend_bundle_relative_shibgreen(self, shibgreen_amount: int, exclude: List[Coin]) -> SpendBundle:
+    async def create_spend_bundle_relative_littlelambocoin(self, littlelambocoin_amount: int, exclude: List[Coin]) -> SpendBundle:
         list_of_solutions = []
         utxos = None
 
         # If we're losing value then get coins with at least that much value
         # If we're gaining value then our amount doesn't matter
-        if shibgreen_amount < 0:
-            utxos = await self.select_coins(abs(shibgreen_amount), exclude)
+        if littlelambocoin_amount < 0:
+            utxos = await self.select_coins(abs(littlelambocoin_amount), exclude)
         else:
             utxos = await self.select_coins(0, exclude)
 
@@ -452,7 +452,7 @@ class Wallet:
 
         # Calculate output amount given sum of utxos
         spend_value = sum([coin.amount for coin in utxos])
-        shibgreen_amount = spend_value + shibgreen_amount
+        littlelambocoin_amount = spend_value + littlelambocoin_amount
 
         # Create coin solutions for each utxo
         output_created = None
@@ -460,7 +460,7 @@ class Wallet:
             puzzle = await self.puzzle_for_puzzle_hash(coin.puzzle_hash)
             if output_created is None:
                 newpuzhash = await self.get_new_puzzlehash()
-                primaries = [{"puzzlehash": newpuzhash, "amount": shibgreen_amount}]
+                primaries = [{"puzzlehash": newpuzhash, "amount": littlelambocoin_amount}]
                 solution = self.make_solution(primaries=primaries)
                 output_created = coin
             list_of_solutions.append(CoinSpend(coin, puzzle, solution))

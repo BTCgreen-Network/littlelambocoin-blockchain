@@ -17,7 +17,7 @@ import {
   Help as HelpIcon,
 } from '@material-ui/icons';
 import { t, Trans } from '@lingui/macro';
-import { AlertDialog, Flex } from '@shibgreen/core';
+import { AlertDialog, Flex } from '@littlelambocoin/core';
 import { openDialog } from '../../modules/dialog';
 import { change_keyring_passphrase_action, remove_keyring_passphrase_action } from '../../modules/message';
 import { validateChangePassphraseParams } from '../app/AppPassPrompt';
@@ -224,7 +224,7 @@ export default function ChangePassphrasePrompt(props: Props) {
               label={t`Save passphrase`}
               style={{ marginRight: '8px' }}
             />
-            <Tooltip title={t`Your passphrase can be stored in your system's secure credential store. SHIBgreen will be able to access your keys without prompting for your passphrase.`}>
+            <Tooltip title={t`Your passphrase can be stored in your system's secure credential store. Littlelambocoin will be able to access your keys without prompting for your passphrase.`}>
               <HelpIcon style={{ color: '#c8c8c8', fontSize: 12 }} />
             </Tooltip>
           </Box>

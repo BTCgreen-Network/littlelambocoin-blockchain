@@ -1,8 +1,8 @@
 {
-    "name": "shibgreen-blockchain",
-    "author": "SHIBgreen Network <hello@shibgreen.com> (https://shibgreen.com/)",
-    "description": "GUI for SHIBgreen Blockchain",
-    "productName": "SHIBgreen Blockchain",
+    "name": "littlelambocoin-blockchain",
+    "author": "Littlelambocoin Network <hello@littlelambocoin.com> (https://littlelambocoin.com/)",
+    "description": "GUI for Littlelambocoin Blockchain",
+    "productName": "Littlelambocoin Blockchain",
     "private": true,
     "homepage": "./",
     "main": "build/electron/main.js",

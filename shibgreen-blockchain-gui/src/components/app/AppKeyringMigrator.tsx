@@ -19,7 +19,7 @@ import {
 import {
   Help as HelpIcon,
 } from '@material-ui/icons';
-import { AlertDialog, ConfirmDialog } from '@shibgreen/core';
+import { AlertDialog, ConfirmDialog } from '@littlelambocoin/core';
 import { openDialog } from '../../modules/dialog';
 import { RootState } from '../../modules/rootReducer';
 import { migrate_keyring_action, skipKeyringMigration } from '../../modules/message';
@@ -174,7 +174,7 @@ export default function AppKeyringMigrator(): JSX.Element {
                 label={t`Save passphrase`}
                 style={{ marginRight: '8px' }}
               />
-              <Tooltip title={t`Your passphrase can be stored in your system's secure credential store. SHIBgreen will be able to access your keys without prompting for your passphrase.`}>
+              <Tooltip title={t`Your passphrase can be stored in your system's secure credential store. Littlelambocoin will be able to access your keys without prompting for your passphrase.`}>
                 <HelpIcon style={{ color: '#c8c8c8', fontSize: 12 }} />
               </Tooltip>
             </Box>

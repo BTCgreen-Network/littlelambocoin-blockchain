@@ -14,16 +14,16 @@ function getInstallerConfig () {
   const outPath = path.join(rootPath, 'release-builds')
 
   return Promise.resolve({
-    appDirectory: path.join(rootPath, 'SHIBgreen-win32-x64'),
-    authors: 'SHIBgreen Network',
+    appDirectory: path.join(rootPath, 'Littlelambocoin-win32-x64'),
+    authors: 'Littlelambocoin Network',
     version: process.env.SHIBGREEN_INSTALLER_VERSION,
     noMsi: true,
-    iconUrl: 'https://raw.githubusercontent.com/BTCgreen-Network/shibgreen-blockchain/master/electron-react/src/assets/img/shibgreen.ico',
+    iconUrl: 'https://raw.githubusercontent.com/BTCgreen-Network/littlelambocoin-blockchain/master/electron-react/src/assets/img/littlelambocoin.ico',
     outputDirectory: path.join(outPath, 'windows-installer'),
     certificateFile: 'win_code_sign_cert.p12',
     certificatePassword: process.env.WIN_CODE_SIGN_PASS,
-    exe: 'SHIBgreen.exe',
-    setupExe: 'SHIBgreenSetup-' + process.env.SHIBGREEN_INSTALLER_VERSION + '.exe',
-    setupIcon: path.join(rootPath, 'src', 'assets', 'img', 'shibgreen.ico')
+    exe: 'Littlelambocoin.exe',
+    setupExe: 'LittlelambocoinSetup-' + process.env.SHIBGREEN_INSTALLER_VERSION + '.exe',
+    setupIcon: path.join(rootPath, 'src', 'assets', 'img', 'littlelambocoin.ico')
   })
 }

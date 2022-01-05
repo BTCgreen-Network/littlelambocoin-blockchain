@@ -6,9 +6,9 @@ from pathlib import Path
 import aiosqlite
 import pytest
 
-from shibgreen.server.address_manager import AddressManager, ExtendedPeerInfo
-from shibgreen.server.address_manager_store import AddressManagerStore
-from shibgreen.types.peer_info import PeerInfo, TimestampedPeerInfo
+from littlelambocoin.server.address_manager import AddressManager, ExtendedPeerInfo
+from littlelambocoin.server.address_manager_store import AddressManagerStore
+from littlelambocoin.types.peer_info import PeerInfo, TimestampedPeerInfo
 
 
 @pytest.fixture(scope="module")

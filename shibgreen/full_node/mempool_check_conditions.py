@@ -3,19 +3,19 @@ import time
 from typing import Dict, List, Optional
 from clvm_rs import STRICT_MODE
 
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.full_node.generator import create_generator_args, setup_generator_args
-from shibgreen.types.blockchain_format.program import NIL
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.name_puzzle_condition import NPC
-from shibgreen.util.clvm import int_from_bytes
-from shibgreen.util.condition_tools import ConditionOpcode
-from shibgreen.util.errors import Err
-from shibgreen.util.ints import uint32, uint64, uint16
-from shibgreen.wallet.puzzles.generator_loader import GENERATOR_FOR_SINGLE_COIN_MOD
-from shibgreen.wallet.puzzles.rom_bootstrap_generator import get_generator
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.full_node.generator import create_generator_args, setup_generator_args
+from littlelambocoin.types.blockchain_format.program import NIL
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.name_puzzle_condition import NPC
+from littlelambocoin.util.clvm import int_from_bytes
+from littlelambocoin.util.condition_tools import ConditionOpcode
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.ints import uint32, uint64, uint16
+from littlelambocoin.wallet.puzzles.generator_loader import GENERATOR_FOR_SINGLE_COIN_MOD
+from littlelambocoin.wallet.puzzles.rom_bootstrap_generator import get_generator
 
 GENERATOR_MOD = get_generator()
 

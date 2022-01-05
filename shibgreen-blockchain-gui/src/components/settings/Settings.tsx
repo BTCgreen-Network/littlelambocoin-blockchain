@@ -7,7 +7,7 @@ import {
   AlertDialog,
   Flex,
   Card,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import {
   Grid,
   Typography,

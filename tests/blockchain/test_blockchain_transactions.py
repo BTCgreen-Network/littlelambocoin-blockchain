@@ -4,14 +4,14 @@ import logging
 import pytest
 from clvm.casts import int_to_bytes
 
-from shibgreen.consensus.blockchain import ReceiveBlockResult
-from shibgreen.protocols import full_node_protocol, wallet_protocol
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.errors import ConsensusError, Err
-from shibgreen.util.ints import uint64
+from littlelambocoin.consensus.blockchain import ReceiveBlockResult
+from littlelambocoin.protocols import full_node_protocol, wallet_protocol
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.errors import ConsensusError, Err
+from littlelambocoin.util.ints import uint64
 from tests.wallet_tools import WalletTool
 from tests.setup_nodes import bt, setup_two_nodes, test_constants
 from tests.util.generator_tools_testing import run_and_get_removals_and_additions

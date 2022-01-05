@@ -5,36 +5,36 @@ from typing import Dict, List, Optional, Set, Tuple, Union, Callable
 from chiabip158 import PyBIP158
 from clvm.casts import int_from_bytes
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.consensus.block_root_validation import validate_block_merkle_roots
-from shibgreen.full_node.mempool_check_conditions import mempool_check_conditions_dict
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.coinbase import create_farmer_coin, create_pool_coin
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult, calculate_cost_of_program
-from shibgreen.consensus.find_fork_point import find_fork_point_in_chain
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.name_puzzle_condition import NPC
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util import cached_bls
-from shibgreen.util.condition_tools import pkm_pairs
-from shibgreen.util.errors import Err
-from shibgreen.util.generator_tools import (
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.consensus.block_root_validation import validate_block_merkle_roots
+from littlelambocoin.full_node.mempool_check_conditions import mempool_check_conditions_dict
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
+from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.name_puzzle_condition import NPC
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util import cached_bls
+from littlelambocoin.util.condition_tools import pkm_pairs
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.generator_tools import (
     additions_for_npc,
     tx_removals_and_additions,
 )
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint32, uint64, uint128
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint32, uint64, uint128
 
 log = logging.getLogger(__name__)
 
@@ -455,7 +455,7 @@ async def validate_block_body(
 
     # The pairing cache is not useful while syncing as each pairing is seen
     # only once, so the extra effort of populating it is not justified.
-    # However, we force xshibhing of pairings just for unfinished blocks
+    # However, we force llching of pairings just for unfinished blocks
     # as the cache is likely to be useful when validating the corresponding
     # finished blocks later.
     if validate_signature:

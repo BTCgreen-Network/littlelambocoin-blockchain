@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from hashlib import sha256
 from typing import Any, Dict, List, Tuple
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 
 """
 A simple, confidence-inspiring Merkle Set standard

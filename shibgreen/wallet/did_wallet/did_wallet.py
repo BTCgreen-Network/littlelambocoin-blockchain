@@ -6,28 +6,28 @@ from typing import Dict, Optional, List, Any, Set, Tuple, Union
 
 from blspy import AugSchemeMPL, G1Element
 from secrets import token_bytes
-from shibgreen.protocols import wallet_protocol
-from shibgreen.protocols.wallet_protocol import RespondAdditions, RejectAdditionsRequest
-from shibgreen.server.outbound_message import NodeType
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint64, uint32, uint8
-from shibgreen.wallet.util.transaction_type import TransactionType
+from littlelambocoin.protocols import wallet_protocol
+from littlelambocoin.protocols.wallet_protocol import RespondAdditions, RejectAdditionsRequest
+from littlelambocoin.server.outbound_message import NodeType
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint64, uint32, uint8
+from littlelambocoin.wallet.util.transaction_type import TransactionType
 
-from shibgreen.wallet.did_wallet.did_info import DIDInfo
-from shibgreen.wallet.lineage_proof import LineageProof
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet import Wallet
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
-from shibgreen.wallet.wallet_info import WalletInfo
-from shibgreen.wallet.derivation_record import DerivationRecord
-from shibgreen.wallet.did_wallet import did_wallet_puzzles
-from shibgreen.wallet.derive_keys import master_sk_to_wallet_sk
+from littlelambocoin.wallet.did_wallet.did_info import DIDInfo
+from littlelambocoin.wallet.lineage_proof import LineageProof
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet import Wallet
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.wallet.wallet_info import WalletInfo
+from littlelambocoin.wallet.derivation_record import DerivationRecord
+from littlelambocoin.wallet.did_wallet import did_wallet_puzzles
+from littlelambocoin.wallet.derive_keys import master_sk_to_wallet_sk
 
 
 class DIDWallet:

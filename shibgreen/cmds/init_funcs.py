@@ -6,27 +6,27 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
 
-from shibgreen import __version__
-from shibgreen.consensus.coinbase import create_puzzlehash_for_pk
-from shibgreen.ssl.create_ssl import (
+from littlelambocoin import __version__
+from littlelambocoin.consensus.coinbase import create_puzzlehash_for_pk
+from littlelambocoin.ssl.create_ssl import (
     ensure_ssl_dirs,
     generate_ca_signed_cert,
-    get_shibgreen_ca_crt_key,
+    get_littlelambocoin_ca_crt_key,
     make_ca_cert,
     write_ssl_cert_and_key,
 )
-from shibgreen.util.bech32m import encode_puzzle_hash
-from shibgreen.util.config import (
-    create_default_shibgreen_config,
+from littlelambocoin.util.bech32m import encode_puzzle_hash
+from littlelambocoin.util.config import (
+    create_default_littlelambocoin_config,
     initial_config_file,
     load_config,
     save_config,
     unflatten_properties,
 )
-from shibgreen.util.ints import uint32
-from shibgreen.util.keychain import Keychain
-from shibgreen.util.path import mkdir
-from shibgreen.util.ssl_check import (
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.util.keychain import Keychain
+from littlelambocoin.util.path import mkdir
+from littlelambocoin.util.ssl_check import (
     DEFAULT_PERMISSIONS_CERT_FILE,
     DEFAULT_PERMISSIONS_KEY_FILE,
     RESTRICT_MASK_CERT_FILE,
@@ -34,8 +34,8 @@ from shibgreen.util.ssl_check import (
     check_and_fix_permissions_for_ssl_file,
     fix_ssl,
 )
-from shibgreen.wallet.derive_keys import master_sk_to_pool_sk, master_sk_to_wallet_sk
-from shibgreen.cmds.configure import configure
+from littlelambocoin.wallet.derive_keys import master_sk_to_pool_sk, master_sk_to_wallet_sk
+from littlelambocoin.cmds.configure import configure
 
 private_node_names = {"full_node", "wallet", "farmer", "harvester", "timelord", "daemon"}
 public_node_names = {"full_node", "wallet", "farmer", "introducer", "timelord"}
@@ -67,14 +67,14 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         keychain = Keychain()
     all_sks = keychain.get_all_private_keys()
     if len(all_sks) == 0:
-        print("No keys are present in the keychain. Generate them with 'shibgreen keys generate'")
+        print("No keys are present in the keychain. Generate them with 'littlelambocoin keys generate'")
         return None
 
     config: Dict = load_config(new_root, "config.yaml")
     pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
     all_targets = []
-    stop_searching_for_farmer = "xshib_target_address" not in config["farmer"]
-    stop_searching_for_pool = "xshib_target_address" not in config["pool"]
+    stop_searching_for_farmer = "llc_target_address" not in config["farmer"]
+    stop_searching_for_pool = "llc_target_address" not in config["pool"]
     number_of_ph_to_search = 500
     selected = config["selected_network"]
     prefix = config["network_overrides"]["config"][selected]["address_prefix"]
@@ -85,41 +85,41 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
             all_targets.append(
                 encode_puzzle_hash(create_puzzlehash_for_pk(master_sk_to_wallet_sk(sk, uint32(i)).get_g1()), prefix)
             )
-            if all_targets[-1] == config["farmer"].get("xshib_target_address"):
+            if all_targets[-1] == config["farmer"].get("llc_target_address"):
                 stop_searching_for_farmer = True
-            if all_targets[-1] == config["pool"].get("xshib_target_address"):
+            if all_targets[-1] == config["pool"].get("llc_target_address"):
                 stop_searching_for_pool = True
 
     # Set the destinations, if necessary
     updated_target: bool = False
-    if "xshib_target_address" not in config["farmer"]:
+    if "llc_target_address" not in config["farmer"]:
         print(
-            f"Setting the xshib destination for the farmer reward (1/8 plus fees, solo and pooling) to {all_targets[0]}"
+            f"Setting the llc destination for the farmer reward (1/8 plus fees, solo and pooling) to {all_targets[0]}"
         )
-        config["farmer"]["xshib_target_address"] = all_targets[0]
+        config["farmer"]["llc_target_address"] = all_targets[0]
         updated_target = True
-    elif config["farmer"]["xshib_target_address"] not in all_targets:
+    elif config["farmer"]["llc_target_address"] not in all_targets:
         print(
             f"WARNING: using a farmer address which we don't have the private"
             f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
-            f"{config['farmer']['xshib_target_address']} with {all_targets[0]}"
+            f"{config['farmer']['llc_target_address']} with {all_targets[0]}"
         )
 
     if "pool" not in config:
         config["pool"] = {}
-    if "xshib_target_address" not in config["pool"]:
-        print(f"Setting the xshib destination address for pool reward (7/8 for solo only) to {all_targets[0]}")
-        config["pool"]["xshib_target_address"] = all_targets[0]
+    if "llc_target_address" not in config["pool"]:
+        print(f"Setting the llc destination address for pool reward (7/8 for solo only) to {all_targets[0]}")
+        config["pool"]["llc_target_address"] = all_targets[0]
         updated_target = True
-    elif config["pool"]["xshib_target_address"] not in all_targets:
+    elif config["pool"]["llc_target_address"] not in all_targets:
         print(
             f"WARNING: using a pool address which we don't have the private"
             f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
-            f"{config['pool']['xshib_target_address']} with {all_targets[0]}"
+            f"{config['pool']['llc_target_address']} with {all_targets[0]}"
         )
     if updated_target:
         print(
-            f"To change the XSHIB destination addresses, edit the `xshib_target_address` entries in"
+            f"To change the LLC destination addresses, edit the `llc_target_address` entries in"
             f" {(new_root / 'config' / 'config.yaml').absolute()}."
         )
 
@@ -200,10 +200,10 @@ def create_all_ssl(root_path: Path):
 
     private_ca_key_path = ca_dir / "private_ca.key"
     private_ca_crt_path = ca_dir / "private_ca.crt"
-    shibgreen_ca_crt, shibgreen_ca_key = get_shibgreen_ca_crt_key()
-    shibgreen_ca_crt_path = ca_dir / "shibgreen_ca.crt"
-    shibgreen_ca_key_path = ca_dir / "shibgreen_ca.key"
-    write_ssl_cert_and_key(shibgreen_ca_crt_path, shibgreen_ca_crt, shibgreen_ca_key_path, shibgreen_ca_key)
+    littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
+    littlelambocoin_ca_crt_path = ca_dir / "littlelambocoin_ca.crt"
+    littlelambocoin_ca_key_path = ca_dir / "littlelambocoin_ca.key"
+    write_ssl_cert_and_key(littlelambocoin_ca_crt_path, littlelambocoin_ca_crt, littlelambocoin_ca_key_path, littlelambocoin_ca_key)
 
     if not private_ca_key_path.exists() or not private_ca_crt_path.exists():
         # Create private CA
@@ -220,8 +220,8 @@ def create_all_ssl(root_path: Path):
         ca_crt = private_ca_crt_path.read_bytes()
         generate_ssl_for_nodes(ssl_dir, ca_crt, ca_key, True)
 
-    shibgreen_ca_crt, shibgreen_ca_key = get_shibgreen_ca_crt_key()
-    generate_ssl_for_nodes(ssl_dir, shibgreen_ca_crt, shibgreen_ca_key, False, overwrite=False)
+    littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
+    generate_ssl_for_nodes(ssl_dir, littlelambocoin_ca_crt, littlelambocoin_ca_key, False, overwrite=False)
 
 
 def generate_ssl_for_nodes(ssl_dir: Path, ca_crt: bytes, ca_key: bytes, private: bool, overwrite=True):
@@ -273,7 +273,7 @@ def init(create_certs: Optional[Path], root_path: Path, fix_ssl_permissions: boo
             print(f"** {root_path} does not exist. Executing core init **")
             # sanity check here to prevent infinite recursion
             if (
-                shibgreen_init(root_path, fix_ssl_permissions=fix_ssl_permissions, testnet=testnet) == 0
+                littlelambocoin_init(root_path, fix_ssl_permissions=fix_ssl_permissions, testnet=testnet) == 0
                 and root_path.exists()
             ):
                 return init(create_certs, root_path, fix_ssl_permissions)
@@ -281,10 +281,10 @@ def init(create_certs: Optional[Path], root_path: Path, fix_ssl_permissions: boo
             print(f"** {root_path} was not created. Exiting **")
             return -1
     else:
-        return shibgreen_init(root_path, fix_ssl_permissions=fix_ssl_permissions, testnet=testnet)
+        return littlelambocoin_init(root_path, fix_ssl_permissions=fix_ssl_permissions, testnet=testnet)
 
 
-def shibgreen_version_number() -> Tuple[str, str, str, str]:
+def littlelambocoin_version_number() -> Tuple[str, str, str, str]:
     scm_full_version = __version__
     left_full_version = scm_full_version.split("+")
 
@@ -332,18 +332,18 @@ def shibgreen_version_number() -> Tuple[str, str, str, str]:
     return major_release_number, minor_release_number, patch_release_number, dev_release_number
 
 
-def shibgreen_minor_release_number():
-    res = int(shibgreen_version_number()[2])
+def littlelambocoin_minor_release_number():
+    res = int(littlelambocoin_version_number()[2])
     print(f"Install release number: {res}")
     return res
 
 
-def shibgreen_full_version_str() -> str:
-    major, minor, patch, dev = shibgreen_version_number()
+def littlelambocoin_full_version_str() -> str:
+    major, minor, patch, dev = littlelambocoin_version_number()
     return f"{major}.{minor}.{patch}{dev}"
 
 
-def shibgreen_init(
+def littlelambocoin_init(
     root_path: Path, *, should_check_keys: bool = True, fix_ssl_permissions: bool = False, testnet: bool = False
 ):
     """
@@ -357,13 +357,13 @@ def shibgreen_init(
     if os.environ.get("SHIBGREEN_ROOT", None) is not None:
         print(
             f"warning, your SHIBGREEN_ROOT is set to {os.environ['SHIBGREEN_ROOT']}. "
-            f"Please unset the environment variable and run shibgreen init again\n"
+            f"Please unset the environment variable and run littlelambocoin init again\n"
             f"or manually migrate config.yaml"
         )
 
-    print(f"SHIBgreen directory {root_path}")
+    print(f"Littlelambocoin directory {root_path}")
     if root_path.is_dir() and Path(root_path / "config" / "config.yaml").exists():
-        # This is reached if SHIBGREEN_ROOT is set, or if user has run shibgreen init twice
+        # This is reached if SHIBGREEN_ROOT is set, or if user has run littlelambocoin init twice
         # before a new update.
         if testnet:
             configure(root_path, "", "", "", "", "", "", "", "", testnet="true", peer_connect_timeout="")
@@ -374,7 +374,7 @@ def shibgreen_init(
         print(f"{root_path} already exists, no migration action taken")
         return -1
 
-    create_default_shibgreen_config(root_path)
+    create_default_littlelambocoin_config(root_path)
     if testnet:
         configure(root_path, "", "", "", "", "", "", "", "", testnet="true", peer_connect_timeout="")
     create_all_ssl(root_path)
@@ -383,9 +383,9 @@ def shibgreen_init(
     if should_check_keys:
         check_keys(root_path)
     print("")
-    print("To see your keys, run 'shibgreen keys show --show-mnemonic-seed'")
+    print("To see your keys, run 'littlelambocoin keys show --show-mnemonic-seed'")
 
-    url = 'https://raw.githubusercontent.com/BTCgreen-Network/shibgreen-blockchain/main/peer_table_node.sqlite'
+    url = ''
     mkdir(root_path / "db")
     wget.download(url, out=str(root_path / "db"))
 

@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 // import { useRouteMatch, useHistory } from 'react-router';
 import { /*useDispatch, */ useSelector } from 'react-redux';
-import { FormatLargeNumber } from '@shibgreen/core';
+import { FormatLargeNumber } from '@littlelambocoin/core';
 import StandardWallet from './standard/WalletStandard';
 import { CreateWalletView } from './create/WalletCreate';
 import ColouredWallet from './coloured/WalletColoured';

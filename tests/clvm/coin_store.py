@@ -2,16 +2,16 @@ from collections import defaultdict
 from dataclasses import dataclass, replace
 from typing import Dict, Iterator, Optional
 
-from shibgreen.util.condition_tools import created_outputs_for_conditions_dict
-from shibgreen.full_node.mempool_check_conditions import mempool_check_conditions_dict, get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.util.errors import Err
-from shibgreen.consensus.cost_calculator import NPCResult
+from littlelambocoin.util.condition_tools import created_outputs_for_conditions_dict
+from littlelambocoin.full_node.mempool_check_conditions import mempool_check_conditions_dict, get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.util.errors import Err
+from littlelambocoin.consensus.cost_calculator import NPCResult
 
 
 MAX_COST = 11000000000

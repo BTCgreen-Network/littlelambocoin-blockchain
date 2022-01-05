@@ -1,7 +1,7 @@
 import unittest
 from blspy import AugSchemeMPL, G1Element
-from shibgreen.util import cached_bls
-from shibgreen.util.lru_cache import LRUCache
+from littlelambocoin.util import cached_bls
+from littlelambocoin.util.lru_cache import LRUCache
 
 
 class TestCachedBLS(unittest.TestCase):

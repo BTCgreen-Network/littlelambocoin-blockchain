@@ -1,4 +1,4 @@
-min_mainnet_k_size: 32
+min_mainnet_k_size: 29
 
 # Send a ping to all peers after ping_interval seconds
 ping_interval: 120
@@ -18,35 +18,35 @@ network_overrides: &network_overrides
   constants:
     mainnet:
       NETWORK_TYPE: 0
-      GENESIS_CHALLENGE: 265a4a588caa1f6334cdc6fc67fedb2648ceabf1a7f322d53b0e38a859fc3a4d
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH:  "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
+      GENESIS_CHALLENGE: ba0bc02c0063fe3b24b00892ce6289aa558342b3069cd9aaf81f0578d86273df
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH:  "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     testnet0:
       MIN_PLOT_SIZE: 18
       GENESIS_CHALLENGE: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       NETWORK_TYPE: 1
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     testnet2:
       MIN_PLOT_SIZE: 18
       GENESIS_CHALLENGE: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
       NETWORK_TYPE: 1
       DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     testnet3:
       DIFFICULTY_CONSTANT_FACTOR: 10052721566054
       GENESIS_CHALLENGE: ca7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
       MIN_PLOT_SIZE: 18
       NETWORK_TYPE: 1
       MEMPOOL_BLOCK_BUFFER: 10
     testnet4:
       DIFFICULTY_CONSTANT_FACTOR: 10052721566054
       GENESIS_CHALLENGE: dd7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
       MIN_PLOT_SIZE: 18
       NETWORK_TYPE: 1
       MEMPOOL_BLOCK_BUFFER: 10
@@ -55,8 +55,8 @@ network_overrides: &network_overrides
     testnet5:
       DIFFICULTY_CONSTANT_FACTOR: 10052721566054
       GENESIS_CHALLENGE: ee7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
       MIN_PLOT_SIZE: 18
       NETWORK_TYPE: 1
       MEMPOOL_BLOCK_BUFFER: 10
@@ -65,8 +65,8 @@ network_overrides: &network_overrides
     testnet7:
       DIFFICULTY_CONSTANT_FACTOR: 10052721566054
       GENESIS_CHALLENGE: 117816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: 75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c
+      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
+      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
       MIN_PLOT_SIZE: 18
       NETWORK_TYPE: 1
       MEMPOOL_BLOCK_BUFFER: 50
@@ -74,24 +74,24 @@ network_overrides: &network_overrides
       DIFFICULTY_STARTING: 30
   config:
     mainnet:
-      address_prefix: "xshib"
+      address_prefix: "llc"
       default_full_node_port: 7442
     testnet0:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
     testnet1:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
     testnet2:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
     testnet3:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
     testnet4:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
     testnet7:
-      address_prefix: "txshib"
+      address_prefix: "tllc"
       default_full_node_port: 511444
 
 selected_network: &selected_network "mainnet"
-ALERTS_URL: https://download.shibgreen.com/notify/mainnet_alert.txt
+ALERTS_URL: https://download.littlelambocoin.com/notify/mainnet_alert.txt
 SHIBGREEN_ALERTS_PUBKEY: 89b7fd87cb56e926ecefb879a29aae308be01f31980569f6a75a69d2a9a69daefd71fb778d865f7c50d6c967e3025937
 
 # public ssl ca is included in source code
@@ -100,9 +100,9 @@ private_ssl_ca:
   crt: "config/ssl/ca/private_ca.crt"
   key: "config/ssl/ca/private_ca.key"
 
-shibgreen_ssl_ca:
-  crt: "config/ssl/ca/shibgreen_ca.crt"
-  key: "config/ssl/ca/shibgreen_ca.key"
+littlelambocoin_ssl_ca:
+  crt: "config/ssl/ca/littlelambocoin_ca.crt"
+  key: "config/ssl/ca/littlelambocoin_ca.key"
 
 
 daemon_ssl:
@@ -156,13 +156,13 @@ harvester:
     crt: "config/ssl/ca/private_ca.crt"
     key: "config/ssl/ca/private_ca.key"
 
-  shibgreen_ssl_ca:
-    crt: "config/ssl/ca/shibgreen_ca.crt"
-    key: "config/ssl/ca/shibgreen_ca.key"
+  littlelambocoin_ssl_ca:
+    crt: "config/ssl/ca/littlelambocoin_ca.crt"
+    key: "config/ssl/ca/littlelambocoin_ca.key"
 
 pool:
   # Replace this with a real puzzle hash
-  # xshib_target_address: txshib102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
+  # llc_target_address: tllc102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
@@ -182,7 +182,7 @@ farmer:
   pool_public_keys: []
 
   # Replace this with a real puzzle hash
-  # xshib_target_address: txshib102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
+  # llc_target_address: tllc102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
@@ -322,7 +322,7 @@ full_node:
   weight_proof_timeout: 360
 
   # when enabled, the full node will print a pstats profile to the root_dir/profile every second
-  # analyze with shibgreen/utils/profiler.py
+  # analyze with littlelambocoin/utils/profiler.py
   enable_profiler: False
 
   # this is a debug and profiling facility that logs all SQLite commands to a
@@ -332,7 +332,7 @@ full_node:
   # List of trusted DNS seeders to bootstrap from.
   # If you modify this, please change the hardcode as well from FullNode.set_server()
   dns_servers:
-    - "dns-introducer.shibgreen.com"
+    - "dns-introducer.littlelambocoin.com"
   farmer_peer:
       host: *self_hostname
       port: 18974
@@ -340,7 +340,7 @@ full_node:
       host: *self_hostname
       port: 18639
   introducer_peer:
-      host: introducer.shibgreen.com  # SHIBgreen AWS introducer IPv4/IPv6
+      host: introducer.littlelambocoin.com  # Littlelambocoin AWS introducer IPv4/IPv6
       port: 7442
   wallet_peer:
     host: *self_hostname
@@ -427,7 +427,7 @@ wallet:
   recent_peer_threshold: 6000
 
   introducer_peer:
-    host: introducer.shibgreen.com # SHIBgreen AWS introducer IPv4/IPv6
+    host: introducer.littlelambocoin.com # Littlelambocoin AWS introducer IPv4/IPv6
     port: 7442
 
   ssl:

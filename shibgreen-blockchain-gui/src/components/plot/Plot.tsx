@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Flex, Link } from '@shibgreen/core';
+import { Flex, Link } from '@littlelambocoin/core';
 import { Trans } from '@lingui/macro';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import LayoutMain from '../layout/LayoutMain';

@@ -7,44 +7,44 @@ from typing import Dict, List, Optional, Tuple, Callable
 
 import pytest
 
-import shibgreen.server.ws_connection as ws
+import littlelambocoin.server.ws_connection as ws
 
-from shibgreen.full_node.mempool import Mempool
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.protocols import full_node_protocol, wallet_protocol
-from shibgreen.protocols.wallet_protocol import TransactionAck
-from shibgreen.server.outbound_message import Message
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.types.mempool_item import MempoolItem
-from shibgreen.util.clvm import int_to_bytes
-from shibgreen.util.condition_tools import conditions_for_solution, pkm_pairs
-from shibgreen.util.errors import Err
-from shibgreen.util.ints import uint64
-from shibgreen.util.hash import std_hash
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.util.api_decorators import api_request, peer_required, bytes_required
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.name_puzzle_condition import NPC
-from shibgreen.full_node.pending_tx_cache import PendingTxCache
+from littlelambocoin.full_node.mempool import Mempool
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.protocols import full_node_protocol, wallet_protocol
+from littlelambocoin.protocols.wallet_protocol import TransactionAck
+from littlelambocoin.server.outbound_message import Message
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.types.mempool_item import MempoolItem
+from littlelambocoin.util.clvm import int_to_bytes
+from littlelambocoin.util.condition_tools import conditions_for_solution, pkm_pairs
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.util.api_decorators import api_request, peer_required, bytes_required
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.name_puzzle_condition import NPC
+from littlelambocoin.full_node.pending_tx_cache import PendingTxCache
 from blspy import G2Element
 
-from shibgreen.util.recursive_replace import recursive_replace
+from littlelambocoin.util.recursive_replace import recursive_replace
 from tests.connection_utils import connect_and_get_peer
 from tests.core.node_height import node_height_at_least
 from tests.setup_nodes import bt, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
-from shibgreen.types.blockchain_format.program import Program, INFINITE_COST
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.types.blockchain_format.program import Program, INFINITE_COST
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
 from clvm_tools import binutils
-from shibgreen.types.generator_types import BlockGenerator
+from littlelambocoin.types.generator_types import BlockGenerator
 from clvm.casts import int_from_bytes
 from blspy import G1Element
 
@@ -197,7 +197,7 @@ class TestMempool:
 async def respond_transaction(
     node: FullNodeAPI,
     tx: full_node_protocol.RespondTransaction,
-    peer: ws.WSSHIBgreenConnection,
+    peer: ws.WSLittlelambocoinConnection,
     tx_bytes: bytes = b"",
     test: bool = False,
 ) -> Tuple[MempoolInclusionStatus, Optional[Err]]:
@@ -1964,7 +1964,7 @@ SINGLE_ARG_INT_COND = "(a (q 2 4 (c 2 (c (c (q . {opcode}) (c (concat (a 6 (c 2 
 #  (iter (concat (large_string 0x00 A) (q . 100)) B)
 # )
 # truncates the first byte of the large string being passed down for each
-# iteration, in an attempt to defeat any xshibhing of integers by node ID.
+# iteration, in an attempt to defeat any llching of integers by node ID.
 # substr is cheap, and no memory is copied, so we can perform a lot of these
 SINGLE_ARG_INT_SUBSTR_COND = "(a (q 2 4 (c 2 (c (concat (a 6 (c 2 (c (q . {filler}) (c 5 ())))) (q . {val})) (c 11 ())))) (c (q (a (i 11 (q 4 (c (q . {opcode}) (c 5 ())) (a 4 (c 2 (c (substr 5 (q . 1)) (c (- 11 (q . 1)) ()))))) ()) 1) 2 (i 11 (q 2 6 (c 2 (c (concat 5 5) (c (- 11 (q . 1)) ())))) (q . 5)) 1) (q 28 {num})))"  # noqa
 

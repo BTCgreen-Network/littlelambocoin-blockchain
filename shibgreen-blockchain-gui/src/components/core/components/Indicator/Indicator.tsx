@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Flex } from '@shibgreen/core';
+import { Flex } from '@littlelambocoin/core';
 import { LinearProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 

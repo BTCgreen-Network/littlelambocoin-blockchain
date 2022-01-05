@@ -16,18 +16,18 @@ from typing import Any, Dict, List, Optional, TextIO, Tuple, cast
 
 from websockets import ConnectionClosedOK, WebSocketException, WebSocketServerProtocol, serve
 
-from shibgreen.cmds.init_funcs import check_keys, shibgreen_init
-from shibgreen.cmds.passphrase_funcs import default_passphrase, using_default_passphrase
-from shibgreen.daemon.keychain_server import KeychainServer, keychain_commands
-from shibgreen.daemon.windows_signal import kill
-from shibgreen.plotters.plotters import get_available_plotters
-from shibgreen.plotting.util import add_plot_directory
-from shibgreen.server.server import ssl_context_for_root, ssl_context_for_server
-from shibgreen.ssl.create_ssl import get_mozilla_ca_crt
-from shibgreen.util.shibgreen_logging import initialize_logging
-from shibgreen.util.config import load_config
-from shibgreen.util.json_util import dict_to_json_str
-from shibgreen.util.keychain import (
+from littlelambocoin.cmds.init_funcs import check_keys, littlelambocoin_init
+from littlelambocoin.cmds.passphrase_funcs import default_passphrase, using_default_passphrase
+from littlelambocoin.daemon.keychain_server import KeychainServer, keychain_commands
+from littlelambocoin.daemon.windows_signal import kill
+from littlelambocoin.plotters.plotters import get_available_plotters
+from littlelambocoin.plotting.util import add_plot_directory
+from littlelambocoin.server.server import ssl_context_for_root, ssl_context_for_server
+from littlelambocoin.ssl.create_ssl import get_mozilla_ca_crt
+from littlelambocoin.util.littlelambocoin_logging import initialize_logging
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.json_util import dict_to_json_str
+from littlelambocoin.util.keychain import (
     Keychain,
     KeyringCurrentPassphraseIsInvalid,
     KeyringRequiresMigration,
@@ -35,17 +35,17 @@ from shibgreen.util.keychain import (
     supports_keyring_passphrase,
     supports_os_passphrase_storage,
 )
-from shibgreen.util.path import mkdir
-from shibgreen.util.service_groups import validate_service
-from shibgreen.util.setproctitle import setproctitle
-from shibgreen.util.ws_message import WsRpcMessage, create_payload, format_response
+from littlelambocoin.util.path import mkdir
+from littlelambocoin.util.service_groups import validate_service
+from littlelambocoin.util.setproctitle import setproctitle
+from littlelambocoin.util.ws_message import WsRpcMessage, create_payload, format_response
 
 io_pool_exc = ThreadPoolExecutor()
 
 try:
     from aiohttp import ClientSession, web
 except ModuleNotFoundError:
-    print("Error: Make sure to run . ./activate from the project folder before starting SHIBgreen.")
+    print("Error: Make sure to run . ./activate from the project folder before starting Littlelambocoin.")
     quit()
 
 try:
@@ -57,7 +57,7 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-service_plotter = "shibgreen_plotter"
+service_plotter = "littlelambocoin_plotter"
 
 
 async def fetch(url: str):
@@ -90,15 +90,15 @@ class PlotEvent(str, Enum):
 # determine if application is a script file or frozen exe
 if getattr(sys, "frozen", False):
     name_map = {
-        "shibgreen": "shibgreen",
-        "shibgreen_wallet": "start_wallet",
-        "shibgreen_full_node": "start_full_node",
-        "shibgreen_harvester": "start_harvester",
-        "shibgreen_farmer": "start_farmer",
-        "shibgreen_introducer": "start_introducer",
-        "shibgreen_timelord": "start_timelord",
-        "shibgreen_timelord_launcher": "timelord_launcher",
-        "shibgreen_full_node_simulator": "start_simulator",
+        "littlelambocoin": "littlelambocoin",
+        "littlelambocoin_wallet": "start_wallet",
+        "littlelambocoin_full_node": "start_full_node",
+        "littlelambocoin_harvester": "start_harvester",
+        "littlelambocoin_farmer": "start_farmer",
+        "littlelambocoin_introducer": "start_introducer",
+        "littlelambocoin_timelord": "start_timelord",
+        "littlelambocoin_timelord_launcher": "timelord_launcher",
+        "littlelambocoin_full_node_simulator": "start_simulator",
     }
 
     def executable_for_service(service_name: str) -> str:
@@ -800,7 +800,7 @@ class WebSocketServer:
 
     def _build_plotting_command_args(self, request: Any, ignoreCount: bool, index: int) -> List[str]:
         plotter: str = request.get("plotter", "chiapos")
-        command_args: List[str] = ["shibgreen", "plotters", plotter]
+        command_args: List[str] = ["littlelambocoin", "plotters", plotter]
 
         command_args.extend(self._common_plotting_command_args(request, ignoreCount))
 
@@ -1102,7 +1102,7 @@ class WebSocketServer:
 
         # TODO: fix this hack
         asyncio.get_event_loop().call_later(5, lambda *args: sys.exit(0))
-        log.info("shibgreen daemon exiting in 5 seconds")
+        log.info("littlelambocoin daemon exiting in 5 seconds")
 
         response = {"success": True}
         return response
@@ -1223,7 +1223,7 @@ def launch_service(root_path: Path, service_command) -> Tuple[subprocess.Popen, 
     service_executable = executable_for_service(service_array[0])
     service_array[0] = service_executable
 
-    if service_command == "shibgreen_full_node_simulator":
+    if service_command == "littlelambocoin_full_node_simulator":
         # Set the -D/--connect_to_daemon flag to signify that the child should connect
         # to the daemon to access the keychain
         service_array.append("-D")
@@ -1391,11 +1391,11 @@ def singleton(lockfile: Path, text: str = "semaphore") -> Optional[TextIO]:
 
 
 async def async_run_daemon(root_path: Path, wait_for_unlock: bool = False) -> int:
-    # When wait_for_unlock is true, we want to skip the check_keys() call in shibgreen_init
+    # When wait_for_unlock is true, we want to skip the check_keys() call in littlelambocoin_init
     # since it might be necessary to wait for the GUI to unlock the keyring first.
-    shibgreen_init(root_path, should_check_keys=(not wait_for_unlock))
+    littlelambocoin_init(root_path, should_check_keys=(not wait_for_unlock))
     config = load_config(root_path, "config.yaml")
-    setproctitle("shibgreen_daemon")
+    setproctitle("littlelambocoin_daemon")
     initialize_logging("daemon", config["logging"], root_path)
     lockfile = singleton(daemon_launch_lock_path(root_path))
     crt_path = root_path / config["daemon_ssl"]["private_crt"]
@@ -1437,8 +1437,8 @@ def run_daemon(root_path: Path, wait_for_unlock: bool = False) -> int:
 
 
 def main(argv) -> int:
-    from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-    from shibgreen.util.keychain import Keychain
+    from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+    from littlelambocoin.util.keychain import Keychain
 
     wait_for_unlock = "--wait-for-unlock" in argv and Keychain.is_keyring_locked()
     return run_daemon(DEFAULT_ROOT_PATH, wait_for_unlock)

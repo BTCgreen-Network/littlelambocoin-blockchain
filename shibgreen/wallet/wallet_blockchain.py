@@ -6,27 +6,27 @@ from concurrent.futures.process import ProcessPoolExecutor
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
-from shibgreen.consensus.block_header_validation import validate_finished_header_block, validate_unfinished_header_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from shibgreen.consensus.find_fork_point import find_fork_point_in_chain
-from shibgreen.consensus.full_block_to_block_record import block_to_block_record
-from shibgreen.consensus.multiprocess_validation import PreValidationResult, pre_validate_blocks_multiprocessing
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.unfinished_header_block import UnfinishedHeaderBlock
-from shibgreen.util.errors import Err, ValidationError
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.util.streamable import recurse_jsonify
-from shibgreen.wallet.block_record import HeaderBlockRecord
-from shibgreen.wallet.wallet_block_store import WalletBlockStore
-from shibgreen.wallet.wallet_coin_store import WalletCoinStore
-from shibgreen.wallet.wallet_pool_store import WalletPoolStore
-from shibgreen.wallet.wallet_transaction_store import WalletTransactionStore
+from littlelambocoin.consensus.block_header_validation import validate_finished_header_block, validate_unfinished_header_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
+from littlelambocoin.consensus.full_block_to_block_record import block_to_block_record
+from littlelambocoin.consensus.multiprocess_validation import PreValidationResult, pre_validate_blocks_multiprocessing
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.unfinished_header_block import UnfinishedHeaderBlock
+from littlelambocoin.util.errors import Err, ValidationError
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.util.streamable import recurse_jsonify
+from littlelambocoin.wallet.block_record import HeaderBlockRecord
+from littlelambocoin.wallet.wallet_block_store import WalletBlockStore
+from littlelambocoin.wallet.wallet_coin_store import WalletCoinStore
+from littlelambocoin.wallet.wallet_pool_store import WalletPoolStore
+from littlelambocoin.wallet.wallet_transaction_store import WalletTransactionStore
 
 log = logging.getLogger(__name__)
 

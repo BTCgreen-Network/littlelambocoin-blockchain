@@ -1,8 +1,8 @@
 import logging
 
 from blspy import PrivateKey
-from shibgreen.cmds.init_funcs import check_keys
-from shibgreen.util.keychain import Keychain
+from littlelambocoin.cmds.init_funcs import check_keys
+from littlelambocoin.util.keychain import Keychain
 from pathlib import Path
 from typing import Any, Dict, List, Optional, cast
 

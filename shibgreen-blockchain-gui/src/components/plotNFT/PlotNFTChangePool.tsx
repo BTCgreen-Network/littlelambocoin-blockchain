@@ -2,7 +2,7 @@ import React, { useMemo, ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Flex, State, Loading, StateTypography } from '@shibgreen/core';
+import { Flex, State, Loading, StateTypography } from '@littlelambocoin/core';
 import { ChevronRight as ChevronRightIcon } from '@material-ui/icons';
 import { useParams } from 'react-router';
 import usePlotNFTs from '../../hooks/usePlotNFTs';

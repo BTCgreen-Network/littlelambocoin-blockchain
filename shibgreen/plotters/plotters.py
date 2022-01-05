@@ -2,10 +2,10 @@ import argparse
 import binascii
 import os
 from enum import Enum
-from shibgreen.plotters.bladebit import get_bladebit_install_info, plot_bladebit
-from shibgreen.plotters.chiapos import get_chiapos_install_info, plot_shibgreen
-from shibgreen.plotters.madmax import get_madmax_install_info, plot_madmax
-from shibgreen.plotters.install_plotter import install_plotter
+from littlelambocoin.plotters.bladebit import get_bladebit_install_info, plot_bladebit
+from littlelambocoin.plotters.chiapos import get_chiapos_install_info, plot_littlelambocoin
+from littlelambocoin.plotters.madmax import get_madmax_install_info, plot_madmax
+from littlelambocoin.plotters.install_plotter import install_plotter
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -39,7 +39,7 @@ class Options(Enum):
     CONNECT_TO_DAEMON = 26
 
 
-shibgreen_plotter = [
+littlelambocoin_plotter = [
     Options.TMP_DIR,
     Options.TMP_DIR2,
     Options.FINAL_DIR,
@@ -316,7 +316,7 @@ def build_parser(subparsers, root_path, option_list, name, plotter_desc):
 
 def call_plotters(root_path: Path, args):
     # Add `plotters` section in SHIBGREEN_ROOT.
-    shibgreen_root_path = root_path
+    littlelambocoin_root_path = root_path
     root_path = get_plotters_root_path(root_path)
     if not root_path.is_dir():
         if os.path.exists(root_path):
@@ -333,7 +333,7 @@ def call_plotters(root_path: Path, args):
             print(f"Cannot create plotters root path {root_path} {type(e)} {e}.")
     plotters = argparse.ArgumentParser(description="Available options.")
     subparsers = plotters.add_subparsers(help="Available options", dest="plotter")
-    build_parser(subparsers, root_path, shibgreen_plotter, "chiapos", "SHIBgreenpos Plotter")
+    build_parser(subparsers, root_path, littlelambocoin_plotter, "chiapos", "Littlelambocoinpos Plotter")
     build_parser(subparsers, root_path, madmax_plotter, "madmax", "Madmax Plotter")
     build_parser(subparsers, root_path, bladebit_plotter, "bladebit", "Bladebit Plotter")
     install_parser = subparsers.add_parser("install", description="Install custom plotters.")
@@ -343,11 +343,11 @@ def call_plotters(root_path: Path, args):
     args = plotters.parse_args(args)
 
     if args.plotter == "chiapos":
-        plot_shibgreen(args, shibgreen_root_path)
+        plot_littlelambocoin(args, littlelambocoin_root_path)
     if args.plotter == "madmax":
-        plot_madmax(args, shibgreen_root_path, root_path)
+        plot_madmax(args, littlelambocoin_root_path, root_path)
     if args.plotter == "bladebit":
-        plot_bladebit(args, shibgreen_root_path, root_path)
+        plot_bladebit(args, littlelambocoin_root_path, root_path)
     if args.plotter == "install":
         install_plotter(args.install_plotter, root_path)
 

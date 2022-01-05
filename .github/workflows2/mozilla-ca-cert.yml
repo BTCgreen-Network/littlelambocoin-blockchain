@@ -11,8 +11,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: "${{ github.event.inputs.shibgreen_ref }}"
-          repository: btcgreen-network/shibgreen-blockchain
+          ref: "${{ github.event.inputs.littlelambocoin_ref }}"
+          repository: btcgreen-network/littlelambocoin-blockchain
           submodules: recursive
           token: "${{ secrets.GITHUB_TOKEN }}"
       - name: "Add changes to new branch"

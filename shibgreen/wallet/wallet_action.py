@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.util.ints import uint32
-from shibgreen.wallet.util.wallet_types import WalletType
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.wallet.util.wallet_types import WalletType
 
 
 @dataclass(frozen=True)

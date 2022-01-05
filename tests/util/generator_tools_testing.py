@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.util.generator_tools import additions_for_npc
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.util.generator_tools import additions_for_npc
 
 
 def run_and_get_removals_and_additions(

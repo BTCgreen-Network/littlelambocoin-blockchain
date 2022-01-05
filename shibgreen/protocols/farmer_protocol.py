@@ -3,11 +3,11 @@ from typing import Optional
 
 from blspy import G2Element
 
-from shibgreen.types.blockchain_format.pool_target import PoolTarget
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint8, uint32, uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint8, uint32, uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 """
 Protocol between farmer and full node.

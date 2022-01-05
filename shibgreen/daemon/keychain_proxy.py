@@ -2,24 +2,24 @@ import logging
 import ssl
 
 from blspy import AugSchemeMPL, PrivateKey
-from shibgreen.cmds.init_funcs import check_keys
-from shibgreen.daemon.client import DaemonProxy
-from shibgreen.daemon.keychain_server import (
+from littlelambocoin.cmds.init_funcs import check_keys
+from littlelambocoin.daemon.client import DaemonProxy
+from littlelambocoin.daemon.keychain_server import (
     KEYCHAIN_ERR_KEYERROR,
     KEYCHAIN_ERR_LOCKED,
     KEYCHAIN_ERR_MALFORMED_REQUEST,
     KEYCHAIN_ERR_NO_KEYS,
 )
-from shibgreen.server.server import ssl_context_for_client
-from shibgreen.util.config import load_config
-from shibgreen.util.keychain import (
+from littlelambocoin.server.server import ssl_context_for_client
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.keychain import (
     Keychain,
     KeyringIsLocked,
     bytes_to_mnemonic,
     mnemonic_to_seed,
     supports_keyring_passphrase,
 )
-from shibgreen.util.ws_message import WsRpcMessage
+from littlelambocoin.util.ws_message import WsRpcMessage
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 

@@ -10,65 +10,65 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 import aiosqlite
 from blspy import AugSchemeMPL
 
-import shibgreen.server.ws_connection as ws  # lgtm [py/import-and-import-from]
-from shibgreen.consensus.block_creation import unfinished_block_to_full_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain import Blockchain, ReceiveBlockResult
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from shibgreen.consensus.make_sub_epoch_summary import next_sub_epoch_summary
-from shibgreen.consensus.multiprocess_validation import PreValidationResult
-from shibgreen.consensus.pot_iterations import calculate_sp_iters
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.lock_queue import LockQueue, LockClient
-from shibgreen.full_node.bundle_tools import detect_potential_template_generator
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.full_node_store import FullNodeStore, FullNodeStorePeakResult
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.full_node.mempool_manager import MempoolManager
-from shibgreen.full_node.signage_point import SignagePoint
-from shibgreen.full_node.sync_store import SyncStore
-from shibgreen.full_node.weight_proof import WeightProofHandler
-from shibgreen.protocols import farmer_protocol, full_node_protocol, timelord_protocol, wallet_protocol
-from shibgreen.protocols.full_node_protocol import (
+import littlelambocoin.server.ws_connection as ws  # lgtm [py/import-and-import-from]
+from littlelambocoin.consensus.block_creation import unfinished_block_to_full_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain import Blockchain, ReceiveBlockResult
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from littlelambocoin.consensus.make_sub_epoch_summary import next_sub_epoch_summary
+from littlelambocoin.consensus.multiprocess_validation import PreValidationResult
+from littlelambocoin.consensus.pot_iterations import calculate_sp_iters
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.lock_queue import LockQueue, LockClient
+from littlelambocoin.full_node.bundle_tools import detect_potential_template_generator
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.full_node_store import FullNodeStore, FullNodeStorePeakResult
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.full_node.mempool_manager import MempoolManager
+from littlelambocoin.full_node.signage_point import SignagePoint
+from littlelambocoin.full_node.sync_store import SyncStore
+from littlelambocoin.full_node.weight_proof import WeightProofHandler
+from littlelambocoin.protocols import farmer_protocol, full_node_protocol, timelord_protocol, wallet_protocol
+from littlelambocoin.protocols.full_node_protocol import (
     RequestBlocks,
     RespondBlock,
     RespondBlocks,
     RespondSignagePoint,
 )
-from shibgreen.protocols.protocol_message_types import ProtocolMessageTypes
-from shibgreen.protocols.wallet_protocol import CoinState, CoinStateUpdate
-from shibgreen.server.node_discovery import FullNodePeers
-from shibgreen.server.outbound_message import Message, NodeType, make_msg
-from shibgreen.server.server import SHIBgreenServer
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.pool_target import PoolTarget
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import CompressibleVDFField, VDFInfo, VDFProof
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.types.transaction_queue_entry import TransactionQueueEntry
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util import cached_bls
-from shibgreen.util.bech32m import encode_puzzle_hash
-from shibgreen.util.check_fork_next_block import check_fork_next_block
-from shibgreen.util.condition_tools import pkm_pairs
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.errors import ConsensusError, Err, ValidationError
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.path import mkdir, path_from_root
-from shibgreen.util.safe_cancel_task import cancel_task_safe
-from shibgreen.util.profiler import profile_task
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.protocols.wallet_protocol import CoinState, CoinStateUpdate
+from littlelambocoin.server.node_discovery import FullNodePeers
+from littlelambocoin.server.outbound_message import Message, NodeType, make_msg
+from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import CompressibleVDFField, VDFInfo, VDFProof
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.types.transaction_queue_entry import TransactionQueueEntry
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util import cached_bls
+from littlelambocoin.util.bech32m import encode_puzzle_hash
+from littlelambocoin.util.check_fork_next_block import check_fork_next_block
+from littlelambocoin.util.condition_tools import pkm_pairs
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.errors import ConsensusError, Err, ValidationError
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.path import mkdir, path_from_root
+from littlelambocoin.util.safe_cancel_task import cancel_task_safe
+from littlelambocoin.util.profiler import profile_task
 from datetime import datetime
-from shibgreen.util.db_synchronous import db_synchronous_on
+from littlelambocoin.util.db_synchronous import db_synchronous_on
 
 
 class FullNode:
@@ -271,7 +271,7 @@ class FullNode:
         if peak is not None:
             await self.weight_proof_handler.create_sub_epoch_segments()
 
-    def set_server(self, server: SHIBgreenServer):
+    def set_server(self, server: LittlelambocoinServer):
         self.server = server
         dns_servers = []
         try:
@@ -284,7 +284,7 @@ class FullNode:
             dns_servers = self.config["dns_servers"]
         elif self.config["port"] == 7442:
             # If `dns_servers` misses from the `config`, hardcode it if we're running mainnet.
-            dns_servers.append("dns-introducer.shibgreen.com")
+            dns_servers.append("dns-introducer.littlelambocoin.com")
         try:
             self.full_node_peers = FullNodePeers(
                 self.server,
@@ -309,7 +309,7 @@ class FullNode:
         if self.state_changed_callback is not None:
             self.state_changed_callback(change)
 
-    async def short_sync_batch(self, peer: ws.WSSHIBgreenConnection, start_height: uint32, target_height: uint32) -> bool:
+    async def short_sync_batch(self, peer: ws.WSLittlelambocoinConnection, start_height: uint32, target_height: uint32) -> bool:
         """
         Tries to sync to a chain which is not too far in the future, by downloading batches of blocks. If the first
         block that we download is not connected to our chain, we return False and do an expensive long sync instead.
@@ -394,7 +394,7 @@ class FullNode:
         return True
 
     async def short_sync_backtrack(
-        self, peer: ws.WSSHIBgreenConnection, peak_height: uint32, target_height: uint32, target_unf_hash: bytes32
+        self, peer: ws.WSLittlelambocoinConnection, peak_height: uint32, target_height: uint32, target_unf_hash: bytes32
     ):
         """
         Performs a backtrack sync, where blocks are downloaded one at a time from newest to oldest. If we do not
@@ -450,7 +450,7 @@ class FullNode:
             await asyncio.sleep(sleep_before)
         self._state_changed("peer_changed_peak")
 
-    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSSHIBgreenConnection):
+    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSLittlelambocoinConnection):
         """
         We have received a notification of a new peak from a peer. This happens either when we have just connected,
         or when the peer has updated their peak.
@@ -527,7 +527,7 @@ class FullNode:
             self._sync_task = asyncio.create_task(self._sync())
 
     async def send_peak_to_timelords(
-        self, peak_block: Optional[FullBlock] = None, peer: Optional[ws.WSSHIBgreenConnection] = None
+        self, peak_block: Optional[FullBlock] = None, peer: Optional[ws.WSLittlelambocoinConnection] = None
     ):
         """
         Sends current peak to timelords
@@ -600,7 +600,7 @@ class FullNode:
         else:
             return True
 
-    async def on_connect(self, connection: ws.WSSHIBgreenConnection):
+    async def on_connect(self, connection: ws.WSLittlelambocoinConnection):
         """
         Whenever we connect to another node / wallet, send them our current heads. Also send heads to farmers
         and challenges to timelords.
@@ -651,7 +651,7 @@ class FullNode:
             elif connection.connection_type is NodeType.TIMELORD:
                 await self.send_peak_to_timelords()
 
-    def on_disconnect(self, connection: ws.WSSHIBgreenConnection):
+    def on_disconnect(self, connection: ws.WSLittlelambocoinConnection):
         self.log.info(f"peer disconnected {connection.get_peer_logging()}")
         self._state_changed("close_connection")
         self._state_changed("sync_mode")
@@ -659,7 +659,7 @@ class FullNode:
             self.sync_store.peer_disconnected(connection.peer_node_id)
         self.remove_subscriptions(connection)
 
-    def remove_subscriptions(self, peer: ws.WSSHIBgreenConnection):
+    def remove_subscriptions(self, peer: ws.WSLittlelambocoinConnection):
         # Remove all ph | coin id subscription for this peer
         node_id = peer.peer_node_id
         if node_id in self.peer_puzzle_hash:
@@ -861,7 +861,7 @@ class FullNode:
         )
         batch_size = self.constants.MAX_BLOCK_COUNT_PER_REQUESTS
 
-        async def fetch_block_batches(batch_queue, peers_with_peak: List[ws.WSSHIBgreenConnection]):
+        async def fetch_block_batches(batch_queue, peers_with_peak: List[ws.WSLittlelambocoinConnection]):
             try:
                 for start_height in range(fork_point_height, target_peak_sb_height, batch_size):
                     end_height = min(target_peak_sb_height, start_height + batch_size)
@@ -918,7 +918,7 @@ class FullNode:
                 self.blockchain.clean_block_record(end_height - self.constants.BLOCKS_CACHE_SIZE)
 
         loop = asyncio.get_event_loop()
-        batch_queue: asyncio.Queue[Tuple[ws.WSSHIBgreenConnection, List[FullBlock]]] = asyncio.Queue(
+        batch_queue: asyncio.Queue[Tuple[ws.WSLittlelambocoinConnection, List[FullBlock]]] = asyncio.Queue(
             loop=loop, maxsize=buffer_size
         )
         fetch_task = asyncio.Task(fetch_block_batches(batch_queue, peers_with_peak))
@@ -987,7 +987,7 @@ class FullNode:
         for peer, changes in changes_for_peer.items():
             if peer not in self.server.all_connections:
                 continue
-            ws_peer: ws.WSSHIBgreenConnection = self.server.all_connections[peer]
+            ws_peer: ws.WSLittlelambocoinConnection = self.server.all_connections[peer]
             state = CoinStateUpdate(height, fork_height, peak_hash, list(changes))
             msg = make_msg(ProtocolMessageTypes.coin_state_update, state)
             await ws_peer.send_message(msg)
@@ -995,7 +995,7 @@ class FullNode:
     async def receive_block_batch(
         self,
         all_blocks: List[FullBlock],
-        peer: ws.WSSHIBgreenConnection,
+        peer: ws.WSLittlelambocoinConnection,
         fork_point: Optional[uint32],
         wp_summaries: Optional[List[SubEpochSummary]] = None,
     ) -> Tuple[bool, bool, Optional[uint32], Tuple[List[CoinRecord], Dict[bytes, Dict[bytes, CoinRecord]]]]:
@@ -1114,7 +1114,7 @@ class FullNode:
     async def signage_point_post_processing(
         self,
         request: full_node_protocol.RespondSignagePoint,
-        peer: ws.WSSHIBgreenConnection,
+        peer: ws.WSLittlelambocoinConnection,
         ip_sub_slot: Optional[EndOfSubSlotBundle],
     ):
         self.log.info(
@@ -1172,7 +1172,7 @@ class FullNode:
         block: FullBlock,
         record: BlockRecord,
         fork_height: uint32,
-        peer: Optional[ws.WSSHIBgreenConnection],
+        peer: Optional[ws.WSLittlelambocoinConnection],
         coin_changes: List[CoinRecord],
     ):
         """
@@ -1264,7 +1264,7 @@ class FullNode:
         block: FullBlock,
         record: BlockRecord,
         fork_height: uint32,
-        peer: Optional[ws.WSSHIBgreenConnection],
+        peer: Optional[ws.WSLittlelambocoinConnection],
         coin_changes: Tuple[List[CoinRecord], Dict[bytes, Dict[bytes32, CoinRecord]]],
         mempool_peak_result: List[Tuple[SpendBundle, NPCResult, bytes32]],
         fns_peak_result: FullNodeStorePeakResult,
@@ -1342,7 +1342,7 @@ class FullNode:
     async def respond_block(
         self,
         respond_block: full_node_protocol.RespondBlock,
-        peer: Optional[ws.WSSHIBgreenConnection] = None,
+        peer: Optional[ws.WSLittlelambocoinConnection] = None,
     ) -> Optional[Message]:
         """
         Receive a full block from a peer full node (or ourselves).
@@ -1530,7 +1530,7 @@ class FullNode:
     async def respond_unfinished_block(
         self,
         respond_unfinished_block: full_node_protocol.RespondUnfinishedBlock,
-        peer: Optional[ws.WSSHIBgreenConnection],
+        peer: Optional[ws.WSLittlelambocoinConnection],
         farmed_block: bool = False,
         block_bytes: Optional[bytes] = None,
     ):
@@ -1669,7 +1669,7 @@ class FullNode:
                 f"Added unfinished_block {block_hash}, not farmed by us,"
                 f" SP: {block.reward_chain_block.signage_point_index} farmer response time: "
                 f"{receive_time - self.signage_point_times[block.reward_chain_block.signage_point_index]:0.4f}, "
-                f"Pool pk {encode_puzzle_hash(block.foliage.foliage_block_data.pool_target.puzzle_hash, 'xshib')}, "
+                f"Pool pk {encode_puzzle_hash(block.foliage.foliage_block_data.pool_target.puzzle_hash, 'llc')}, "
                 f"validation time: {validation_time:0.4f} seconds, {pre_validation_log}"
                 f"cost: {block.transactions_info.cost if block.transactions_info else 'None'}"
                 f"{percent_full_str}"
@@ -1717,7 +1717,7 @@ class FullNode:
         self._state_changed("unfinished_block")
 
     async def new_infusion_point_vdf(
-        self, request: timelord_protocol.NewInfusionPointVDF, timelord_peer: Optional[ws.WSSHIBgreenConnection] = None
+        self, request: timelord_protocol.NewInfusionPointVDF, timelord_peer: Optional[ws.WSLittlelambocoinConnection] = None
     ) -> Optional[Message]:
         # Lookup unfinished blocks
         unfinished_block: Optional[UnfinishedBlock] = self.full_node_store.get_unfinished_block(
@@ -1820,7 +1820,7 @@ class FullNode:
         return None
 
     async def respond_end_of_sub_slot(
-        self, request: full_node_protocol.RespondEndOfSubSlot, peer: ws.WSSHIBgreenConnection
+        self, request: full_node_protocol.RespondEndOfSubSlot, peer: ws.WSLittlelambocoinConnection
     ) -> Tuple[Optional[Message], bool]:
 
         fetched_ss = self.full_node_store.get_sub_slot(request.end_of_slot_bundle.challenge_chain.get_hash())
@@ -1911,7 +1911,7 @@ class FullNode:
         self,
         transaction: SpendBundle,
         spend_name: bytes32,
-        peer: Optional[ws.WSSHIBgreenConnection] = None,
+        peer: Optional[ws.WSLittlelambocoinConnection] = None,
         test: bool = False,
         tx_bytes: Optional[bytes] = None,
     ) -> Tuple[MempoolInclusionStatus, Optional[Err]]:
@@ -2127,7 +2127,7 @@ class FullNode:
         if self.server is not None:
             await self.server.send_to_all([msg], NodeType.FULL_NODE)
 
-    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSSHIBgreenConnection):
+    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSLittlelambocoinConnection):
         is_fully_compactified = await self.block_store.is_fully_compactified(request.header_hash)
         if is_fully_compactified is None or is_fully_compactified:
             return False
@@ -2145,7 +2145,7 @@ class FullNode:
             if response is not None and isinstance(response, full_node_protocol.RespondCompactVDF):
                 await self.respond_compact_vdf(response, peer)
 
-    async def request_compact_vdf(self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSSHIBgreenConnection):
+    async def request_compact_vdf(self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSLittlelambocoinConnection):
         header_block = await self.blockchain.get_header_block_by_height(
             request.height, request.header_hash, tx_filter=False
         )
@@ -2189,7 +2189,7 @@ class FullNode:
         msg = make_msg(ProtocolMessageTypes.respond_compact_vdf, compact_vdf)
         await peer.send_message(msg)
 
-    async def respond_compact_vdf(self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSSHIBgreenConnection):
+    async def respond_compact_vdf(self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSLittlelambocoinConnection):
         field_vdf = CompressibleVDFField(int(request.field_vdf))
         if not await self._can_accept_compact_proof(
             request.vdf_info, request.vdf_proof, request.height, request.header_hash, field_vdf
@@ -2315,7 +2315,7 @@ class FullNode:
 
 
 async def node_next_block_check(
-    peer: ws.WSSHIBgreenConnection, potential_peek: uint32, blockchain: BlockchainInterface
+    peer: ws.WSLittlelambocoinConnection, potential_peek: uint32, blockchain: BlockchainInterface
 ) -> bool:
 
     block_response: Optional[Any] = await peer.request_block(full_node_protocol.RequestBlock(potential_peek, True))

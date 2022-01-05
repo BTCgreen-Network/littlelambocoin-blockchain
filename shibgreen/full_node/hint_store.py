@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import aiosqlite
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.db_wrapper import DBWrapper
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.db_wrapper import DBWrapper
 import logging
 
 log = logging.getLogger(__name__)

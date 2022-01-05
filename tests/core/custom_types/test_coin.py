@@ -1,7 +1,7 @@
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint64
-from shibgreen.util.hash import std_hash
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.hash import std_hash
 import io
 
 

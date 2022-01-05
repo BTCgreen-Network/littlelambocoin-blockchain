@@ -6,11 +6,11 @@ from bitstring import BitArray
 from blspy import G1Element, AugSchemeMPL, PrivateKey
 from chiapos import Verifier
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8
+from littlelambocoin.util.streamable import Streamable, streamable
 
 log = logging.getLogger(__name__)
 

@@ -3,12 +3,12 @@ import logging
 import pytest
 from clvm.casts import int_to_bytes
 
-from shibgreen.consensus.blockchain import Blockchain
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.spend_bundle import SpendBundle
+from littlelambocoin.consensus.blockchain import Blockchain
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.spend_bundle import SpendBundle
 from tests.util.db_connection import DBConnection
 from tests.wallet_tools import WalletTool
 from tests.setup_nodes import bt

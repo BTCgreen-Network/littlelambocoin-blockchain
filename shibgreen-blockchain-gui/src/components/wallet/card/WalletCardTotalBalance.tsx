@@ -5,7 +5,7 @@ import WalletGraph from '../WalletGraph';
 import FarmCard from '../../farm/card/FarmCard';
 import useWallet from '../../../hooks/useWallet';
 import useCurrencyCode from '../../../hooks/useCurrencyCode';
-import { mojo_to_shibgreen_string } from '../../../util/shibgreen';
+import { mojo_to_littlelambocoin_string } from '../../../util/littlelambocoin';
 
 const StyledGraphContainer = styled.div`
   margin-left: -1rem;
@@ -32,14 +32,14 @@ export default function WalletCardTotalBalance(props: Props) {
       title={<Trans>Total Balance</Trans>}
       tooltip={
         <Trans>
-          This is the total amount of shibgreen in the blockchain at the current peak
+          This is the total amount of littlelambocoin in the blockchain at the current peak
           sub block that is controlled by your private keys. It includes frozen
           farming rewards, but not pending incoming and outgoing transactions.
         </Trans>
       }
       value={
         <>
-          {mojo_to_shibgreen_string(value)} {currencyCode}
+          {mojo_to_littlelambocoin_string(value)} {currencyCode}
         </>
       }
       description={

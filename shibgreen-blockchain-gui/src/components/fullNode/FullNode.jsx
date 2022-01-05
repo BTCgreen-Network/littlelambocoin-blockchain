@@ -9,8 +9,8 @@ import {
   Loading,
   StateColor,
   Table,
-} from '@shibgreen/core';
-import { Status } from '@shibgreen/icons';
+} from '@littlelambocoin/core';
+import { Status } from '@littlelambocoin/icons';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, Tooltip, Typography } from '@material-ui/core';

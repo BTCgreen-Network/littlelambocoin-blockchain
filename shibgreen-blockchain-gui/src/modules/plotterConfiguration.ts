@@ -4,7 +4,7 @@ import Plotter, { PlotterMap } from '../types/Plotter';
 
 export const defaultPlotter = (): Plotter => {
   return {
-    displayName: "SHIBgreen Proof of Space",
+    displayName: "Littlelambocoin Proof of Space",
     options: optionsForPlotter(PlotterName.SHIBGREENPOS),
     defaults: defaultsForPlotter(PlotterName.SHIBGREENPOS),
     installInfo: { installed: true },

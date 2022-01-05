@@ -6,22 +6,22 @@ from typing import Dict, List, Optional, Tuple
 import aiosqlite
 import pytest
 
-from shibgreen.consensus.block_header_validation import validate_finished_header_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain import Blockchain
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from shibgreen.consensus.full_block_to_block_record import block_to_block_record
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.server.start_full_node import SERVICE_NAME
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.util.block_cache import BlockCache
+from littlelambocoin.consensus.block_header_validation import validate_finished_header_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain import Blockchain
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from littlelambocoin.consensus.full_block_to_block_record import block_to_block_record
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.server.start_full_node import SERVICE_NAME
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.util.block_cache import BlockCache
 from tests.block_tools import test_constants
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.generator_tools import get_block_header
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.generator_tools import get_block_header
 from tests.setup_nodes import bt
 
 try:
@@ -30,16 +30,16 @@ except ImportError:
     pass
 
 
-from shibgreen.consensus.pot_iterations import calculate_iterations_quality
-from shibgreen.full_node.weight_proof import (  # type: ignore
+from littlelambocoin.consensus.pot_iterations import calculate_iterations_quality
+from littlelambocoin.full_node.weight_proof import (  # type: ignore
     WeightProofHandler,
     _map_sub_epoch_summaries,
     _validate_sub_epoch_segments,
     _validate_summaries_weight,
 )
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.util.ints import uint32, uint64
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.util.ints import uint32, uint64
 
 
 @pytest.fixture(scope="session")

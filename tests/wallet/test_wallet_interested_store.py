@@ -4,11 +4,11 @@ from secrets import token_bytes
 import aiosqlite
 import pytest
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint64
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint64
 
-from shibgreen.wallet.wallet_interested_store import WalletInterestedStore
+from littlelambocoin.wallet.wallet_interested_store import WalletInterestedStore
 
 
 @pytest.fixture(scope="module")

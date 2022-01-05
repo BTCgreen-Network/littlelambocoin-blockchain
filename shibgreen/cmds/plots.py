@@ -10,14 +10,14 @@ log = logging.getLogger(__name__)
 
 
 def show_plots(root_path: Path):
-    from shibgreen.plotting.util import get_plot_directories
+    from littlelambocoin.plotting.util import get_plot_directories
 
     print("Directories where plots are being searched for:")
     print("Note that subdirectories must be added manually")
     print(
-        "Add with 'shibgreen plots add -d [dir]' and remove with"
-        + " 'shibgreen plots remove -d [dir]'"
-        + " Scan and check plots with 'shibgreen plots check'"
+        "Add with 'littlelambocoin plots add -d [dir]' and remove with"
+        + " 'littlelambocoin plots remove -d [dir]'"
+        + " Scan and check plots with 'littlelambocoin plots check'"
     )
     print()
     for str_path in get_plot_directories(root_path):
@@ -28,11 +28,11 @@ def show_plots(root_path: Path):
 @click.pass_context
 def plots_cmd(ctx: click.Context):
     """Create, add, remove and check your plots"""
-    from shibgreen.util.shibgreen_logging import initialize_logging
+    from littlelambocoin.util.littlelambocoin_logging import initialize_logging
 
     root_path: Path = ctx.obj["root_path"]
     if not root_path.is_dir():
-        raise RuntimeError("Please initialize (or migrate) your config directory with 'shibgreen init'")
+        raise RuntimeError("Please initialize (or migrate) your config directory with 'littlelambocoin init'")
     initialize_logging("", {"log_stdout": True}, root_path)
 
 
@@ -112,7 +112,7 @@ def create_cmd(
     exclude_final_dir: bool,
     connect_to_daemon: bool,
 ):
-    from shibgreen.plotting.create_plots import create_plots, resolve_plot_keys
+    from littlelambocoin.plotting.create_plots import create_plots, resolve_plot_keys
 
     class Params(object):
         def __init__(self):
@@ -169,7 +169,7 @@ def create_cmd(
 def check_cmd(
     ctx: click.Context, num: int, grep_string: str, list_duplicates: bool, debug_show_memo: bool, challenge_start: int
 ):
-    from shibgreen.plotting.check_plots import check_plots
+    from littlelambocoin.plotting.check_plots import check_plots
 
     check_plots(ctx.obj["root_path"], num, challenge_start, grep_string, list_duplicates, debug_show_memo)
 
@@ -185,7 +185,7 @@ def check_cmd(
 )
 @click.pass_context
 def add_cmd(ctx: click.Context, final_dir: str):
-    from shibgreen.plotting.util import add_plot_directory
+    from littlelambocoin.plotting.util import add_plot_directory
 
     add_plot_directory(ctx.obj["root_path"], final_dir)
 
@@ -201,7 +201,7 @@ def add_cmd(ctx: click.Context, final_dir: str):
 )
 @click.pass_context
 def remove_cmd(ctx: click.Context, final_dir: str):
-    from shibgreen.plotting.util import remove_plot_directory
+    from littlelambocoin.plotting.util import remove_plot_directory
 
     remove_plot_directory(ctx.obj["root_path"], final_dir)
 

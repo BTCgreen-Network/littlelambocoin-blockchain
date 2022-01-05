@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.util.ints import uint64, uint128
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.util.ints import uint64, uint128
 
 
 def get_signage_point_vdf_info(

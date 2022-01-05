@@ -4,12 +4,12 @@ import asyncio
 import pytest
 from colorlog import logging
 
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.protocols import full_node_protocol
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint32
-from shibgreen.wallet.wallet_state_manager import WalletStateManager
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.protocols import full_node_protocol
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint32
+from littlelambocoin.wallet.wallet_state_manager import WalletStateManager
 from tests.connection_utils import disconnect_all_and_reconnect
 from tests.setup_nodes import bt, self_hostname, setup_node_and_wallet, setup_simulators_and_wallets, test_constants
 from tests.time_out_assert import time_out_assert

@@ -1,12 +1,12 @@
 from typing import Dict, Optional, Tuple
 
-from shibgreen.types.blockchain_format.program import Program, INFINITE_COST
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.condition_tools import conditions_dict_for_solution
-from shibgreen.wallet.cc_wallet import cc_utils
-from shibgreen.wallet.trade_record import TradeRecord
-from shibgreen.wallet.trading.trade_status import TradeStatus
+from littlelambocoin.types.blockchain_format.program import Program, INFINITE_COST
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.condition_tools import conditions_dict_for_solution
+from littlelambocoin.wallet.cc_wallet import cc_utils
+from littlelambocoin.wallet.trade_record import TradeRecord
+from littlelambocoin.wallet.trading.trade_status import TradeStatus
 
 
 def trade_status_ui_string(status: TradeStatus):
@@ -83,10 +83,10 @@ def get_discrepancies_for_spend_bundle(
                 coin_amount = coinsol.coin.amount
                 out_amount = get_output_amount_for_puzzle_and_solution(puzzle, solution)
                 diff = coin_amount - out_amount
-                if "shibgreen" in cc_discrepancies:
-                    cc_discrepancies["shibgreen"] = cc_discrepancies["shibgreen"] + diff
+                if "littlelambocoin" in cc_discrepancies:
+                    cc_discrepancies["littlelambocoin"] = cc_discrepancies["littlelambocoin"] + diff
                 else:
-                    cc_discrepancies["shibgreen"] = diff
+                    cc_discrepancies["littlelambocoin"] = diff
 
         return True, cc_discrepancies, None
     except Exception as e:

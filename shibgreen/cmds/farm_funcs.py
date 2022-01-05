@@ -2,17 +2,17 @@ from typing import Any, Dict, List, Optional
 
 import aiohttp
 
-from shibgreen.cmds.units import units
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.rpc.farmer_rpc_client import FarmerRpcClient
-from shibgreen.rpc.full_node_rpc_client import FullNodeRpcClient
-from shibgreen.rpc.wallet_rpc_client import WalletRpcClient
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.ints import uint16
-from shibgreen.util.misc import format_bytes
-from shibgreen.util.misc import format_minutes
-from shibgreen.util.network import is_localhost
+from littlelambocoin.cmds.units import units
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.rpc.farmer_rpc_client import FarmerRpcClient
+from littlelambocoin.rpc.full_node_rpc_client import FullNodeRpcClient
+from littlelambocoin.rpc.wallet_rpc_client import WalletRpcClient
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.ints import uint16
+from littlelambocoin.util.misc import format_bytes
+from littlelambocoin.util.misc import format_minutes
+from littlelambocoin.util.network import is_localhost
 
 SECONDS_PER_BLOCK = (24 * 3600) / 4608
 
@@ -212,9 +212,9 @@ async def summary(
         print("Farming")
 
     if amounts is not None:
-        print(f"Total shibgreen farmed: {amounts['farmed_amount'] / units['shibgreen']}")
-        print(f"User transaction fees: {amounts['fee_amount'] / units['shibgreen']}")
-        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['shibgreen']}")
+        print(f"Total littlelambocoin farmed: {amounts['farmed_amount'] / units['littlelambocoin']}")
+        print(f"User transaction fees: {amounts['fee_amount'] / units['littlelambocoin']}")
+        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['littlelambocoin']}")
         print(f"Last height farmed: {amounts['last_height_farmed']}")
 
     class PlotStats:
@@ -273,8 +273,8 @@ async def summary(
 
     if amounts is None:
         if wallet_not_running:
-            print("For details on farmed rewards and fees you should run 'shibgreen start wallet' and 'shibgreen wallet show'")
+            print("For details on farmed rewards and fees you should run 'littlelambocoin start wallet' and 'littlelambocoin wallet show'")
         elif wallet_not_ready:
-            print("For details on farmed rewards and fees you should run 'shibgreen wallet show'")
+            print("For details on farmed rewards and fees you should run 'littlelambocoin wallet show'")
     else:
-        print("Note: log into your key using 'shibgreen wallet show' to see rewards for each key")
+        print("Note: log into your key using 'littlelambocoin wallet show' to see rewards for each key")

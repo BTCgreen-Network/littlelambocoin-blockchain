@@ -1,20 +1,20 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
-from shibgreen.pools.pool_wallet_info import PoolWalletInfo
-from shibgreen.rpc.rpc_client import RpcClient
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.bech32m import decode_puzzle_hash
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.wallet.transaction_record import TransactionRecord
+from littlelambocoin.pools.pool_wallet_info import PoolWalletInfo
+from littlelambocoin.rpc.rpc_client import RpcClient
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.bech32m import decode_puzzle_hash
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.wallet.transaction_record import TransactionRecord
 
 
 class WalletRpcClient(RpcClient):
     """
-    Client to SHIBgreen RPC, connects to a local wallet. Uses HTTP/JSON, and converts back from
+    Client to Littlelambocoin RPC, connects to a local wallet. Uses HTTP/JSON, and converts back from
     JSON into native python objects before returning. All api calls use POST requests.
-    Note that this is not the same as the peer protocol, or wallet protocol (which run SHIBgreen's
+    Note that this is not the same as the peer protocol, or wallet protocol (which run Littlelambocoin's
     protocol on top of TCP), it's a separate protocol on top of HTTP that provides easy access
     to the full node.
     """
@@ -24,7 +24,7 @@ class WalletRpcClient(RpcClient):
         try:
             return await self.fetch(
                 "log_in",
-                {"host": "https://backup.shibgreen.com", "fingerprint": fingerprint, "type": "start"},
+                {"host": "https://backup.littlelambocoin.com", "fingerprint": fingerprint, "type": "start"},
             )
 
         except ValueError as e:
@@ -35,7 +35,7 @@ class WalletRpcClient(RpcClient):
             return await self.fetch(
                 "log_in",
                 {
-                    "host": "https://backup.shibgreen.com",
+                    "host": "https://backup.littlelambocoin.com",
                     "fingerprint": fingerprint,
                     "type": "restore_backup",
                     "file_path": file_path,
@@ -48,7 +48,7 @@ class WalletRpcClient(RpcClient):
         try:
             return await self.fetch(
                 "log_in",
-                {"host": "https://backup.shibgreen.com", "fingerprint": fingerprint, "type": "skip"},
+                {"host": "https://backup.littlelambocoin.com", "fingerprint": fingerprint, "type": "skip"},
             )
         except ValueError as e:
             return e.args[0]

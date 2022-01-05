@@ -4,8 +4,8 @@ import click
 import pytest
 from click.testing import CliRunner, Result
 
-from shibgreen.cmds.plotnft import validate_fee
-from shibgreen.cmds.plotnft import create_cmd, show_cmd
+from littlelambocoin.cmds.plotnft import validate_fee
+from littlelambocoin.cmds.plotnft import create_cmd, show_cmd
 
 
 class TestPoolNFTCommands:

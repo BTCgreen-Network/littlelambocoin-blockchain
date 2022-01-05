@@ -4,22 +4,22 @@ from typing import List, Optional, Set, Tuple
 
 import pytest
 
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.consensus.blockchain import Blockchain, ReceiveBlockResult
-from shibgreen.consensus.coinbase import create_farmer_coin, create_pool_coin
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.util.generator_tools import tx_removals_and_additions
-from shibgreen.util.ints import uint64, uint32
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.consensus.blockchain import Blockchain, ReceiveBlockResult
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.util.generator_tools import tx_removals_and_additions
+from littlelambocoin.util.ints import uint64, uint32
 from tests.wallet_tools import WalletTool
 from tests.setup_nodes import bt, test_constants
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from tests.util.db_connection import DBConnection
 
 

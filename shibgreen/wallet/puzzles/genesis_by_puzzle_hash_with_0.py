@@ -1,9 +1,9 @@
 from typing import Optional
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 
 MOD = load_clvm("genesis-by-puzzle-hash-with-0.clvm", package_or_requirement=__name__)
 

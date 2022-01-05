@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Flex } from '@shibgreen/core';
+import { Loading, Flex } from '@littlelambocoin/core';
 import { Grid } from '@material-ui/core';
 import PlotHero from './PlotOverviewHero';
 import PlotOverviewPlots from './PlotOverviewPlots';

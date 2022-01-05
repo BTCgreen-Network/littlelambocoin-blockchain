@@ -11,8 +11,8 @@ import {
   Plot as PlotIcon,
   Pool as PoolIcon,
   Settings as SettingsIcon,
-} from '@shibgreen/icons';
-import { Flex, SideBarItem } from '@shibgreen/core';
+} from '@littlelambocoin/icons';
+import { Flex, SideBarItem } from '@littlelambocoin/core';
 import { logOut } from '../../modules/message';
 import { RootState } from '../../modules/rootReducer';
 

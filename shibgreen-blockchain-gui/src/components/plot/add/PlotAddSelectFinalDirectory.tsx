@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from '@lingui/macro';
 import { useFormContext } from 'react-hook-form';
 import { useLocalStorage, writeStorage } from '@rehooks/local-storage';
-import { ButtonSelected, CardStep, Flex, TextField } from '@shibgreen/core';
+import { ButtonSelected, CardStep, Flex, TextField } from '@littlelambocoin/core';
 import { Typography } from '@material-ui/core';
 import useSelectDirectory from '../../../hooks/useSelectDirectory';
 import Plotter from '../../../types/Plotter';

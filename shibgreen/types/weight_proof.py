@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.reward_chain_block import RewardChainBlock
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlock
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

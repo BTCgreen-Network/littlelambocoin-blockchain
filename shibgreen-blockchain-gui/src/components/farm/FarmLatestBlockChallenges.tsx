@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from '@lingui/macro';
 import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
-import { Link, Table, Card } from '@shibgreen/core';
+import { Link, Table, Card } from '@littlelambocoin/core';
 import type { RootState } from '../../modules/rootReducer';
 import type { Row } from '../core/components/Table/Table';
 
@@ -62,13 +62,13 @@ export default function FarmLatestBlockChallenges() {
       />
       <Typography variant="caption">
         <Trans>
-          *Want to explore SHIBgreen’s blocks further? Check out{' '}
+          *Want to explore Littlelambocoin’s blocks further? Check out{' '}
           <Link
             color="primary"
-            href="https://www.alltheblocks.net/shibgreen/"
+            href="https://www.alltheblocks.net/littlelambocoin/"
             target="_blank"
           >
-            SHIBgreen Explorer
+            Littlelambocoin Explorer
           </Link>{' '}
           built by an open source developer.
         </Trans>

@@ -6,8 +6,8 @@ import unicodedata
 
 from bitstring import BitArray  # pyright: reportMissingImports=false
 from blspy import AugSchemeMPL, G1Element, PrivateKey  # pyright: reportMissingImports=false
-from shibgreen.util.hash import std_hash
-from shibgreen.util.keyring_wrapper import KeyringWrapper
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.keyring_wrapper import KeyringWrapper
 from hashlib import pbkdf2_hmac
 from pathlib import Path
 from secrets import token_bytes
@@ -16,8 +16,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 CURRENT_KEY_VERSION = "1.8"
-DEFAULT_USER = f"user-shibgreen-{CURRENT_KEY_VERSION}"  # e.g. user-shibgreen-1.8
-DEFAULT_SERVICE = f"shibgreen-{DEFAULT_USER}"  # e.g. shibgreen-user-shibgreen-1.8
+DEFAULT_USER = f"user-littlelambocoin-{CURRENT_KEY_VERSION}"  # e.g. user-littlelambocoin-1.8
+DEFAULT_SERVICE = f"littlelambocoin-{DEFAULT_USER}"  # e.g. littlelambocoin-user-littlelambocoin-1.8
 DEFAULT_PASSPHRASE_PROMPT = (
     colorama.Fore.YELLOW + colorama.Style.BRIGHT + "(Unlock Keyring)" + colorama.Style.RESET_ALL + " Passphrase: "
 )  # noqa: E501
@@ -76,7 +76,7 @@ def obtain_current_passphrase(prompt: str = DEFAULT_PASSPHRASE_PROMPT, use_passp
     prompted interactively to enter their passphrase a max of MAX_RETRIES times
     before failing.
     """
-    from shibgreen.cmds.passphrase_funcs import prompt_for_passphrase
+    from littlelambocoin.cmds.passphrase_funcs import prompt_for_passphrase
 
     if use_passphrase_cache:
         passphrase, validated = KeyringWrapper.get_shared_instance().get_cached_master_passphrase()

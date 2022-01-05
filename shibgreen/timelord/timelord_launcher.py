@@ -8,12 +8,12 @@ from typing import Dict, List
 
 import pkg_resources
 
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.shibgreen_logging import initialize_logging
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.ints import uint16
-from shibgreen.util.setproctitle import setproctitle
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.littlelambocoin_logging import initialize_logging
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.ints import uint16
+from littlelambocoin.util.setproctitle import setproctitle
 
 active_processes: List = []
 stopped = False
@@ -94,7 +94,7 @@ async def spawn_all_processes(config: Dict, net_config: Dict):
 
 def main():
     root_path = DEFAULT_ROOT_PATH
-    setproctitle("shibgreen_timelord_launcher")
+    setproctitle("littlelambocoin_timelord_launcher")
     net_config = load_config(root_path, "config.yaml")
     config = net_config["timelord_launcher"]
     initialize_logging("TLauncher", config["logging"], root_path)

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

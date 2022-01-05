@@ -52,12 +52,12 @@ jobs:
 
     - name: Lint source with flake8
       run: |
-        flake8 shibgreen tests
+        flake8 littlelambocoin tests
 
     - name: Lint source with mypy
       run: |
         mypy --exclude config.py tests
-        mypy shibgreen
+        mypy littlelambocoin
 
     - name: Build source distribution
       run: |

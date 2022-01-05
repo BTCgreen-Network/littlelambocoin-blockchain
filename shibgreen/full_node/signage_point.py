@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

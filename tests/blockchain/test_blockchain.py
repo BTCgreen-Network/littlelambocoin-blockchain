@@ -11,36 +11,36 @@ import pytest
 from blspy import AugSchemeMPL, G2Element
 from clvm.casts import int_to_bytes
 
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward
-from shibgreen.consensus.blockchain import ReceiveBlockResult
-from shibgreen.consensus.coinbase import create_farmer_coin
-from shibgreen.consensus.pot_iterations import is_overflow_block
-from shibgreen.full_node.bundle_tools import detect_potential_template_generator
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.foliage import TransactionsInfo
-from shibgreen.types.blockchain_format.program import SerializedProgram
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.slots import InfusedChallengeChainSubSlot
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward
+from littlelambocoin.consensus.blockchain import ReceiveBlockResult
+from littlelambocoin.consensus.coinbase import create_farmer_coin
+from littlelambocoin.consensus.pot_iterations import is_overflow_block
+from littlelambocoin.full_node.bundle_tools import detect_potential_template_generator
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.foliage import TransactionsInfo
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.slots import InfusedChallengeChainSubSlot
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
 from tests.block_tools import create_block_tools_async, get_vdf_info_and_proof
-from shibgreen.util.errors import Err
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint64, uint32
-from shibgreen.util.merkle_set import MerkleSet
-from shibgreen.util.recursive_replace import recursive_replace
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint64, uint32
+from littlelambocoin.util.merkle_set import MerkleSet
+from littlelambocoin.util.recursive_replace import recursive_replace
 from tests.wallet_tools import WalletTool
 from tests.setup_nodes import bt, test_constants
 from tests.util.blockchain import create_blockchain
 from tests.util.keyring import TempKeyring
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
 )

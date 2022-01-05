@@ -3,48 +3,48 @@ from unittest import TestCase
 
 from clvm_tools.clvmc import compile_clvm
 
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
 
 wallet_program_files = set(
     [
-        "shibgreen/wallet/puzzles/calculate_synthetic_public_key.clvm",
-        "shibgreen/wallet/puzzles/cc.clvm",
-        "shibgreen/wallet/puzzles/shibgreenlisp_deserialisation.clvm",
-        "shibgreen/wallet/puzzles/rom_bootstrap_generator.clvm",
-        "shibgreen/wallet/puzzles/generator_for_single_coin.clvm",
-        "shibgreen/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
-        "shibgreen/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
-        "shibgreen/wallet/puzzles/lock.inner.puzzle.clvm",
-        "shibgreen/wallet/puzzles/p2_conditions.clvm",
-        "shibgreen/wallet/puzzles/p2_delegated_conditions.clvm",
-        "shibgreen/wallet/puzzles/p2_delegated_puzzle.clvm",
-        "shibgreen/wallet/puzzles/p2_delegated_puzzle_or_hidden_puzzle.clvm",
-        "shibgreen/wallet/puzzles/p2_m_of_n_delegate_direct.clvm",
-        "shibgreen/wallet/puzzles/p2_puzzle_hash.clvm",
-        "shibgreen/wallet/puzzles/rl_aggregation.clvm",
-        "shibgreen/wallet/puzzles/rl.clvm",
-        "shibgreen/wallet/puzzles/sha256tree_module.clvm",
-        "shibgreen/wallet/puzzles/singleton_top_layer.clvm",
-        "shibgreen/wallet/puzzles/did_innerpuz.clvm",
-        "shibgreen/wallet/puzzles/decompress_puzzle.clvm",
-        "shibgreen/wallet/puzzles/decompress_coin_spend_entry_with_prefix.clvm",
-        "shibgreen/wallet/puzzles/decompress_coin_spend_entry.clvm",
-        "shibgreen/wallet/puzzles/block_program_zero.clvm",
-        "shibgreen/wallet/puzzles/test_generator_deserialize.clvm",
-        "shibgreen/wallet/puzzles/test_multiple_generator_input_arguments.clvm",
-        "shibgreen/wallet/puzzles/p2_singleton.clvm",
-        "shibgreen/wallet/puzzles/pool_waitingroom_innerpuz.clvm",
-        "shibgreen/wallet/puzzles/pool_member_innerpuz.clvm",
-        "shibgreen/wallet/puzzles/singleton_launcher.clvm",
-        "shibgreen/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
+        "littlelambocoin/wallet/puzzles/calculate_synthetic_public_key.clvm",
+        "littlelambocoin/wallet/puzzles/cc.clvm",
+        "littlelambocoin/wallet/puzzles/littlelambocoinlisp_deserialisation.clvm",
+        "littlelambocoin/wallet/puzzles/rom_bootstrap_generator.clvm",
+        "littlelambocoin/wallet/puzzles/generator_for_single_coin.clvm",
+        "littlelambocoin/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
+        "littlelambocoin/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
+        "littlelambocoin/wallet/puzzles/lock.inner.puzzle.clvm",
+        "littlelambocoin/wallet/puzzles/p2_conditions.clvm",
+        "littlelambocoin/wallet/puzzles/p2_delegated_conditions.clvm",
+        "littlelambocoin/wallet/puzzles/p2_delegated_puzzle.clvm",
+        "littlelambocoin/wallet/puzzles/p2_delegated_puzzle_or_hidden_puzzle.clvm",
+        "littlelambocoin/wallet/puzzles/p2_m_of_n_delegate_direct.clvm",
+        "littlelambocoin/wallet/puzzles/p2_puzzle_hash.clvm",
+        "littlelambocoin/wallet/puzzles/rl_aggregation.clvm",
+        "littlelambocoin/wallet/puzzles/rl.clvm",
+        "littlelambocoin/wallet/puzzles/sha256tree_module.clvm",
+        "littlelambocoin/wallet/puzzles/singleton_top_layer.clvm",
+        "littlelambocoin/wallet/puzzles/did_innerpuz.clvm",
+        "littlelambocoin/wallet/puzzles/decompress_puzzle.clvm",
+        "littlelambocoin/wallet/puzzles/decompress_coin_spend_entry_with_prefix.clvm",
+        "littlelambocoin/wallet/puzzles/decompress_coin_spend_entry.clvm",
+        "littlelambocoin/wallet/puzzles/block_program_zero.clvm",
+        "littlelambocoin/wallet/puzzles/test_generator_deserialize.clvm",
+        "littlelambocoin/wallet/puzzles/test_multiple_generator_input_arguments.clvm",
+        "littlelambocoin/wallet/puzzles/p2_singleton.clvm",
+        "littlelambocoin/wallet/puzzles/pool_waitingroom_innerpuz.clvm",
+        "littlelambocoin/wallet/puzzles/pool_member_innerpuz.clvm",
+        "littlelambocoin/wallet/puzzles/singleton_launcher.clvm",
+        "littlelambocoin/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
     ]
 )
 
 clvm_include_files = set(
-    ["shibgreen/wallet/puzzles/create-lock-puzzlehash.clvm", "shibgreen/wallet/puzzles/condition_codes.clvm"]
+    ["littlelambocoin/wallet/puzzles/create-lock-puzzlehash.clvm", "littlelambocoin/wallet/puzzles/condition_codes.clvm"]
 )
 
-CLVM_PROGRAM_ROOT = "shibgreen/wallet/puzzles"
+CLVM_PROGRAM_ROOT = "littlelambocoin/wallet/puzzles"
 
 
 def list_files(dir, glob):
@@ -71,7 +71,7 @@ class TestClvmCompilation(TestCase):
 
     def test_all_programs_listed(self):
         """
-        Checks to see if a new .clvm file was added to shibgreen/wallet/puzzles, but not added to `wallet_program_files`
+        Checks to see if a new .clvm file was added to littlelambocoin/wallet/puzzles, but not added to `wallet_program_files`
         """
         existing_files = list_files(CLVM_PROGRAM_ROOT, "*.clvm")
         existing_file_paths = set([Path(x).relative_to(CLVM_PROGRAM_ROOT) for x in existing_files])

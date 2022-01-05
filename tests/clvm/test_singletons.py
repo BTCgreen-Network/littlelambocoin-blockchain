@@ -4,17 +4,17 @@ from typing import List, Tuple, Optional
 
 from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.errors import Err
-from shibgreen.util.condition_tools import ConditionOpcode
-from shibgreen.util.ints import uint64
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.wallet.lineage_proof import LineageProof
-from shibgreen.wallet.puzzles import (
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.condition_tools import ConditionOpcode
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.wallet.lineage_proof import LineageProof
+from littlelambocoin.wallet.puzzles import (
     p2_conditions,
     p2_delegated_puzzle_or_hidden_puzzle,
     singleton_top_layer,
@@ -25,14 +25,14 @@ from tests.clvm.test_puzzles import (
     secret_exponent_for_index,
 )
 
-from shibgreen.clvm.spend_sim import SpendSim, SimClient
+from littlelambocoin.clvm.spend_sim import SpendSim, SimClient
 
 """
 This test suite aims to test:
-    - shibgreen.wallet.puzzles.singleton_top_layer.py
-    - shibgreen.wallet.puzzles.singleton_top_layer.clvm
-    - shibgreen.wallet.puzzles.p2_singleton.clvm
-    - shibgreen.wallet.puzzles.p2_singleton_or_delayed_puzhash.clvm
+    - littlelambocoin.wallet.puzzles.singleton_top_layer.py
+    - littlelambocoin.wallet.puzzles.singleton_top_layer.clvm
+    - littlelambocoin.wallet.puzzles.p2_singleton.clvm
+    - littlelambocoin.wallet.puzzles.p2_singleton_or_delayed_puzhash.clvm
 """
 
 

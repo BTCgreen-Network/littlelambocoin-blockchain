@@ -80,8 +80,8 @@ export default {
       'node_modules',
     ],
     alias: {
-      "@shibgreen/core": `${__dirname}/src/components/core`,
-      "@shibgreen/icons": `${__dirname}/src/components/icons`,
+      "@littlelambocoin/core": `${__dirname}/src/components/core`,
+      "@littlelambocoin/icons": `${__dirname}/src/components/icons`,
       crypto: 'crypto-browserify',
       stream: 'stream-browserify',
     },

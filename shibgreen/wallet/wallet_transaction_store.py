@@ -3,13 +3,13 @@ from typing import Dict, List, Optional, Tuple
 
 import aiosqlite
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.errors import Err
-from shibgreen.util.ints import uint8, uint32
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.transaction_type import TransactionType
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.ints import uint8, uint32
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.transaction_type import TransactionType
 
 
 class WalletTransactionStore:

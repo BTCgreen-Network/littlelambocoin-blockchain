@@ -3,11 +3,11 @@ from typing import Optional
 
 from blspy import G2Element
 
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.vdf import VDFInfo
-from shibgreen.util.ints import uint8, uint32, uint128
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo
+from littlelambocoin.util.ints import uint8, uint32, uint128
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

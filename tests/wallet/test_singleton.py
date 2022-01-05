@@ -1,10 +1,10 @@
 from clvm_tools import binutils
 
-from shibgreen.types.blockchain_format.program import Program, INFINITE_COST
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.condition_tools import parse_sexp_to_conditions
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.types.blockchain_format.program import Program, INFINITE_COST
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.condition_tools import parse_sexp_to_conditions
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 
 SINGLETON_MOD = load_clvm("singleton_top_layer.clvm")
 LAUNCHER_PUZZLE = load_clvm("singleton_launcher.clvm")

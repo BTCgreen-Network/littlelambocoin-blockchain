@@ -2,9 +2,9 @@ from dataclasses import dataclass
 
 from blspy import G1Element
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint32
-from shibgreen.wallet.util.wallet_types import WalletType
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.wallet.util.wallet_types import WalletType
 
 
 @dataclass(frozen=True)

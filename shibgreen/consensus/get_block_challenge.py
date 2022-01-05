@@ -1,15 +1,15 @@
 import logging
 from typing import List, Union
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.types.unfinished_header_block import UnfinishedHeaderBlock
-from shibgreen.util.ints import uint64
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.types.unfinished_header_block import UnfinishedHeaderBlock
+from littlelambocoin.util.ints import uint64
 
 log = logging.getLogger(__name__)
 

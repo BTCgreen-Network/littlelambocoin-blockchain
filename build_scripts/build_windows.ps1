@@ -42,7 +42,7 @@ if (-not (Test-Path env:SHIBGREEN_INSTALLER_VERSION)) {
   $env:SHIBGREEN_INSTALLER_VERSION = '0.0.0'
   Write-Output "WARNING: No environment variable SHIBGREEN_INSTALLER_VERSION set. Using 0.0.0"
   }
-Write-Output "SHIBgreen Version is: $env:SHIBGREEN_INSTALLER_VERSION"
+Write-Output "Littlelambocoin Version is: $env:SHIBGREEN_INSTALLER_VERSION"
 Write-Output "   ---"
 
 Write-Output "Checking if madmax exists"
@@ -60,12 +60,12 @@ if (Test-Path -Path .\bladebit\) {
 }
 
 Write-Output "   ---"
-Write-Output "Build shibgreen-blockchain wheels"
+Write-Output "Build littlelambocoin-blockchain wheels"
 Write-Output "   ---"
 pip wheel --use-pep517 --extra-index-url https://pypi.chia.net/simple/ -f . --wheel-dir=.\build_scripts\win_build .
 
 Write-Output "   ---"
-Write-Output "Install shibgreen-blockchain wheels into venv with pip"
+Write-Output "Install littlelambocoin-blockchain wheels into venv with pip"
 Write-Output "   ---"
 
 Write-Output "pip install miniupnpc"
@@ -74,20 +74,20 @@ pip install --no-index --find-links=.\win_build\ miniupnpc
 # Write-Output "pip install setproctitle"
 # pip install setproctitle==1.2.2
 
-Write-Output "pip install shibgreen-blockchain"
-pip install --no-index --find-links=.\win_build\ shibgreen-blockchain
+Write-Output "pip install littlelambocoin-blockchain"
+pip install --no-index --find-links=.\win_build\ littlelambocoin-blockchain
 
 Write-Output "   ---"
-Write-Output "Use pyinstaller to create shibgreen .exe's"
+Write-Output "Use pyinstaller to create littlelambocoin .exe's"
 Write-Output "   ---"
-$SPEC_FILE = (python -c 'import shibgreen; print(shibgreen.PYINSTALLER_SPEC_PATH)') -join "`n"
+$SPEC_FILE = (python -c 'import littlelambocoin; print(littlelambocoin.PYINSTALLER_SPEC_PATH)') -join "`n"
 pyinstaller --log-level INFO $SPEC_FILE
 
 Write-Output "   ---"
-Write-Output "Copy shibgreen executables to shibgreen-blockchain-gui\"
+Write-Output "Copy littlelambocoin executables to littlelambocoin-blockchain-gui\"
 Write-Output "   ---"
-Copy-Item "dist\daemon" -Destination "..\shibgreen-blockchain-gui\" -Recurse
-Set-Location -Path "..\shibgreen-blockchain-gui" -PassThru
+Copy-Item "dist\daemon" -Destination "..\littlelambocoin-blockchain-gui\" -Recurse
+Set-Location -Path "..\littlelambocoin-blockchain-gui" -PassThru
 
 git status
 
@@ -111,13 +111,13 @@ If ($LastExitCode -gt 0){
 }
 
 Write-Output "   ---"
-Write-Output "Increase the stack for shibgreen command for (shibgreen plots create) chiapos limitations"
+Write-Output "Increase the stack for littlelambocoin command for (littlelambocoin plots create) chiapos limitations"
 # editbin.exe needs to be in the path
-editbin.exe /STACK:8000000 daemon\shibgreen.exe
+editbin.exe /STACK:8000000 daemon\littlelambocoin.exe
 Write-Output "   ---"
 
 $packageVersion = "$env:SHIBGREEN_INSTALLER_VERSION"
-$packageName = "SHIBgreen-$packageVersion"
+$packageName = "Littlelambocoin-$packageVersion"
 
 Write-Output "packageName is $packageName"
 
@@ -132,7 +132,7 @@ Write-Output "   ---"
 
 Write-Output "   ---"
 Write-Output "electron-packager"
-electron-packager . SHIBgreen --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\shibgreen.ico --app-version=$packageVersion
+electron-packager . Littlelambocoin --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\littlelambocoin.ico --app-version=$packageVersion
 Write-Output "   ---"
 
 Write-Output "   ---"
@@ -146,8 +146,8 @@ If ($env:HAS_SECRET) {
    Write-Output "   ---"
    Write-Output "Add timestamp and verify signature"
    Write-Output "   ---"
-   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\SHIBgreenSetup-$packageVersion.exe
-   signtool.exe verify /v /pa .\release-builds\windows-installer\SHIBgreenSetup-$packageVersion.exe
+   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\LittlelambocoinSetup-$packageVersion.exe
+   signtool.exe verify /v /pa .\release-builds\windows-installer\LittlelambocoinSetup-$packageVersion.exe
    }   Else    {
    Write-Output "Skipping timestamp and verify signatures - no authorization to install certificates"
 }

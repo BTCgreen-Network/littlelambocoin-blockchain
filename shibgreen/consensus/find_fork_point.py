@@ -1,8 +1,8 @@
 from typing import Union
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.types.header_block import HeaderBlock
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.types.header_block import HeaderBlock
 
 
 def find_fork_point_in_chain(

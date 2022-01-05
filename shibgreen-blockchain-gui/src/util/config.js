@@ -16,7 +16,7 @@ function loadConfig(net) {
     const config_root_dir =
       'SHIBGREEN_ROOT' in process.env
         ? process.env.SHIBGREEN_ROOT
-        : path.join(os.homedir(), '.shibgreen', net);
+        : path.join(os.homedir(), '.littlelambocoin', net);
     const config = yaml.load(
       fs.readFileSync(path.join(config_root_dir, 'config/config.yaml'), 'utf8'),
     );

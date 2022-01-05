@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from shibgreen.consensus.coinbase import pool_parent_id, farmer_parent_id
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint8, uint32, uint64
-from shibgreen.util.streamable import Streamable, streamable
-from shibgreen.wallet.util.transaction_type import TransactionType
+from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint8, uint32, uint64
+from littlelambocoin.util.streamable import Streamable, streamable
+from littlelambocoin.wallet.util.transaction_type import TransactionType
 
 
 @dataclass(frozen=True)

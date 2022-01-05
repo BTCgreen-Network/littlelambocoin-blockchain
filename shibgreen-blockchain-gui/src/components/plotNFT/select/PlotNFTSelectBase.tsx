@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Fee,
   TextField,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import {
   Grid,
   FormControl,
@@ -102,7 +102,7 @@ export default function PlotNFTSelectBase(props: Props) {
                     control={<Radio />}
                     label={
                       <Trans>
-                        Self pool. When you win a block you will earn XSHIB
+                        Self pool. When you win a block you will earn LLC
                         rewards.
                       </Trans>
                     }

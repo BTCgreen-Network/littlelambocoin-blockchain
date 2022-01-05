@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.util.ints import uint8, uint32
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.util.ints import uint8, uint32
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

@@ -1,5 +1,5 @@
 #
-# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/shibgreen-blockchain/tree/main/tests#readme
+# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/littlelambocoin-blockchain/tree/main/tests#readme
 #
 name: MacOS core-util Tests
 
@@ -44,10 +44,10 @@ jobs:
 
     - name: Create keychain for CI use
       run: |
-        security create-keychain -p foo shibgreenchain
-        security default-keychain -s shibgreenchain
-        security unlock-keychain -p foo shibgreenchain
-        security set-keychain-settings -t 7200 -u shibgreenchain
+        security create-keychain -p foo littlelambocoinchain
+        security default-keychain -s littlelambocoinchain
+        security unlock-keychain -p foo littlelambocoinchain
+        security set-keychain-settings -t 7200 -u littlelambocoinchain
 
     - name: Get pip cache dir
       id: pip-cache
@@ -67,16 +67,16 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'BTCgreen-Network/test-cache'
-        path: '.shibgreen'
+        path: '.littlelambocoin'
         ref: '0.27.0'
         fetch-depth: 1
 
     - name: Link home directory
       run: |
         cd $HOME
-        ln -s $GITHUB_WORKSPACE/.shibgreen
-        echo "$HOME/.shibgreen"
-        ls -al $HOME/.shibgreen
+        ln -s $GITHUB_WORKSPACE/.littlelambocoin
+        echo "$HOME/.littlelambocoin"
+        ls -al $HOME/.littlelambocoin
 
     - name: Run install script
       env:
@@ -103,5 +103,5 @@ jobs:
         ./venv/bin/py.test tests/core/util/test_file_keyring_synchronization.py tests/core/util/test_keychain.py tests/core/util/test_lru_cache.py tests/core/util/test_significant_bits.py tests/core/util/test_streamable.py tests/core/util/test_type_checking.py -s -v --durations 0
         ./venv/bin/py.test tests/core/util/test_cached_bls.py tests/core/util/test_config.py tests/core/util/test_keyring_wrapper.py -s -v --durations 0
 #
-# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/shibgreen-blockchain/tree/main/tests#readme
+# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/littlelambocoin-blockchain/tree/main/tests#readme
 #

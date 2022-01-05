@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { AlertDialog } from '@shibgreen/core';
+import { AlertDialog } from '@littlelambocoin/core';
 import styled from 'styled-components';
 import { Grid, Typography } from '@material-ui/core';
 import {

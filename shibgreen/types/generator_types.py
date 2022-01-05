@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
-from shibgreen.types.blockchain_format.program import SerializedProgram
-from shibgreen.util.ints import uint32
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 class GeneratorBlockCacheInterface:

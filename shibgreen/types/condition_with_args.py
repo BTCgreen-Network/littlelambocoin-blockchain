@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

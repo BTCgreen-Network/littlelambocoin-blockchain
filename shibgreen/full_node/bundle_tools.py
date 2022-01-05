@@ -4,13 +4,13 @@ from typing import Optional, Tuple, List, Union
 from clvm import SExp
 from clvm_tools import binutils
 
-from shibgreen.full_node.generator import create_compressed_generator
-from shibgreen.types.blockchain_format.program import SerializedProgram, Program
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.generator_types import BlockGenerator, CompressorArg
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.ints import uint32, uint64
+from littlelambocoin.full_node.generator import create_compressed_generator
+from littlelambocoin.types.blockchain_format.program import SerializedProgram, Program
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.generator_types import BlockGenerator, CompressorArg
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.ints import uint32, uint64
 
 
 def spend_bundle_to_serialized_coin_spend_entry_list(bundle: SpendBundle) -> bytes:

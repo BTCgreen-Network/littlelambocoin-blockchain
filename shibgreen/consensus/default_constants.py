@@ -1,4 +1,4 @@
-from shibgreen.util.ints import uint64
+from littlelambocoin.util.ints import uint64
 
 from .constants import ConsensusConstants
 
@@ -28,14 +28,14 @@ testnet_kwargs = {
     # Used as the initial cc rc challenges, as well as first block back pointers, and first SES back pointer
     # We override this value based on the chain being run (testnet0, testnet1, mainnet, etc)
     # Default used for tests is std_hash(b'')
-    "GENESIS_CHALLENGE": bytes.fromhex("265a4a588caa1f6334cdc6fc67fedb2648ceabf1a7f322d53b0e38a859fc3a4d"),
-    # Forks of shibgreen should change this value to provide replay attack protection. This is set to mainnet genesis chall
-    "AGG_SIG_ME_ADDITIONAL_DATA": bytes.fromhex("44fe497ba45f383d4fcf49e508ece6fac56c8d6c0f4f1d5c229cff499df8201d"),
+    "GENESIS_CHALLENGE": bytes.fromhex("ba0bc02c0063fe3b24b00892ce6289aa558342b3069cd9aaf81f0578d86273df"),
+    # Forks of littlelambocoin should change this value to provide replay attack protection. This is set to mainnet genesis chall
+    "AGG_SIG_ME_ADDITIONAL_DATA": bytes.fromhex("37239041ddc6cc13486bc0017ac345b7e7a5230ff18a958ba941163dc63bbe39"),
     "GENESIS_PRE_FARM_POOL_PUZZLE_HASH": bytes.fromhex(
-        "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
+        "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     ),
     "GENESIS_PRE_FARM_FARMER_PUZZLE_HASH": bytes.fromhex(
-        "75e5849b1a27d71e74de1390a4fc81c38b4ed8ce24d4efb2c9a5807d0e82106c"
+        "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     ),
     "MAX_VDF_WITNESS_SIZE": 64,
     # Size of mempool = 50x the size of block

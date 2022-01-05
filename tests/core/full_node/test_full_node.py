@@ -9,37 +9,37 @@ from typing import Dict, Optional, List
 
 import pytest
 
-from shibgreen.consensus.pot_iterations import is_overflow_block
-from shibgreen.full_node.bundle_tools import detect_potential_template_generator
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.full_node.signage_point import SignagePoint
-from shibgreen.protocols import full_node_protocol as fnp, full_node_protocol, wallet_protocol
-from shibgreen.protocols import timelord_protocol
-from shibgreen.protocols.full_node_protocol import RespondTransaction
-from shibgreen.protocols.protocol_message_types import ProtocolMessageTypes
-from shibgreen.server.address_manager import AddressManager
-from shibgreen.server.outbound_message import Message
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.program import SerializedProgram
-from shibgreen.types.blockchain_format.vdf import CompressibleVDFField, VDFProof
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.peer_info import PeerInfo, TimestampedPeerInfo
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.consensus.pot_iterations import is_overflow_block
+from littlelambocoin.full_node.bundle_tools import detect_potential_template_generator
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.full_node.signage_point import SignagePoint
+from littlelambocoin.protocols import full_node_protocol as fnp, full_node_protocol, wallet_protocol
+from littlelambocoin.protocols import timelord_protocol
+from littlelambocoin.protocols.full_node_protocol import RespondTransaction
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.address_manager import AddressManager
+from littlelambocoin.server.outbound_message import Message
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.types.blockchain_format.vdf import CompressibleVDFField, VDFProof
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.peer_info import PeerInfo, TimestampedPeerInfo
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
 from tests.block_tools import get_signage_point
-from shibgreen.util.clvm import int_to_bytes
-from shibgreen.util.errors import Err
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint16, uint32, uint64
-from shibgreen.util.recursive_replace import recursive_replace
-from shibgreen.util.vdf_prover import get_vdf_info_and_proof
+from littlelambocoin.util.clvm import int_to_bytes
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint16, uint32, uint64
+from littlelambocoin.util.recursive_replace import recursive_replace
+from littlelambocoin.util.vdf_prover import get_vdf_info_and_proof
 from tests.wallet_tools import WalletTool
-from shibgreen.wallet.cc_wallet.cc_wallet import CCWallet
-from shibgreen.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.cc_wallet.cc_wallet import CCWallet
+from littlelambocoin.wallet.transaction_record import TransactionRecord
 
 from tests.connection_utils import add_dummy_connection, connect_and_get_peer
 from tests.core.full_node.test_coin_store import get_future_reward_coins
@@ -1331,7 +1331,7 @@ class TestFullNodeProtocol:
         await time_out_assert(20, caught_up_slots)
 
     @pytest.mark.asyncio
-    async def test_new_signage_point_xshibhing(self, wallet_nodes, empty_blockchain):
+    async def test_new_signage_point_llching(self, wallet_nodes, empty_blockchain):
         full_node_1, full_node_2, server_1, server_2, wallet_a, wallet_receiver = wallet_nodes
         blocks = await full_node_1.get_all_full_blocks()
 

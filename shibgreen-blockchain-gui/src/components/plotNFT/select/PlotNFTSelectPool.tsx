@@ -6,12 +6,12 @@ import React, {
 } from 'react';
 import { t, Trans } from '@lingui/macro';
 import { useForm } from 'react-hook-form';
-import { ButtonLoading, Loading, Flex, Form, FormBackButton } from '@shibgreen/core';
+import { ButtonLoading, Loading, Flex, Form, FormBackButton } from '@littlelambocoin/core';
 import PlotNFTSelectBase from './PlotNFTSelectBase';
 import normalizeUrl from '../../../util/normalizeUrl';
 import getPoolInfo from '../../../util/getPoolInfo';
 import InitialTargetState from '../../../types/InitialTargetState';
-import { shibgreen_to_mojo } from '../../../util/shibgreen';
+import { littlelambocoin_to_mojo } from '../../../util/littlelambocoin';
 import useStandardWallet from '../../../hooks/useStandardWallet';
 import PlotNFTSelectFaucet from './PlotNFTSelectFaucet';
 
@@ -43,7 +43,7 @@ async function prepareSubmitData(data: FormData): SubmitData {
     initialTargetState.relative_lock_height = relative_lock_height;
   }
 
-  const feeMojos = shibgreen_to_mojo(fee || '0');
+  const feeMojos = littlelambocoin_to_mojo(fee || '0');
 
   return {
     fee: feeMojos,

@@ -1,12 +1,12 @@
 from typing import List, Tuple
 from chiabip158 import PyBIP158
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.name_puzzle_condition import NPC
-from shibgreen.util.condition_tools import created_outputs_for_conditions_dict
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.name_puzzle_condition import NPC
+from littlelambocoin.util.condition_tools import created_outputs_for_conditions_dict
 
 
 def get_block_header(block: FullBlock, tx_addition_coins: List[Coin], removals_names: List[bytes32]) -> HeaderBlock:

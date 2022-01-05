@@ -32,7 +32,7 @@ export const bladebitDefaults: PlotterDefaults = {
   delay: 0,
 };
 
-export const shibgreenposOptions: PlotterOptions = {
+export const littlelambocoinposOptions: PlotterOptions = {
   kSizes: [25, 32, 33, 34, 35],
   haveNumBuckets: true,
   haveMadmaxNumBucketsPhase3: false,
@@ -47,7 +47,7 @@ export const shibgreenposOptions: PlotterOptions = {
   canSetBufferSize: true,
 };
 
-export const shibgreenposDefaults: PlotterDefaults = {
+export const littlelambocoinposDefaults: PlotterDefaults = {
   plotterName: PlotterName.SHIBGREENPOS,
   plotSize: 32,
   numThreads: 2,
@@ -102,7 +102,7 @@ export const optionsForPlotter = (plotterName: PlotterName): PlotterOptions => {
       return madmaxOptions;
     case PlotterName.SHIBGREENPOS: // fallthrough
     default:
-      return shibgreenposOptions;
+      return littlelambocoinposOptions;
   }
 };
 
@@ -114,6 +114,6 @@ export const defaultsForPlotter = (plotterName: PlotterName): PlotterDefaults =>
       return madmaxDefaults;
     case PlotterName.SHIBGREENPOS: // fallthrough
     default:
-      return shibgreenposDefaults;
+      return littlelambocoinposDefaults;
   }
 };

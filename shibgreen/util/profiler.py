@@ -3,20 +3,20 @@ import cProfile
 import logging
 import pathlib
 
-from shibgreen.util.path import mkdir, path_from_root
+from littlelambocoin.util.path import mkdir, path_from_root
 
 # to use the profiler, enable it config file, "enable_profiler"
-# the output will be printed to your shibgreen root path, e.g. ~/.shibgreen/mainnet/profile/
+# the output will be printed to your littlelambocoin root path, e.g. ~/.littlelambocoin/mainnet/profile/
 # to analyze the profile, run:
 
-#   python shibgreen/utils/profiler.py ~/.shibgreen/mainnet/profile | less -r
+#   python littlelambocoin/utils/profiler.py ~/.littlelambocoin/mainnet/profile | less -r
 
-# this will print CPU usage of the shibgreen full node main thread at 1 second increments.
+# this will print CPU usage of the littlelambocoin full node main thread at 1 second increments.
 # find a time window of interest and analyze the profile file (which are in pstats format).
 
 # for example:
 
-#   python shibgreen/utils/profiler.py ~/.shibgreen/mainnet/profile 10 20
+#   python littlelambocoin/utils/profiler.py ~/.littlelambocoin/mainnet/profile 10 20
 
 
 async def profile_task(root_path: pathlib.Path, service: str, log: logging.Logger) -> None:
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         for i in range(first, last + 1):
             files.append(str(profile_dir / ("slot-%05d.profile" % i)))
 
-        output_file = "shibgreen-hotspot-%d" % first
+        output_file = "littlelambocoin-hotspot-%d" % first
         if first < last:
             output_file += "-%d" % last
 

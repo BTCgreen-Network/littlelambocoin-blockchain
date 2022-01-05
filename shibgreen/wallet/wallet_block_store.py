@@ -3,16 +3,16 @@ from typing import Dict, List, Optional, Tuple
 
 import aiosqlite
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.util.lru_cache import LRUCache
-from shibgreen.util.streamable import Streamable, streamable
-from shibgreen.wallet.block_record import HeaderBlockRecord
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.util.lru_cache import LRUCache
+from littlelambocoin.util.streamable import Streamable, streamable
+from littlelambocoin.wallet.block_record import HeaderBlockRecord
 
 
 @dataclass(frozen=True)

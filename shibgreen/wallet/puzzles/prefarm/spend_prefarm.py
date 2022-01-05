@@ -3,17 +3,17 @@ import asyncio
 from blspy import G2Element
 from clvm_tools import binutils
 
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.rpc.full_node_rpc_client import FullNodeRpcClient
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.bech32m import decode_puzzle_hash
-from shibgreen.util.condition_tools import parse_sexp_to_conditions
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.ints import uint32, uint16
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.rpc.full_node_rpc_client import FullNodeRpcClient
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.bech32m import decode_puzzle_hash
+from littlelambocoin.util.condition_tools import parse_sexp_to_conditions
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.ints import uint32, uint16
 
 
 def print_conditions(spend_bundle: SpendBundle):
@@ -43,8 +43,8 @@ async def main() -> None:
         print(farmer_prefarm.amount, farmer_amounts)
         assert farmer_amounts == farmer_prefarm.amount // 2
         assert pool_amounts == pool_prefarm.amount // 2
-        address1 = "xshib1rdatypul5c642jkeh4yp933zu3hw8vv8tfup8ta6zfampnyhjnusxdgns6"  # Key 1
-        address2 = "xshib1duvy5ur5eyj7lp5geetfg84cj2d7xgpxt7pya3lr2y6ke3696w9qvda66e"  # Key 2
+        address1 = "llc1rdatypul5c642jkeh4yp933zu3hw8vv8tfup8ta6zfampnyhjnusxdgns6"  # Key 1
+        address2 = "llc1duvy5ur5eyj7lp5geetfg84cj2d7xgpxt7pya3lr2y6ke3696w9qvda66e"  # Key 2
 
         ph1 = decode_puzzle_hash(address1)
         ph2 = decode_puzzle_hash(address2)

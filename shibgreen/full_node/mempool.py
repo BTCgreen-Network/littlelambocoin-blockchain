@@ -2,9 +2,9 @@ from typing import Dict, List
 
 from sortedcontainers import SortedDict
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_item import MempoolItem
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_item import MempoolItem
 
 
 class Mempool:

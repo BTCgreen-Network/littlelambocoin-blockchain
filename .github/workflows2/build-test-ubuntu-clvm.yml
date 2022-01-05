@@ -1,5 +1,5 @@
 #
-# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/shibgreen-blockchain/tree/main/tests#readme
+# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/littlelambocoin-blockchain/tree/main/tests#readme
 #
 name: Ubuntu clvm Test
 
@@ -68,9 +68,9 @@ jobs:
     - name: Link home directory
       run: |
         cd $HOME
-        ln -s $GITHUB_WORKSPACE/.shibgreen
-        echo "$HOME/.shibgreen"
-        ls -al $HOME/.shibgreen
+        ln -s $GITHUB_WORKSPACE/.littlelambocoin
+        echo "$HOME/.littlelambocoin"
+        ls -al $HOME/.littlelambocoin
 
     - name: Install ubuntu dependencies
       run: |
@@ -95,9 +95,9 @@ jobs:
     - name: Test clvm code with pytest
       run: |
         . ./activate
-        ./venv/bin/py.test tests/clvm/test_shibgreenlisp_deserialization.py tests/clvm/test_clvm_compilation.py tests/clvm/test_program.py tests/clvm/test_puzzles.py tests/clvm/test_serialized_program.py tests/clvm/test_singletons.py tests/clvm/test_spend_sim.py -s -v --durations 0 -n auto
+        ./venv/bin/py.test tests/clvm/test_littlelambocoinlisp_deserialization.py tests/clvm/test_clvm_compilation.py tests/clvm/test_program.py tests/clvm/test_puzzles.py tests/clvm/test_serialized_program.py tests/clvm/test_singletons.py tests/clvm/test_spend_sim.py -s -v --durations 0 -n auto
 
 
 #
-# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/shibgreen-blockchain/tree/main/tests#readme
+# THIS FILE IS GENERATED. SEE https://github.com/BTCgreen-Network/littlelambocoin-blockchain/tree/main/tests#readme
 #

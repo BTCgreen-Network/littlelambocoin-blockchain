@@ -16,7 +16,7 @@ jobs:
     name: Linux .rpm installer on Python 3.9
     runs-on: ubuntu-latest
     container:
-      image: shibgreennetwork/centos7-builder:latest
+      image: littlelambocoinnetwork/centos7-builder:latest
     timeout-minutes: 40
     strategy:
       fail-fast: false
@@ -60,7 +60,7 @@ jobs:
       env:
         SECRET: "${{ secrets.INSTALLER_UPLOAD_SECRET }}"
 
-      # Get the most recent release from shibgreen-plotter-madmax
+      # Get the most recent release from littlelambocoin-plotter-madmax
     - uses: actions/github-script@v4
       id: 'latest-madmax'
       with:
@@ -69,17 +69,17 @@ jobs:
         script: |
           const releases = await github.repos.listReleases({
             owner: 'BTCgreen-Network',
-            repo: 'shibgreen-plotter-madmax',
+            repo: 'littlelambocoin-plotter-madmax',
           });
           return releases.data[0].tag_name;
 
     - name: Get latest madmax plotter
       run: |
         mkdir "$GITHUB_WORKSPACE/madmax"
-        wget -O "$GITHUB_WORKSPACE/madmax/shibgreen_plot" https://github.com/BTCgreen-Network/shibgreen-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/shibgreen_plot-${{ steps.latest-madmax.outputs.result }}-x86-64
-        wget -O "$GITHUB_WORKSPACE/madmax/shibgreen_plot_k34" https://github.com/BTCgreen-Network/shibgreen-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/shibgreen_plot_k34-${{ steps.latest-madmax.outputs.result }}-x86-64
-        chmod +x "$GITHUB_WORKSPACE/madmax/shibgreen_plot"
-        chmod +x "$GITHUB_WORKSPACE/madmax/shibgreen_plot_k34"
+        wget -O "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot" https://github.com/BTCgreen-Network/littlelambocoin-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/littlelambocoin_plot-${{ steps.latest-madmax.outputs.result }}-x86-64
+        wget -O "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot_k34" https://github.com/BTCgreen-Network/littlelambocoin-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/littlelambocoin_plot_k34-${{ steps.latest-madmax.outputs.result }}-x86-64
+        chmod +x "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot"
+        chmod +x "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot_k34"
 
       # Get the most recent release from bladebit
     - uses: actions/github-script@v4
@@ -112,7 +112,7 @@ jobs:
       run: |
         . ./activate
         ldd --version
-        cd ./shibgreen-blockchain-gui
+        cd ./littlelambocoin-blockchain-gui
         git status
         cd ../build_scripts
         sh build_linux_rpm.sh amd64
@@ -137,7 +137,7 @@ jobs:
           SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
       run: |
           ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-shibgreen-net/builds/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/builds/
 
     - name: Create Checksums
       if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
@@ -145,7 +145,7 @@ jobs:
         SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
       run: |
          ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-         sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256
+         sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256
          ls $GITHUB_WORKSPACE/build_scripts/final_installer/
 
     - name: Install py3createtorrent
@@ -158,7 +158,7 @@ jobs:
       env:
         SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
       run: |
-          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm -o $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent --webseed https://download-shibgreen-net.s3.us-west-2.amazonaws.com/install/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm
+          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm -o $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent --webseed https://download-littlelambocoin-net.s3.us-west-2.amazonaws.com/install/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm
           ls
 
     - name: Upload Beta Installer
@@ -166,17 +166,17 @@ jobs:
       env:
         SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
       run: |
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-shibgreen-net/beta/shibgreen-blockchain-1.x86_64_latest_beta.rpm
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-shibgreen-net/beta/shibgreen-blockchain-1.x86_64_latest_beta.rpm.sha256
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm.sha256
 
     - name: Upload Release Files
       if: steps.check_secrets.outputs.HAS_SECRET && startsWith(github.ref, 'refs/tags/')
       env:
         SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
       run: |
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-shibgreen-net/install/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-shibgreen-net/install/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/shibgreen-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent s3://download-shibgreen-net/torrents/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/install/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/install/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent s3://download-littlelambocoin-net/torrents/
 
     - name: Get tag name
       if: startsWith(github.ref, 'refs/tags/')
@@ -188,4 +188,4 @@ jobs:
     - name: Mark installer complete
       if: startsWith(github.ref, 'refs/tags/')
       run: |
-          curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"shibgreen_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/build-linux-rpm
+          curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"littlelambocoin_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/build-linux-rpm

@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
-from shibgreen.wallet.key_val_store import KeyValStore
-from shibgreen.wallet.settings.default_settings import default_settings
-from shibgreen.wallet.settings.settings_objects import BackupInitialized
+from littlelambocoin.wallet.key_val_store import KeyValStore
+from littlelambocoin.wallet.settings.default_settings import default_settings
+from littlelambocoin.wallet.settings.settings_objects import BackupInitialized
 
 
 class UserSettings:

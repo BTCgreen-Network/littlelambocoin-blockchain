@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.server.ws_connection import WSSHIBgreenConnection
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.spend_bundle import SpendBundle
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.spend_bundle import SpendBundle
 
 
 @dataclass(frozen=True)
@@ -15,7 +15,7 @@ class TransactionQueueEntry:
     transaction: SpendBundle
     transaction_bytes: Optional[bytes]
     spend_name: bytes32
-    peer: Optional[WSSHIBgreenConnection]
+    peer: Optional[WSLittlelambocoinConnection]
     test: bool
 
     def __lt__(self, other):

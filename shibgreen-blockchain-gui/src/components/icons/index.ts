@@ -1,4 +1,4 @@
-export { default as SHIBgreen } from './SHIBgreen';
+export { default as Littlelambocoin } from './Littlelambocoin';
 export { default as Farm } from './Farm';
 export { default as Home } from './Home';
 export { default as Keys } from './Keys';

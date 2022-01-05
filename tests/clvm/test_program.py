@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from shibgreen.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.program import Program
 from clvm.EvalError import EvalError
 
 

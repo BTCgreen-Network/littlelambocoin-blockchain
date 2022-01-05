@@ -1,8 +1,8 @@
 from typing import Optional
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.util.ints import uint8, uint32
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.util.ints import uint8, uint32
 
 
 def calculate_deficit(

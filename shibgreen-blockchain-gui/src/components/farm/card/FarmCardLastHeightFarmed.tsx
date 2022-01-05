@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { FormatLargeNumber } from '@shibgreen/core';
+import { FormatLargeNumber } from '@littlelambocoin/core';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../modules/rootReducer';
 import FarmCard from './FarmCard';

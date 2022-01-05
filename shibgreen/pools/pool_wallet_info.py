@@ -4,13 +4,13 @@ from typing import Optional, Dict
 
 from blspy import G1Element
 
-from shibgreen.protocols.pool_protocol import POOL_PROTOCOL_VERSION
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.ints import uint32, uint8
-from shibgreen.util.streamable import streamable, Streamable
+from littlelambocoin.protocols.pool_protocol import POOL_PROTOCOL_VERSION
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.ints import uint32, uint8
+from littlelambocoin.util.streamable import streamable, Streamable
 
 
 class PoolSingletonState(IntEnum):

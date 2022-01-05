@@ -20,7 +20,7 @@ import {
   Loading,
   TooltipIcon,
   Flex,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import {
   unix_to_short_date,
   hex_to_array,
@@ -28,7 +28,7 @@ import {
   sha256,
 } from '../../util/utils';
 import { getBlockRecord, getBlock } from '../../modules/fullnodeMessages';
-import { mojo_to_shibgreen } from '../../util/shibgreen';
+import { mojo_to_littlelambocoin } from '../../util/littlelambocoin';
 import {
   calculatePoolReward,
   calculateBaseFarmerReward,
@@ -172,13 +172,13 @@ export default function Block() {
       ? blockRecord.weight - prevBlockRecord.weight
       : blockRecord?.weight ?? 0;
 
-  const poolReward = mojo_to_shibgreen(calculatePoolReward(blockRecord.height));
-  const baseFarmerReward = mojo_to_shibgreen(
+  const poolReward = mojo_to_littlelambocoin(calculatePoolReward(blockRecord.height));
+  const baseFarmerReward = mojo_to_littlelambocoin(
     calculateBaseFarmerReward(blockRecord.height),
   );
 
-  const shibgreenFees = blockRecord.fees
-    ? mojo_to_shibgreen(BigInt(blockRecord.fees))
+  const littlelambocoinFees = blockRecord.fees
+    ? mojo_to_littlelambocoin(BigInt(blockRecord.fees))
     : '';
 
   const rows = [
@@ -269,7 +269,7 @@ export default function Block() {
       value: (
         <Link
           target="_blank"
-          href={`https://www.shibgreenexplorer.com/blockchain/puzzlehash/${blockRecord.farmer_puzzle_hash}`}
+          href={`https://www.littlelambocoinexplorer.com/blockchain/puzzlehash/${blockRecord.farmer_puzzle_hash}`}
         >
           {currencyCode
             ? toBech32m(
@@ -285,7 +285,7 @@ export default function Block() {
       value: (
         <Link
           target="_blank"
-          href={`https://www.shibgreenexplorer.com/blockchain/puzzlehash/${blockRecord.pool_puzzle_hash}`}
+          href={`https://www.littlelambocoinexplorer.com/blockchain/puzzlehash/${blockRecord.pool_puzzle_hash}`}
         >
           {currencyCode
             ? toBech32m(
@@ -320,7 +320,7 @@ export default function Block() {
     },
     {
       name: <Trans>Fees Amount</Trans>,
-      value: shibgreenFees ? `${shibgreenFees} ${currencyCode}` : '',
+      value: littlelambocoinFees ? `${littlelambocoinFees} ${currencyCode}` : '',
       tooltip: (
         <Trans>
           The total transactions fees in this block. Rewarded to the farmer.
@@ -335,7 +335,7 @@ export default function Block() {
         title={
           <Back variant="h5">
             <Trans>
-              Block at height {blockRecord.height} in the SHIBgreen blockchain
+              Block at height {blockRecord.height} in the Littlelambocoin blockchain
             </Trans>
           </Back>
         }

@@ -1,23 +1,23 @@
 from io import TextIOWrapper
 import click
 
-from shibgreen import __version__
-from shibgreen.cmds.configure import configure_cmd
-from shibgreen.cmds.farm import farm_cmd
-from shibgreen.cmds.init import init_cmd
-from shibgreen.cmds.keys import keys_cmd
-from shibgreen.cmds.netspace import netspace_cmd
-from shibgreen.cmds.passphrase import passphrase_cmd
-from shibgreen.cmds.plots import plots_cmd
-from shibgreen.cmds.show import show_cmd
-from shibgreen.cmds.start import start_cmd
-from shibgreen.cmds.stop import stop_cmd
-from shibgreen.cmds.wallet import wallet_cmd
-from shibgreen.cmds.plotnft import plotnft_cmd
-from shibgreen.cmds.plotters import plotters_cmd
-from shibgreen.util.default_root import DEFAULT_KEYS_ROOT_PATH, DEFAULT_ROOT_PATH
-from shibgreen.util.keychain import set_keys_root_path, supports_keyring_passphrase
-from shibgreen.util.ssl_check import check_ssl
+from littlelambocoin import __version__
+from littlelambocoin.cmds.configure import configure_cmd
+from littlelambocoin.cmds.farm import farm_cmd
+from littlelambocoin.cmds.init import init_cmd
+from littlelambocoin.cmds.keys import keys_cmd
+from littlelambocoin.cmds.netspace import netspace_cmd
+from littlelambocoin.cmds.passphrase import passphrase_cmd
+from littlelambocoin.cmds.plots import plots_cmd
+from littlelambocoin.cmds.show import show_cmd
+from littlelambocoin.cmds.start import start_cmd
+from littlelambocoin.cmds.stop import stop_cmd
+from littlelambocoin.cmds.wallet import wallet_cmd
+from littlelambocoin.cmds.plotnft import plotnft_cmd
+from littlelambocoin.cmds.plotters import plotters_cmd
+from littlelambocoin.util.default_root import DEFAULT_KEYS_ROOT_PATH, DEFAULT_ROOT_PATH
+from littlelambocoin.util.keychain import set_keys_root_path, supports_keyring_passphrase
+from littlelambocoin.util.ssl_check import check_ssl
 from typing import Optional
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
@@ -40,8 +40,8 @@ def monkey_patch_click() -> None:
 
 
 @click.group(
-    help=f"\n  Manage shibgreen blockchain infrastructure ({__version__})\n",
-    epilog="Try 'shibgreen start node', 'shibgreen netspace -d 192', or 'shibgreen show -s'",
+    help=f"\n  Manage littlelambocoin blockchain infrastructure ({__version__})\n",
+    epilog="Try 'littlelambocoin start node', 'littlelambocoin netspace -d 192', or 'littlelambocoin show -s'",
     context_settings=CONTEXT_SETTINGS,
 )
 @click.option("--root-path", default=DEFAULT_ROOT_PATH, help="Config file root", type=click.Path(), show_default=True)
@@ -67,7 +67,7 @@ def cli(
         set_keys_root_path(Path(keys_root_path))
 
     if passphrase_file is not None:
-        from shibgreen.cmds.passphrase_funcs import cache_passphrase, read_passphrase_from_file
+        from littlelambocoin.cmds.passphrase_funcs import cache_passphrase, read_passphrase_from_file
 
         try:
             cache_passphrase(read_passphrase_from_file(passphrase_file))
@@ -78,30 +78,30 @@ def cli(
 
 
 if not supports_keyring_passphrase():
-    from shibgreen.cmds.passphrase_funcs import remove_passphrase_options_from_cmd
+    from littlelambocoin.cmds.passphrase_funcs import remove_passphrase_options_from_cmd
 
     # TODO: Remove once keyring passphrase management is rolled out to all platforms
     remove_passphrase_options_from_cmd(cli)
 
 
-@cli.command("version", short_help="Show shibgreen version")
+@cli.command("version", short_help="Show littlelambocoin version")
 def version_cmd() -> None:
     print(__version__)
 
 
-@cli.command("run_daemon", short_help="Runs shibgreen daemon")
+@cli.command("run_daemon", short_help="Runs littlelambocoin daemon")
 @click.option(
     "--wait-for-unlock",
     help="If the keyring is passphrase-protected, the daemon will wait for an unlock command before accessing keys",
     default=False,
     is_flag=True,
-    hidden=True,  # --wait-for-unlock is only set when launched by shibgreen start <service>
+    hidden=True,  # --wait-for-unlock is only set when launched by littlelambocoin start <service>
 )
 @click.pass_context
 def run_daemon_cmd(ctx: click.Context, wait_for_unlock: bool) -> None:
     import asyncio
-    from shibgreen.daemon.server import async_run_daemon
-    from shibgreen.util.keychain import Keychain
+    from littlelambocoin.daemon.server import async_run_daemon
+    from littlelambocoin.util.keychain import Keychain
 
     wait_for_unlock = wait_for_unlock and Keychain.is_keyring_locked()
 

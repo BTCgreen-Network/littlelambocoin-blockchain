@@ -2,9 +2,9 @@ from typing import Any
 
 import aiosqlite
 
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.streamable import Streamable
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.streamable import Streamable
 
 
 class KeyValStore:

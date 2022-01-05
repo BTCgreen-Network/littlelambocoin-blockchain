@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.protocols.wallet_protocol import CoinState
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.protocols.wallet_protocol import CoinState
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

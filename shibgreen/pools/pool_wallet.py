@@ -4,9 +4,9 @@ from typing import Any, Optional, Set, Tuple, List, Dict
 
 from blspy import PrivateKey, G2Element, G1Element
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.pools.pool_config import PoolWalletConfig, load_pool_config, update_pool_config
-from shibgreen.pools.pool_wallet_info import (
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.pools.pool_config import PoolWalletConfig, load_pool_config, update_pool_config
+from littlelambocoin.pools.pool_wallet_info import (
     PoolWalletInfo,
     PoolSingletonState,
     PoolState,
@@ -15,17 +15,17 @@ from shibgreen.pools.pool_wallet_info import (
     LEAVING_POOL,
     create_pool_state,
 )
-from shibgreen.protocols.pool_protocol import POOL_PROTOCOL_VERSION
+from littlelambocoin.protocols.pool_protocol import POOL_PROTOCOL_VERSION
 
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
 
-from shibgreen.pools.pool_puzzles import (
+from littlelambocoin.pools.pool_puzzles import (
     create_waiting_room_inner_puzzle,
     create_full_puzzle,
     SINGLETON_LAUNCHER,
@@ -43,19 +43,19 @@ from shibgreen.pools.pool_puzzles import (
     get_delayed_puz_info_from_launcher_spend,
 )
 
-from shibgreen.util.ints import uint8, uint32, uint64
-from shibgreen.wallet.derive_keys import (
+from littlelambocoin.util.ints import uint8, uint32, uint64
+from littlelambocoin.wallet.derive_keys import (
     master_sk_to_pooling_authentication_sk,
     find_owner_sk,
 )
-from shibgreen.wallet.sign_coin_spends import sign_coin_spends
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet import Wallet
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.wallet.sign_coin_spends import sign_coin_spends
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet import Wallet
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
 
-from shibgreen.wallet.wallet_info import WalletInfo
-from shibgreen.wallet.util.transaction_type import TransactionType
+from littlelambocoin.wallet.wallet_info import WalletInfo
+from littlelambocoin.wallet.util.transaction_type import TransactionType
 
 
 class PoolWallet:
@@ -402,7 +402,7 @@ class PoolWallet:
     ) -> Tuple[TransactionRecord, bytes32, bytes32]:
         """
         A "plot NFT", or pool wallet, represents the idea of a set of plots that all pay to
-        the same pooling puzzle. This puzzle is a `shibgreen singleton` that is
+        the same pooling puzzle. This puzzle is a `littlelambocoin singleton` that is
         parameterized with a public key controlled by the user's wallet
         (a `smart coin`). It contains an inner puzzle that can switch between
         paying block rewards to a pool, or to a user's own wallet.

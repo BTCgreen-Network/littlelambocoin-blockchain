@@ -4,27 +4,27 @@ import logging
 import time
 from typing import Dict, List, Optional, Set, Tuple
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
-from shibgreen.consensus.make_sub_epoch_summary import next_sub_epoch_summary
-from shibgreen.consensus.multiprocess_validation import PreValidationResult
-from shibgreen.consensus.pot_iterations import calculate_sp_interval_iters
-from shibgreen.full_node.signage_point import SignagePoint
-from shibgreen.protocols import timelord_protocol
-from shibgreen.server.outbound_message import Message
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import VDFInfo
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import CompressorArg
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.lru_cache import LRUCache
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
+from littlelambocoin.consensus.make_sub_epoch_summary import next_sub_epoch_summary
+from littlelambocoin.consensus.multiprocess_validation import PreValidationResult
+from littlelambocoin.consensus.pot_iterations import calculate_sp_interval_iters
+from littlelambocoin.full_node.signage_point import SignagePoint
+from littlelambocoin.protocols import timelord_protocol
+from littlelambocoin.server.outbound_message import Message
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import CompressorArg
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.lru_cache import LRUCache
+from littlelambocoin.util.streamable import Streamable, streamable
 
 log = logging.getLogger(__name__)
 
@@ -218,7 +218,7 @@ class FullNodeStore:
 
         self.future_cache_key_times[signage_point.rc_vdf.challenge] = int(time.time())
         self.future_sp_cache[signage_point.rc_vdf.challenge].append((index, signage_point))
-        log.info(f"Don't have rc hash {signage_point.rc_vdf.challenge}. xshibhing signage point {index}.")
+        log.info(f"Don't have rc hash {signage_point.rc_vdf.challenge}. llching signage point {index}.")
 
     def get_future_ip(self, rc_challenge_hash: bytes32) -> List[timelord_protocol.NewInfusionPointVDF]:
         return self.future_ip_cache.get(rc_challenge_hash, [])
@@ -310,7 +310,7 @@ class FullNodeStore:
                     self.future_eos_cache[rc_challenge] = []
                 self.future_eos_cache[rc_challenge].append(eos)
                 self.future_cache_key_times[rc_challenge] = int(time.time())
-                log.info(f"Don't have challenge hash {rc_challenge}, xshibhing EOS")
+                log.info(f"Don't have challenge hash {rc_challenge}, llching EOS")
                 return None
 
             if peak.deficit == self.constants.MIN_BLOCKS_PER_CHALLENGE_BLOCK:

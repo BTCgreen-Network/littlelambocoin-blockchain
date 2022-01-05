@@ -7,11 +7,11 @@ from functools import lru_cache
 
 from chiavdf import create_discriminant, verify_n_wesolowski
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.types.blockchain_format.classgroup import ClassgroupElement
-from shibgreen.types.blockchain_format.sized_bytes import bytes32, bytes100
-from shibgreen.util.ints import uint8, uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32, bytes100
+from littlelambocoin.util.ints import uint8, uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 log = logging.getLogger(__name__)
 

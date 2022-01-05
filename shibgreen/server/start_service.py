@@ -6,23 +6,23 @@ import signal
 from sys import platform
 from typing import Any, Callable, List, Optional, Tuple
 
-from shibgreen.daemon.server import singleton, service_launch_lock_path
-from shibgreen.server.ssl_context import shibgreen_ssl_ca_paths, private_ssl_ca_paths
+from littlelambocoin.daemon.server import singleton, service_launch_lock_path
+from littlelambocoin.server.ssl_context import littlelambocoin_ssl_ca_paths, private_ssl_ca_paths
 
 try:
     import uvloop
 except ImportError:
     uvloop = None
 
-from shibgreen.rpc.rpc_server import start_rpc_server
-from shibgreen.server.outbound_message import NodeType
-from shibgreen.server.server import SHIBgreenServer
-from shibgreen.server.upnp import UPnP
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.shibgreen_logging import initialize_logging
-from shibgreen.util.config import load_config, load_config_cli
-from shibgreen.util.setproctitle import setproctitle
-from shibgreen.util.ints import uint16
+from littlelambocoin.rpc.rpc_server import start_rpc_server
+from littlelambocoin.server.outbound_message import NodeType
+from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.server.upnp import UPnP
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.littlelambocoin_logging import initialize_logging
+from littlelambocoin.util.config import load_config, load_config_cli
+from littlelambocoin.util.setproctitle import setproctitle
+from littlelambocoin.util.ints import uint16
 
 from .reconnect_task import start_reconnect_task
 
@@ -64,7 +64,7 @@ class Service:
         self._rpc_close_task: Optional[asyncio.Task] = None
         self._network_id: str = network_id
 
-        proctitle_name = f"shibgreen_{service_name}"
+        proctitle_name = f"littlelambocoin_{service_name}"
         setproctitle(proctitle_name)
         self._log = logging.getLogger(service_name)
 
@@ -76,11 +76,11 @@ class Service:
 
         self._rpc_info = rpc_info
         private_ca_crt, private_ca_key = private_ssl_ca_paths(root_path, self.config)
-        shibgreen_ca_crt, shibgreen_ca_key = shibgreen_ssl_ca_paths(root_path, self.config)
+        littlelambocoin_ca_crt, littlelambocoin_ca_key = littlelambocoin_ssl_ca_paths(root_path, self.config)
         inbound_rlp = self.config.get("inbound_rate_limit_percent")
         outbound_rlp = self.config.get("outbound_rate_limit_percent")
         assert inbound_rlp and outbound_rlp
-        self._server = SHIBgreenServer(
+        self._server = LittlelambocoinServer(
             advertised_port,
             node,
             peer_api,
@@ -92,7 +92,7 @@ class Service:
             root_path,
             service_config,
             (private_ca_crt, private_ca_key),
-            (shibgreen_ca_crt, shibgreen_ca_key),
+            (littlelambocoin_ca_crt, littlelambocoin_ca_key),
             name=f"{service_name}_server",
         )
         f = getattr(node, "set_server", None)
@@ -226,7 +226,7 @@ class Service:
 
         self._log.info("Waiting for socket to be closed (if opened)")
 
-        self._log.info("Waiting for SHIBgreenServer to be closed")
+        self._log.info("Waiting for LittlelambocoinServer to be closed")
         await self._server.await_closed()
 
         if self._rpc_close_task:

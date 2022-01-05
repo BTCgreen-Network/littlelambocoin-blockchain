@@ -3,18 +3,18 @@ import random
 import secrets
 from time import time
 from pathlib import Path
-from shibgreen.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.coin_store import CoinStore
 from typing import List, Tuple
 import os
 import sys
 
 import aiosqlite
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.consensus.coinbase import create_farmer_coin, create_pool_coin
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.util.ints import uint64, uint32
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.util.ints import uint64, uint32
 
 
 NUM_ITERS = 200

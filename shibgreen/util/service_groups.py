@@ -1,19 +1,19 @@
 from typing import KeysView, Generator
 
 SERVICES_FOR_GROUP = {
-    "all": "shibgreen_harvester shibgreen_timelord_launcher shibgreen_timelord shibgreen_farmer shibgreen_full_node shibgreen_wallet".split(),
-    "node": "shibgreen_full_node".split(),
-    "harvester": "shibgreen_harvester".split(),
-    "farmer": "shibgreen_harvester shibgreen_farmer shibgreen_full_node shibgreen_wallet".split(),
-    "farmer-no-wallet": "shibgreen_harvester shibgreen_farmer shibgreen_full_node".split(),
-    "farmer-only": "shibgreen_farmer".split(),
-    "timelord": "shibgreen_timelord_launcher shibgreen_timelord shibgreen_full_node".split(),
-    "timelord-only": "shibgreen_timelord".split(),
-    "timelord-launcher-only": "shibgreen_timelord_launcher".split(),
-    "wallet": "shibgreen_wallet shibgreen_full_node".split(),
-    "wallet-only": "shibgreen_wallet".split(),
-    "introducer": "shibgreen_introducer".split(),
-    "simulator": "shibgreen_full_node_simulator".split(),
+    "all": "littlelambocoin_harvester littlelambocoin_timelord_launcher littlelambocoin_timelord littlelambocoin_farmer littlelambocoin_full_node littlelambocoin_wallet".split(),
+    "node": "littlelambocoin_full_node".split(),
+    "harvester": "littlelambocoin_harvester".split(),
+    "farmer": "littlelambocoin_harvester littlelambocoin_farmer littlelambocoin_full_node littlelambocoin_wallet".split(),
+    "farmer-no-wallet": "littlelambocoin_harvester littlelambocoin_farmer littlelambocoin_full_node".split(),
+    "farmer-only": "littlelambocoin_farmer".split(),
+    "timelord": "littlelambocoin_timelord_launcher littlelambocoin_timelord littlelambocoin_full_node".split(),
+    "timelord-only": "littlelambocoin_timelord".split(),
+    "timelord-launcher-only": "littlelambocoin_timelord_launcher".split(),
+    "wallet": "littlelambocoin_wallet littlelambocoin_full_node".split(),
+    "wallet-only": "littlelambocoin_wallet".split(),
+    "introducer": "littlelambocoin_introducer".split(),
+    "simulator": "littlelambocoin_full_node_simulator".split(),
 }
 
 

@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import SerializedProgram
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

@@ -2,16 +2,16 @@ import asyncio
 import logging
 import pytest
 
-from shibgreen.rpc.rpc_server import start_rpc_server
-from shibgreen.rpc.wallet_rpc_api import WalletRpcApi
-from shibgreen.rpc.wallet_rpc_client import WalletRpcClient
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint64
-from shibgreen.wallet.util.wallet_types import WalletType
+from littlelambocoin.rpc.rpc_server import start_rpc_server
+from littlelambocoin.rpc.wallet_rpc_api import WalletRpcApi
+from littlelambocoin.rpc.wallet_rpc_client import WalletRpcClient
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint64
+from littlelambocoin.wallet.util.wallet_types import WalletType
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets, bt
 from tests.time_out_assert import time_out_assert
-from shibgreen.wallet.did_wallet.did_wallet import DIDWallet
+from littlelambocoin.wallet.did_wallet.did_wallet import DIDWallet
 
 
 log = logging.getLogger(__name__)

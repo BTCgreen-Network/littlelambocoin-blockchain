@@ -6,16 +6,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es_MX\n"
-"Project-Id-Version: shibgreen-blockchain\n"
+"Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2021-09-17 17:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Mexico\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: shibgreen-blockchain\n"
+"X-Crowdin-Project: littlelambocoin-blockchain\n"
 "X-Crowdin-Project-ID: 440660\n"
 "X-Crowdin-Language: es-MX\n"
-"X-Crowdin-File: /[BTCgreen-Network.shibgreen-blockchain-gui] main/src/locales/en-US/messages.po\n"
+"X-Crowdin-File: /[BTCgreen-Network.littlelambocoin-blockchain-gui] main/src/locales/en-US/messages.po\n"
 "X-Crowdin-File-ID: 118\n"
 
 #: src/components/plot/add/PlotAddChoosePlotter.tsx:78
@@ -31,8 +31,8 @@ msgid "(Optional)"
 msgstr "(Opcional)"
 
 #: src/components/farm/FarmLatestBlockChallenges.tsx:64
-msgid "*Want to explore SHIBgreen’s blocks further? Check out <0>SHIBgreen Explorer</0> built by an open source developer."
-msgstr "*¿Quieres explorar más hacerca de los bloques de SHIBgreen? Echa un vistazo a <0>SHIBgreen Explorer</0>, creado por un desarrollador de código abierto."
+msgid "*Want to explore Littlelambocoin’s blocks further? Check out <0>Littlelambocoin Explorer</0> built by an open source developer."
+msgstr "*¿Quieres explorar más hacerca de los bloques de Littlelambocoin? Echa un vistazo a <0>Littlelambocoin Explorer</0>, creado por un desarrollador de código abierto."
 
 #: src/components/plot/add/PlotAddNFT.tsx:128
 msgid "+ Add New Plot NFT"
@@ -60,8 +60,8 @@ msgstr ""
 
 #: src/electron/main.tsx:431
 #: src/electron/main.tsx:518
-msgid "About SHIBgreen Blockchain"
-msgstr "Acerca de SHIBgreen Blockchain"
+msgid "About Littlelambocoin Blockchain"
+msgstr "Acerca de Littlelambocoin Blockchain"
 
 #: src/components/trading/ViewOffer.jsx:74
 msgid "Accept"
@@ -250,8 +250,8 @@ msgid "Block VDF Iterations"
 msgstr "Iteraciones de Bloque VDF"
 
 #: src/components/block/Block.jsx:337
-msgid "Block at height {0} in the SHIBgreen blockchain"
-msgstr "Bloque a la altura {0} en la cadena de bloques de SHIBgreen"
+msgid "Block at height {0} in the Littlelambocoin blockchain"
+msgstr "Bloque a la altura {0} en la cadena de bloques de Littlelambocoin"
 
 #: src/components/fullNode/FullNode.jsx:331
 #~ msgid "Block hash"
@@ -298,16 +298,16 @@ msgstr "Comprar"
 #~ msgstr ""
 
 #: src/electron/main.tsx:428
-msgid "SHIBgreen"
-msgstr "SHIBgreen"
+msgid "Littlelambocoin"
+msgstr "Littlelambocoin"
 
 #: src/electron/main.tsx:367
-msgid "SHIBgreen Blockchain Wiki"
-msgstr "SHIBgreen Blockchain Wiki"
+msgid "Littlelambocoin Blockchain Wiki"
+msgstr "Littlelambocoin Blockchain Wiki"
 
 #: src/components/wallet/standard/WalletStandard.tsx:642
-msgid "SHIBgreen Wallet"
-msgstr "Cartera SHIBgreen"
+msgid "Littlelambocoin Wallet"
+msgstr "Cartera Littlelambocoin"
 
 #: src/components/selectKey/SelectKey.tsx:212
 msgid "Can be backed up to mnemonic seed"
@@ -724,7 +724,7 @@ msgstr ""
 #~ msgstr "Borrar la llave eliminará permanentemente la llave de su ordenador, asegurase de tener una copia de seguridad. ¿Está seguro de que quiere continuar?"
 
 #: src/components/plot/add/PlotAddChoosePlotter.tsx:96
-msgid "Depending on your system configuration, you may find that an alternative plotter produces plots faster than the default SHIBgreen Proof of Space plotter. If unsure, use the default SHIBgreen Proof of Space plotter."
+msgid "Depending on your system configuration, you may find that an alternative plotter produces plots faster than the default Littlelambocoin Proof of Space plotter. If unsure, use the default Littlelambocoin Proof of Space plotter."
 msgstr ""
 
 #: src/electron/main.tsx:313
@@ -788,7 +788,7 @@ msgstr "¿Su máquina admite sembrar en paralelo?"
 
 #: src/components/wallet/did/WalletDID.tsx:428
 msgid "Drag and drop attestation packet(s)"
-msgstr "Arrastre y suelte paquetes de certifixshibión(es)"
+msgstr "Arrastre y suelte paquetes de certifillción(es)"
 
 #: src/components/trading/ViewOffer.jsx:39
 msgid "Drag and drop offer file"
@@ -825,8 +825,8 @@ msgid "Enter a strong passphrase to secure your keys:"
 msgstr ""
 
 #: src/components/wallet/WalletImport.tsx:146
-msgid "Enter the 24 word mnemonic that you have saved in order to restore your SHIBgreen wallet."
-msgstr "Introduzca las 24 palabras mnemotécnicas que has guardado en orden para restaurar su cartera SHIBgreen."
+msgid "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
+msgstr "Introduzca las 24 palabras mnemotécnicas que has guardado en orden para restaurar su cartera Littlelambocoin."
 
 #: src/components/settings/RemovePassphrasePrompt.tsx:118
 msgid "Enter your passphrase:"
@@ -843,8 +843,8 @@ msgid "Error"
 msgstr "Error"
 
 #: src/components/wallet/standard/WalletStandard.tsx:450
-msgid "Error: Cannot send shibgreen to coloured address. Please enter a shibgreen address."
-msgstr "Error: No se puede enviar shibgreen a la dirección de color. Por favor introduzca una dirección shibgreen."
+msgid "Error: Cannot send littlelambocoin to coloured address. Please enter a littlelambocoin address."
+msgstr "Error: No se puede enviar littlelambocoin a la dirección de color. Por favor introduzca una dirección littlelambocoin."
 
 #: src/components/fullNode/card/FullNodeEstimatedNetworkSpace.tsx:20
 msgid "Estimated Network Space"
@@ -966,7 +966,7 @@ msgid "Fee"
 msgstr "Tarifa"
 
 #: src/components/wallet/coloured/WalletColoured.tsx:420
-#~ msgid "Fee (TXSHIB)"
+#~ msgid "Fee (TLLC)"
 #~ msgstr ""
 
 #: src/components/wallet/coloured/WalletColoured.tsx:420
@@ -1003,7 +1003,7 @@ msgstr "Nombre del Archivo"
 
 #: src/components/plot/add/PlotAddSelectFinalDirectory.tsx:47
 msgid "Final folder location"
-msgstr "Ubixshibión de la Carpeta Final"
+msgstr "Ubillción de la Carpeta Final"
 
 #: src/components/fullNode/FullNode.jsx:43
 #: src/components/fullNode/FullNode.jsx:98
@@ -1180,16 +1180,16 @@ msgid "Join a Pool"
 msgstr "Unirse a un Conjunto"
 
 #: src/components/plot/add/PlotAddNFT.tsx:49
-msgid "Join a pool and get consistent XSHIB farming rewards. The average returns are the same, but it is much less volatile."
-msgstr "Únete a un conjunto y obtener recompensas de agricultura XSHIB. El rendimiento promedio es el mismo, pero es mucho menos volátil."
+msgid "Join a pool and get consistent LLC farming rewards. The average returns are the same, but it is much less volatile."
+msgstr "Únete a un conjunto y obtener recompensas de agricultura LLC. El rendimiento promedio es el mismo, pero es mucho menos volátil."
 
 #: src/components/plotNFT/PlotNFTAdd.tsx:59
-msgid "Join a pool and get consistent XSHIB farming rewards. The average returns are the same, but it is much less volatile. Assign plots to a plot NFT. You can easily switch pools without having to re-plot."
-msgstr "Únete a un conjunto y obtener recompensas de agricultura XSHIB. El rendimiento promedio es el mismo, pero es mucho menos volátil. Asigna parcelas a una parcela NFT. Puedes cambiar fácilmente los conjuntos sin tener que volver a sembrar."
+msgid "Join a pool and get consistent LLC farming rewards. The average returns are the same, but it is much less volatile. Assign plots to a plot NFT. You can easily switch pools without having to re-plot."
+msgstr "Únete a un conjunto y obtener recompensas de agricultura LLC. El rendimiento promedio es el mismo, pero es mucho menos volátil. Asigna parcelas a una parcela NFT. Puedes cambiar fácilmente los conjuntos sin tener que volver a sembrar."
 
 #: src/components/plot/add/PlotAddNFT.tsx:138
-msgid "Join a pool and get more consistent XSHIB farming rewards. Create a plot NFT and assign your new plots to a group."
-msgstr "Únete a un conjunto y consigue recompensas de cultivo XSHIB más consistentes. Crea una parcela NFT y asigna tus nuevas parcelas a un grupo."
+msgid "Join a pool and get more consistent LLC farming rewards. Create a plot NFT and assign your new plots to a group."
+msgstr "Únete a un conjunto y consigue recompensas de cultivo LLC más consistentes. Crea una parcela NFT y asigna tus nuevas parcelas a un grupo."
 
 #: src/components/plot/overview/PlotOverviewPlots.tsx:63
 msgid "K-Size"
@@ -1464,8 +1464,8 @@ msgid "Not found Plots"
 msgstr "No se encontraron parcelas"
 
 #: src/components/farm/FarmManageFarmingRewards.tsx:188
-msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 0.25XSHIB reward for pooling plots."
-msgstr "Tenga en cuenta que esto no cambia sus direcciones de pago de conjunto. Esto sólo afecta a los antiguos formatos de parcelas, y la recompensa de 0.25XSHIB por parcelas de conjunto."
+msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 0.25LLC reward for pooling plots."
+msgstr "Tenga en cuenta que esto no cambia sus direcciones de pago de conjunto. Esto sólo afecta a los antiguos formatos de parcelas, y la recompensa de 0.25LLC por parcelas de conjunto."
 
 #: src/components/plotNFT/PlotExternalNFTCard.tsx:118
 #: src/components/plotNFT/PlotNFTCard.tsx:160
@@ -1782,7 +1782,7 @@ msgstr "La parcela es un duplicado de {0}"
 
 #: src/components/plotNFT/PlotNFTState.tsx:46
 msgid "PlotNFT is transitioning to (target state). This can take a while. Please do not close the application until this is finalized."
-msgstr "PlotNFT está transicionando hacia (estado de destino). Esto puede tardar un tiempo. Por favor, no cierre la aplixshibión hasta que esto esté finalizado."
+msgstr "PlotNFT está transicionando hacia (estado de destino). Esto puede tardar un tiempo. Por favor, no cierre la aplillción hasta que esto esté finalizado."
 
 #: src/components/dashboard/DashboardSideBar.tsx:53
 msgid "Plots"
@@ -1793,8 +1793,8 @@ msgid "Plots Passed Filter"
 msgstr "Parcelas que Pasaron el Filtro"
 
 #: src/components/plot/overview/PlotOverviewHero.tsx:35
-msgid "Plots are allocated space on your hard drive used to farm and earn SHIBgreen. <0>Learn more</0>"
-msgstr "Las parcelas son un espacio reservado de tu disco duro que se utiliza para cultivar y ganar SHIBgreen. <0> Más información </0>"
+msgid "Plots are allocated space on your hard drive used to farm and earn Littlelambocoin. <0>Learn more</0>"
+msgstr "Las parcelas son un espacio reservado de tu disco duro que se utiliza para cultivar y ganar Littlelambocoin. <0> Más información </0>"
 
 #: src/components/plot/add/PlotAddChoosePlotter.tsx:107
 msgid "Plotter"
@@ -2119,7 +2119,7 @@ msgstr "Buscar bloque por encabezado hash"
 
 #: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:106
 msgid "Second temporary folder location"
-msgstr "Ubixshibión de carpeta temporal secundaria"
+msgstr "Ubillción de carpeta temporal secundaria"
 
 #: src/components/settings/Settings.tsx:124
 msgid "Secure your keychain using a strong passphrase"
@@ -2193,8 +2193,8 @@ msgid "Self Pooling"
 msgstr "Auto Conjunto"
 
 #: src/components/plotNFT/select/PlotNFTSelectBase.tsx:104
-msgid "Self pool. When you win a block you will earn XSHIB rewards."
-msgstr "Auto Conjunto. Cuando ganes un bloque, ganarás recompensas XSHIB."
+msgid "Self pool. When you win a block you will earn LLC rewards."
+msgstr "Auto Conjunto. Cuando ganes un bloque, ganarás recompensas LLC."
 
 #: src/components/trading/CreateOffer.jsx:164
 #: src/components/trading/TradesTable.tsx:47
@@ -2271,8 +2271,8 @@ msgid "Skips adding a final directory to harvester for farming"
 msgstr "Se salta el paso de añadir el directorio final al cosechador para cultivar"
 
 #: src/components/pool/PoolHero.tsx:26
-msgid "Smooth out your XSHIB farming rewards by joining a pool."
-msgstr "Suaviza tus recompensas de cría XSHIB uniéndote a un conjunto."
+msgid "Smooth out your LLC farming rewards by joining a pool."
+msgstr "Suaviza tus recompensas de cría LLC uniéndote a un conjunto."
 
 #: src/components/plotNFT/PlotNFTGetPoolLoginLinkDialog.tsx:60
 msgid "Something went wrong"
@@ -2311,8 +2311,8 @@ msgstr "Duración del Intervalo de Gasto (cantidad de bloques)"
 
 #: src/components/wallet/rateLimited/WalletRateLimited.jsx:401
 #: src/components/wallet/rateLimited/WalletRateLimited.jsx:448
-msgid "Spending Limit (shibgreen per interval): {0}"
-msgstr "Limite de gasto (shibgreen por intervalo): {0}"
+msgid "Spending Limit (littlelambocoin per interval): {0}"
+msgstr "Limite de gasto (littlelambocoin por intervalo): {0}"
 
 #: src/components/fullNode/FullNode.jsx:100
 msgid "State"
@@ -2360,8 +2360,8 @@ msgstr "Estado:"
 #~ msgstr "Sub Block Height"
 
 #: src/components/block/Block.jsx:338
-#~ msgid "Sub Block at height {0} in the SHIBgreen blockchain"
-#~ msgstr "Sub Block at height {0} in the SHIBgreen blockchain"
+#~ msgid "Sub Block at height {0} in the Littlelambocoin blockchain"
+#~ msgstr "Sub Block at height {0} in the Littlelambocoin blockchain"
 
 #: src/components/app/AppPassPrompt.tsx:202
 #: src/components/wallet/did/WalletDID.tsx:889
@@ -2394,23 +2394,23 @@ msgstr "Sincronizando <0/>/<1/>"
 #~ msgstr "Syncing {progress}/{tip}"
 
 #: src/components/farm/card/FarmCardBlockRewards.tsx:15
-#~ msgid "TXSHIB Block Rewards"
+#~ msgid "TLLC Block Rewards"
 #~ msgstr ""
 
 #: src/components/farm/card/FarmCardCoinbaseRewards.tsx:12
-#~ msgid "TXSHIB Farming Rewards"
+#~ msgid "TLLC Farming Rewards"
 #~ msgstr ""
 
 #: src/components/farm/card/FarmCardFeesReward.tsx:12
-#~ msgid "TXSHIB Fees Collected"
+#~ msgid "TLLC Fees Collected"
 #~ msgstr ""
 
 #: src/components/farm/card/FarmCardUserFees.tsx:12
-#~ msgid "TXSHIB User Fees"
-#~ msgstr "TXSHIB User Fees"
+#~ msgid "TLLC User Fees"
+#~ msgstr "TLLC User Fees"
 
 #: src/components/farm/card/FarmCardUserFees.tsx:15
-#~ msgid "TXSHIB User Transaction Fees"
+#~ msgid "TLLC User Transaction Fees"
 #~ msgstr ""
 
 #: src/components/pool/PoolInfo.tsx:37
@@ -2423,11 +2423,11 @@ msgstr "Enigma Hash de Destino"
 
 #: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:64
 msgid "Temporary folder location"
-msgstr "Ubixshibión de la carpeta temporal"
+msgstr "Ubillción de la carpeta temporal"
 
 #: src/components/app/AppTimeBomb.tsx:28
 msgid "The application will stop working at block height 193536."
-msgstr "La aplixshibión dejará de funcionar en la altura de bloque 193536."
+msgstr "La aplillción dejará de funcionar en la altura de bloque 193536."
 
 #: src/components/farm/FarmFullNodeConnections.tsx:97
 msgid "The full node that your farmer is connected to is below. <0>Learn more</0>"
@@ -2496,8 +2496,8 @@ msgid "The total transactions fees in this block. Rewarded to the farmer."
 msgstr "Las tarifas totales de transacciones en este bloque. Recompensado al agricultor."
 
 #: src/components/plotNFT/PlotNFTPayoutInstructionsDialog.tsx:107
-msgid "These are the instructions for how the farmer wants to get paid. By default this will be an XSHIB address, but it can be set to any string with a size of less than 1024 characters, so it can represent another blockchain or payment system identifier."
-msgstr "Estas son las instrucciones sobre cómo el agricultor quiere que se le pague. Por defecto, esta será una dirección XSHIB, pero puede establecerse en cualquier cadena con un tamaño de menos de 1024 caracteres, para que pueda representar otro identificador del sistema de pago o de cadena de bloques."
+msgid "These are the instructions for how the farmer wants to get paid. By default this will be an LLC address, but it can be set to any string with a size of less than 1024 characters, so it can represent another blockchain or payment system identifier."
+msgstr "Estas son las instrucciones sobre cómo el agricultor quiere que se le pague. Por defecto, esta será una dirección LLC, pero puede establecerse en cualquier cadena con un tamaño de menos de 1024 caracteres, para que pueda representar otro identificador del sistema de pago o de cadena de bloques."
 
 #: src/components/plot/PlotsFailed.tsx:40
 msgid "These plots are invalid, you might want to delete them."
@@ -2519,8 +2519,8 @@ msgid "This feature is available only from the GUI."
 msgstr "Esta característica esta disponible solo desde la interfaz gráfica."
 
 #: src/components/wallet/card/WalletCardSpendableBalance.tsx:26
-msgid "This is the amount of SHIBgreen that you can currently use to make transactions. It does not include pending farming rewards, pending incoming transactions, and SHIBgreen that you have just spent but is not yet in the blockchain."
-msgstr "Esta es la cantidad de chía que puede utilizar actualmente para realizar transacciones. No incluye recompensas de cultivo pendientes, transacciones entrantes pendientes y SHIBgreen que acaba de gastar pero que aún no está en la cadena de bloques."
+msgid "This is the amount of Littlelambocoin that you can currently use to make transactions. It does not include pending farming rewards, pending incoming transactions, and Littlelambocoin that you have just spent but is not yet in the blockchain."
+msgstr "Esta es la cantidad de chía que puede utilizar actualmente para realizar transacciones. No incluye recompensas de cultivo pendientes, transacciones entrantes pendientes y Littlelambocoin que acaba de gastar pero que aún no está en la cadena de bloques."
 
 #: src/components/wallet/card/WalletCardPendingChange.tsx:26
 msgid "This is the pending change, which are change coins which you have sent to yourself, but have not been confirmed yet."
@@ -2539,7 +2539,7 @@ msgid "This is the time the block was created by the farmer, which is before it 
 msgstr "Este es el momento en que el agricultor creó el bloque, que es antes de que se finalice con una prueba de tiempo"
 
 #: src/components/wallet/card/WalletCardTotalBalance.tsx:34
-msgid "This is the total amount of shibgreen in the blockchain at the current peak sub block that is controlled by your private keys. It includes frozen farming rewards, but not pending incoming and outgoing transactions."
+msgid "This is the total amount of littlelambocoin in the blockchain at the current peak sub block that is controlled by your private keys. It includes frozen farming rewards, but not pending incoming and outgoing transactions."
 msgstr "Esta es la cantidad total de chía en la cadena de bloques en el sub-bloque cúspide actual que está controlado por sus llaves privadas. Incluye recompensas congeladas de cultivo, pero no transacciones pendientes de entrada y salida."
 
 #: src/components/wallet/card/WalletCardPendingTotalBalance.tsx:29
@@ -2585,8 +2585,8 @@ msgid "This trade was included on blockchain at this block height"
 msgstr "Esta operación fue incluida en la cadena de bloques a esta altura de bloque"
 
 #: src/components/app/AppTimeBombAlert.tsx:19
-msgid "This version of SHIBgreen is no longer compatible with the blockchain and can not safely farm."
-msgstr "Esta versión de SHIBgreen ya no es compatible con la cadena de bloques y no puede cultivar de manera segura."
+msgid "This version of Littlelambocoin is no longer compatible with the blockchain and can not safely farm."
+msgstr "Esta versión de Littlelambocoin ya no es compatible con la cadena de bloques y no puede cultivar de manera segura."
 
 #: src/components/plot/add/PlotAddNumberOfPlots.tsx:154
 msgid "Thread Multiplier for Phase 2"
@@ -2614,8 +2614,8 @@ msgstr "A"
 msgid "Total Balance"
 msgstr "Saldo Total"
 
-#: src/components/farm/card/FarmCardTotalSHIBgreenFarmed.tsx:15
-#~ msgid "Total SHIBgreen Farmed"
+#: src/components/farm/card/FarmCardTotalLittlelambocoinFarmed.tsx:15
+#~ msgid "Total Littlelambocoin Farmed"
 #~ msgstr ""
 
 #: src/components/fullNode/card/FullNodeCardTotalIterations.tsx:20
@@ -2795,7 +2795,7 @@ msgid "Wallet does not exists"
 msgstr "El monedero no existe"
 
 #: src/components/wallet/Wallets.tsx:30
-#~ msgid "WalletItem.shibgreenWallet"
+#~ msgid "WalletItem.littlelambocoinWallet"
 #~ msgstr ""
 
 #: src/components/wallet/Wallets.tsx:34
@@ -2836,8 +2836,8 @@ msgid "Want to Join a Pool? Create a Plot NFT"
 msgstr "¿Quieres unirte a un conjunto? Crea una parcela NFT"
 
 #: src/components/plot/overview/PlotOverviewPlots.tsx:139
-msgid "Want to earn more SHIBgreen? Add more plots to your farm."
-msgstr "¿Quieres ganar más SHIBgreen? Añade más parcelas a tu granja."
+msgid "Want to earn more Littlelambocoin? Add more plots to your farm."
+msgstr "¿Quieres ganar más Littlelambocoin? Añade más parcelas a tu granja."
 
 #: src/components/plot/add/PlotAddNumberOfPlots.tsx:87
 msgid "Want to have a delay before the next plot starts?"
@@ -2869,8 +2869,8 @@ msgid "Weight is the total added difficulty of all sub blocks up to and includin
 msgstr "El peso es la dificultad agregada total de todos los sub-bloques hasta este, incluyendo este"
 
 #: src/components/selectKey/SelectKey.tsx:183
-msgid "Welcome to SHIBgreen. Please log in with an existing key, or create a new key."
-msgstr "Bienvenidos a SHIBgreen. Por favor inicie sesión con una llave existente o cree una nueva."
+msgid "Welcome to Littlelambocoin. Please log in with an existing key, or create a new key."
+msgstr "Bienvenidos a Littlelambocoin. Por favor inicie sesión con una llave existente o cree una nueva."
 
 #: src/components/wallet/WalletAdd.tsx:66
 msgid "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
@@ -2944,8 +2944,8 @@ msgid "You need to claim your rewards first"
 msgstr "Necesitas reclamar tus recompensas primero"
 
 #: src/components/app/AppTimeBomb.tsx:28
-#~ msgid "You need to upgrade the SHIBgreen application as this version will stop working soon!"
-#~ msgstr "You need to upgrade the SHIBgreen application as this version will stop working soon!"
+#~ msgid "You need to upgrade the Littlelambocoin application as this version will stop working soon!"
+#~ msgstr "You need to upgrade the Littlelambocoin application as this version will stop working soon!"
 
 #: src/components/plotNFT/select/PlotNFTSelectFaucet.tsx:37
 msgid "You need {currencyCode} to join a pool."
@@ -2961,7 +2961,7 @@ msgstr "Recibirás <0/> a {address}"
 
 #: src/components/wallet/did/WalletDID.tsx:328
 msgid "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
-msgstr "Su DID requiere al menos {dids_num_req} archivo de verifixshibión{0} para la recuperación. Por favor, suba archivos adicionales."
+msgstr "Su DID requiere al menos {dids_num_req} archivo de verifillción{0} para la recuperación. Por favor, suba archivos adicionales."
 
 #: src/components/farm/overview/FarmOverview.tsx:37
 msgid "Your Farm Overview"
@@ -3002,7 +3002,7 @@ msgstr ""
 #: src/components/app/AppKeyringMigrator.tsx:177
 #: src/components/settings/ChangePassphrasePrompt.tsx:227
 #: src/components/settings/SetPassphrasePrompt.tsx:197
-msgid "Your passphrase can be stored in your system's secure credential store. SHIBgreen will be able to access your keys without prompting for your passphrase."
+msgid "Your passphrase can be stored in your system's secure credential store. Littlelambocoin will be able to access your keys without prompting for your passphrase."
 msgstr ""
 
 #: src/components/settings/Settings.tsx:80
@@ -3083,10 +3083,10 @@ msgstr "{0} puntos {1} - hace {2} horas"
 msgid "{currencyCode} Block Rewards"
 msgstr "{currencyCode} Recompensas de Bloque"
 
-#: src/components/farm/card/FarmCardTotalSHIBgreenFarmed.tsx:29
-#: src/components/farm/card/FarmCardTotalSHIBgreenFarmed.tsx:29
-msgid "{currencyCode} Total SHIBgreen Farmed"
-msgstr "{currencyCode} Total de SHIBgreen Cultivada"
+#: src/components/farm/card/FarmCardTotalLittlelambocoinFarmed.tsx:29
+#: src/components/farm/card/FarmCardTotalLittlelambocoinFarmed.tsx:29
+msgid "{currencyCode} Total Littlelambocoin Farmed"
+msgstr "{currencyCode} Total de Littlelambocoin Cultivada"
 
 #: src/components/farm/card/FarmCardUserFees.tsx:28
 msgid "{currencyCode} User Transaction Fees"

@@ -4,15 +4,15 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 from blspy import G1Element, G2Element
 from clvm_tools import binutils
 
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.types.announcement import Announcement
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.condition_tools import ConditionOpcode
-from shibgreen.util.ints import uint64
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.announcement import Announcement
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.condition_tools import ConditionOpcode
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 
 from tests.clvm.coin_store import BadSpendBundleError, CoinStore, CoinTimestamp
 

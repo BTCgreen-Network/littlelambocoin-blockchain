@@ -5,28 +5,28 @@ from concurrent.futures.process import ProcessPoolExecutor
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Sequence, Tuple, Union, Callable
 
-from shibgreen.consensus.block_header_validation import validate_finished_header_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from shibgreen.consensus.full_block_to_block_record import block_to_block_record
-from shibgreen.consensus.get_block_challenge import get_block_challenge
-from shibgreen.consensus.pot_iterations import calculate_iterations_quality, is_overflow_block
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.block_cache import BlockCache
-from shibgreen.util.errors import Err, ValidationError
-from shibgreen.util.generator_tools import get_block_header, tx_removals_and_additions
-from shibgreen.util.ints import uint16, uint64, uint32
-from shibgreen.util.streamable import Streamable, dataclass_from_dict, streamable
+from littlelambocoin.consensus.block_header_validation import validate_finished_header_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from littlelambocoin.consensus.full_block_to_block_record import block_to_block_record
+from littlelambocoin.consensus.get_block_challenge import get_block_challenge
+from littlelambocoin.consensus.pot_iterations import calculate_iterations_quality, is_overflow_block
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.block_cache import BlockCache
+from littlelambocoin.util.errors import Err, ValidationError
+from littlelambocoin.util.generator_tools import get_block_header, tx_removals_and_additions
+from littlelambocoin.util.ints import uint16, uint64, uint32
+from littlelambocoin.util.streamable import Streamable, dataclass_from_dict, streamable
 
 log = logging.getLogger(__name__)
 

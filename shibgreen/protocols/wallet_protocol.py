@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint8, uint32, uint128
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint8, uint32, uint128
+from littlelambocoin.util.streamable import Streamable, streamable
 
 """
 Protocol between wallet (SPV node) and full node.

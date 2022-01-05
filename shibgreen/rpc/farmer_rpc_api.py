@@ -1,15 +1,15 @@
 from typing import Callable, Dict, List, Optional
 
-from shibgreen.farmer.farmer import Farmer
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.ws_message import WsRpcMessage, create_payload_dict
+from littlelambocoin.farmer.farmer import Farmer
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.ws_message import WsRpcMessage, create_payload_dict
 
 
 class FarmerRpcApi:
     def __init__(self, farmer: Farmer):
         self.service = farmer
-        self.service_name = "shibgreen_farmer"
+        self.service_name = "littlelambocoin_farmer"
 
     def get_routes(self) -> Dict[str, Callable]:
         return {

@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import FarmCard from '../../farm/card/FarmCard';
 import useWallet from '../../../hooks/useWallet';
 import useCurrencyCode from '../../../hooks/useCurrencyCode';
-import { mojo_to_shibgreen_string } from '../../../util/shibgreen';
+import { mojo_to_littlelambocoin_string } from '../../../util/littlelambocoin';
 
 type Props = {
   wallet_id: number;
@@ -31,7 +31,7 @@ export default function WalletCardPendingBalance(props: Props) {
       }
       value={
         <span>
-          {mojo_to_shibgreen_string(value)} {currencyCode}
+          {mojo_to_littlelambocoin_string(value)} {currencyCode}
         </span>
       }
     />

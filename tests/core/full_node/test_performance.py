@@ -9,14 +9,14 @@ from typing import Dict
 import pytest
 import cProfile
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.protocols import full_node_protocol as fnp
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.clvm import int_to_bytes
-from shibgreen.util.ints import uint64
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.protocols import full_node_protocol as fnp
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.clvm import int_to_bytes
+from littlelambocoin.util.ints import uint64
 from tests.wallet_tools import WalletTool
 
 from tests.connection_utils import add_dummy_connection, connect_and_get_peer

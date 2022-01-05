@@ -7,30 +7,30 @@ import blspy
 from blspy import G1Element, G2Element
 from chiabip158 import PyBIP158
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.coinbase import create_farmer_coin, create_pool_coin
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult, calculate_cost_of_program
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.full_node.signage_point import SignagePoint
-from shibgreen.types.blockchain_format.coin import Coin, hash_coin_list
-from shibgreen.types.blockchain_format.foliage import Foliage, FoliageBlockData, FoliageTransactionBlock, TransactionsInfo
-from shibgreen.types.blockchain_format.pool_target import PoolTarget
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.merkle_set import MerkleSet
-from shibgreen.util.prev_transaction_block import get_prev_transaction_block
-from shibgreen.util.recursive_replace import recursive_replace
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.full_node.signage_point import SignagePoint
+from littlelambocoin.types.blockchain_format.coin import Coin, hash_coin_list
+from littlelambocoin.types.blockchain_format.foliage import Foliage, FoliageBlockData, FoliageTransactionBlock, TransactionsInfo
+from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.merkle_set import MerkleSet
+from littlelambocoin.util.prev_transaction_block import get_prev_transaction_block
+from littlelambocoin.util.recursive_replace import recursive_replace
 
 log = logging.getLogger(__name__)
 

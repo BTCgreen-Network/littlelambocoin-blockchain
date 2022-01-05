@@ -8,43 +8,43 @@ from typing import Dict, List, Optional, Set, Tuple, Union
 
 from clvm.casts import int_from_bytes
 
-from shibgreen.consensus.block_body_validation import validate_block_body
-from shibgreen.consensus.block_header_validation import validate_finished_header_block, validate_unfinished_header_block
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult
-from shibgreen.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from shibgreen.consensus.find_fork_point import find_fork_point_in_chain
-from shibgreen.consensus.full_block_to_block_record import block_to_block_record
-from shibgreen.consensus.multiprocess_validation import (
+from littlelambocoin.consensus.block_body_validation import validate_block_body
+from littlelambocoin.consensus.block_header_validation import validate_finished_header_block, validate_unfinished_header_block
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult
+from littlelambocoin.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
+from littlelambocoin.consensus.full_block_to_block_record import block_to_block_record
+from littlelambocoin.consensus.multiprocess_validation import (
     PreValidationResult,
     pre_validate_blocks_multiprocessing,
     _run_generator,
 )
-from shibgreen.full_node.block_store import BlockStore
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.hint_store import HintStore
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import VDFInfo
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.generator_types import BlockGenerator, GeneratorArg
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.types.unfinished_header_block import UnfinishedHeaderBlock
-from shibgreen.types.weight_proof import SubEpochChallengeSegment
-from shibgreen.util.errors import Err, ConsensusError
-from shibgreen.util.generator_tools import get_block_header, tx_removals_and_additions
-from shibgreen.util.ints import uint16, uint32, uint64, uint128
-from shibgreen.util.streamable import recurse_jsonify
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.config import load_config
+from littlelambocoin.full_node.block_store import BlockStore
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.hint_store import HintStore
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.generator_types import BlockGenerator, GeneratorArg
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.types.unfinished_header_block import UnfinishedHeaderBlock
+from littlelambocoin.types.weight_proof import SubEpochChallengeSegment
+from littlelambocoin.util.errors import Err, ConsensusError
+from littlelambocoin.util.generator_tools import get_block_header, tx_removals_and_additions
+from littlelambocoin.util.ints import uint16, uint32, uint64, uint128
+from littlelambocoin.util.streamable import recurse_jsonify
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.config import load_config
 
 log = logging.getLogger(__name__)
 

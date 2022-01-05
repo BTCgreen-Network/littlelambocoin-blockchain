@@ -4,12 +4,12 @@
 #
 # import pytest
 #
-# from shibgreen.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
-# from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-# from shibgreen.types.peer_info import PeerInfo
-# from shibgreen.util.ints import uint16, uint32, uint64
+# from littlelambocoin.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
+# from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+# from littlelambocoin.types.peer_info import PeerInfo
+# from littlelambocoin.util.ints import uint16, uint32, uint64
 # from tests.setup_nodes import setup_simulators_and_wallets
-# from shibgreen.wallet.cc_wallet.cc_wallet import CCWallet
+# from littlelambocoin.wallet.cc_wallet.cc_wallet import CCWallet
 # from tests.time_out_assert import time_out_assert
 #
 #

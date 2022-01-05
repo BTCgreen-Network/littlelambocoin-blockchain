@@ -19,16 +19,16 @@ async def show_async(
 
     from time import localtime, struct_time
     from typing import List, Optional
-    from shibgreen.consensus.block_record import BlockRecord
-    from shibgreen.rpc.full_node_rpc_client import FullNodeRpcClient
-    from shibgreen.server.outbound_message import NodeType
-    from shibgreen.types.full_block import FullBlock
-    from shibgreen.util.bech32m import encode_puzzle_hash
-    from shibgreen.util.byte_types import hexstr_to_bytes
-    from shibgreen.util.config import load_config
-    from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-    from shibgreen.util.ints import uint16
-    from shibgreen.util.misc import format_bytes
+    from littlelambocoin.consensus.block_record import BlockRecord
+    from littlelambocoin.rpc.full_node_rpc_client import FullNodeRpcClient
+    from littlelambocoin.server.outbound_message import NodeType
+    from littlelambocoin.types.full_block import FullBlock
+    from littlelambocoin.util.bech32m import encode_puzzle_hash
+    from littlelambocoin.util.byte_types import hexstr_to_bytes
+    from littlelambocoin.util.config import load_config
+    from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+    from littlelambocoin.util.ints import uint16
+    from littlelambocoin.util.misc import format_bytes
 
     try:
         config = load_config(DEFAULT_ROOT_PATH, "config.yaml")
@@ -62,7 +62,7 @@ async def show_async(
                 print(f"Current Blockchain Status: Not Synced. Peak height: {peak.height}")
             else:
                 print("\nSearching for an initial chain\n")
-                print("You may be able to expedite with 'shibgreen show -a host:port' using a known node.\n")
+                print("You may be able to expedite with 'littlelambocoin show -a host:port' using a known node.\n")
 
             if peak is not None:
                 if peak.is_transaction_block:

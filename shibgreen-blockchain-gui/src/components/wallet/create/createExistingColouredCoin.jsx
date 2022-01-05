@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { AlertDialog } from '@shibgreen/core';
+import { AlertDialog } from '@littlelambocoin/core';
 import {
   Typography,
   Button,
@@ -19,7 +19,7 @@ import {
   CREATE_CC_WALLET_OPTIONS,
 } from '../../../modules/createWallet';
 import { useStyles } from './WalletCreate';
-import { shibgreen_to_mojo } from '../../../util/shibgreen';
+import { littlelambocoin_to_mojo } from '../../../util/littlelambocoin';
 import { create_cc_for_colour_action } from '../../../modules/message';
 import { openDialog } from '../../../modules/dialog';
 
@@ -75,7 +75,7 @@ export const CreateExistingCCWallet = () => {
     }
     dispatch(createState(true, true));
     const colour = colour_string.value;
-    const fee = shibgreen_to_mojo(fee_input.value);
+    const fee = littlelambocoin_to_mojo(fee_input.value);
     dispatch(create_cc_for_colour_action(colour, fee));
   }
 

@@ -6,17 +6,17 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from shibgreen.cmds.passphrase_funcs import get_current_passphrase
-from shibgreen.daemon.client import DaemonProxy, connect_to_daemon_and_validate
-from shibgreen.util.keychain import KeyringMaxUnlockAttempts
-from shibgreen.util.service_groups import services_for_groups
+from littlelambocoin.cmds.passphrase_funcs import get_current_passphrase
+from littlelambocoin.daemon.client import DaemonProxy, connect_to_daemon_and_validate
+from littlelambocoin.util.keychain import KeyringMaxUnlockAttempts
+from littlelambocoin.util.service_groups import services_for_groups
 
 
 def launch_start_daemon(root_path: Path) -> subprocess.Popen:
     os.environ["SHIBGREEN_ROOT"] = str(root_path)
     # TODO: use startupinfo=subprocess.DETACHED_PROCESS on windows
-    shibgreen = sys.argv[0]
-    process = subprocess.Popen(f"{shibgreen} run_daemon --wait-for-unlock".split(), stdout=subprocess.PIPE)
+    littlelambocoin = sys.argv[0]
+    process = subprocess.Popen(f"{littlelambocoin} run_daemon --wait-for-unlock".split(), stdout=subprocess.PIPE)
     return process
 
 
@@ -53,7 +53,7 @@ async def async_start(root_path: Path, group: str, restart: bool) -> None:
         return None
 
     if daemon is None:
-        print("Failed to create the shibgreen daemon")
+        print("Failed to create the littlelambocoin daemon")
         return None
 
     for service in services_for_groups(group):

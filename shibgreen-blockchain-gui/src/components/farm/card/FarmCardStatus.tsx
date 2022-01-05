@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { StateIndicator, State } from '@shibgreen/core';
+import { StateIndicator, State } from '@littlelambocoin/core';
 import FarmCard from './FarmCard';
 import FarmCardNotAvailable from './FarmCardNotAvailable';
 import useFarmerStatus from '../../../hooks/useFarmerStatus';

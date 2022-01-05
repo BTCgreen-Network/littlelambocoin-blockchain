@@ -2,8 +2,8 @@ from typing import List, Tuple, Optional
 
 import aiosqlite
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.db_wrapper import DBWrapper
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.db_wrapper import DBWrapper
 
 
 class WalletInterestedStore:

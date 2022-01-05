@@ -3,9 +3,9 @@ import logging
 import os
 import pytest
 
-from shibgreen.util.file_keyring import acquire_writer_lock, FileKeyring, FileKeyringLockTimeout
-from shibgreen.util.keyring_wrapper import KeyringWrapper
-from shibgreen.util.path import mkdir
+from littlelambocoin.util.file_keyring import acquire_writer_lock, FileKeyring, FileKeyringLockTimeout
+from littlelambocoin.util.keyring_wrapper import KeyringWrapper
+from littlelambocoin.util.path import mkdir
 from multiprocessing import Pool, TimeoutError
 from pathlib import Path
 from sys import platform

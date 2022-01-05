@@ -1,13 +1,13 @@
 from clvm_tools import binutils
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.program import Program
 from typing import List, Optional, Tuple
 from blspy import G1Element
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.util.ints import uint64
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
-from shibgreen.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
 
 
 SINGLETON_TOP_LAYER_MOD = load_clvm("singleton_top_layer.clvm")

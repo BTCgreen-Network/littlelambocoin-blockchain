@@ -2,10 +2,10 @@ import asyncio
 
 import pytest
 
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint64
-from shibgreen.wallet.rl_wallet.rl_wallet import RLWallet
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint64
+from littlelambocoin.wallet.rl_wallet.rl_wallet import RLWallet
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 

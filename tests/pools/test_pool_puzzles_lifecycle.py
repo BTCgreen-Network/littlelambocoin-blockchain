@@ -5,23 +5,23 @@ from unittest import TestCase
 
 from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.ints import uint64, uint32
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.ints import uint64, uint32
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     puzzle_for_pk,
     solution_for_conditions,
     calculate_synthetic_secret_key,
     DEFAULT_HIDDEN_PUZZLE_HASH,
 )
-from shibgreen.wallet.puzzles.p2_conditions import puzzle_for_conditions
-from shibgreen.wallet.puzzles import singleton_top_layer
-from shibgreen.pools.pool_wallet_info import PoolState
-from shibgreen.pools.pool_puzzles import (
+from littlelambocoin.wallet.puzzles.p2_conditions import puzzle_for_conditions
+from littlelambocoin.wallet.puzzles import singleton_top_layer
+from littlelambocoin.pools.pool_wallet_info import PoolState
+from littlelambocoin.pools.pool_puzzles import (
     create_waiting_room_inner_puzzle,
     create_pooling_inner_puzzle,
     create_p2_singleton_puzzle,
@@ -47,9 +47,9 @@ from tests.clvm.coin_store import CoinStore, CoinTimestamp, BadSpendBundleError
 
 """
 This test suite aims to test:
-    - shibgreen.pools.pool_puzzles.py
-    - shibgreen.wallet.puzzles.pool_member_innerpuz.clvm
-    - shibgreen.wallet.puzzles.pool_waiting_room_innerpuz.clvm
+    - littlelambocoin.pools.pool_puzzles.py
+    - littlelambocoin.wallet.puzzles.pool_member_innerpuz.clvm
+    - littlelambocoin.wallet.puzzles.pool_waiting_room_innerpuz.clvm
 """
 
 

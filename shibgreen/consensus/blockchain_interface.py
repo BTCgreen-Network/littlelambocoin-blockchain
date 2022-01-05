@@ -1,12 +1,12 @@
 from typing import Dict, List, Optional
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import VDFInfo
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.weight_proof import SubEpochChallengeSegment
-from shibgreen.util.ints import uint32
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.weight_proof import SubEpochChallengeSegment
+from littlelambocoin.util.ints import uint32
 
 
 class BlockchainInterface:

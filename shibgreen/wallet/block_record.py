@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import List
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { FormatBytes } from '@shibgreen/core';
+import { FormatBytes } from '@littlelambocoin/core';
 import usePlots from '../../../hooks/usePlots';
 import FarmCard from './FarmCard';
 

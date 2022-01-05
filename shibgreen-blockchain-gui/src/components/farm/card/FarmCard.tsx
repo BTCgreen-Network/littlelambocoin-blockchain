@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactElement } from 'react';
 import styled from 'styled-components';
-import { Flex, TooltipIcon } from '@shibgreen/core';
+import { Flex, TooltipIcon } from '@littlelambocoin/core';
 import {
   Box,
   Card,

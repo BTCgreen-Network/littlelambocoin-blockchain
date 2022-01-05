@@ -3,11 +3,11 @@ from typing import List, Optional
 
 from blspy import G2Element
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.pool_target import PoolTarget
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

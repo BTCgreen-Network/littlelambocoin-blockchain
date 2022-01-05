@@ -8,7 +8,7 @@ import {
   CardStep,
   Flex,
   TextField,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import { Typography } from '@material-ui/core';
 import useSelectDirectory from '../../../hooks/useSelectDirectory';
 import Plotter from '../../../types/Plotter';

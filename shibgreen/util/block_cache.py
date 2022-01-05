@@ -1,13 +1,13 @@
 import logging
 from typing import Dict, List, Optional
 
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.blockchain_interface import BlockchainInterface
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
-from shibgreen.util.ints import uint32
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
+from littlelambocoin.util.ints import uint32
 
 
 class BlockCache(BlockchainInterface):

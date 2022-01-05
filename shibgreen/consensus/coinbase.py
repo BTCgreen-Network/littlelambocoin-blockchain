@@ -1,9 +1,9 @@
 from blspy import G1Element
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_for_pk
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_for_pk
 
 
 def create_puzzlehash_for_pk(pub_key: G1Element) -> bytes32:

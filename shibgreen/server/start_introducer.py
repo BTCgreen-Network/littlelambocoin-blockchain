@@ -1,12 +1,12 @@
 import pathlib
 from typing import Dict
 
-from shibgreen.introducer.introducer import Introducer
-from shibgreen.introducer.introducer_api import IntroducerAPI
-from shibgreen.server.outbound_message import NodeType
-from shibgreen.server.start_service import run_service
-from shibgreen.util.config import load_config_cli
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.introducer.introducer import Introducer
+from littlelambocoin.introducer.introducer_api import IntroducerAPI
+from littlelambocoin.server.outbound_message import NodeType
+from littlelambocoin.server.start_service import run_service
+from littlelambocoin.util.config import load_config_cli
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
 
 # See: https://bugs.python.org/issue29288
 "".encode("idna")

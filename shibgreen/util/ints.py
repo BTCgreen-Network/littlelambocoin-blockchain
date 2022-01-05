@@ -1,6 +1,6 @@
 from typing import Any, BinaryIO
 
-from shibgreen.util.struct_stream import StructStream
+from littlelambocoin.util.struct_stream import StructStream
 
 
 class int8(StructStream):

@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from shibgreen.types.blockchain_format.foliage import Foliage
-from shibgreen.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.blockchain_format.vdf import VDFInfo, VDFProof
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.foliage import Foliage
+from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlock, RewardChainBlockUnfinished
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.streamable import Streamable, streamable
 
 """
 Protocol between timelord and full node.

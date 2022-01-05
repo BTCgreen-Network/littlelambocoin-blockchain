@@ -1,10 +1,10 @@
-from shibgreen.protocols import full_node_protocol, introducer_protocol, wallet_protocol
-from shibgreen.server.outbound_message import NodeType
-from shibgreen.server.ws_connection import WSSHIBgreenConnection
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.util.api_decorators import api_request, peer_required, execute_task
-from shibgreen.util.errors import Err
-from shibgreen.wallet.wallet_node import WalletNode
+from littlelambocoin.protocols import full_node_protocol, introducer_protocol, wallet_protocol
+from littlelambocoin.server.outbound_message import NodeType
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.util.api_decorators import api_request, peer_required, execute_task
+from littlelambocoin.util.errors import Err
+from littlelambocoin.wallet.wallet_node import WalletNode
 
 
 class WalletNodeAPI:
@@ -23,10 +23,10 @@ class WalletNodeAPI:
 
     @peer_required
     @api_request
-    async def respond_removals(self, response: wallet_protocol.RespondRemovals, peer: WSSHIBgreenConnection):
+    async def respond_removals(self, response: wallet_protocol.RespondRemovals, peer: WSLittlelambocoinConnection):
         pass
 
-    async def reject_removals_request(self, response: wallet_protocol.RejectRemovalsRequest, peer: WSSHIBgreenConnection):
+    async def reject_removals_request(self, response: wallet_protocol.RejectRemovalsRequest, peer: WSLittlelambocoinConnection):
         """
         The full node has rejected our request for removals.
         """
@@ -42,7 +42,7 @@ class WalletNodeAPI:
     @execute_task
     @peer_required
     @api_request
-    async def new_peak_wallet(self, peak: wallet_protocol.NewPeakWallet, peer: WSSHIBgreenConnection):
+    async def new_peak_wallet(self, peak: wallet_protocol.NewPeakWallet, peer: WSLittlelambocoinConnection):
         """
         The full node sent as a new peak
         """
@@ -61,7 +61,7 @@ class WalletNodeAPI:
 
     @peer_required
     @api_request
-    async def respond_additions(self, response: wallet_protocol.RespondAdditions, peer: WSSHIBgreenConnection):
+    async def respond_additions(self, response: wallet_protocol.RespondAdditions, peer: WSLittlelambocoinConnection):
         pass
 
     @api_request
@@ -70,7 +70,7 @@ class WalletNodeAPI:
 
     @peer_required
     @api_request
-    async def transaction_ack(self, ack: wallet_protocol.TransactionAck, peer: WSSHIBgreenConnection):
+    async def transaction_ack(self, ack: wallet_protocol.TransactionAck, peer: WSLittlelambocoinConnection):
         """
         This is an ack for our previous SendTransaction call. This removes the transaction from
         the send queue if we have sent it to enough nodes.
@@ -94,7 +94,7 @@ class WalletNodeAPI:
     @peer_required
     @api_request
     async def respond_peers_introducer(
-        self, request: introducer_protocol.RespondPeersIntroducer, peer: WSSHIBgreenConnection
+        self, request: introducer_protocol.RespondPeersIntroducer, peer: WSLittlelambocoinConnection
     ):
         if not self.wallet_node.has_full_node():
             await self.wallet_node.wallet_peers.respond_peers(request, peer.get_peer_info(), False)
@@ -106,7 +106,7 @@ class WalletNodeAPI:
 
     @peer_required
     @api_request
-    async def respond_peers(self, request: full_node_protocol.RespondPeers, peer: WSSHIBgreenConnection):
+    async def respond_peers(self, request: full_node_protocol.RespondPeers, peer: WSLittlelambocoinConnection):
         if not self.wallet_node.has_full_node():
             self.log.info(f"Wallet received {len(request.peer_list)} peers.")
             await self.wallet_node.wallet_peers.respond_peers(request, peer.get_peer_info(), True)

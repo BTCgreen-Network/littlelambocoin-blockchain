@@ -2,10 +2,10 @@ from typing import List, Optional
 
 import aiosqlite
 
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint32
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet_action import WalletAction
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet_action import WalletAction
 
 
 class WalletActionStore:

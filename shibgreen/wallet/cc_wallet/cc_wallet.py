@@ -8,23 +8,23 @@ from typing import Any, Dict, List, Optional, Set
 
 from blspy import AugSchemeMPL, G2Element
 
-from shibgreen.consensus.cost_calculator import calculate_cost_of_program, NPCResult
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.protocols.wallet_protocol import PuzzleSolutionResponse
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
-from shibgreen.util.json_util import dict_to_json_str
-from shibgreen.wallet.block_record import HeaderBlockRecord
-from shibgreen.wallet.cc_wallet.cc_info import CCInfo
-from shibgreen.wallet.cc_wallet.cc_utils import (
+from littlelambocoin.consensus.cost_calculator import calculate_cost_of_program, NPCResult
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.protocols.wallet_protocol import PuzzleSolutionResponse
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.json_util import dict_to_json_str
+from littlelambocoin.wallet.block_record import HeaderBlockRecord
+from littlelambocoin.wallet.cc_wallet.cc_info import CCInfo
+from littlelambocoin.wallet.cc_wallet.cc_utils import (
     CC_MOD,
     SpendableCC,
     cc_puzzle_for_inner_puzzle,
@@ -33,22 +33,22 @@ from shibgreen.wallet.cc_wallet.cc_utils import (
     spend_bundle_for_spendable_ccs,
     uncurry_cc,
 )
-from shibgreen.wallet.derivation_record import DerivationRecord
-from shibgreen.wallet.puzzles.genesis_by_coin_id_with_0 import (
+from littlelambocoin.wallet.derivation_record import DerivationRecord
+from littlelambocoin.wallet.puzzles.genesis_by_coin_id_with_0 import (
     create_genesis_or_zero_coin_checker,
     genesis_coin_id_for_genesis_coin_checker,
     lineage_proof_for_genesis,
 )
-from shibgreen.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
 )
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.transaction_type import TransactionType
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet import Wallet
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
-from shibgreen.wallet.wallet_info import WalletInfo
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.transaction_type import TransactionType
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet import Wallet
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.wallet.wallet_info import WalletInfo
 
 
 class CCWallet:

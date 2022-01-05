@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.hash import std_hash
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.hash import std_hash
 
 
 @dataclass(frozen=True)

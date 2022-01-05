@@ -1,7 +1,7 @@
 from secrets import token_bytes
 
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace  # pylint: disable=E0401
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace  # pylint: disable=E0401
 
 
 class TestProofOfSpace:

@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from shibgreen.types.blockchain_format.foliage import Foliage, FoliageTransactionBlock, TransactionsInfo
-from shibgreen.types.blockchain_format.reward_chain_block import RewardChainBlock
-from shibgreen.types.blockchain_format.vdf import VDFProof
-from shibgreen.types.end_of_slot_bundle import EndOfSubSlotBundle
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.types.blockchain_format.foliage import Foliage, FoliageTransactionBlock, TransactionsInfo
+from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlock
+from littlelambocoin.types.blockchain_format.vdf import VDFProof
+from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

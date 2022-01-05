@@ -4,10 +4,10 @@
 # from secrets import token_bytes
 # import aiosqlite
 # import pytest
-# from shibgreen.util.ints import uint32, uint64, uint128
-# from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
-# from shibgreen.wallet.util.wallet_types import WalletType
-# from shibgreen.types.coin import Coin
+# from littlelambocoin.util.ints import uint32, uint64, uint128
+# from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
+# from littlelambocoin.wallet.util.wallet_types import WalletType
+# from littlelambocoin.types.coin import Coin
 #
 #
 # @pytest.fixture(scope="module")

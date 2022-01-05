@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@material-ui/core';
 import type PoolInfoType from '../../types/PoolInfo';
-import { CardKeyValue, Flex, Link } from '@shibgreen/core';
+import { CardKeyValue, Flex, Link } from '@littlelambocoin/core';
 
 type Props = {
   poolInfo: PoolInfoType;

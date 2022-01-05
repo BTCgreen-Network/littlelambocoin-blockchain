@@ -9,23 +9,23 @@ import pytest
 from blspy import AugSchemeMPL
 from chiapos import DiskPlotter
 
-from shibgreen.consensus.coinbase import create_puzzlehash_for_pk
-from shibgreen.plotting.util import stream_plot_info_ph, stream_plot_info_pk, PlotRefreshResult, PlotRefreshEvents
-from shibgreen.plotting.manager import PlotManager
-from shibgreen.protocols import farmer_protocol
-from shibgreen.rpc.farmer_rpc_api import FarmerRpcApi
-from shibgreen.rpc.farmer_rpc_client import FarmerRpcClient
-from shibgreen.rpc.harvester_rpc_api import HarvesterRpcApi
-from shibgreen.rpc.harvester_rpc_client import HarvesterRpcClient
-from shibgreen.rpc.rpc_server import start_rpc_server
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from littlelambocoin.consensus.coinbase import create_puzzlehash_for_pk
+from littlelambocoin.plotting.util import stream_plot_info_ph, stream_plot_info_pk, PlotRefreshResult, PlotRefreshEvents
+from littlelambocoin.plotting.manager import PlotManager
+from littlelambocoin.protocols import farmer_protocol
+from littlelambocoin.rpc.farmer_rpc_api import FarmerRpcApi
+from littlelambocoin.rpc.farmer_rpc_client import FarmerRpcClient
+from littlelambocoin.rpc.harvester_rpc_api import HarvesterRpcApi
+from littlelambocoin.rpc.harvester_rpc_client import HarvesterRpcClient
+from littlelambocoin.rpc.rpc_server import start_rpc_server
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
 from tests.block_tools import get_plot_dir
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.config import load_config, save_config
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint16, uint32, uint64
-from shibgreen.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_pooling_authentication_sk
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.config import load_config, save_config
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint16, uint32, uint64
+from littlelambocoin.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_pooling_authentication_sk
 from tests.setup_nodes import bt, self_hostname, setup_farmer_harvester, test_constants
 from tests.time_out_assert import time_out_assert, time_out_assert_custom_interval
 
@@ -357,7 +357,7 @@ class TestRpc:
                 expected_directories=1,
                 expect_total_plots=0,
             )
-            # Recover the plots to test xshibhing
+            # Recover the plots to test llching
             # First make sure cache gets written if required and new plots are loaded
             await test_case(
                 client_2.add_plot_directory(str(get_plot_dir())),
@@ -460,7 +460,7 @@ class TestRpc:
                 master_sk_to_wallet_sk(bt.pool_master_sk, uint32(472)).get_g1()
             )
 
-            await client.set_reward_targets(encode_puzzle_hash(new_ph, "xshib"), encode_puzzle_hash(new_ph_2, "xshib"))
+            await client.set_reward_targets(encode_puzzle_hash(new_ph, "llc"), encode_puzzle_hash(new_ph_2, "llc"))
             targets_3 = await client.get_reward_targets(True)
             assert decode_puzzle_hash(targets_3["farmer_target"]) == new_ph
             assert decode_puzzle_hash(targets_3["pool_target"]) == new_ph_2
@@ -469,7 +469,7 @@ class TestRpc:
             new_ph_3: bytes32 = create_puzzlehash_for_pk(
                 master_sk_to_wallet_sk(bt.pool_master_sk, uint32(1888)).get_g1()
             )
-            await client.set_reward_targets(None, encode_puzzle_hash(new_ph_3, "xshib"))
+            await client.set_reward_targets(None, encode_puzzle_hash(new_ph_3, "llc"))
             targets_4 = await client.get_reward_targets(True)
             assert decode_puzzle_hash(targets_4["farmer_target"]) == new_ph
             assert decode_puzzle_hash(targets_4["pool_target"]) == new_ph_3
@@ -477,10 +477,10 @@ class TestRpc:
 
             root_path = farmer_api.farmer._root_path
             config = load_config(root_path, "config.yaml")
-            assert config["farmer"]["xshib_target_address"] == encode_puzzle_hash(new_ph, "xshib")
-            assert config["pool"]["xshib_target_address"] == encode_puzzle_hash(new_ph_3, "xshib")
+            assert config["farmer"]["llc_target_address"] == encode_puzzle_hash(new_ph, "llc")
+            assert config["pool"]["llc_target_address"] == encode_puzzle_hash(new_ph_3, "llc")
 
-            new_ph_3_encoded = encode_puzzle_hash(new_ph_3, "xshib")
+            new_ph_3_encoded = encode_puzzle_hash(new_ph_3, "llc")
             added_char = new_ph_3_encoded + "a"
             with pytest.raises(ValueError):
                 await client.set_reward_targets(None, added_char)

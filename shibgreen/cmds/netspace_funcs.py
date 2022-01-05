@@ -2,12 +2,12 @@ from typing import Optional
 
 import aiohttp
 
-from shibgreen.rpc.full_node_rpc_client import FullNodeRpcClient
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.ints import uint16
-from shibgreen.util.misc import format_bytes
+from littlelambocoin.rpc.full_node_rpc_client import FullNodeRpcClient
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.ints import uint16
+from littlelambocoin.util.misc import format_bytes
 
 
 async def netstorge_async(rpc_port: Optional[int], delta_block_height: str, start: str) -> None:

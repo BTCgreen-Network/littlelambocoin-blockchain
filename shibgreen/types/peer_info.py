@@ -2,8 +2,8 @@ import ipaddress
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from shibgreen.util.ints import uint16, uint64
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.util.ints import uint16, uint64
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

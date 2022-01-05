@@ -10,7 +10,7 @@ import {
   Loading,
   Table,
   IconButton,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import { Button, Tooltip } from '@material-ui/core';
 import { service_connection_types } from '../../util/service_names';
 import Connection from '../../types/Connection';

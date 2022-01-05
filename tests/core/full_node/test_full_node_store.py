@@ -7,19 +7,19 @@ from typing import List, Optional
 
 import pytest
 
-from shibgreen.consensus.blockchain import ReceiveBlockResult
-from shibgreen.consensus.multiprocess_validation import PreValidationResult
-from shibgreen.consensus.pot_iterations import is_overflow_block
-from shibgreen.full_node.full_node_store import FullNodeStore
-from shibgreen.full_node.signage_point import SignagePoint
-from shibgreen.protocols import timelord_protocol
-from shibgreen.protocols.timelord_protocol import NewInfusionPointVDF
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.unfinished_block import UnfinishedBlock
-from shibgreen.util.block_cache import BlockCache
+from littlelambocoin.consensus.blockchain import ReceiveBlockResult
+from littlelambocoin.consensus.multiprocess_validation import PreValidationResult
+from littlelambocoin.consensus.pot_iterations import is_overflow_block
+from littlelambocoin.full_node.full_node_store import FullNodeStore
+from littlelambocoin.full_node.signage_point import SignagePoint
+from littlelambocoin.protocols import timelord_protocol
+from littlelambocoin.protocols.timelord_protocol import NewInfusionPointVDF
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.unfinished_block import UnfinishedBlock
+from littlelambocoin.util.block_cache import BlockCache
 from tests.block_tools import get_signage_point, create_block_tools
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 from tests.setup_nodes import test_constants as test_constants_original
 from tests.util.blockchain import create_blockchain
 from tests.util.keyring import TempKeyring

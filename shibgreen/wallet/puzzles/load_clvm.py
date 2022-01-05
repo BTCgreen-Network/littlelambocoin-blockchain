@@ -5,7 +5,7 @@ import pathlib
 
 import pkg_resources
 from clvm_tools.clvmc import compile_clvm as compile_clvm_py
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
 
 compile_clvm = compile_clvm_py
 

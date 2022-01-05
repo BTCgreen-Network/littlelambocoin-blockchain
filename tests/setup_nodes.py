@@ -5,25 +5,25 @@ import signal
 from secrets import token_bytes
 from typing import Dict, List, Optional
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.daemon.server import WebSocketServer, create_server_for_daemon, daemon_launch_lock_path, singleton
-from shibgreen.full_node.full_node_api import FullNodeAPI
-from shibgreen.server.start_farmer import service_kwargs_for_farmer
-from shibgreen.server.start_full_node import service_kwargs_for_full_node
-from shibgreen.server.start_harvester import service_kwargs_for_harvester
-from shibgreen.server.start_introducer import service_kwargs_for_introducer
-from shibgreen.server.start_service import Service
-from shibgreen.server.start_timelord import service_kwargs_for_timelord
-from shibgreen.server.start_wallet import service_kwargs_for_wallet
-from shibgreen.simulator.start_simulator import service_kwargs_for_full_node_simulator
-from shibgreen.timelord.timelord_launcher import kill_processes, spawn_process
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.bech32m import encode_puzzle_hash
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.daemon.server import WebSocketServer, create_server_for_daemon, daemon_launch_lock_path, singleton
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
+from littlelambocoin.server.start_farmer import service_kwargs_for_farmer
+from littlelambocoin.server.start_full_node import service_kwargs_for_full_node
+from littlelambocoin.server.start_harvester import service_kwargs_for_harvester
+from littlelambocoin.server.start_introducer import service_kwargs_for_introducer
+from littlelambocoin.server.start_service import Service
+from littlelambocoin.server.start_timelord import service_kwargs_for_timelord
+from littlelambocoin.server.start_wallet import service_kwargs_for_wallet
+from littlelambocoin.simulator.start_simulator import service_kwargs_for_full_node_simulator
+from littlelambocoin.timelord.timelord_launcher import kill_processes, spawn_process
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.bech32m import encode_puzzle_hash
 from tests.block_tools import create_block_tools, create_block_tools_async, test_constants
 from tests.util.keyring import TempKeyring
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint16, uint32
-from shibgreen.util.keychain import bytes_to_mnemonic
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint16, uint32
+from littlelambocoin.util.keychain import bytes_to_mnemonic
 from tests.time_out_assert import time_out_assert_custom_interval
 
 
@@ -217,10 +217,10 @@ async def setup_farmer(
     config = bt.config["farmer"]
     config_pool = bt.config["pool"]
 
-    config["xshib_target_address"] = encode_puzzle_hash(b_tools.farmer_ph, "xshib")
+    config["llc_target_address"] = encode_puzzle_hash(b_tools.farmer_ph, "llc")
     config["pool_public_keys"] = [bytes(pk).hex() for pk in b_tools.pool_pubkeys]
     config["port"] = port
-    config_pool["xshib_target_address"] = encode_puzzle_hash(b_tools.pool_ph, "xshib")
+    config_pool["llc_target_address"] = encode_puzzle_hash(b_tools.pool_ph, "llc")
 
     if full_node_port:
         config["full_node_peer"]["host"] = self_hostname

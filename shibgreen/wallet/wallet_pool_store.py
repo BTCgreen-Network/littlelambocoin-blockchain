@@ -3,9 +3,9 @@ from typing import List, Tuple, Dict, Optional
 
 import aiosqlite
 
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint32
 
 log = logging.getLogger(__name__)
 

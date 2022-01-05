@@ -3,13 +3,13 @@ from unittest import TestCase
 
 from blspy import AugSchemeMPL, BasicSchemeMPL, G1Element, G2Element
 
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.condition_tools import ConditionOpcode
-from shibgreen.util.hash import std_hash
-from shibgreen.wallet.puzzles import (
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.condition_tools import ConditionOpcode
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.wallet.puzzles import (
     p2_conditions,
     p2_delegated_conditions,
     p2_delegated_puzzle,

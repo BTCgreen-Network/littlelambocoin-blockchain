@@ -12,7 +12,7 @@ import {
   Form,
   FormBackButton,
   State,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import { useForm } from 'react-hook-form';
 import { ChevronRight as ChevronRightIcon } from '@material-ui/icons';
 import { Grid, Typography } from '@material-ui/core';
@@ -21,7 +21,7 @@ import usePlotNFTs from '../../hooks/usePlotNFTs';
 import { pwAbsorbRewards } from '../../modules/plotNFT';
 import { SubmitData } from './select/PlotNFTSelectPool';
 import PlotNFTName from './PlotNFTName';
-import { mojo_to_shibgreen, shibgreen_to_mojo } from '../../util/shibgreen';
+import { mojo_to_littlelambocoin, littlelambocoin_to_mojo } from '../../util/littlelambocoin';
 import useStandardWallet from '../../hooks/useStandardWallet';
 
 type FormData = {
@@ -64,7 +64,7 @@ export default function PlotNFTAbsorbRewards(props: Props) {
 
       const { fee } = data;
 
-      const feeMojos = shibgreen_to_mojo(fee);
+      const feeMojos = littlelambocoin_to_mojo(fee);
 
       if (walletId === undefined || !address) {
         return;
@@ -137,7 +137,7 @@ export default function PlotNFTAbsorbRewards(props: Props) {
               <Trans>
                 You will recieve{' '}
                 <UnitFormat
-                  value={mojo_to_shibgreen(BigInt(balance))}
+                  value={mojo_to_littlelambocoin(BigInt(balance))}
                   display="inline"
                   state={State.SUCCESS}
                 />{' '}

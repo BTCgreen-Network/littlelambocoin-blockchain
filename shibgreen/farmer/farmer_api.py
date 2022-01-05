@@ -5,26 +5,26 @@ from typing import Callable, Optional, List, Any, Dict, Tuple
 import aiohttp
 from blspy import AugSchemeMPL, G2Element, PrivateKey
 
-import shibgreen.server.ws_connection as ws
-from shibgreen.consensus.network_type import NetworkType
-from shibgreen.consensus.pot_iterations import calculate_iterations_quality, calculate_sp_interval_iters
-from shibgreen.farmer.farmer import Farmer
-from shibgreen.protocols import farmer_protocol, harvester_protocol
-from shibgreen.protocols.harvester_protocol import PoolDifficulty
-from shibgreen.protocols.pool_protocol import (
+import littlelambocoin.server.ws_connection as ws
+from littlelambocoin.consensus.network_type import NetworkType
+from littlelambocoin.consensus.pot_iterations import calculate_iterations_quality, calculate_sp_interval_iters
+from littlelambocoin.farmer.farmer import Farmer
+from littlelambocoin.protocols import farmer_protocol, harvester_protocol
+from littlelambocoin.protocols.harvester_protocol import PoolDifficulty
+from littlelambocoin.protocols.pool_protocol import (
     get_current_authentication_token,
     PoolErrorCode,
     PostPartialRequest,
     PostPartialPayload,
 )
-from shibgreen.protocols.protocol_message_types import ProtocolMessageTypes
-from shibgreen.server.outbound_message import NodeType, make_msg
-from shibgreen.server.server import ssl_context_for_root
-from shibgreen.ssl.create_ssl import get_mozilla_ca_crt
-from shibgreen.types.blockchain_format.pool_target import PoolTarget
-from shibgreen.types.blockchain_format.proof_of_space import ProofOfSpace
-from shibgreen.util.api_decorators import api_request, peer_required
-from shibgreen.util.ints import uint32, uint64
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import NodeType, make_msg
+from littlelambocoin.server.server import ssl_context_for_root
+from littlelambocoin.ssl.create_ssl import get_mozilla_ca_crt
+from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
+from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.util.api_decorators import api_request, peer_required
+from littlelambocoin.util.ints import uint32, uint64
 
 
 def strip_old_entries(pairs: List[Tuple[float, Any]], before: float) -> List[Tuple[float, Any]]:
@@ -49,7 +49,7 @@ class FarmerAPI:
     @api_request
     @peer_required
     async def new_proof_of_space(
-        self, new_proof_of_space: harvester_protocol.NewProofOfSpace, peer: ws.WSSHIBgreenConnection
+        self, new_proof_of_space: harvester_protocol.NewProofOfSpace, peer: ws.WSLittlelambocoinConnection
     ):
         """
         This is a response from the harvester, for a NewChallenge. Here we check if the proof
@@ -519,5 +519,5 @@ class FarmerAPI:
 
     @api_request
     @peer_required
-    async def respond_plots(self, _: harvester_protocol.RespondPlots, peer: ws.WSSHIBgreenConnection):
+    async def respond_plots(self, _: harvester_protocol.RespondPlots, peer: ws.WSLittlelambocoinConnection):
         self.farmer.log.warning(f"Respond plots came too late from: {peer.get_peer_logging()}")

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Trans } from '@lingui/macro';
 import { useFormContext } from 'react-hook-form';
-import { CardStep, ConfirmDialog, Link, Select, StateColor } from '@shibgreen/core';
+import { CardStep, ConfirmDialog, Link, Select, StateColor } from '@littlelambocoin/core';
 import {
   Grid,
   FormControl,
@@ -15,7 +15,7 @@ import { plotSizeOptions } from '../../../constants/plotSizes';
 import useOpenDialog from '../../../hooks/useOpenDialog';
 import Plotter from '../../../types/Plotter';
 
-const MIN_MAINNET_K_SIZE = 32;
+const MIN_MAINNET_K_SIZE = 29;
 
 const StyledFormHelperText = styled(FormHelperText)`
   color: ${StateColor.WARNING};
@@ -80,7 +80,7 @@ export default function PlotAddChooseSize(props: Props) {
           }
           <Link
             target="_blank"
-            href="https://github.com/BTCgreen-Network/shibgreen-blockchain/wiki/k-sizes"
+            href="https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/k-sizes"
           >
             Learn more
           </Link>

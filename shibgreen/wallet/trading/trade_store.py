@@ -2,13 +2,13 @@ from typing import List, Optional
 
 import aiosqlite
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.errors import Err
-from shibgreen.util.ints import uint8, uint32
-from shibgreen.wallet.trade_record import TradeRecord
-from shibgreen.wallet.trading.trade_status import TradeStatus
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.ints import uint8, uint32
+from littlelambocoin.wallet.trade_record import TradeRecord
+from littlelambocoin.wallet.trading.trade_status import TradeStatus
 
 
 class TradeStore:

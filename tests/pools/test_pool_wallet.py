@@ -5,15 +5,15 @@ from typing import List
 import pytest
 from blspy import PrivateKey
 
-from shibgreen.pools.pool_wallet import PoolWallet
-from shibgreen.pools.pool_wallet_info import PoolState, FARMING_TO_POOL
-from shibgreen.simulator.simulator_protocol import FarmNewBlockProtocol
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.ints import uint16, uint32
-from shibgreen.wallet.derive_keys import master_sk_to_singleton_owner_sk
-from shibgreen.wallet.wallet_state_manager import WalletStateManager
+from littlelambocoin.pools.pool_wallet import PoolWallet
+from littlelambocoin.pools.pool_wallet_info import PoolState, FARMING_TO_POOL
+from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.ints import uint16, uint32
+from littlelambocoin.wallet.derive_keys import master_sk_to_singleton_owner_sk
+from littlelambocoin.wallet.wallet_state_manager import WalletStateManager
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 
 

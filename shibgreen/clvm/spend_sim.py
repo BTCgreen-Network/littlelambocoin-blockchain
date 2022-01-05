@@ -2,35 +2,35 @@ import aiosqlite
 
 from typing import Optional, List, Dict, Tuple, Any
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.util.ints import uint64, uint32
-from shibgreen.util.hash import std_hash
-from shibgreen.util.errors import Err, ValidationError
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.full_node.mempool_manager import MempoolManager
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.consensus.coinbase import create_pool_coin, create_farmer_coin
-from shibgreen.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
-from shibgreen.consensus.cost_calculator import NPCResult
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.util.ints import uint64, uint32
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.errors import Err, ValidationError
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.full_node.mempool_manager import MempoolManager
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.consensus.coinbase import create_pool_coin, create_farmer_coin
+from littlelambocoin.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
+from littlelambocoin.consensus.cost_calculator import NPCResult
 
 """
-The purpose of this file is to provide a lightweight simulator for the testing of SHIBgreenlisp smart contracts.
+The purpose of this file is to provide a lightweight simulator for the testing of Littlelambocoinlisp smart contracts.
 
 The Node object uses actual MempoolManager, Mempool and CoinStore objects, while substituting FullBlock and
 BlockRecord objects for trimmed down versions.
 
-There is also a provided NodeClient object which implements many of the methods from shibgreen.rpc.full_node_rpc_client
+There is also a provided NodeClient object which implements many of the methods from littlelambocoin.rpc.full_node_rpc_client
 and is designed so that you could test with it and then swap in a real rpc client that uses the same code you tested.
 """
 

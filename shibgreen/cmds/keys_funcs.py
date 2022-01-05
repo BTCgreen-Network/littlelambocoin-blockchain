@@ -2,13 +2,13 @@ from typing import List
 
 from blspy import AugSchemeMPL, G1Element, G2Element
 
-from shibgreen.consensus.coinbase import create_puzzlehash_for_pk
-from shibgreen.util.bech32m import encode_puzzle_hash
-from shibgreen.util.config import load_config
-from shibgreen.util.default_root import DEFAULT_ROOT_PATH
-from shibgreen.util.ints import uint32
-from shibgreen.util.keychain import Keychain, bytes_to_mnemonic, generate_mnemonic, unlocks_keyring
-from shibgreen.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_pool_sk, master_sk_to_wallet_sk
+from littlelambocoin.consensus.coinbase import create_puzzlehash_for_pk
+from littlelambocoin.util.bech32m import encode_puzzle_hash
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.util.keychain import Keychain, bytes_to_mnemonic, generate_mnemonic, unlocks_keyring
+from littlelambocoin.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_pool_sk, master_sk_to_wallet_sk
 
 keychain: Keychain = Keychain()
 
@@ -21,7 +21,7 @@ def generate_and_print():
     mnemonic = generate_mnemonic()
     print("Generating private key. Mnemonic (24 secret words):")
     print(mnemonic)
-    print("Note that this key has not been added to the keychain. Run shibgreen keys add")
+    print("Note that this key has not been added to the keychain. Run littlelambocoin keys add")
     return mnemonic
 
 

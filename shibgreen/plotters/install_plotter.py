@@ -1,14 +1,14 @@
 import os
-from shibgreen.plotters.bladebit import install_bladebit
-from shibgreen.plotters.madmax import install_madmax
+from littlelambocoin.plotters.bladebit import install_bladebit
+from littlelambocoin.plotters.madmax import install_madmax
 
 
 def install_plotter(plotter, root_path):
     if plotter == "chiapos":
-        print("SHIBgreenpos already installed. No action taken.")
+        print("Littlelambocoinpos already installed. No action taken.")
         return
     elif plotter == "madmax":
-        if not os.path.exists(root_path / "madmax-plotter/build/shibgreen_plot"):
+        if not os.path.exists(root_path / "madmax-plotter/build/littlelambocoin_plot"):
             print("Installing madmax plotter.")
             try:
                 install_madmax(root_path)

@@ -3,8 +3,8 @@ import { Trans } from '@lingui/macro';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid, Typography, Divider } from '@material-ui/core';
-import { CardHero, Flex, Link } from '@shibgreen/core';
-import { PlotHero as PlotHeroIcon } from '@shibgreen/icons';
+import { CardHero, Flex, Link } from '@littlelambocoin/core';
+import { PlotHero as PlotHeroIcon } from '@littlelambocoin/icons';
 import PlotAddDirectoryDialog from '../PlotAddDirectoryDialog';
 import { refreshPlots } from '../../../modules/harvesterMessages';
 import useOpenDialog from '../../../hooks/useOpenDialog';
@@ -34,11 +34,11 @@ export default function PlotOverviewHero() {
           <Typography variant="body1">
             <Trans>
               {
-                'Plots are allocated space on your hard drive used to farm and earn SHIBgreen. '
+                'Plots are allocated space on your hard drive used to farm and earn Littlelambocoin. '
               }
               <Link
                 target="_blank"
-                href="https://github.com/BTCgreen-Network/shibgreen-blockchain/wiki/Network-Architecture"
+                href="https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Network-Architecture"
               >
                 Learn more
               </Link>

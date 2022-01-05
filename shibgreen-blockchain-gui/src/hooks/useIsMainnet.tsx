@@ -10,5 +10,5 @@ export default function useIsMainnet(): boolean | undefined {
     return undefined;
   }
 
-  return networkPrefix.toLowerCase() === 'xshib';
+  return networkPrefix.toLowerCase() === 'llc';
 }

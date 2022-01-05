@@ -1,6 +1,6 @@
 import pytest
 
-from shibgreen.wallet.shibgreenlisp import (
+from littlelambocoin.wallet.littlelambocoinlisp import (
     apply,
     args,
     cons,
@@ -17,7 +17,7 @@ from shibgreen.wallet.shibgreenlisp import (
 )
 
 
-class TestSHIBgreenlisp:
+class TestLittlelambocoinlisp:
     def test_sexp(self):
         assert sexp() == "()"
         assert sexp(1) == "(1)"

@@ -5,7 +5,7 @@ from asyncio import CancelledError
 
 import pytest
 
-from shibgreen.full_node.lock_queue import LockQueue, LockClient
+from littlelambocoin.full_node.lock_queue import LockQueue, LockClient
 
 log = logging.getLogger(__name__)
 

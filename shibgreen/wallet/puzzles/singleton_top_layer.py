@@ -1,14 +1,14 @@
 from typing import List, Tuple, Optional
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
-from shibgreen.wallet.lineage_proof import LineageProof
-from shibgreen.util.ints import uint64
-from shibgreen.util.hash import std_hash
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.wallet.lineage_proof import LineageProof
+from littlelambocoin.util.ints import uint64
+from littlelambocoin.util.hash import std_hash
 
 SINGLETON_MOD = load_clvm("singleton_top_layer.clvm")
 SINGLETON_MOD_HASH = SINGLETON_MOD.get_tree_hash()

@@ -8,32 +8,32 @@ from typing import Dict, List, Optional, Set, Tuple
 from blspy import G1Element, GTElement
 from chiabip158 import PyBIP158
 
-from shibgreen.util import cached_bls
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.cost_calculator import NPCResult, calculate_cost_of_program
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.full_node.coin_store import CoinStore
-from shibgreen.full_node.mempool import Mempool
-from shibgreen.full_node.mempool_check_conditions import mempool_check_conditions_dict, get_name_puzzle_conditions
-from shibgreen.full_node.pending_tx_cache import PendingTxCache
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import SerializedProgram
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_record import CoinRecord
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.types.mempool_item import MempoolItem
-from shibgreen.types.spend_bundle import SpendBundle
-from shibgreen.util.cached_bls import LOCAL_CACHE
-from shibgreen.util.clvm import int_from_bytes
-from shibgreen.util.condition_tools import pkm_pairs
-from shibgreen.util.errors import Err, ValidationError
-from shibgreen.util.generator_tools import additions_for_npc
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.util.lru_cache import LRUCache
-from shibgreen.util.streamable import recurse_jsonify
+from littlelambocoin.util import cached_bls
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.full_node.coin_store import CoinStore
+from littlelambocoin.full_node.mempool import Mempool
+from littlelambocoin.full_node.mempool_check_conditions import mempool_check_conditions_dict, get_name_puzzle_conditions
+from littlelambocoin.full_node.pending_tx_cache import PendingTxCache
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import SerializedProgram
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_record import CoinRecord
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.types.mempool_item import MempoolItem
+from littlelambocoin.types.spend_bundle import SpendBundle
+from littlelambocoin.util.cached_bls import LOCAL_CACHE
+from littlelambocoin.util.clvm import int_from_bytes
+from littlelambocoin.util.condition_tools import pkm_pairs
+from littlelambocoin.util.errors import Err, ValidationError
+from littlelambocoin.util.generator_tools import additions_for_npc
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.util.lru_cache import LRUCache
+from littlelambocoin.util.streamable import recurse_jsonify
 
 log = logging.getLogger(__name__)
 
@@ -86,7 +86,7 @@ class MempoolManager:
         self.lock = asyncio.Lock()
 
         # The fee per cost must be above this amount to consider the fee "nonzero", and thus able to kick out other
-        # transactions. This prevents spam. This is equivalent to 0.055 XSHIB per block, or about 0.00005 XSHIB for two
+        # transactions. This prevents spam. This is equivalent to 0.055 LLC per block, or about 0.00005 LLC for two
         # spends.
         self.nonzero_fee_minimum_fpc = 5
 
@@ -190,7 +190,7 @@ class MempoolManager:
 
     @staticmethod
     def get_min_fee_increase() -> int:
-        # 0.00001 XSHIB
+        # 0.00001 LLC
         return 10000000
 
     def can_replace(
@@ -423,14 +423,14 @@ class MempoolManager:
                 log.warning(f"{npc.puzzle_hash} != {coin_record.coin.puzzle_hash}")
                 return None, MempoolInclusionStatus.FAILED, Err.WRONG_PUZZLE_HASH
 
-            shibgreenlisp_height = (
+            littlelambocoinlisp_height = (
                 self.peak.prev_transaction_block_height if not self.peak.is_transaction_block else self.peak.height
             )
             assert self.peak.timestamp is not None
             error = mempool_check_conditions_dict(
                 coin_record,
                 npc.condition_dict,
-                uint32(shibgreenlisp_height),
+                uint32(littlelambocoinlisp_height),
                 self.peak.timestamp,
             )
 

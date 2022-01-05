@@ -7,8 +7,8 @@ import logging
 
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
-from shibgreen.plotting.create_plots import resolve_plot_keys
-from shibgreen.plotters.plotters_util import run_plotter, run_command
+from littlelambocoin.plotting.create_plots import resolve_plot_keys
+from littlelambocoin.plotters.plotters_util import run_plotter, run_command
 
 log = logging.getLogger(__name__)
 
@@ -165,7 +165,7 @@ def install_bladebit(root_path):
         raise RuntimeError("Platform not supported yet for bladebit plotter.")
 
 
-def plot_bladebit(args, shibgreen_root_path, root_path):
+def plot_bladebit(args, littlelambocoin_root_path, root_path):
     if not os.path.exists(get_bladebit_executable_path(root_path)):
         print("Installing bladebit plotter.")
         try:
@@ -179,7 +179,7 @@ def plot_bladebit(args, shibgreen_root_path, root_path):
             None,
             None if args.pool_key == b"" else args.pool_key.hex(),
             None if args.contract == "" else args.contract,
-            shibgreen_root_path,
+            littlelambocoin_root_path,
             log,
             args.connect_to_daemon,
         )

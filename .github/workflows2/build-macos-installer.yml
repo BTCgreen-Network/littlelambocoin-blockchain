@@ -99,10 +99,10 @@ jobs:
     - name: Get latest madmax plotter
       run: |
         mkdir "$GITHUB_WORKSPACE/madmax"
-        wget -O "$GITHUB_WORKSPACE/madmax/shibgreen_plot" https://github.com/Chia-Network/chia-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/chia_plot-${{ steps.latest-madmax.outputs.result }}-macos-intel
-        wget -O "$GITHUB_WORKSPACE/madmax/shibgreen_plot_k34" https://github.com/Chia-Network/chia-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/chia_plot_k34-${{ steps.latest-madmax.outputs.result }}-macos-intel
-        chmod +x "$GITHUB_WORKSPACE/madmax/shibgreen_plot"
-        chmod +x "$GITHUB_WORKSPACE/madmax/shibgreen_plot_k34"
+        wget -O "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot" https://github.com/Chia-Network/chia-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/chia_plot-${{ steps.latest-madmax.outputs.result }}-macos-intel
+        wget -O "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot_k34" https://github.com/Chia-Network/chia-plotter-madmax/releases/download/${{ steps.latest-madmax.outputs.result }}/chia_plot_k34-${{ steps.latest-madmax.outputs.result }}-macos-intel
+        chmod +x "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot"
+        chmod +x "$GITHUB_WORKSPACE/madmax/littlelambocoin_plot_k34"
     - name: Run install script
       env:
         INSTALL_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -121,12 +121,12 @@ jobs:
         APPLE_NOTARIZE_PASSWORD: "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
       run: |
         . ./activate
-        cd ./shibgreen-blockchain-gui
+        cd ./littlelambocoin-blockchain-gui
         git status
         cd ../build_scripts
         sh build_macos.sh
     - name: Upload MacOS artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: SHIBgreen-Installer-on-MacOS-10.15-dmg
+        name: Littlelambocoin-Installer-on-MacOS-10.15-dmg
         path: ${{ github.workspace }}/build_scripts/final_installer/

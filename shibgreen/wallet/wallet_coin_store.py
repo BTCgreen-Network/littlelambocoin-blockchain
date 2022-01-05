@@ -3,12 +3,12 @@ from typing import Dict, List, Optional, Set
 import aiosqlite
 import sqlite3
 
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.ints import uint32, uint64
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.ints import uint32, uint64
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
 
 
 class WalletCoinStore:

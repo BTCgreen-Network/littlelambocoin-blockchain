@@ -4,14 +4,14 @@ from secrets import token_bytes
 from blspy import AugSchemeMPL, PrivateKey
 from clvm_tools import binutils
 
-from shibgreen.consensus.default_constants import DEFAULT_CONSTANTS
-from shibgreen.types.blockchain_format.program import Program, INFINITE_COST
-from shibgreen.types.condition_opcodes import ConditionOpcode
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.util.ints import uint32
+from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
+from littlelambocoin.types.blockchain_format.program import Program, INFINITE_COST
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.util.ints import uint32
 from tests.wallet_tools import WalletTool
-from shibgreen.wallet.derive_keys import master_sk_to_wallet_sk
-from shibgreen.wallet.puzzles.p2_delegated_puzzle import puzzle_for_pk
+from littlelambocoin.wallet.derive_keys import master_sk_to_wallet_sk
+from littlelambocoin.wallet.puzzles.p2_delegated_puzzle import puzzle_for_pk
 
 
 def float_to_str(f):
@@ -29,7 +29,7 @@ def float_to_str(f):
     return float_string
 
 
-def run_and_return_cost_time(shibgreenlisp):
+def run_and_return_cost_time(littlelambocoinlisp):
 
     start = time.time()
     clvm_loop = "((c (q ((c (f (a)) (c (f (a)) (c (f (r (a))) (c (f (r (r (a))))"
@@ -37,7 +37,7 @@ def run_and_return_cost_time(shibgreenlisp):
     " (c (- (f (r (a))) (q 1)) (c (f (r (r (a)))) (q ()))))))"
     " ((c (f (r (r (a)))) (q ()))))) (q (q ()))) (a)))) (a))))"
     loop_program = Program.to(binutils.assemble(clvm_loop))
-    clvm_loop_solution = f"(1000 {shibgreenlisp})"
+    clvm_loop_solution = f"(1000 {littlelambocoinlisp})"
     solution_program = Program.to(binutils.assemble(clvm_loop_solution))
 
     cost, sexp = loop_program.run_with_cost(solution_program, INFINITE_COST)

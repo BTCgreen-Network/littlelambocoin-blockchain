@@ -6,13 +6,13 @@ from typing import List
 
 import pytest
 
-from shibgreen.full_node.weight_proof import _validate_sub_epoch_summaries
-from shibgreen.protocols import full_node_protocol
-from shibgreen.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.peer_info import PeerInfo
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint16
+from littlelambocoin.full_node.weight_proof import _validate_sub_epoch_summaries
+from littlelambocoin.protocols import full_node_protocol
+from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.peer_info import PeerInfo
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint16
 from tests.core.node_height import node_height_exactly, node_height_between
 from tests.setup_nodes import bt, self_hostname, setup_n_nodes, setup_two_nodes, test_constants
 from tests.time_out_assert import time_out_assert

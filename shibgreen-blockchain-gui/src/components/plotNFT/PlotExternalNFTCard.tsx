@@ -11,7 +11,7 @@ import {
   Loading,
   FormatLargeNumber,
   Link,
-} from '@shibgreen/core';
+} from '@littlelambocoin/core';
 import {
   Box,
   Card,

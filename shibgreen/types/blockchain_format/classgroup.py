@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.types.blockchain_format.sized_bytes import bytes100
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes100
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

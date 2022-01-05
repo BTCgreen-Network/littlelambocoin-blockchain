@@ -12,56 +12,56 @@ from blspy import AugSchemeMPL, G1Element, PrivateKey
 from chiabip158 import PyBIP158
 from cryptography.fernet import Fernet
 
-from shibgreen import __version__
-from shibgreen.consensus.block_record import BlockRecord
-from shibgreen.consensus.coinbase import pool_parent_id, farmer_parent_id
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.find_fork_point import find_fork_point_in_chain
-from shibgreen.full_node.weight_proof import WeightProofHandler
-from shibgreen.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
-from shibgreen.pools.pool_wallet import PoolWallet
-from shibgreen.protocols.wallet_protocol import PuzzleSolutionResponse, RespondPuzzleSolution
-from shibgreen.types.blockchain_format.coin import Coin
-from shibgreen.types.blockchain_format.program import Program
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.coin_spend import CoinSpend
-from shibgreen.types.full_block import FullBlock
-from shibgreen.types.header_block import HeaderBlock
-from shibgreen.types.mempool_inclusion_status import MempoolInclusionStatus
-from shibgreen.util.byte_types import hexstr_to_bytes
-from shibgreen.util.db_wrapper import DBWrapper
-from shibgreen.util.errors import Err
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint32, uint64, uint128
-from shibgreen.util.db_synchronous import db_synchronous_on
-from shibgreen.wallet.block_record import HeaderBlockRecord
-from shibgreen.wallet.cc_wallet.cc_wallet import CCWallet
-from shibgreen.wallet.derivation_record import DerivationRecord
-from shibgreen.wallet.derive_keys import master_sk_to_backup_sk, master_sk_to_wallet_sk
-from shibgreen.wallet.key_val_store import KeyValStore
-from shibgreen.wallet.rl_wallet.rl_wallet import RLWallet
-from shibgreen.wallet.settings.user_settings import UserSettings
-from shibgreen.wallet.trade_manager import TradeManager
-from shibgreen.wallet.transaction_record import TransactionRecord
-from shibgreen.wallet.util.backup_utils import open_backup_file
-from shibgreen.wallet.util.transaction_type import TransactionType
-from shibgreen.wallet.util.wallet_types import WalletType
-from shibgreen.wallet.wallet import Wallet
-from shibgreen.wallet.wallet_action import WalletAction
-from shibgreen.wallet.wallet_action_store import WalletActionStore
-from shibgreen.wallet.wallet_block_store import WalletBlockStore
-from shibgreen.wallet.wallet_blockchain import WalletBlockchain
-from shibgreen.wallet.wallet_coin_record import WalletCoinRecord
-from shibgreen.wallet.wallet_coin_store import WalletCoinStore
-from shibgreen.wallet.wallet_info import WalletInfo, WalletInfoBackup
-from shibgreen.wallet.wallet_interested_store import WalletInterestedStore
-from shibgreen.wallet.wallet_pool_store import WalletPoolStore
-from shibgreen.wallet.wallet_puzzle_store import WalletPuzzleStore
-from shibgreen.wallet.wallet_sync_store import WalletSyncStore
-from shibgreen.wallet.wallet_transaction_store import WalletTransactionStore
-from shibgreen.wallet.wallet_user_store import WalletUserStore
-from shibgreen.server.server import SHIBgreenServer
-from shibgreen.wallet.did_wallet.did_wallet import DIDWallet
+from littlelambocoin import __version__
+from littlelambocoin.consensus.block_record import BlockRecord
+from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
+from littlelambocoin.full_node.weight_proof import WeightProofHandler
+from littlelambocoin.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
+from littlelambocoin.pools.pool_wallet import PoolWallet
+from littlelambocoin.protocols.wallet_protocol import PuzzleSolutionResponse, RespondPuzzleSolution
+from littlelambocoin.types.blockchain_format.coin import Coin
+from littlelambocoin.types.blockchain_format.program import Program
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.full_block import FullBlock
+from littlelambocoin.types.header_block import HeaderBlock
+from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
+from littlelambocoin.util.byte_types import hexstr_to_bytes
+from littlelambocoin.util.db_wrapper import DBWrapper
+from littlelambocoin.util.errors import Err
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint32, uint64, uint128
+from littlelambocoin.util.db_synchronous import db_synchronous_on
+from littlelambocoin.wallet.block_record import HeaderBlockRecord
+from littlelambocoin.wallet.cc_wallet.cc_wallet import CCWallet
+from littlelambocoin.wallet.derivation_record import DerivationRecord
+from littlelambocoin.wallet.derive_keys import master_sk_to_backup_sk, master_sk_to_wallet_sk
+from littlelambocoin.wallet.key_val_store import KeyValStore
+from littlelambocoin.wallet.rl_wallet.rl_wallet import RLWallet
+from littlelambocoin.wallet.settings.user_settings import UserSettings
+from littlelambocoin.wallet.trade_manager import TradeManager
+from littlelambocoin.wallet.transaction_record import TransactionRecord
+from littlelambocoin.wallet.util.backup_utils import open_backup_file
+from littlelambocoin.wallet.util.transaction_type import TransactionType
+from littlelambocoin.wallet.util.wallet_types import WalletType
+from littlelambocoin.wallet.wallet import Wallet
+from littlelambocoin.wallet.wallet_action import WalletAction
+from littlelambocoin.wallet.wallet_action_store import WalletActionStore
+from littlelambocoin.wallet.wallet_block_store import WalletBlockStore
+from littlelambocoin.wallet.wallet_blockchain import WalletBlockchain
+from littlelambocoin.wallet.wallet_coin_record import WalletCoinRecord
+from littlelambocoin.wallet.wallet_coin_store import WalletCoinStore
+from littlelambocoin.wallet.wallet_info import WalletInfo, WalletInfoBackup
+from littlelambocoin.wallet.wallet_interested_store import WalletInterestedStore
+from littlelambocoin.wallet.wallet_pool_store import WalletPoolStore
+from littlelambocoin.wallet.wallet_puzzle_store import WalletPuzzleStore
+from littlelambocoin.wallet.wallet_sync_store import WalletSyncStore
+from littlelambocoin.wallet.wallet_transaction_store import WalletTransactionStore
+from littlelambocoin.wallet.wallet_user_store import WalletUserStore
+from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.wallet.did_wallet.did_wallet import DIDWallet
 
 
 def get_balance_from_coin_records(coin_records: Set[WalletCoinRecord]) -> uint128:
@@ -115,7 +115,7 @@ class WalletStateManager:
     interested_store: WalletInterestedStore
     pool_store: WalletPoolStore
     weight_proof_handler: Any
-    server: SHIBgreenServer
+    server: LittlelambocoinServer
     root_path: Path
 
     @staticmethod
@@ -124,7 +124,7 @@ class WalletStateManager:
         config: Dict,
         db_path: Path,
         constants: ConsensusConstants,
-        server: SHIBgreenServer,
+        server: LittlelambocoinServer,
         root_path: Path,
         name: str = None,
     ):

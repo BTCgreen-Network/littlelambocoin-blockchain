@@ -1,7 +1,7 @@
 from typing import Dict
 
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.mempool_item import MempoolItem
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.mempool_item import MempoolItem
 
 
 class PendingTxCache:

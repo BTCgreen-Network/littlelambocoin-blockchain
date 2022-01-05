@@ -2,9 +2,9 @@ import asyncio
 
 import pytest
 
-from shibgreen.protocols.protocol_message_types import ProtocolMessageTypes
-from shibgreen.server.outbound_message import make_msg
-from shibgreen.server.rate_limits import RateLimiter, NON_TX_FREQ
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import make_msg
+from littlelambocoin.server.rate_limits import RateLimiter, NON_TX_FREQ
 from tests.setup_nodes import test_constants
 
 

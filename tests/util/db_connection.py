@@ -1,5 +1,5 @@
 from pathlib import Path
-from shibgreen.util.db_wrapper import DBWrapper
+from littlelambocoin.util.db_wrapper import DBWrapper
 import tempfile
 import aiosqlite
 

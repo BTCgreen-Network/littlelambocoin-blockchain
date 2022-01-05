@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from shibgreen.types.blockchain_format.slots import (
+from littlelambocoin.types.blockchain_format.slots import (
     ChallengeChainSubSlot,
     InfusedChallengeChainSubSlot,
     RewardChainSubSlot,
     SubSlotProofs,
 )
-from shibgreen.util.streamable import Streamable, streamable
+from littlelambocoin.util.streamable import Streamable, streamable
 
 
 @dataclass(frozen=True)

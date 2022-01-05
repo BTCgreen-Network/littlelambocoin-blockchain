@@ -1,23 +1,23 @@
 from clvm_tools import binutils
 from clvm_tools.clvmc import compile_clvm_text
 
-from shibgreen.full_node.generator import run_generator
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.types.condition_with_args import ConditionWithArgs
-from shibgreen.types.name_puzzle_condition import NPC
-from shibgreen.types.generator_types import BlockGenerator, GeneratorArg
-from shibgreen.util.clvm import int_to_bytes
-from shibgreen.util.condition_tools import ConditionOpcode
-from shibgreen.util.ints import uint32
-from shibgreen.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.full_node.generator import run_generator
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.name_puzzle_condition import NPC
+from littlelambocoin.types.generator_types import BlockGenerator, GeneratorArg
+from littlelambocoin.util.clvm import int_to_bytes
+from littlelambocoin.util.condition_tools import ConditionOpcode
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 
 MAX_COST = int(1e15)
 COST_PER_BYTE = int(12000)
 
 
-DESERIALIZE_MOD = load_clvm("shibgreenlisp_deserialisation.clvm", package_or_requirement="shibgreen.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("littlelambocoinlisp_deserialisation.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
 
 
 GENERATOR_CODE = """

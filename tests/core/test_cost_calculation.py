@@ -6,13 +6,13 @@ import time
 import pytest
 from clvm_tools import binutils
 
-from shibgreen.consensus.condition_costs import ConditionCost
-from shibgreen.consensus.cost_calculator import NPCResult, calculate_cost_of_program
-from shibgreen.full_node.bundle_tools import simple_solution_generator
-from shibgreen.full_node.mempool_check_conditions import get_name_puzzle_conditions, get_puzzle_and_solution_for_coin
-from shibgreen.types.blockchain_format.program import Program, SerializedProgram
-from shibgreen.types.generator_types import BlockGenerator
-from shibgreen.wallet.puzzles import p2_delegated_puzzle_or_hidden_puzzle
+from littlelambocoin.consensus.condition_costs import ConditionCost
+from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
+from littlelambocoin.full_node.bundle_tools import simple_solution_generator
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions, get_puzzle_and_solution_for_coin
+from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
+from littlelambocoin.types.generator_types import BlockGenerator
+from littlelambocoin.wallet.puzzles import p2_delegated_puzzle_or_hidden_puzzle
 from tests.setup_nodes import bt, test_constants
 
 from .make_block_generator import make_block_generator
@@ -46,7 +46,7 @@ def large_block_generator(size):
     except FileNotFoundError:
         generator = make_block_generator(size)
         blob = bytes(generator.program)
-        #  TODO: Re-enable large-block*.hex but cache in ~/.shibgreen/subdir
+        #  TODO: Re-enable large-block*.hex but cache in ~/.littlelambocoin/subdir
         #  with open(hex_path, "w") as f:
         #      f.write(blob.hex())
         return blob

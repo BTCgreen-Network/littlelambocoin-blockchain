@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { AlertDialog } from '@shibgreen/core';
+import { AlertDialog } from '@littlelambocoin/core';
 import {
   Typography,
   Button,
@@ -20,7 +20,7 @@ import {
 } from '../../../modules/createWallet';
 import { useStyles } from './WalletCreate';
 import { create_rl_admin_action } from '../../../modules/message';
-import { shibgreen_to_mojo } from '../../../util/shibgreen';
+import { littlelambocoin_to_mojo } from '../../../util/littlelambocoin';
 import { openDialog } from '../../../modules/dialog';
 
 export const customStyles = makeStyles((theme) => ({
@@ -76,7 +76,7 @@ export const CreateRLAdminWallet = () => {
   const custom = customStyles();
   const dispatch = useDispatch();
   let interval_input = null;
-  let shibgreenper_input = null;
+  let littlelambocoinper_input = null;
   let userpubkey_input = null;
   let amount_input = null;
   let fee_input = null;
@@ -104,10 +104,10 @@ export const CreateRLAdminWallet = () => {
       return;
     }
     if (
-      shibgreenper_input.value === '' ||
-      Number(shibgreenper_input.value) === 0 ||
-      !Number(shibgreenper_input.value) ||
-      isNaN(Number(shibgreenper_input.value))
+      littlelambocoinper_input.value === '' ||
+      Number(littlelambocoinper_input.value) === 0 ||
+      !Number(littlelambocoinper_input.value) ||
+      isNaN(Number(littlelambocoinper_input.value))
     ) {
       dispatch(
         openDialog(
@@ -156,18 +156,18 @@ export const CreateRLAdminWallet = () => {
     dispatch(createState(true, true));
     const interval = interval_input.value;
     const interval_value = Number.parseInt(Number(interval));
-    const shibgreenper = shibgreen_to_mojo(shibgreenper_input.value);
-    const shibgreenper_value = Number.parseInt(Number(shibgreenper));
+    const littlelambocoinper = littlelambocoin_to_mojo(littlelambocoinper_input.value);
+    const littlelambocoinper_value = Number.parseInt(Number(littlelambocoinper));
     const userpubkey = userpubkey_input.value;
-    const amount = shibgreen_to_mojo(amount_input.value);
+    const amount = littlelambocoin_to_mojo(amount_input.value);
     const amount_value = Number.parseInt(Number(amount));
-    // var fee = shibgreen_to_mojo(fee_input.value);
+    // var fee = littlelambocoin_to_mojo(fee_input.value);
     // TODO(lipa): send fee to server
     // const fee_value = parseInt(Number(fee));
     dispatch(
       create_rl_admin_action(
         interval_value,
-        shibgreenper_value,
+        littlelambocoinper_value,
         userpubkey,
         amount_value,
       ),
@@ -225,7 +225,7 @@ export const CreateRLAdminWallet = () => {
               color="secondary"
               fullWidth
               inputRef={(input) => {
-                shibgreenper_input = input;
+                littlelambocoinper_input = input;
               }}
               label={<Trans>Spendable Amount</Trans>}
             />

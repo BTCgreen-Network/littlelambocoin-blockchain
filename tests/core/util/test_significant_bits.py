@@ -1,6 +1,6 @@
 import unittest
 
-from shibgreen.util.significant_bits import count_significant_bits, truncate_to_significant_bits
+from littlelambocoin.util.significant_bits import count_significant_bits, truncate_to_significant_bits
 
 
 class TestSignificantBits(unittest.TestCase):

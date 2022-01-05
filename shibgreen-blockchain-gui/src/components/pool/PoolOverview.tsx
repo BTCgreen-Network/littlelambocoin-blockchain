@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
 import { useToggle } from 'react-use';
-import { Flex, UnitFormat, More, Table } from '@shibgreen/core';
+import { Flex, UnitFormat, More, Table } from '@littlelambocoin/core';
 import { useHistory } from 'react-router';
 import {
   ViewList as ViewListIcon,
@@ -31,7 +31,7 @@ import PlotNFTStateEnum from '../../constants/PlotNFTState';
 import PlotNFTUnconfirmedCard from '../plotNFT/PlotNFTUnconfirmedCard';
 import PlotNFTState from '../plotNFT/PlotNFTState';
 import useUnconfirmedPlotNFTs from '../../hooks/useUnconfirmedPlotNFTs';
-import { mojo_to_shibgreen } from '../../util/shibgreen';
+import { mojo_to_littlelambocoin } from '../../util/littlelambocoin';
 import WalletStatus from '../wallet/WalletStatus';
 
 const groupsCols = [
@@ -54,7 +54,7 @@ const groupsCols = [
       if (state === PlotNFTStateEnum.SELF_POOLING) {
         return (
           <UnitFormat
-            value={mojo_to_shibgreen(
+            value={mojo_to_littlelambocoin(
               BigInt(nft.wallet_balance.confirmed_wallet_balance ?? 0),
             )}
           />

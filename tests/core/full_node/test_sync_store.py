@@ -2,8 +2,8 @@ import asyncio
 
 import pytest
 
-from shibgreen.full_node.sync_store import SyncStore
-from shibgreen.util.hash import std_hash
+from littlelambocoin.full_node.sync_store import SyncStore
+from littlelambocoin.util.hash import std_hash
 
 
 @pytest.fixture(scope="module")

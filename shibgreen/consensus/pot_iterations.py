@@ -1,8 +1,8 @@
-from shibgreen.consensus.constants import ConsensusConstants
-from shibgreen.consensus.pos_quality import _expected_plot_size
-from shibgreen.types.blockchain_format.sized_bytes import bytes32
-from shibgreen.util.hash import std_hash
-from shibgreen.util.ints import uint8, uint64, uint128
+from littlelambocoin.consensus.constants import ConsensusConstants
+from littlelambocoin.consensus.pos_quality import _expected_plot_size
+from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint8, uint64, uint128
 
 
 def is_overflow_block(constants: ConsensusConstants, signage_point_index: uint8) -> bool:
