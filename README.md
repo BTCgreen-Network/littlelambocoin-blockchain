@@ -6,7 +6,7 @@ Website: https://littlelambocoin.com (coming soon)
 
 Initial 1.0.0 release!
 Per usual should'nt have any issues.
-Full node port: 7442
+Full node port: 4575
 
 
 EARLY ADOPTERS GET MORE SHIBGREEN!!!!

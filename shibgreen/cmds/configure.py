@@ -119,7 +119,7 @@ def configure(
 
         elif testnet == "false" or testnet == "f":
             print("Setting Mainnet")
-            mainnet_port = "7442"
+            mainnet_port = "4575"
             mainnet_introducer = "introducer.littlelambocoin.com"
             mainnet_dns_introducer = "dns-introducer.littlelambocoin.com"
             net = "mainnet"
