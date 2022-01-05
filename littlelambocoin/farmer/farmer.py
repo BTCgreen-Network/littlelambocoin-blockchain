@@ -152,7 +152,7 @@ class Farmer:
         self._private_keys = [master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
             master_sk_to_pool_sk(sk) for sk in self.all_root_sks
         ]
-            self._private_keys = self._private_keys + [master_sk_to_chives_farmer_sk(sk) for sk in self.all_root_sks] + [
+        self._private_keys = self._private_keys + [master_sk_to_chives_farmer_sk(sk) for sk in self.all_root_sks] + [
             master_sk_to_chives_pool_sk(sk) for sk in self.all_root_sks
         ]
 
