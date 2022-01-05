@@ -15,17 +15,17 @@ def calculate_pool_reward(height: uint32) -> uint64:
     """
 
     if height == 0:
-        return uint64(int((7 / 8) * 100000000 * _byte_per_littlelambocoin))
-    elif height < 0.1 * _blocks_per_year:
-        return uint64(int((7 / 8) * 100000 * _byte_per_littlelambocoin))
-    elif height < 0.5 * _blocks_per_year:
-        return uint64(int((7 / 8) * 20000 * _byte_per_littlelambocoin))
-    elif height < 1 * _blocks_per_year:
-        return uint64(int((7 / 8) * 7500 * _byte_per_littlelambocoin))
+        return uint64(int((7 / 8) * 5000000 * _byte_per_littlelambocoin))
+    elif height < 3 * _blocks_per_year:
+        return uint64(int((7 / 8) * 8 * _byte_per_littlelambocoin))
     elif height < 6 * _blocks_per_year:
-        return uint64(int((7 / 8) * 2000 * _byte_per_littlelambocoin))
+        return uint64(int((7 / 8) * 4 * _byte_per_littlelambocoin))
+    elif height < 9 * _blocks_per_year:
+        return uint64(int((7 / 8) * 2 * _byte_per_littlelambocoin))
+    elif height < 12 * _blocks_per_year:
+        return uint64(int((7 / 8) * 1 * _byte_per_littlelambocoin))
     else:
-        return uint64(int((7 / 8) * 200 * _byte_per_littlelambocoin))
+        return uint64(int((7 / 8) * 0.5 * _byte_per_littlelambocoin))
 
 
 def calculate_base_farmer_reward(height: uint32) -> uint64:
@@ -38,14 +38,14 @@ def calculate_base_farmer_reward(height: uint32) -> uint64:
     rates increase continuously.
     """
     if height == 0:
-        return uint64(int((1 / 8) * 100000000 * _byte_per_littlelambocoin))
-    elif height < 0.1 * _blocks_per_year:
-        return uint64(int((1 / 8) * 100000 * _byte_per_littlelambocoin))
-    elif height < 0.5 * _blocks_per_year:
-        return uint64(int((1 / 8) * 20000 * _byte_per_littlelambocoin))
-    elif height < 1 * _blocks_per_year:
-        return uint64(int((1 / 8) * 7500 * _byte_per_littlelambocoin))
+        return uint64(int((1 / 8) * 5000000 * _byte_per_littlelambocoin))
+    elif height < 3 * _blocks_per_year:
+        return uint64(int((1 / 8) * 8 * _byte_per_littlelambocoin))
     elif height < 6 * _blocks_per_year:
-        return uint64(int((1 / 8) * 2000 * _byte_per_littlelambocoin))
+        return uint64(int((1 / 8) * 4 * _byte_per_littlelambocoin))
+    elif height < 9 * _blocks_per_year:
+        return uint64(int((1 / 8) * 2 * _byte_per_littlelambocoin))
+    elif height < 12 * _blocks_per_year:
+        return uint64(int((1 / 8) * 1 * _byte_per_littlelambocoin))
     else:
-        return uint64(int((1 / 8) * 200 * _byte_per_littlelambocoin))
+        return uint64(int((1 / 8) * 0.5 * _byte_per_littlelambocoin))
