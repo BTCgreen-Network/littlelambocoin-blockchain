@@ -1310,7 +1310,7 @@ def get_challenges(
 
 
 def get_plot_dir() -> Path:
-    cache_path = Path(os.path.expanduser(os.getenv("SHIBGREEN_ROOT", "~/.littlelambocoin/"))) / "test-plots"
+    cache_path = Path(os.path.expanduser(os.getenv("LITTLELAMBOCOIN_ROOT", "~/.littlelambocoin/"))) / "test-plots"
     mkdir(cache_path)
     return cache_path
 

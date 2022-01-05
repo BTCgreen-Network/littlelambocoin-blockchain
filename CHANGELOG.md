@@ -524,7 +524,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Temp space sizes needed for k = 33 and higher were accidentally under-reported. The values we have placed into the GUI may be conservative in being too large and appreciate feedback from the community on the new optimal temp space needed and RAM choices.
 - The GUI plotting progress bar was reaching 100% too early. Thanks to @davidbb for the PR.
 - Help -> About was blank.
-- Our estimate for k=32 was about 0.4GiB too low in some cases.
+- Our estimate for k=29 was about 0.4GiB too low in some cases.
 - Building the GUI in especially ARM64 Linux was painful enough to be considered broken.
 
 ## 1.0.4 Littlelambocoin Blockchain 2021-04-12
@@ -653,7 +653,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Found and fixed another green flag related issue
 - Fixed an issue with weight proofs where all sub-epochs were sampled, and the size of the weight proof kept growing
 - Fixed an issue with install-gui.sh, where npm audit fix was failing. (Thanks @Depado!)
-- Migration with SHIBGREEN_ROOT set does not crash littlelambocoin init
+- Migration with LITTLELAMBOCOIN_ROOT set does not crash littlelambocoin init
 
 ## 1.0rc8 aka Release Candidate 8 - 2021-03-15
 
@@ -725,7 +725,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Version 1.0 of our BLS signature library is included. We brought Relic, gmp and MPIR up to their most recent releases. We again thank the Dash team for their fixes and improvements.
 - We now hand build Apple Silicon native binary wheels for all littlelambocoin-blockchain dependencies and host them at [https://pypi.chia.net/simple](https://pypi.chia.net/simple). We are likely to hand build a MacOS ARM64 dmg available and certainly will for 1.0. You can install natively on M1 now with the `git clone` developer method today. Just make sure Python 3.9 is installed. `python3 --version` works.
 - The GUI now shows you which network you are connected to on the Full Node page. It will also wait patiently for the green flag to drop on a network launch.
-- In the GUI you can only plot k=32 or larger with the single exception of k=25 for testing. You will have to confirm choosing k=25 however. Thanks to @jespino for help on this and limiting the cli as well.
+- In the GUI you can only plot k=29 or larger with the single exception of k=25 for testing. You will have to confirm choosing k=25 however. Thanks to @jespino for help on this and limiting the cli as well.
 - The restore smart wallets from backup prompt has been improved to better get the intent across and that it can be skipped.
 - At the top of the plotting wizard we have added text pointing out that you can plot without being in sync or on the internet.
 - Wallet no longer automatically creates a new hierarchical deterministic wallet receive address on each start. You can and still should choose a new one with the `NEW ADDRESS` button for each new transaction for privacy.
@@ -772,7 +772,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 
 ## Changed
 
-- Testnets and mainnet now set their minimum `k` size and enforce it. RC5 testnet will reject plots of size less than k=32.
+- Testnets and mainnet now set their minimum `k` size and enforce it. RC5 testnet will reject plots of size less than k=29.
 - Sub slots now require 16 blocks instead of 12.
 - Thanks to @xdustinface of Dash, the BlS Signature library has been updated to 0.9 with clean ups and some speed ups. This changed how the G2 infinity element was handled and we now manage it inside of littlelambocoin-blockchain, etc., instead of in blspy.
 - We have updated the display of peer nodes and moved adding a peer to it's own pop up in the GUI.
@@ -898,7 +898,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 ### Added
 
-- The Beta 27 chain is a hard fork. All TLLC from previous releases has been reset on this chain. Your keys and plots of k=32 or larger continue to work just fine on this new chain.
+- The Beta 27 chain is a hard fork. All TLLC from previous releases has been reset on this chain. Your keys and plots of k=29 or larger continue to work just fine on this new chain.
 - We now use the rust version of clvm, clvm_rs, in preference to validate transactions. We have additionally published binary wheels or clvm_rs for all four platforms and all three supported python versions. The rust version is approximately 50 times faster than the python version used to validate on chain transactions in previous versions.
 - We have moved to compressed quadratic forms for VDFs. Using compressed representation of quadratic forms reduces their serialized size from 130 to 100 bytes (for forms with 1024-bit discriminant). This shrinks the size of VDF outputs and VDF proofs, and it's a breaking change as the compressed representation is not compatible with the older uncompressed (a, b) representation. Compressed forms are also used in calls to chiavdf and in timelord's communication with VDF clients. The form compression algorithm is based on ["Trustless Groups of Unknown Order with Hyperelliptic Curves"](https://eprint.iacr.org/2020/196) by Samuel Dobson, Steven D. Galbraith and Benjamin Smith.
 - Last Attempted Proof on the Farm tab of the GUI now shows hours:minutes:seconds instead of just hours:minutes. This makes it much easier to see that your farmer is responding to recent challenges at a glance.
@@ -1001,7 +1001,7 @@ all fields that referred to sub blocks are changed to blocks.
 - `littlelambocoin show -c` now displays in MiB and the GUI has been changed to MiB to match.
 - `littlelambocoin configure` now accepts the shorter `-upnp` and `-log-level` arguments also.
 - `littlelambocoin plots check` now defaults to `-n 30` instead of `-n 1` - HT @eFishCent.
-- `littlelambocoin plots create` now enforces a minimum of k=22. As a reminder, anything less than k=32 is just for testing and be careful extrapolating performance of a k less than 30 to a k=32 or larger.
+- `littlelambocoin plots create` now enforces a minimum of k=22. As a reminder, anything less than k=29 is just for testing and be careful extrapolating performance of a k less than 30 to a k=29 or larger.
 - We have updated development dependencies for setuptools, yarl, idna, multidict, and chardet.
 - Updated some copyright dates to 2021.
 
@@ -1042,7 +1042,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 ### Added
 
-- The cli now warns if you attempt to create a plot smaller than k=32.
+- The cli now warns if you attempt to create a plot smaller than k=29.
 - `littlelambocoin configure` now lets you enable or disable uPnP.
 - If a peer gives a bad weight proof it will now be disconnected.
 
@@ -1092,7 +1092,7 @@ all fields that referred to sub blocks are changed to blocks.
 - Total transaction throughput is still targeted at 2.1x Bitcoin's throughput per hour but you will get more confirmations on a transaction much faster. This release has the errata that it doesn't limit transaction block size correctly.
 - For testing purposes this chain is quickly halving block rewards. By the time you're reading this and using the chain, farmers and pools will be receiving less than 1 TLLC for each block won as if it were 15-20 years from now. Block rewards are given in two components, 7/8's to the pool key and 1/8 to the farmer. The farmer also receives any transaction fees from the block.
 - You can now plot in parallel using the GUI. A known limitation is that you can't yet specify that you want 4 sets of two parallel plots. Each parallel plot added starts immediately parallel. We will continue to improve this.
-- The GUI now warns if you attempt to create a plot smaller than k=32.
+- The GUI now warns if you attempt to create a plot smaller than k=29.
 - Added Chinese language localization (zh-cn). A big thank you to @goomario for their pull request!
 - You can now specify which private key to use for `littlelambocoin plots create`. After obtaining the fingerprint from `littlelambocoin keys show`, try `littlelambocoin plots create -a FINGERPRINT`. Thanks to @eFishCent for this pull request!
 - We use a faster hash to prime function for chiavdf from the current release of gmp-6.2.1 which we have upgraded chiavdf and blspy to support.
@@ -1210,7 +1210,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 - The development tool WalletTool was refactored out.
 - Update to clvm 0.5.3.
-- As k=30 and k=31 are now ruled out for mainnet, the GUI defaults to a plot size of k=32.
+- As k=30 and k=31 are now ruled out for mainnet, the GUI defaults to a plot size of k=29.
 
 ### Fixed
 
@@ -1275,10 +1275,10 @@ all fields that referred to sub blocks are changed to blocks.
 ### Changed
 
 - This is a new blockchain as we changed how the default puzzle hashes are generated and previous coins would not be easy to spend. Plots made with Beta 8 and newer continue to work, but all previous test littlelambocoin are left on the old chain and do not migrate over. Configuration data like plot directories automatically migrate in your `~/.littlelambocoin` directory.
-- Proof of Space now requires significantly less temp space to generate a new plot. A k=32 that used to require 524GiB now requires only 313GiB - generally a 40% decrease across all k sizes.
+- Proof of Space now requires significantly less temp space to generate a new plot. A k=29 that used to require 524GiB now requires only 313GiB - generally a 40% decrease across all k sizes.
 - When plotting, instead of 1 monolithic temp file, there are now 8 files - one for each of the 7 tables and one for sorting plot data. These files are deleted as the `-2` or `-d` final file is written so the final file can fit within the footprint of the temporary files on the same filesystem.
 - We've made various additional CPU optimizations to the Proof of Space plotter that reduces plotting time by an additional 13%. These changes will also reduce CPU utilization in harvesting.
-- We have ruled out k=30 for mainnet minimum plot size. k=31 may still make mainnet. k=32 and larger will be viable on mainnet.
+- We have ruled out k=30 for mainnet minimum plot size. k=31 may still make mainnet. k=29 and larger will be viable on mainnet.
 - We moved to react-styleguidist to develop reusable components in isolation and better document the UI. Thanks to @embiem for this pull request.
 - Coloured coins have been updated to simplify them, remove 'a', and stop using an 'auditor'.
 - clvm has been significantly changed to support the new coloured coins implementation.
@@ -1590,7 +1590,7 @@ relic. We will make a patch available for these systems shortly.
 
 ### Deprecated
 
-- We have made significant changes to the full node database to make it more reliable and quicker to restart. This requires re-syncing the current chain. If you use `littlelambocoin init` then sync on first start will happen automatically. "\$SHIBGREEN_ROOT" users will need to delete `$SHIBGREEN_ROOT/db/*` before starting Beta 1.5. This also fixes the simulation issue in Beta 1.4 where tips could go "back in time."
+- We have made significant changes to the full node database to make it more reliable and quicker to restart. This requires re-syncing the current chain. If you use `littlelambocoin init` then sync on first start will happen automatically. "\$LITTLELAMBOCOIN_ROOT" users will need to delete `$LITTLELAMBOCOIN_ROOT/db/*` before starting Beta 1.5. This also fixes the simulation issue in Beta 1.4 where tips could go "back in time."
 
 ### Known issues
 
@@ -1629,7 +1629,7 @@ relic. We will make a patch available for these systems shortly.
 
 ### Known issues
 
-- Plots of k>=32 are not working for farming, and some broken plots can cause a memory leak. A [workaround is available](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Beta-1.4-k=32-or-larger-work-around).
+- Plots of k>=32 are not working for farming, and some broken plots can cause a memory leak. A [workaround is available](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Beta-1.4-k=29-or-larger-work-around).
 - If you are running a simulation, blockchain tips are not saved in the database and this is a regression. If you stop a node it can go back in time and cause an odd state. This doesn't practically effect testnet participation as, on restart, node will just sync up a few blocks to the then current tips.
 - uPnP support on Windows may be broken. However, Windows nodes will be able to connect to other nodes and, once connected, participate fully in the network.
 - Coins are not currently reserved as part of trade offers and thus could potentially be spent before the offer is accepted resulting in a failed offer transaction.
@@ -1643,7 +1643,7 @@ relic. We will make a patch available for these systems shortly.
 - Windows, WSL 2, Linux and MacOS installation is significantly streamlined. There is a new Windows installer for the Wallet GUI (huge thanks to @dkackman).
 - All installs can now be from the source repository or just the binary dependencies on WSL 2, most modern Linuxes, and MacOS Catalina. Binary support is for both Python 3.7 and 3.8.
 - There is a new migration tool to move from Beta1 (or 2) to Beta3. It should move everything except your plots.
-- There is a new command `littlelambocoin init` that will migrate files and generate your initial configuration. If you want to use the Wallet or farm, you will also have to `littlelambocoin-generate-keys`. You can read step by step instructions for [upgrading from a previous beta release](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Updating-beta-software). If you've set `$SHIBGREEN_ROOT` you will have to make sure your existing configuration remains compatible manually.
+- There is a new command `littlelambocoin init` that will migrate files and generate your initial configuration. If you want to use the Wallet or farm, you will also have to `littlelambocoin-generate-keys`. You can read step by step instructions for [upgrading from a previous beta release](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Updating-beta-software). If you've set `$LITTLELAMBOCOIN_ROOT` you will have to make sure your existing configuration remains compatible manually.
 - Wallet has improved paper wallet recovery support.
 - We now also support restoring old wallets with only the wallet_sk and wallet_target. Beta3's Wallet will re-sync from scratch.
 - We've made lots of little improvements that should speed up node syncing
@@ -1690,7 +1690,7 @@ relic. We will make a patch available for these systems shortly.
 
 - We have revamped the littlelambocoin management command line. To start a farmer all you have to do is start the venv with `. ./activate` and then type `littlelambocoin-start-farmer &`. The [README.md](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/blob/main/README.md) has been updated to reflect the new commands.
 - We have moved all node to node communication to TLS 1.3 by default. For now, all TLS is unauthenticated but certain types of over the wire node to node communications will have the ability to authenticate both by certificate and by inter protocol signature. Encrypting over the wire by default stops casual snooping of transaction origination, light wallet to trusted node communication, and harvester-farmer-node communication for example. This leaves only the mempool and the chain itself open to casual observation by the public and the various entities around the world.
-- Configuration directories have been moved to a default location of HomeDirectory/.littlelambocoin/release/config, plots/ db/, wallet/ etc. This can be overridden by `export SHIBGREEN_ROOT=~/.littlelambocoin` for example which would then put the plots directory in `HomeDirectory/.littlelambocoin/plots`.
+- Configuration directories have been moved to a default location of HomeDirectory/.littlelambocoin/release/config, plots/ db/, wallet/ etc. This can be overridden by `export LITTLELAMBOCOIN_ROOT=~/.littlelambocoin` for example which would then put the plots directory in `HomeDirectory/.littlelambocoin/plots`.
 - The libraries littlelambocoin-pos, littlelambocoin-fast-vdf, and littlelambocoin-bip-158 have been moved to their own repositories: [chiapos](https://github.com/BTCgreen-Network/chiapos), [chiavdf](https://github.com/BTCgreen-Network/chiavdf), and [chaibip158](https://github.com/BTCgreen-Network/chiabip158). They are brought in by littlelambocoin-blockchain at install time. Our BLS signature library remains at [bls-signatures](https://github.com/BTCgreen-Network/bls-signatures).
 - The install process now brings in chiapos, chiavdf, etc from Pypi where they are auto published via GitHub Actions ci using cibuildwheel. Check out `.github/workflows/build.yml` for build methods in each of the sub repositories.
 - `littlelambocoin-regenerate-keys` has been renamed `littlelambocoin-generate-keys`.

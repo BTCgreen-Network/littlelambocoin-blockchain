@@ -3,16 +3,16 @@
 set -euo pipefail
 
 pip install setuptools_scm
-# The environment variable SHIBGREEN_INSTALLER_VERSION needs to be defined.
+# The environment variable LITTLELAMBOCOIN_INSTALLER_VERSION needs to be defined.
 # If the env variable NOTARIZE and the username and password variables are
 # set, this will attempt to Notarize the signed DMG.
-SHIBGREEN_INSTALLER_VERSION=$(python installer-version.py)
+LITTLELAMBOCOIN_INSTALLER_VERSION=$(python installer-version.py)
 
-if [ ! "$SHIBGREEN_INSTALLER_VERSION" ]; then
-	echo "WARNING: No environment variable SHIBGREEN_INSTALLER_VERSION set. Using 0.0.0."
-	SHIBGREEN_INSTALLER_VERSION="0.0.0"
+if [ ! "$LITTLELAMBOCOIN_INSTALLER_VERSION" ]; then
+	echo "WARNING: No environment variable LITTLELAMBOCOIN_INSTALLER_VERSION set. Using 0.0.0."
+	LITTLELAMBOCOIN_INSTALLER_VERSION="0.0.0"
 fi
-echo "Littlelambocoin Installer Version is: $SHIBGREEN_INSTALLER_VERSION"
+echo "Littlelambocoin Installer Version is: $LITTLELAMBOCOIN_INSTALLER_VERSION"
 
 echo "Installing npm and electron packagers"
 npm install electron-installer-dmg -g
@@ -52,11 +52,11 @@ fi
 # sets the version for littlelambocoin-blockchain in package.json
 brew install jq
 cp package.json package.json.orig
-jq --arg VER "$SHIBGREEN_INSTALLER_VERSION" '.version=$VER' package.json > temp.json && mv temp.json package.json
+jq --arg VER "$LITTLELAMBOCOIN_INSTALLER_VERSION" '.version=$VER' package.json > temp.json && mv temp.json package.json
 
 electron-packager . Littlelambocoin --asar.unpack="**/daemon/**" --platform=darwin \
 --icon=src/assets/img/Littlelambocoin.icns --overwrite --app-bundle-id=net.littlelambocoin.blockchain \
---appVersion=$SHIBGREEN_INSTALLER_VERSION
+--appVersion=$LITTLELAMBOCOIN_INSTALLER_VERSION
 LAST_EXIT_CODE=$?
 
 # reset the package.json to the original
@@ -82,10 +82,10 @@ fi
 mv Littlelambocoin-darwin-arm64 ../build_scripts/dist/
 cd ../build_scripts || exit
 
-DMG_NAME="Littlelambocoin-$SHIBGREEN_INSTALLER_VERSION-arm64.dmg"
+DMG_NAME="Littlelambocoin-$LITTLELAMBOCOIN_INSTALLER_VERSION-arm64.dmg"
 echo "Create $DMG_NAME"
 mkdir final_installer
-electron-installer-dmg dist/Littlelambocoin-darwin-arm64/Littlelambocoin.app Littlelambocoin-$SHIBGREEN_INSTALLER_VERSION-arm64 \
+electron-installer-dmg dist/Littlelambocoin-darwin-arm64/Littlelambocoin.app Littlelambocoin-$LITTLELAMBOCOIN_INSTALLER_VERSION-arm64 \
 --overwrite --out final_installer
 LAST_EXIT_CODE=$?
 if [ "$LAST_EXIT_CODE" -ne 0 ]; then

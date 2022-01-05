@@ -47,7 +47,7 @@ jobs:
         python3 -m venv ../venv
         . ../venv/bin/activate
         pip3 install setuptools_scm
-        echo "::set-output name=SHIBGREEN_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
+        echo "::set-output name=LITTLELAMBOCOIN_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
         deactivate
 
     - name: Test for secrets access
@@ -134,18 +134,18 @@ jobs:
     - name: Upload to s3
       if: steps.check_secrets.outputs.HAS_SECRET
       env:
-          SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+          LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
           ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/builds/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/builds/
 
     - name: Create Checksums
       if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
       env:
-        SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+        LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
          ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-         sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256
+         sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm.sha256
          ls $GITHUB_WORKSPACE/build_scripts/final_installer/
 
     - name: Install py3createtorrent
@@ -156,27 +156,27 @@ jobs:
     - name: Create .rpm torrent
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+        LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
-          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm -o $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent --webseed https://download-littlelambocoin-net.s3.us-west-2.amazonaws.com/install/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm
+          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm -o $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm.torrent --webseed https://download-littlelambocoin-net.s3.us-west-2.amazonaws.com/install/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm
           ls
 
     - name: Upload Beta Installer
       if: steps.check_secrets.outputs.HAS_SECRET && github.ref == 'refs/heads/main'
       env:
-        SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+        LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm.sha256
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/beta/littlelambocoin-blockchain-1.x86_64_latest_beta.rpm.sha256
 
     - name: Upload Release Files
       if: steps.check_secrets.outputs.HAS_SECRET && startsWith(github.ref, 'refs/tags/')
       env:
-        SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+        LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/install/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/install/
-          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${SHIBGREEN_INSTALLER_VERSION}-1.x86_64.rpm.torrent s3://download-littlelambocoin-net/torrents/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm s3://download-littlelambocoin-net/install/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm.sha256 s3://download-littlelambocoin-net/install/
+          aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/littlelambocoin-blockchain-${LITTLELAMBOCOIN_INSTALLER_VERSION}-1.x86_64.rpm.torrent s3://download-littlelambocoin-net/torrents/
 
     - name: Get tag name
       if: startsWith(github.ref, 'refs/tags/')

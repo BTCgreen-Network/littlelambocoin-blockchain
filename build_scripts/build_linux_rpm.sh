@@ -13,16 +13,16 @@ else
 fi
 
 pip install setuptools_scm
-# The environment variable SHIBGREEN_INSTALLER_VERSION needs to be defined
+# The environment variable LITTLELAMBOCOIN_INSTALLER_VERSION needs to be defined
 # If the env variable NOTARIZE and the username and password variables are
 # set, this will attempt to Notarize the signed DMG
-SHIBGREEN_INSTALLER_VERSION=$(python installer-version.py)
+LITTLELAMBOCOIN_INSTALLER_VERSION=$(python installer-version.py)
 
-if [ ! "$SHIBGREEN_INSTALLER_VERSION" ]; then
-	echo "WARNING: No environment variable SHIBGREEN_INSTALLER_VERSION set. Using 0.0.0."
-	SHIBGREEN_INSTALLER_VERSION="0.0.0"
+if [ ! "$LITTLELAMBOCOIN_INSTALLER_VERSION" ]; then
+	echo "WARNING: No environment variable LITTLELAMBOCOIN_INSTALLER_VERSION set. Using 0.0.0."
+	LITTLELAMBOCOIN_INSTALLER_VERSION="0.0.0"
 fi
-echo "Littlelambocoin Installer Version is: $SHIBGREEN_INSTALLER_VERSION"
+echo "Littlelambocoin Installer Version is: $LITTLELAMBOCOIN_INSTALLER_VERSION"
 
 echo "Installing npm and electron packagers"
 npm install electron-packager -g
@@ -58,11 +58,11 @@ fi
 
 # sets the version for littlelambocoin-blockchain in package.json
 cp package.json package.json.orig
-jq --arg VER "$SHIBGREEN_INSTALLER_VERSION" '.version=$VER' package.json > temp.json && mv temp.json package.json
+jq --arg VER "$LITTLELAMBOCOIN_INSTALLER_VERSION" '.version=$VER' package.json > temp.json && mv temp.json package.json
 
 electron-packager . littlelambocoin-blockchain --asar.unpack="**/daemon/**" --platform=linux \
 --icon=src/assets/img/Littlelambocoin.icns --overwrite --app-bundle-id=net.littlelambocoin.blockchain \
---appVersion=$SHIBGREEN_INSTALLER_VERSION
+--appVersion=$LITTLELAMBOCOIN_INSTALLER_VERSION
 LAST_EXIT_CODE=$?
 
 # reset the package.json to the original
@@ -77,7 +77,7 @@ mv $DIR_NAME ../build_scripts/dist/
 cd ../build_scripts || exit
 
 if [ "$REDHAT_PLATFORM" = "x86_64" ]; then
-	echo "Create littlelambocoin-blockchain-$SHIBGREEN_INSTALLER_VERSION.rpm"
+	echo "Create littlelambocoin-blockchain-$LITTLELAMBOCOIN_INSTALLER_VERSION.rpm"
 
 	# shellcheck disable=SC2046
 	NODE_ROOT="$(dirname $(dirname $(which node)))"
@@ -92,7 +92,7 @@ if [ "$REDHAT_PLATFORM" = "x86_64" ]; then
 	sed -i "s#throw new Error('Please upgrade to RPM 4.13.*#console.warn('You are using RPM < 4.13')\n      return { requires: [ 'gtk3', 'libnotify', 'nss', 'libXScrnSaver', 'libXtst', 'xdg-utils', 'at-spi2-core', 'libdrm', 'mesa-libgbm', 'libxcb' ] }#g" $NODE_ROOT/lib/node_modules/electron-installer-redhat/src/dependencies.js
 
   electron-installer-redhat --src dist/$DIR_NAME/ --dest final_installer/ \
-  --arch "$REDHAT_PLATFORM" --options.version $SHIBGREEN_INSTALLER_VERSION \
+  --arch "$REDHAT_PLATFORM" --options.version $LITTLELAMBOCOIN_INSTALLER_VERSION \
   --license ../LICENSE
   LAST_EXIT_CODE=$?
   if [ "$LAST_EXIT_CODE" -ne 0 ]; then

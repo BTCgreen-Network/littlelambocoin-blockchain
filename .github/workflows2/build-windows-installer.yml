@@ -91,9 +91,9 @@ jobs:
         python -m venv ..\venv
         . ..\venv\Scripts\Activate.ps1
         pip3 install setuptools_scm
-        $env:SHIBGREEN_INSTALLER_VERSION = python .\build_scripts\installer-version.py -win
-        echo "$env:SHIBGREEN_INSTALLER_VERSION"
-        echo "::set-output name=SHIBGREEN_INSTALLER_VERSION::$env:SHIBGREEN_INSTALLER_VERSION"
+        $env:LITTLELAMBOCOIN_INSTALLER_VERSION = python .\build_scripts\installer-version.py -win
+        echo "$env:LITTLELAMBOCOIN_INSTALLER_VERSION"
+        echo "::set-output name=LITTLELAMBOCOIN_INSTALLER_VERSION::$env:LITTLELAMBOCOIN_INSTALLER_VERSION"
         deactivate
 
     - name: Build Windows installer with build_scripts\build_windows.ps1
@@ -119,9 +119,9 @@ jobs:
 
     - name: Create Checksums
       env:
-        SHIBGREEN_INSTALLER_VERSION: ${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}
+        LITTLELAMBOCOIN_INSTALLER_VERSION: ${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}
       run: |
-         certutil.exe -hashfile ${{ github.workspace }}\littlelambocoin-blockchain-gui\release-builds\windows-installer\LittlelambocoinSetup-${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}.exe SHA256 > ${{ github.workspace }}\littlelambocoin-blockchain-gui\release-builds\windows-installer\LittlelambocoinSetup-${{ steps.version_number.outputs.SHIBGREEN_INSTALLER_VERSION }}.exe.sha256
+         certutil.exe -hashfile ${{ github.workspace }}\littlelambocoin-blockchain-gui\release-builds\windows-installer\LittlelambocoinSetup-${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}.exe SHA256 > ${{ github.workspace }}\littlelambocoin-blockchain-gui\release-builds\windows-installer\LittlelambocoinSetup-${{ steps.version_number.outputs.LITTLELAMBOCOIN_INSTALLER_VERSION }}.exe.sha256
          ls ${{ github.workspace }}\littlelambocoin-blockchain-gui\release-builds\windows-installer\
 
     - name: Get tag name
