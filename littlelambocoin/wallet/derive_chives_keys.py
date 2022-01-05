@@ -1,7 +1,6 @@
 from typing import List, Optional
 
-from blspy import PrivateKey, G1Element
-from derive_keys import _derive_path
+from blspy import AugSchemeMPL, PrivateKey, G1Element
 
 from littlelambocoin.util.ints import uint32
 
@@ -11,6 +10,10 @@ from littlelambocoin.util.ints import uint32
 # 9699 = LittleLamboCoin blockchain number and port number
 # 0, 1, 2, 3, 4, 5, 6 farmer, pool, wallet, local, backup key, singleton, pooling authentication key numbers
 
+def _derive_path(sk: PrivateKey, path: List[int]) -> PrivateKey:
+    for index in path:
+        sk = AugSchemeMPL.derive_child_sk(sk, index)
+    return sk
 
 def master_sk_to_chives_farmer_sk(master: PrivateKey) -> PrivateKey:
     return _derive_path(master, [12381, 9699, 0, 0])
