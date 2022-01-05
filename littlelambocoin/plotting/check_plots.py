@@ -20,6 +20,7 @@ from littlelambocoin.util.config import load_config
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.keychain import Keychain
 from littlelambocoin.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_local_sk
+from littlelambocoin.wallet.derive_chives_keys import master_sk_to_chives_farmer_sk, master_sk_to_chives_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -80,7 +81,7 @@ def check_plots(root_path, num, challenge_start, grep_string, list_duplicates, d
     # for keychain access, KeychainProxy/connect_to_keychain should be used instead of Keychain.
     kc: Keychain = Keychain()
     plot_manager.set_public_keys(
-        [master_sk_to_farmer_sk(sk).get_g1() for sk, _ in kc.get_all_private_keys()],
+        [master_sk_to_farmer_sk(sk).get_g1() for sk, _ in kc.get_all_private_keys()] + [master_sk_to_chives_farmer_sk(sk).get_g1() for sk, _ in kc.get_all_private_keys()],
         [G1Element.from_bytes(bytes.fromhex(pk)) for pk in config["farmer"]["pool_public_keys"]],
     )
     plot_manager.start_refreshing()
@@ -110,7 +111,10 @@ def check_plots(root_path, num, challenge_start, grep_string, list_duplicates, d
                 farmer_public_key,
                 local_master_sk,
             ) = parse_plot_info(pr.get_memo())
-            local_sk = master_sk_to_local_sk(local_master_sk)
+            if plot_info.prover.get_size()<32:
+                local_sk = master_sk_to_chives_local_sk(local_master_sk)
+            else:
+                local_sk = master_sk_to_local_sk(local_master_sk)
             log.info(f"\tFarmer public key: {farmer_public_key}")
             log.info(f"\tLocal sk: {local_sk}")
             total_proofs = 0

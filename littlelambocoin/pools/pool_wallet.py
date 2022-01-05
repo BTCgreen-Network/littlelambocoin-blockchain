@@ -48,6 +48,10 @@ from littlelambocoin.wallet.derive_keys import (
     master_sk_to_pooling_authentication_sk,
     find_owner_sk,
 )
+from littlelambocoin.wallet.derive_chives_keys import (
+    master_sk_to_chives_pooling_authentication_sk,
+    find_chives_owner_sk,
+)
 from littlelambocoin.wallet.sign_coin_spends import sign_coin_spends
 from littlelambocoin.wallet.transaction_record import TransactionRecord
 from littlelambocoin.wallet.util.wallet_types import WalletType
@@ -465,6 +469,8 @@ class PoolWallet:
     async def sign(self, coin_spend: CoinSpend) -> SpendBundle:
         async def pk_to_sk(pk: G1Element) -> PrivateKey:
             owner_sk: Optional[PrivateKey] = await find_owner_sk([self.wallet_state_manager.private_key], pk)
+            if owner_sk is None:
+                owner_sk: Optional[PrivateKey] = await find_chives_owner_sk([self.wallet_state_manager.private_key], pk)
             assert owner_sk is not None
             return owner_sk
 

@@ -51,6 +51,13 @@ from littlelambocoin.wallet.derive_keys import (
     find_authentication_sk,
     find_owner_sk,
 )
+from littlelambocoin.wallet.derive_chives_keys import (
+    master_sk_to_chives_farmer_sk,
+    master_sk_to_chives_pool_sk,
+    master_sk_to_chives_wallet_sk,
+    find_chives_authentication_sk,
+    find_chives_owner_sk,
+)
 from littlelambocoin.wallet.puzzles.singleton_top_layer import SINGLETON_MOD
 
 singleton_mod_hash = SINGLETON_MOD.get_tree_hash()
@@ -145,6 +152,10 @@ class Farmer:
         self._private_keys = [master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
             master_sk_to_pool_sk(sk) for sk in self.all_root_sks
         ]
+            self._private_keys = self._private_keys + [master_sk_to_chives_farmer_sk(sk) for sk in self.all_root_sks] + [
+            master_sk_to_chives_pool_sk(sk) for sk in self.all_root_sks
+        ]
+
 
         if len(self.get_public_keys()) == 0:
             error_str = "No keys exist. Please run 'littlelambocoin keys generate' or open the UI."
@@ -375,6 +386,10 @@ class Farmer:
                     self.all_root_sks, pool_config.authentication_public_key
                 )
                 if authentication_sk is None:
+                    authentication_sk: Optional[PrivateKey] = await find_chives_authentication_sk(
+                        self.all_root_sks, pool_config.authentication_public_key
+                    )
+                if authentication_sk is None:
                     self.log.error(f"Could not find authentication sk for pk: {pool_config.authentication_public_key}")
                     continue
                 if p2_singleton_puzzle_hash not in self.pool_state:
@@ -446,6 +461,8 @@ class Farmer:
                         if farmer_info is None and farmer_is_known is not None and not farmer_is_known:
                             # Make the farmer known on the pool with a POST /farmer
                             owner_sk = await find_owner_sk(self.all_root_sks, pool_config.owner_public_key)
+                            if owner_sk is None:
+                                owner_sk = await find_chives_owner_sk(self.all_root_sks, pool_config.owner_public_key)
                             post_response = await self._pool_post_farmer(
                                 pool_config, authentication_token_timeout, owner_sk
                             )
@@ -465,6 +482,8 @@ class Farmer:
                             and pool_config.payout_instructions.lower() != farmer_info.payout_instructions.lower()
                         ):
                             owner_sk = await find_owner_sk(self.all_root_sks, pool_config.owner_public_key)
+                            if owner_sk is None:
+                                owner_sk = await find_chives_owner_sk(self.all_root_sks, pool_config.owner_public_key)
                             put_farmer_response_dict = await self._pool_put_farmer(
                                 pool_config, authentication_token_timeout, owner_sk
                             )
@@ -518,6 +537,12 @@ class Farmer:
                         stop_searching_for_farmer = True
                     if ph == self.pool_target:
                         stop_searching_for_pool = True
+                    ph = create_puzzlehash_for_pk(master_sk_to_chives_wallet_sk(sk, uint32(i)).get_g1())
+
+                    if ph == self.farmer_target:
+                        stop_searching_for_farmer = True
+                    if ph == self.pool_target:
+                        stop_searching_for_pool = True
             return {
                 "farmer_target": self.farmer_target_encoded,
                 "pool_target": self.pool_target_encoded,
@@ -566,6 +591,10 @@ class Farmer:
                 authentication_sk: Optional[PrivateKey] = await find_authentication_sk(
                     self.all_root_sks, pool_config.authentication_public_key
                 )
+                if authentication_sk is None:
+                    authentication_sk: Optional[PrivateKey] = await find_chives_authentication_sk(
+                        self.all_root_sks, pool_config.authentication_public_key
+                    )
                 if authentication_sk is None:
                     self.log.error(f"Could not find authentication sk for pk: {pool_config.authentication_public_key}")
                     continue

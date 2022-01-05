@@ -90,6 +90,12 @@ from littlelambocoin.wallet.derive_keys import (
     master_sk_to_pool_sk,
     master_sk_to_wallet_sk,
 )
+from littlelambocoin.wallet.derive_chives_keys import (
+    master_sk_to_chives_farmer_sk,
+    master_sk_to_chives_local_sk,
+    master_sk_to_chives_pool_sk,
+    master_sk_to_chives_wallet_sk,
+)
 
 test_constants = DEFAULT_CONSTANTS.replace(
     **{
@@ -214,9 +220,9 @@ class BlockTools:
             master_sk_to_wallet_sk(self.pool_master_sk, uint32(0)).get_g1()
         )
         self.all_sks: List[PrivateKey] = [sk for sk, _ in await self.keychain_proxy.get_all_private_keys()]
-        self.pool_pubkeys: List[G1Element] = [master_sk_to_pool_sk(sk).get_g1() for sk in self.all_sks]
+        self.pool_pubkeys: List[G1Element] = [master_sk_to_pool_sk(sk).get_g1() for sk in self.all_sks] + [master_sk_to_chives_pool_sk(sk).get_g1() for sk in self.all_sks]
 
-        self.farmer_pubkeys: List[G1Element] = [master_sk_to_farmer_sk(sk).get_g1() for sk in self.all_sks]
+        self.farmer_pubkeys: List[G1Element] = [master_sk_to_farmer_sk(sk).get_g1() for sk in self.all_sks] + [master_sk_to_chives_farmer_sk(sk).get_g1() for sk in self.all_sks]
         if len(self.pool_pubkeys) == 0 or len(self.farmer_pubkeys) == 0:
             raise RuntimeError("Keys not generated. Run `littlelambocoin generate keys`")
 
@@ -337,7 +343,6 @@ class BlockTools:
         """
         Returns the plot signature of the header data.
         """
-        farmer_sk = master_sk_to_farmer_sk(self.all_sks[0])
         for plot_info in self.plot_manager.plots.values():
             if plot_pk == plot_info.plot_public_key:
                 # Look up local_sk from plot to save locked memory
@@ -351,7 +356,12 @@ class BlockTools:
                 else:
                     assert isinstance(pool_pk_or_ph, bytes32)
                     include_taproot = True
-                local_sk = master_sk_to_local_sk(local_master_sk)
+                    if plot_info.prover.get_size()<32:
+                    farmer_sk = master_sk_to_chives_farmer_sk(self.all_sks[0])
+                    local_sk = master_sk_to_chives_local_sk(local_master_sk)
+                else:
+                    farmer_sk = master_sk_to_farmer_sk(self.all_sks[0])
+                    local_sk = master_sk_to_local_sk(local_master_sk)
                 agg_pk = ProofOfSpace.generate_plot_public_key(local_sk.get_g1(), farmer_sk.get_g1(), include_taproot)
                 assert agg_pk == plot_pk
                 harv_share = AugSchemeMPL.sign(local_sk, m, agg_pk)
@@ -372,6 +382,9 @@ class BlockTools:
 
         for sk in self.all_sks:
             sk_child = master_sk_to_pool_sk(sk)
+            if sk_child.get_g1() == pool_pk:
+                return AugSchemeMPL.sign(sk_child, bytes(pool_target))
+            sk_child = master_sk_to_chives_pool_sk(sk)
             if sk_child.get_g1() == pool_pk:
                 return AugSchemeMPL.sign(sk_child, bytes(pool_target))
         raise ValueError(f"Do not have key {pool_pk}")
@@ -1112,7 +1125,10 @@ class BlockTools:
                             farmer_public_key,
                             local_master_sk,
                         ) = parse_plot_info(plot_info.prover.get_memo())
-                        local_sk = master_sk_to_local_sk(local_master_sk)
+                        if plot_info.prover.get_size()<32:
+                            local_sk = master_sk_to_chives_local_sk(local_master_sk)
+                        else:
+                            local_sk = master_sk_to_local_sk(local_master_sk)
 
                         if isinstance(pool_public_key_or_puzzle_hash, G1Element):
                             include_taproot = False

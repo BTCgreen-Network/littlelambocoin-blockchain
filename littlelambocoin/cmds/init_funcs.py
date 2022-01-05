@@ -35,6 +35,7 @@ from littlelambocoin.util.ssl_check import (
     fix_ssl,
 )
 from littlelambocoin.wallet.derive_keys import master_sk_to_pool_sk, master_sk_to_wallet_sk
+from littlelambocoin.wallet.derive_chives_keys import master_sk_to_chives_pool_sk, master_sk_to_chives_wallet_sk
 from littlelambocoin.cmds.configure import configure
 
 private_node_names = {"full_node", "wallet", "farmer", "harvester", "timelord", "daemon"}
@@ -72,6 +73,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
 
     config: Dict = load_config(new_root, "config.yaml")
     pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
+    pool_child_pubkeys = pool_child_pubkeys + [master_sk_to_chives_pool_sk(sk).get_g1() for sk, _ in all_sks]
     all_targets = []
     stop_searching_for_farmer = "llc_target_address" not in config["farmer"]
     stop_searching_for_pool = "llc_target_address" not in config["pool"]
@@ -84,6 +86,13 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         for sk, _ in all_sks:
             all_targets.append(
                 encode_puzzle_hash(create_puzzlehash_for_pk(master_sk_to_wallet_sk(sk, uint32(i)).get_g1()), prefix)
+            )
+            if all_targets[-1] == config["farmer"].get("llc_target_address"):
+                stop_searching_for_farmer = True
+            if all_targets[-1] == config["pool"].get("llc_target_address"):
+                stop_searching_for_pool = True
+            all_targets.append(
+                encode_puzzle_hash(create_puzzlehash_for_pk(master_sk_to_chives_wallet_sk(sk, uint32(i)).get_g1()), prefix)
             )
             if all_targets[-1] == config["farmer"].get("llc_target_address"):
                 stop_searching_for_farmer = True
