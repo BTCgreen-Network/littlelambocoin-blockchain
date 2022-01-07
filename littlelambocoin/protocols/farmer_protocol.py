@@ -24,6 +24,7 @@ class NewSignagePoint(Streamable):
     difficulty: uint64
     sub_slot_iters: uint64
     signage_point_index: uint8
+    timelord_reward_puzzle_hash: bytes32
 
 
 @dataclass(frozen=True)

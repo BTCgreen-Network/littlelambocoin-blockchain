@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id
+from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id, timelord_parent_id
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.mempool_inclusion_status import MempoolInclusionStatus
@@ -52,8 +52,11 @@ class TransactionRecord(Streamable):
             for block_index in range(self.confirmed_at_height, self.confirmed_at_height - 100, -1):
                 if block_index < 0:
                     return None
+                timelord_parent = timelord_parent_id(uint32(block_index), genesis_challenge)
                 pool_parent = pool_parent_id(uint32(block_index), genesis_challenge)
                 farmer_parent = farmer_parent_id(uint32(block_index), genesis_challenge)
+                if timelord_parent == self.additions[0].parent_coin_info:
+                    return uint32(block_index)
                 if pool_parent == self.additions[0].parent_coin_info:
                     return uint32(block_index)
                 if farmer_parent == self.additions[0].parent_coin_info:

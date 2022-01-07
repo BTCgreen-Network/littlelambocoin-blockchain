@@ -129,6 +129,7 @@ class NewSignagePointOrEndOfSubSlot(Streamable):
     challenge_hash: bytes32
     index_from_challenge: uint8
     last_rc_infusion: bytes32
+    timelord_reward_puzzle_hash: bytes32
 
 
 @dataclass(frozen=True)
@@ -147,6 +148,7 @@ class RespondSignagePoint(Streamable):
     challenge_chain_proof: VDFProof
     reward_chain_vdf: VDFInfo
     reward_chain_proof: VDFProof
+    timelord_reward_puzzle_hash: bytes32
 
 
 @dataclass(frozen=True)

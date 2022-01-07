@@ -1122,6 +1122,7 @@ class FullNode:
             f"{self.constants.NUM_SPS_SUB_SLOT}: "
             f"CC: {request.challenge_chain_vdf.output.get_hash()} "
             f"RC: {request.reward_chain_vdf.output.get_hash()} "
+            f"Timelord reward: {bytes(request.timelord_reward_puzzle_hash).hex()} "
         )
         self.signage_point_times[request.index_from_challenge] = time.time()
         sub_slot_tuple = self.full_node_store.get_sub_slot(request.challenge_chain_vdf.challenge)
@@ -1136,6 +1137,7 @@ class FullNode:
             request.challenge_chain_vdf.challenge,
             request.index_from_challenge,
             request.reward_chain_vdf.challenge,
+            request.timelord_reward_puzzle_hash
         )
         msg = make_msg(ProtocolMessageTypes.new_signage_point_or_end_of_sub_slot, broadcast)
         await self.server.send_to_all_except([msg], NodeType.FULL_NODE, peer.peer_node_id)
@@ -1163,6 +1165,7 @@ class FullNode:
             difficulty,
             sub_slot_iters,
             request.index_from_challenge,
+            request.timelord_reward_puzzle_hash
         )
         msg = make_msg(ProtocolMessageTypes.new_signage_point, broadcast_farmer)
         await self.server.send_to_all([msg], NodeType.FARMER)
@@ -1242,6 +1245,7 @@ class FullNode:
                 block.challenge_chain_sp_proof,
                 block.reward_chain_block.reward_chain_sp_vdf,
                 block.reward_chain_sp_proof,
+                block.foliage.foliage_block_data.timelord_reward_puzzle_hash
             ),
             skip_vdf_validation=True,
         )
@@ -1295,6 +1299,7 @@ class FullNode:
                 fns_peak_result.added_eos.challenge_chain.get_hash(),
                 uint8(0),
                 fns_peak_result.added_eos.reward_chain.end_of_slot_vdf.challenge,
+                block.foliage.foliage_block_data.timelord_reward_puzzle_hash
             )
             msg = make_msg(ProtocolMessageTypes.new_signage_point_or_end_of_sub_slot, broadcast)
             await self.server.send_to_all([msg], NodeType.FULL_NODE)
@@ -1851,10 +1856,13 @@ class FullNode:
                     False,
                 )
 
+            timelord_reward_puzzle_hash: bytes32 = self.constants.TIMELORD_PUZZLE_HASH
+
             peak = self.blockchain.get_peak()
             if peak is not None and peak.height > 2:
                 next_sub_slot_iters = self.blockchain.get_next_slot_iters(peak.header_hash, True)
                 next_difficulty = self.blockchain.get_next_difficulty(peak.header_hash, True)
+                timelord_reward_puzzle_hash = peak.timelord_puzzle_hash
             else:
                 next_sub_slot_iters = self.constants.SUB_SLOT_ITERS_STARTING
                 next_difficulty = self.constants.DIFFICULTY_STARTING
@@ -1874,6 +1882,7 @@ class FullNode:
                     f"number of sub-slots: {len(self.full_node_store.finished_sub_slots)}, "
                     f"RC hash: {request.end_of_slot_bundle.reward_chain.get_hash()}, "
                     f"Deficit {request.end_of_slot_bundle.reward_chain.deficit}"
+                    f"Timelord reward {timelord_reward_puzzle_hash}"
                 )
                 # Notify full nodes of the new sub-slot
                 broadcast = full_node_protocol.NewSignagePointOrEndOfSubSlot(
@@ -1881,6 +1890,7 @@ class FullNode:
                     request.end_of_slot_bundle.challenge_chain.get_hash(),
                     uint8(0),
                     request.end_of_slot_bundle.reward_chain.end_of_slot_vdf.challenge,
+                    timelord_reward_puzzle_hash
                 )
                 msg = make_msg(ProtocolMessageTypes.new_signage_point_or_end_of_sub_slot, broadcast)
                 await self.server.send_to_all_except([msg], NodeType.FULL_NODE, peer.peer_node_id)
@@ -1896,6 +1906,7 @@ class FullNode:
                     next_difficulty,
                     next_sub_slot_iters,
                     uint8(0),
+                    timelord_reward_puzzle_hash
                 )
                 msg = make_msg(ProtocolMessageTypes.new_signage_point, broadcast_farmer)
                 await self.server.send_to_all([msg], NodeType.FARMER)

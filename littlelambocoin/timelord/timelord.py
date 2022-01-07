@@ -31,6 +31,7 @@ from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSu
 from littlelambocoin.types.blockchain_format.vdf import VDFInfo, VDFProof
 from littlelambocoin.types.end_of_slot_bundle import EndOfSubSlotBundle
 from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
+from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 log = logging.getLogger(__name__)
 
@@ -199,6 +200,16 @@ class Timelord:
                         f"Will not infuse unfinished block {block.rc_prev}, sp total iters: {block_sp_total_iters}, "
                         f"because its iters are too low"
                     )
+                return None
+
+                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
+        if block.foliage.foliage_block_data.timelord_reward_puzzle_hash != timelord_reward_puzzle_hash:
+            chance = random.randint(1, 100)
+            if chance >= 10:
+                log.warning(
+                    f"Will not infuse unfinished block {block.rc_prev} sp total iters {block_sp_total_iters}, "
+                    f"because another timelord will"
+                )
                 return None
 
         if new_block_iters > 0:
@@ -410,12 +421,16 @@ class Timelord:
                     # This proof is on an outdated challenge, so don't use it
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
+
+                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
+
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
                     dataclasses.replace(cc_info, number_of_iterations=iters_from_sub_slot_start),
                     cc_proof,
                     rc_info,
                     rc_proof,
+                    timelord_reward_puzzle_hash
                 )
                 if self.server is not None:
                     msg = make_msg(ProtocolMessageTypes.new_signage_point_vdf, response)
@@ -783,7 +798,7 @@ class Timelord:
         else:
             # If there were no failures recently trigger a reset after 60 seconds of no activity.
             # Signage points should be every 9 seconds
-            active_time_threshold = 60
+            active_time_threshold = 600
         if time.time() - self.last_active_time > active_time_threshold:
             log.error(f"Not active for {active_time_threshold} seconds, restarting all chains")
             await self._reset_chains()

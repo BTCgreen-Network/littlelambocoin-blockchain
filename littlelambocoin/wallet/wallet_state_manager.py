@@ -14,7 +14,7 @@ from cryptography.fernet import Fernet
 
 from littlelambocoin import __version__
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id
+from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id, timelord_parent_id
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
 from littlelambocoin.full_node.weight_proof import WeightProofHandler
@@ -672,6 +672,7 @@ class WalletStateManager:
         trade_adds: List[Coin] = []
         height = block.height
 
+        timelord_rewards = set()
         pool_rewards = set()
         farmer_rewards = set()
         added = []
@@ -687,16 +688,20 @@ class WalletStateManager:
 
         if prev is not None:
             # include last block
+            timelord_parent = timelord_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
             pool_parent = pool_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
             farmer_parent = farmer_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
+            timelord_rewards.add(timelord_parent)
             pool_rewards.add(pool_parent)
             farmer_rewards.add(farmer_parent)
             prev = await self.blockchain.get_block_record_from_db(prev.prev_hash)
 
         while prev is not None:
             # step 2 traverse from previous block to the block before it
+            timelord_parent = timelord_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
             pool_parent = pool_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
             farmer_parent = farmer_parent_id(uint32(prev.height), self.constants.GENESIS_CHALLENGE)
+            timelord_rewards.add(timelord_parent)
             pool_rewards.add(pool_parent)
             farmer_rewards.add(farmer_parent)
             if prev.is_transaction_block:
