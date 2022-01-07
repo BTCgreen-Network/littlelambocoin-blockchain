@@ -77,6 +77,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
     all_targets = []
     stop_searching_for_farmer = "llc_target_address" not in config["farmer"]
     stop_searching_for_pool = "llc_target_address" not in config["pool"]
+    stop_searching_for_timelord = "llc_target_address" not in config["timelord"]
     number_of_ph_to_search = 500
     selected = config["selected_network"]
     prefix = config["network_overrides"]["config"][selected]["address_prefix"]
@@ -91,6 +92,8 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 stop_searching_for_farmer = True
             if all_targets[-1] == config["pool"].get("llc_target_address"):
                 stop_searching_for_pool = True
+            if all_targets[-1] == config["timelord"].get("llc_target_address"):
+                stop_searching_for_timelord = True
             all_targets.append(
                 encode_puzzle_hash(create_puzzlehash_for_pk(master_sk_to_chives_wallet_sk(sk, uint32(i)).get_g1()), prefix)
             )
@@ -98,6 +101,8 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 stop_searching_for_farmer = True
             if all_targets[-1] == config["pool"].get("llc_target_address"):
                 stop_searching_for_pool = True
+            if all_targets[-1] == config["timelord"].get("llc_target_address"):
+                stop_searching_for_timelord = True
 
     # Set the destinations, if necessary
     updated_target: bool = False
@@ -125,7 +130,19 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
             f"WARNING: using a pool address which we don't have the private"
             f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
             f"{config['pool']['llc_target_address']} with {all_targets[0]}"
+            if "timelord" not in config:
+        config["timelord"] = {}
+    if "llc_target_address" not in config["timelord"]:
+        print(f"Setting the llc destination address for timelord reward to {all_targets[0]}")
+        config["timelord"]["llc_target_address"] = all_targets[0]
+        updated_target = True
+    elif config["timelord"]["llc_target_address"] not in all_targets:
+        print(
+            f"WARNING: using a timelord address which we don't have the private"
+            f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
+            f"{config['timelord']['llc_target_address']} with {all_targets[0]}"
         )
+
     if updated_target:
         print(
             f"To change the LLC destination addresses, edit the `llc_target_address` entries in"
