@@ -2,15 +2,16 @@ import collections
 import logging
 from typing import Dict, List, Optional, Set, Tuple, Union, Callable
 
+from blspy import G1Element
 from chiabip158 import PyBIP158
 from clvm.casts import int_from_bytes
 
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward, calculate_base_timelord_fee
 from littlelambocoin.consensus.block_root_validation import validate_block_merkle_roots
 from littlelambocoin.full_node.mempool_check_conditions import mempool_check_conditions_dict
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
-from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
 from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
@@ -120,9 +121,16 @@ async def validate_block_body(
             uint64(calculate_base_farmer_reward(prev_transaction_block.height) + prev_transaction_block.fees),
             constants.GENESIS_CHALLENGE,
         )
+        timelord_coin = create_timelord_coin(
+            prev_transaction_block_height,
+            prev_transaction_block.timelord_puzzle_hash,
+            uint64(calculate_base_timelord_fee(prev_transaction_block.height)),
+            constants.GENESIS_CHALLENGE,
+        )
         # Adds the previous block
         expected_reward_coins.add(pool_coin)
         expected_reward_coins.add(farmer_coin)
+        expected_reward_coins.add(timelord_coin)
 
         # For the second block in the chain, don't go back further
         if prev_transaction_block.height > 0:
@@ -144,13 +152,21 @@ async def validate_block_body(
                         constants.GENESIS_CHALLENGE,
                     )
                 )
+                expected_reward_coins.add(
+                    create_timelord_coin(
+                        curr_b.height,
+                        curr_b.timelord_puzzle_hash,
+                        calculate_base_timelord_fee(curr_b.height),
+                        constants.GENESIS_CHALLENGE,
+                    )
+                )
                 curr_b = blocks.block_record(curr_b.prev_hash)
 
     if set(block.transactions_info.reward_claims_incorporated) != expected_reward_coins:
         return Err.INVALID_REWARD_COINS, None
 
     if len(block.transactions_info.reward_claims_incorporated) != len(expected_reward_coins):
-        return Err.INVALID_REWARD_COINS, None
+            return Err.INVALID_REWARD_COINS, None
 
     removals: List[bytes32] = []
     coinbase_additions: List[Coin] = list(expected_reward_coins)
