@@ -8,9 +8,9 @@ from blspy import G1Element, G2Element
 from chiabip158 import PyBIP158
 
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward, calculate_base_timelord_fee
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
-from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin
+from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.cost_calculator import NPCResult, calculate_cost_of_program
 from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
@@ -47,6 +47,7 @@ def create_foliage(
     total_iters_sp: uint128,
     timestamp: uint64,
     farmer_reward_puzzlehash: bytes32,
+    timelord_reward_puzzlehash: bytes32,
     pool_target: PoolTarget,
     get_plot_signature: Callable[[bytes32, G1Element], G2Element],
     get_pool_signature: Callable[[PoolTarget, Optional[G1Element]], Optional[G2Element]],
@@ -105,6 +106,7 @@ def create_foliage(
         pool_target,
         pool_target_signature,
         farmer_reward_puzzlehash,
+        timelord_reward_puzzlehash,
         extension_data,
     )
 
@@ -163,8 +165,14 @@ def create_foliage(
                 uint64(calculate_base_farmer_reward(curr.height) + curr.fees),
                 constants.GENESIS_CHALLENGE,
             )
+            timelord_coin = create_timelord_coin(
+                curr.height,
+                curr.timelord_puzzle_hash,
+                calculate_base_timelord_fee(curr.height),
+                constants.GENESIS_CHALLENGE
+            )
             assert curr.header_hash == prev_transaction_block.header_hash
-            reward_claims_incorporated += [pool_coin, farmer_coin]
+            reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
 
             if curr.height > 0:
                 curr = blocks.block_record(curr.prev_hash)
@@ -182,7 +190,13 @@ def create_foliage(
                         calculate_base_farmer_reward(curr.height),
                         constants.GENESIS_CHALLENGE,
                     )
-                    reward_claims_incorporated += [pool_coin, farmer_coin]
+                    timelord_coin = create_timelord_coin(
+                        curr.height,
+                        curr.timelord_puzzle_hash,
+                        calculate_base_timelord_fee(curr.height),
+                        constants.GENESIS_CHALLENGE,
+                    )
+                    reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
                     curr = blocks.block_record(curr.prev_hash)
         additions.extend(reward_claims_incorporated.copy())
         for coin in additions:
@@ -400,6 +414,7 @@ def create_unfinished_block(
         total_iters_sp,
         timestamp,
         farmer_reward_puzzle_hash,
+        signage_point.timelord_reward_puzzle_hash,
         pool_target,
         get_plot_signature,
         get_pool_signature,
