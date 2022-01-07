@@ -130,7 +130,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
             f"WARNING: using a pool address which we don't have the private"
             f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
             f"{config['pool']['llc_target_address']} with {all_targets[0]}"
-    if "timelord" not in config:
+            if "timelord" not in config:
         config["timelord"] = {}
     if "llc_target_address" not in config["timelord"]:
         print(f"Setting the llc destination address for timelord reward to {all_targets[0]}")
