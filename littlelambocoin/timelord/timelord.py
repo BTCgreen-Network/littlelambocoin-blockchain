@@ -202,7 +202,7 @@ class Timelord:
                     )
                 return None
 
-                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
+        timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
         if block.foliage.foliage_block_data.timelord_reward_puzzle_hash != timelord_reward_puzzle_hash:
             chance = random.randint(1, 100)
             if chance >= 10:
