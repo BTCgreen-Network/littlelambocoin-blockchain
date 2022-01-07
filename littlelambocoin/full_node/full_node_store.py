@@ -601,11 +601,11 @@ class FullNodeStore:
     def get_signage_point(self, cc_signage_point: bytes32) -> Optional[SignagePoint]:
         assert len(self.finished_sub_slots) >= 1
         if cc_signage_point == self.constants.GENESIS_CHALLENGE:
-            return SignagePoint(None, None, None, None)
+            return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
 
         for sub_slot, sps, _ in self.finished_sub_slots:
             if sub_slot is not None and sub_slot.challenge_chain.get_hash() == cc_signage_point:
-                return SignagePoint(None, None, None, None)
+                return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
             for sp in sps:
                 if sp is not None:
                     assert sp.cc_vdf is not None
@@ -625,7 +625,7 @@ class FullNodeStore:
 
             if cc_hash == challenge_hash:
                 if index == 0:
-                    return SignagePoint(None, None, None, None)
+                    return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
                 sp: Optional[SignagePoint] = sps[index]
                 if sp is not None:
                     assert sp.rc_vdf is not None

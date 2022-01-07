@@ -364,7 +364,7 @@ def create_unfinished_block(
                     curr = blocks.block_record(curr.prev_hash)
                 assert curr.finished_reward_slot_hashes is not None
                 rc_sp_hash = curr.finished_reward_slot_hashes[-1]
-        signage_point = SignagePoint(None, None, None, None)
+        signage_point = SignagePoint(None, None, None, None, signage_point.timelord_reward_puzzle_hash)
 
     cc_sp_signature: Optional[G2Element] = get_plot_signature(cc_sp_hash, proof_of_space.plot_public_key)
     rc_sp_signature: Optional[G2Element] = get_plot_signature(rc_sp_hash, proof_of_space.plot_public_key)
