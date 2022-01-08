@@ -50,6 +50,7 @@ class ConsensusConstants:
     MAX_BLOCK_COST_CLVM: int
     # Cost per byte of generator program
     COST_PER_BYTE: int
+    TIMELORD_PUZZLE_HASH: bytes32  # The block at height must pay out to this default timelord puzzle hash
 
     WEIGHT_PROOF_THRESHOLD: uint8
     WEIGHT_PROOF_RECENT_BLOCKS: uint32
