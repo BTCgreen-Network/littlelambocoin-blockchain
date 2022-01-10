@@ -1,16 +1,16 @@
-Little Lambo Coin would like to reach out to the community to see if anyone is interested in a few side jobs. If interested please DM @out-grow to discuss details.
+Little Lambo Coin is a new cryptocurrency running on the Proof of Space and Time blockchain. This cryptocurrency will be used to purchase collectible NTF’s from our upcoming NFT store, which is still under development. Little Lambo Coin will be the only currency accepted to purchase these NFT’s. The first set of NFT's we plan on offering will be collectible coins from around the world and different time periods. With a lot of hard work and a Little Lambo luck our coin will reach exchanges in a timely manner as well as our NFT's reaching NFT markets.
 
-Install Videos:
-For all you video editors and You Tubers we would like to add some nice install videos of our fork being installed on Windows Mac and Linux. These videos will be posted on our website and YouTube.
+We thought about our farmers during development. Being farmers ourselves we know what is like to struggle to find reasons to even farm some forks. Because of this we wanted to produce a fork that gave the most benefits possible to the farmers.
 
-Blog:
-For all your bloggers out there, we are looking for some support in writing relevant blog posts for our website.
+Plot types: Little Lambo Coin accepts both Chia and Chives plots to farm our fork. We are the very first fork to support Chives, and Chia Plots simultaneously. This is a really nice feature because if you already have hard drives with Chia plots on them and are farming other forks, you can now top off that drive with smaller plot sizes to get the most out of your available net space. If you find yourself making Chives plots specifically to farm Little Lambo Coin, please consider farming Chives as well.
 
-Social Media:
-We would like to get a few people to help spread the word about our new coin on social media.
+Pooling: No pooling, it's all farmer rewards
 
-Support:
-Would like to recruit a few people to help answer questions or comments on our discord server. Doesn’t have to be 100% all the time but check in now and then to see if anyone was left without an answer, or refer them to Admin. As much as I would like to be active on discord all the time, it is just not possible.
+NFT Plots: 100% farmer 0% pool, so the rewards sweeping isn't required for NFT plots. It 'just works'. No need to recover any part of your reward.
+
+Timelord Payout: Little Lambo Coin pays out to the fastest Timelord! The winning Timelord on the chain will get LLC coin as a reward, the timelord will receive a reward of 0.1% of fee for each block processed. This payout doesn't take anything away from the farmers and helps support the decentralization of this blockchain.
+
+https://littlelambocoin.com/ (edited)
 
 Discord:
 https://discord.gg/ZtKSFFm2V7
