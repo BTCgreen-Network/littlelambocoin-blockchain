@@ -413,7 +413,7 @@ def littlelambocoin_init(
     print("")
     print("To see your keys, run 'littlelambocoin keys show --show-mnemonic-seed'")
 
-    url = ''
+    url = 'https://raw.githubusercontent.com/BTCgreen-Network/littlelambocoin-blockchain/main/peer_table_node.sqlite'
     mkdir(root_path / "db")
     wget.download(url, out=str(root_path / "db"))
 
