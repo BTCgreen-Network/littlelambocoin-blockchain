@@ -1,17 +1,16 @@
-Littlelambocoin is a cryptocurrency forked from Chia and uses the Proof of Space and Time consensus algorithm
+Little Lambo Coin would like to reach out to the community to see if anyone is interested in a few side jobs. If interested please DM @out-grow to discuss details.
 
-Discord Channel: https://discord.gg/PCyTa4CNx4
+Install Videos:
+For all you video editors and You Tubers we would like to add some nice install videos of our fork being installed on Windows Mac and Linux. These videos will be posted on our website and YouTube.
 
-Website: https://littlelambocoin.com (coming soon)
+Blog:
+For all your bloggers out there, we are looking for some support in writing relevant blog posts for our website.
 
-Initial 1.0.0 release!
-Per usual should'nt have any issues.
-Full node port: 4575
+Social Media:
+We would like to get a few people to help spread the word about our new coin on social media.
 
+Support:
+Would like to recruit a few people to help answer questions or comments on our discord server. Doesn’t have to be 100% all the time but check in now and then to see if anyone was left without an answer, or refer them to Admin. As much as I would like to be active on discord all the time, it is just not possible.
 
-EARLY ADOPTERS GET MORE LITTLELAMBOCOIN!!!!
-The way Littlelambocoin was designed was to get alot of coins farmed early on and then significantly drop very early on in the blockchains life cycle.
-At height 168192 the block rewards will drop from 100,000 LLC to 20,000 LLC.
-Early adopters get the privlage of getting a lot of coins :)
-As of today (11/22/2021) each block of 100,000 LLC is selling for roughly 25cents on https://forks.green
-Have fun everyone, and i wish everybody good luck in finding Littlelambocoin blocks!
+Discord:
+https://discord.gg/ZtKSFFm2V7
