@@ -1,17 +1,16 @@
-Littlelambocoin is a cryptocurrency forked from Chia and uses the Proof of Space and Time consensus algorithm
+Little Lambo Coin is a new cryptocurrency running on the Proof of Space and Time blockchain. This cryptocurrency will be used to purchase collectible NTF’s from our upcoming NFT store, which is still under development. Little Lambo Coin will be the only currency accepted to purchase these NFT’s. The first set of NFT's we plan on offering will be collectible coins from around the world and different time periods. With a lot of hard work and a Little Lambo luck our coin will reach exchanges in a timely manner as well as our NFT's reaching NFT markets.
 
-Discord Channel: https://discord.gg/PCyTa4CNx4
+We thought about our farmers during development. Being farmers ourselves we know what is like to struggle to find reasons to even farm some forks. Because of this we wanted to produce a fork that gave the most benefits possible to the farmers.
 
-Website: https://littlelambocoin.com (coming soon)
+Plot types: Little Lambo Coin accepts both Chia and Chives plots to farm our fork. We are the very first fork to support Chives, and Chia Plots simultaneously. This is a really nice feature because if you already have hard drives with Chia plots on them and are farming other forks, you can now top off that drive with smaller plot sizes to get the most out of your available net space. If you find yourself making Chives plots specifically to farm Little Lambo Coin, please consider farming Chives as well.
 
-Initial 1.0.0 release!
-Per usual should'nt have any issues.
-Full node port: 4575
+Pooling: No pooling, it's all farmer rewards
 
+NFT Plots: 100% farmer 0% pool, so the rewards sweeping isn't required for NFT plots. It 'just works'. No need to recover any part of your reward.
 
-EARLY ADOPTERS GET MORE LITTLELAMBOCOIN!!!!
-The way Littlelambocoin was designed was to get alot of coins farmed early on and then significantly drop very early on in the blockchains life cycle.
-At height 168192 the block rewards will drop from 100,000 LLC to 20,000 LLC.
-Early adopters get the privlage of getting a lot of coins :)
-As of today (11/22/2021) each block of 100,000 LLC is selling for roughly 25cents on https://forks.green
-Have fun everyone, and i wish everybody good luck in finding Littlelambocoin blocks!
+Timelord Payout: Little Lambo Coin pays out to the fastest Timelord! The winning Timelord on the chain will get LLC coin as a reward, the timelord will receive a reward of 0.1% of fee for each block processed. This payout doesn't take anything away from the farmers and helps support the decentralization of this blockchain.
+
+https://littlelambocoin.com/ (edited)
+
+Discord:
+https://discord.gg/ZtKSFFm2V7
