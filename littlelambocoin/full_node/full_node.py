@@ -1227,9 +1227,10 @@ class FullNode:
                     and sp.cc_proof is not None
                     and sp.rc_vdf is not None
                     and sp.rc_proof is not None
+                    and sp.timelord_reward_puzzle_hash is not None
                 )
                 await self.signage_point_post_processing(
-                    RespondSignagePoint(index, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof), peer, sub_slots[1]
+                    RespondSignagePoint(index, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof, sp.timelord_reward_puzzle_hash), peer, sub_slots[1]
                 )
 
         if sub_slots[1] is None:
