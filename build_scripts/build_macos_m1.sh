@@ -15,17 +15,17 @@ fi
 echo "Littlelambocoin Installer Version is: $LITTLELAMBOCOIN_INSTALLER_VERSION"
 
 echo "Installing npm and electron packagers"
-npm install electron-installer-dmg -g
-npm install electron-packager -g
-npm install electron/electron-osx-sign -g
-npm install notarize-cli -g
+cd npm_macos_m1 || exit
+npm install
+PATH=$(npm bin):$PATH
+cd .. || exit
 
 echo "Create dist/"
 sudo rm -rf dist
 mkdir dist
 
 echo "Install pyinstaller and build bootloaders for M1"
-pip install pyinstaller==4.5
+pip install pyinstaller==4.9
 
 echo "Create executables with pyinstaller"
 SPEC_FILE=$(python -c 'import littlelambocoin; print(littlelambocoin.PYINSTALLER_SPEC_PATH)')
@@ -35,19 +35,24 @@ if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	echo >&2 "pyinstaller failed!"
 	exit $LAST_EXIT_CODE
 fi
-cp -r dist/daemon ../littlelambocoin-blockchain-gui
+cp -r dist/daemon ../littlelambocoin-blockchain-gui/packages/gui
 cd .. || exit
 cd littlelambocoin-blockchain-gui || exit
 
 echo "npm build"
+lerna clean -y
 npm install
-npm audit fix
+# Audit fix does not currently work with Lerna. See https://github.com/lerna/lerna/issues/1663
+# npm audit fix
 npm run build
 LAST_EXIT_CODE=$?
 if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	echo >&2 "npm run build failed!"
 	exit $LAST_EXIT_CODE
 fi
+
+# Change to the gui package
+cd packages/gui || exit
 
 # sets the version for littlelambocoin-blockchain in package.json
 brew install jq
@@ -79,14 +84,13 @@ if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	exit $LAST_EXIT_CODE
 fi
 
-mv Littlelambocoin-darwin-arm64 ../build_scripts/dist/
-cd ../build_scripts || exit
+mv Littlelambocoin-darwin-arm64 ../../../build_scripts/dist/
+cd ../../../build_scripts || exit
 
 DMG_NAME="Littlelambocoin-$LITTLELAMBOCOIN_INSTALLER_VERSION-arm64.dmg"
 echo "Create $DMG_NAME"
 mkdir final_installer
-electron-installer-dmg dist/Littlelambocoin-darwin-arm64/Littlelambocoin.app Littlelambocoin-$LITTLELAMBOCOIN_INSTALLER_VERSION-arm64 \
---overwrite --out final_installer
+NODE_PATH=./npm_macos_m1/node_modules node build_dmg.js dist/Littlelambocoin-darwin-arm64/Littlelambocoin.app $LITTLELAMBOCOIN_INSTALLER_VERSION-arm64
 LAST_EXIT_CODE=$?
 if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	echo >&2 "electron-installer-dmg failed!"

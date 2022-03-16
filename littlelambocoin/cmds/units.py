@@ -5,5 +5,5 @@ from typing import Dict
 units: Dict[str, int] = {
     "littlelambocoin": 10 ** 3,  # 1 littlelambocoin (LLC) is 1,000,000,000,000 mojo (1 trillion)
     "mojo": 1,
-    "colouredcoin": 10 ** 3,  # 1 coloured coin is 1000 colouredcoin mojos
+    "cat": 10 ** 3,  # 1 CAT is 1000 CAT mojos
 }

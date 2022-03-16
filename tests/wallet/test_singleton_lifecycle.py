@@ -10,8 +10,8 @@ from littlelambocoin.types.announcement import Announcement
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
 from littlelambocoin.types.spend_bundle import SpendBundle
-from littlelambocoin.util.condition_tools import ConditionOpcode
 
 from littlelambocoin.util.ints import uint64
 from littlelambocoin.wallet.puzzles.load_clvm import load_clvm

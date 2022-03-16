@@ -10,10 +10,12 @@ SERVICES_FOR_GROUP = {
     "timelord": "littlelambocoin_timelord_launcher littlelambocoin_timelord littlelambocoin_full_node".split(),
     "timelord-only": "littlelambocoin_timelord".split(),
     "timelord-launcher-only": "littlelambocoin_timelord_launcher".split(),
-    "wallet": "littlelambocoin_wallet littlelambocoin_full_node".split(),
-    "wallet-only": "littlelambocoin_wallet".split(),
+    "wallet": "littlelambocoin_wallet".split(),
     "introducer": "littlelambocoin_introducer".split(),
     "simulator": "littlelambocoin_full_node_simulator".split(),
+    "crawler": "littlelambocoin_crawler".split(),
+    "seeder": "littlelambocoin_crawler littlelambocoin_seeder".split(),
+    "seeder-only": "littlelambocoin_seeder".split(),
 }
 
 

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Any, List
 
+from clvm.casts import int_to_bytes
+
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
-from littlelambocoin.util.clvm import int_to_bytes
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint64
 from littlelambocoin.util.streamable import Streamable, streamable

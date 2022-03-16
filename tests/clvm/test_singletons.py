@@ -8,9 +8,9 @@ from littlelambocoin.types.blockchain_format.program import Program
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
 from littlelambocoin.types.spend_bundle import SpendBundle
 from littlelambocoin.util.errors import Err
-from littlelambocoin.util.condition_tools import ConditionOpcode
 from littlelambocoin.util.ints import uint64
 from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
 from littlelambocoin.wallet.lineage_proof import LineageProof

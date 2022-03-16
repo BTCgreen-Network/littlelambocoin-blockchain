@@ -8,12 +8,10 @@ from littlelambocoin.types.blockchain_format.program import Program, SerializedP
 wallet_program_files = set(
     [
         "littlelambocoin/wallet/puzzles/calculate_synthetic_public_key.clvm",
-        "littlelambocoin/wallet/puzzles/cc.clvm",
+        "littlelambocoin/wallet/puzzles/cat.clvm",
         "littlelambocoin/wallet/puzzles/littlelambocoinlisp_deserialisation.clvm",
         "littlelambocoin/wallet/puzzles/rom_bootstrap_generator.clvm",
         "littlelambocoin/wallet/puzzles/generator_for_single_coin.clvm",
-        "littlelambocoin/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
-        "littlelambocoin/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
         "littlelambocoin/wallet/puzzles/lock.inner.puzzle.clvm",
         "littlelambocoin/wallet/puzzles/p2_conditions.clvm",
         "littlelambocoin/wallet/puzzles/p2_delegated_conditions.clvm",
@@ -37,6 +35,14 @@ wallet_program_files = set(
         "littlelambocoin/wallet/puzzles/pool_member_innerpuz.clvm",
         "littlelambocoin/wallet/puzzles/singleton_launcher.clvm",
         "littlelambocoin/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
+        "littlelambocoin/wallet/puzzles/genesis_by_puzzle_hash.clvm",
+        "littlelambocoin/wallet/puzzles/everything_with_signature.clvm",
+        "littlelambocoin/wallet/puzzles/delegated_tail.clvm",
+        "littlelambocoin/wallet/puzzles/settlement_payments.clvm",
+        "littlelambocoin/wallet/puzzles/genesis_by_coin_id.clvm",
+        "littlelambocoin/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
+        "littlelambocoin/wallet/puzzles/delegated_genesis_checker.clvm",
+        "littlelambocoin/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
     ]
 )
 

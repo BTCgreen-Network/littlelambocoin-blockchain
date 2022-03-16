@@ -49,8 +49,8 @@ venv\scripts\pip install --editable . --extra-index-url https://pypi.chia.net/si
 
 Write-Output ""
 Write-Output "Littlelambocoin blockchain .\Install.ps1 complete."
-Write-Output "For assistance join us on Keybase in the #support chat channel:"
-Write-Output "https://keybase.io/team/littlelambocoin_network.public"
+Write-Output "For assistance join us on Discord in the #support chat channel:"
+Write-Output "https://discord.gg/yEWaF6CQcA"
 Write-Output ""
 Write-Output "Try the Quick Start Guide to running littlelambocoin-blockchain:"
 Write-Output "https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Quick-Start-Guide"

@@ -6,8 +6,8 @@ from blspy import AugSchemeMPL, BasicSchemeMPL, G1Element, G2Element
 from littlelambocoin.types.blockchain_format.program import Program
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.coin_spend import CoinSpend
+from littlelambocoin.types.condition_opcodes import ConditionOpcode
 from littlelambocoin.types.spend_bundle import SpendBundle
-from littlelambocoin.util.condition_tools import ConditionOpcode
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.wallet.puzzles import (
     p2_conditions,

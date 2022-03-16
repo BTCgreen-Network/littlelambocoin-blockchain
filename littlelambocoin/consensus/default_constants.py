@@ -38,8 +38,8 @@ testnet_kwargs = {
         "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     ),
     "MAX_VDF_WITNESS_SIZE": 64,
-    # Size of mempool = 50x the size of block
-    "MEMPOOL_BLOCK_BUFFER": 50,
+    # Size of mempool = 50x the size of block # temporary change until #9125 gets in
+    "MEMPOOL_BLOCK_BUFFER": 10,
     # Max coin amount, fits into 64 bits
     "MAX_COIN_AMOUNT": uint64((1 << 64) - 1),
     # Max block cost in clvm cost units
@@ -56,7 +56,7 @@ testnet_kwargs = {
     "POOL_SUB_SLOT_ITERS": 37600000000,  # iters limit * NUM_SPS
     "TIMELORD_PUZZLE_HASH": bytes.fromhex(
         "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    ),
+    )
 }
 
 

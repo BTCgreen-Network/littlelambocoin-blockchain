@@ -1,9 +1,9 @@
 import dataclasses
+import logging
 
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.byte_types import hexstr_to_bytes
 from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
-import logging
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +50,6 @@ class ConsensusConstants:
     MAX_BLOCK_COST_CLVM: int
     # Cost per byte of generator program
     COST_PER_BYTE: int
-    TIMELORD_PUZZLE_HASH: bytes32  # The block at height must pay out to this default timelord puzzle hash
 
     WEIGHT_PROOF_THRESHOLD: uint8
     WEIGHT_PROOF_RECENT_BLOCKS: uint32
@@ -60,6 +59,7 @@ class ConsensusConstants:
     MAX_GENERATOR_SIZE: uint32
     MAX_GENERATOR_REF_LIST_SIZE: uint32
     POOL_SUB_SLOT_ITERS: uint64
+    TIMELORD_PUZZLE_HASH: bytes32
 
     def replace(self, **changes) -> "ConsensusConstants":
         return dataclasses.replace(self, **changes)
