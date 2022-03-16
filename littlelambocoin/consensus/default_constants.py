@@ -56,7 +56,7 @@ testnet_kwargs = {
     "POOL_SUB_SLOT_ITERS": 37600000000,  # iters limit * NUM_SPS
     "TIMELORD_PUZZLE_HASH": bytes.fromhex(
         "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    )
+    ),
 }
 
 
