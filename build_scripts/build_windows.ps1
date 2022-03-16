@@ -37,7 +37,7 @@ pip install setuptools_scm
 Write-Output "   ---"
 Write-Output "Get LITTLELAMBOCOIN_INSTALLER_VERSION"
 # The environment variable LITTLELAMBOCOIN_INSTALLER_VERSION needs to be defined
-$env:LITTLELAMBOCOIN_INSTALLER_VERSION = python .\build_scripts\installer-version.py -win
+$env:LITTLELAMBOCOIN_INSTALLER_VERSION = 1.2.9 .\build_scripts\installer-version.py -win
 
 if (-not (Test-Path env:LITTLELAMBOCOIN_INSTALLER_VERSION)) {
   $env:LITTLELAMBOCOIN_INSTALLER_VERSION = '0.0.0'
