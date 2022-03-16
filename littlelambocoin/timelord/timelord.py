@@ -9,7 +9,7 @@ import time
 import traceback
 from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
-from chia.util.bech32m import decode_puzzle_hash
+from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 from chiavdf import create_discriminant, prove
 
