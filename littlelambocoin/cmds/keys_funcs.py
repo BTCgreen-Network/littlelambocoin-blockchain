@@ -68,7 +68,7 @@ def add_private_key_seed(mnemonic: str):
 
 
 @unlocks_keyring(use_passphrase_cache=True)
-def show_all_keys(show_mnemonic: bool):
+def show_all_keys(show_mnemonic: bool, non_observer_derivation: bool):
     """
     Prints all keys and mnemonics (if available).
     """
