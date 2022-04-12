@@ -59,7 +59,7 @@ jobs:
     - uses: actions/setup-python@v2
       name: Install Python 3.9
       with:
-        python-version: "3.9"
+        python-version: "3.9.11"
 
     # Create our own venv outside of the git directory JUST for getting the ACTUAL version so that install can't break it
     - name: Get version number
