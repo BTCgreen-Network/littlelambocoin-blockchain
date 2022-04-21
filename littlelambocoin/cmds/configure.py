@@ -77,8 +77,8 @@ def configure(
                 config["logging"]["log_level"] = set_log_level
                 print(f"Logging level updated. Check {DEFAULT_ROOT_PATH}/log/debug.log")
                 change_made = True
-        else:
-            print(f"Logging level not updated. Use one of: {levels}")
+            else:
+                print(f"Logging level not updated. Use one of: {levels}")
         if enable_upnp:
             config["full_node"]["enable_upnp"] = str2bool(enable_upnp)
             if str2bool(enable_upnp):
