@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { t, Trans } from '@lingui/macro';
-import { Alert } from '@material-ui/lab';
 import styled from 'styled-components';
-import { CopyToClipboard, Flex, Link, Loading } from '@littlelambocoin/core';
+import { Button, CopyToClipboard, Flex, Link, Loading } from '@littlelambocoin/core';
 import {
-  Button,
+  Alert,
   Dialog,
   DialogActions,
   DialogTitle,
   DialogContent,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useGetPoolLoginLinkQuery } from '@littlelambocoin/api-react';
 import type { PlotNFT, PlotNFTExternal } from '@littlelambocoin/api';
 
@@ -71,7 +70,7 @@ export default function PlotNFTGetPoolLoginLinkDialog(props: Props) {
                 </Trans>{' '}
                 <Link
                   target="_blank"
-                  href="https://github.com/BTCgreen-Network/pool-reference/blob/main/SPECIFICATION.md#get-login"
+                  href="https://github.com/Littlelambocoin-Network/pool-reference/blob/main/SPECIFICATION.md#get-login"
                   noWrap
                 >
                   <Trans>Learn More</Trans>

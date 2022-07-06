@@ -1,10 +1,11 @@
 import React, { useContext, useMemo } from 'react';
 import { Trans, t } from '@lingui/macro';
 import { useToggle } from 'react-use';
-import { Button, Divider, Menu, MenuItem } from '@material-ui/core';
-import { Translate, ExpandMore } from '@material-ui/icons';
+import { Divider, Menu, MenuItem } from '@mui/material';
+import { Translate, ExpandMore } from '@mui/icons-material';
 import useLocale from '../../hooks/useLocale';
 import useOpenExternal from '../../hooks/useOpenExternal';
+import Button from '../Button';
 import { LocaleContext } from '../LocaleProvider';
 
 export default function LocaleToggle(props) {
@@ -35,7 +36,7 @@ export default function LocaleToggle(props) {
     handleClose();
 
     openExternal(
-      'https://github.com/BTCgreen-Network/littlelambocoin-blockchain-gui/tree/main/src/locales/README.md',
+      'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain-gui/tree/main/src/locales/README.md',
     );
   }
 

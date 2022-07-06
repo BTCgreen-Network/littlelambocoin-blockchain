@@ -49,7 +49,7 @@ export default class Client extends EventEmitter {
     this.options = {
       timeout: 60 * 1000 * 10, // 10 minutes
       camelCase: true,
-      backupHost: 'https://backup.littlelambocoinnetwork.org',
+      backupHost: 'https://backup.littlelambocoin.com',
       debug: false,
       services: [],
       ...options,

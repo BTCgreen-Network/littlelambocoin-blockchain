@@ -1,5 +1,6 @@
 import dataclasses
 import logging
+from typing import Any
 
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.byte_types import hexstr_to_bytes
@@ -61,10 +62,10 @@ class ConsensusConstants:
     POOL_SUB_SLOT_ITERS: uint64
     TIMELORD_PUZZLE_HASH: bytes32
 
-    def replace(self, **changes) -> "ConsensusConstants":
+    def replace(self, **changes: object) -> "ConsensusConstants":
         return dataclasses.replace(self, **changes)
 
-    def replace_str_to_bytes(self, **changes) -> "ConsensusConstants":
+    def replace_str_to_bytes(self, **changes: Any) -> "ConsensusConstants":
         """
         Overrides str (hex) values with bytes.
         """

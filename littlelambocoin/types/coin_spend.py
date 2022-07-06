@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 from typing import List
-
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.blockchain_format.program import SerializedProgram, INFINITE_COST
 from littlelambocoin.util.chain_utils import additions_for_solution, fee_for_solution
 from littlelambocoin.util.streamable import Streamable, streamable
 
 
-@dataclass(frozen=True)
 @streamable
+@dataclass(frozen=True)
 class CoinSpend(Streamable):
     """
     This is a rather disparate data structure that validates coin transfers. It's generally populated

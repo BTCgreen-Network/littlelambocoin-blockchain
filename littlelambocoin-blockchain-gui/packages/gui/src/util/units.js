@@ -1,6 +1,6 @@
 const units = {
   littlelambocoin: 1,
-  mojo: 1 / 1e3,
+  mojo: 1 / 1e12,
   colouredcoin: 1 / 1e9,
 };
 

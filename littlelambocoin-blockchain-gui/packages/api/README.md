@@ -1,8 +1,8 @@
 # @littlelambocoin/api
 
-![Alt text](https://www.littlelambocoinnetwork.org/img/littlelambocoin_logo.svg)
+![Alt text](https://www.littlelambocoin.com/img/littlelambocoin_logo.svg)
 
-This library provides support for TypeScript/JavaScript [Littlelambocoin](https://www.littlelambocoinnetwork.org) apps to access the [Littlelambocoin Blockchain RPC](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/RPC-Interfaces), by making it easier to perform the following actions:
+This library provides support for TypeScript/JavaScript [Littlelambocoin](https://www.littlelambocoin.com) apps to access the [Littlelambocoin Blockchain RPC](https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki/RPC-Interfaces), by making it easier to perform the following actions:
 
 - Making requests to the Littlelambocoin Blockchain RPC.
 - Catch responses and errors with standard try/catch and async/await syntax.

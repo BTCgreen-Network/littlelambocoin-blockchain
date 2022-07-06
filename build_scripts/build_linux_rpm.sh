@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 if [ ! "$1" ]; then
   echo "This script requires either amd64 of arm64 as an argument"
 	exit 1
@@ -12,11 +14,8 @@ else
 	DIR_NAME="littlelambocoin-blockchain-linux-arm64"
 fi
 
-pip install setuptools_scm
-# The environment variable LITTLELAMBOCOIN_INSTALLER_VERSION needs to be defined
 # If the env variable NOTARIZE and the username and password variables are
 # set, this will attempt to Notarize the signed DMG
-LITTLELAMBOCOIN_INSTALLER_VERSION=$(python installer-version.py)
 
 if [ ! "$LITTLELAMBOCOIN_INSTALLER_VERSION" ]; then
 	echo "WARNING: No environment variable LITTLELAMBOCOIN_INSTALLER_VERSION set. Using 0.0.0."
@@ -36,7 +35,6 @@ rm -rf dist
 mkdir dist
 
 echo "Create executables with pyinstaller"
-pip install pyinstaller==4.9
 SPEC_FILE=$(python -c 'import littlelambocoin; print(littlelambocoin.PYINSTALLER_SPEC_PATH)')
 pyinstaller --log-level=INFO "$SPEC_FILE"
 LAST_EXIT_CODE=$?
@@ -44,6 +42,31 @@ if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	echo >&2 "pyinstaller failed!"
 	exit $LAST_EXIT_CODE
 fi
+
+# Builds CLI only rpm
+CLI_RPM_BASE="littlelambocoin-blockchain-cli-$LITTLELAMBOCOIN_INSTALLER_VERSION-1.$REDHAT_PLATFORM"
+mkdir -p "dist/$CLI_RPM_BASE/opt/littlelambocoin"
+mkdir -p "dist/$CLI_RPM_BASE/usr/bin"
+cp -r dist/daemon/* "dist/$CLI_RPM_BASE/opt/littlelambocoin/"
+ln -s ../../opt/littlelambocoin/littlelambocoin "dist/$CLI_RPM_BASE/usr/bin/littlelambocoin"
+# This is built into the base build image
+# shellcheck disable=SC1091
+. /etc/profile.d/rvm.sh
+rvm use ruby-3
+# /usr/lib64/libcrypt.so.1 is marked as a dependency specifically because newer versions of fedora bundle
+# libcrypt.so.2 by default, and the libxcrypt-compat package needs to be installed for the other version
+# Marking as a dependency allows yum/dnf to automatically install the libxcrypt-compat package as well
+fpm -s dir -t rpm \
+  -C "dist/$CLI_RPM_BASE" \
+  -p "dist/$CLI_RPM_BASE.rpm" \
+  --name littlelambocoin-blockchain-cli \
+  --license Apache-2.0 \
+  --version "$LITTLELAMBOCOIN_INSTALLER_VERSION" \
+  --architecture "$REDHAT_PLATFORM" \
+  --description "Littlelambocoin is a modern cryptocurrency built from scratch, designed to be efficient, decentralized, and secure." \
+  --depends /usr/lib64/libcrypt.so.1 \
+  .
+# CLI only rpm done
 
 cp -r dist/daemon ../littlelambocoin-blockchain-gui/packages/gui
 cd .. || exit
@@ -87,7 +110,7 @@ cd ../../../build_scripts || exit
 if [ "$REDHAT_PLATFORM" = "x86_64" ]; then
 	echo "Create littlelambocoin-blockchain-$LITTLELAMBOCOIN_INSTALLER_VERSION.rpm"
 
-	# Disables build links from the generated rpm so that we dont conflict with other packages. See https://github.com/BTCgreen-Network/littlelambocoin-blockchain/issues/3846
+	# Disables build links from the generated rpm so that we dont conflict with other packages. See https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/issues/3846
 	# shellcheck disable=SC2086
 	sed -i '1s/^/%define _build_id_links none\n%global _enable_debug_package 0\n%global debug_package %{nil}\n%global __os_install_post \/usr\/lib\/rpm\/brp-compress %{nil}\n/' "$GLOBAL_NPM_ROOT/electron-installer-redhat/resources/spec.ejs"
 
@@ -110,5 +133,8 @@ if [ "$REDHAT_PLATFORM" = "x86_64" ]; then
 	  exit $LAST_EXIT_CODE
   fi
 fi
+
+# Move the cli only rpm into final installers as well, so it gets uploaded as an artifact
+mv "dist/$CLI_RPM_BASE.rpm" final_installer/
 
 ls final_installer/

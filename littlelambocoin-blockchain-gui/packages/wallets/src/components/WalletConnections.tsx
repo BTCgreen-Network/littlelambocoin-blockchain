@@ -6,7 +6,7 @@ import {
   Loading,
   Table,
 } from '@littlelambocoin/core';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import { Connection, ServiceConnectionName } from '@littlelambocoin/api';
 import { useGetWalletConnectionsQuery } from '@littlelambocoin/api-react';
 
@@ -63,11 +63,11 @@ const cols = [
   },
 ];
 
-type Props = {
+export type WalletConnectionsProps = {
   walletId: number;
 };
 
-export default function WalletConnections(props: Props) {
+export default function WalletConnections(props: WalletConnectionsProps) {
   const { walletId } = props;
   const { data: connections, isLoading } = useGetWalletConnectionsQuery({
     walletId,

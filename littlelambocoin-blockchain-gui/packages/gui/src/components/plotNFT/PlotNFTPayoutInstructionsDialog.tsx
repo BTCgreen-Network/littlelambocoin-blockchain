@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { useForm, useWatch } from 'react-hook-form';
-import { Alert } from '@material-ui/lab';
 import {
+  Button,
   CopyToClipboard,
   Flex,
   Link,
@@ -11,14 +11,14 @@ import {
   Form,
 } from '@littlelambocoin/core';
 import {
-  Button,
+  Alert,
   Dialog,
   DialogActions,
   DialogTitle,
   DialogContent,
   Typography,
   InputAdornment,
-} from '@material-ui/core';
+} from '@mui/material';
 import PlotNFT from '../../types/PlotNFT';
 import PlotNFTExternal from '../../types/PlotNFTExternal';
 import usePayoutAddress from '../../hooks/usePayoutAddress';
@@ -112,7 +112,7 @@ export default function PlotNFTPayoutInstructionsDialog(props: Props) {
                   </Trans>{' '}
                   <Link
                     target="_blank"
-                    href="https://github.com/BTCgreen-Network/pool-reference/blob/main/SPECIFICATION.md#payloadpayout_instructions"
+                    href="https://github.com/Littlelambocoin-Network/pool-reference/blob/main/SPECIFICATION.md#payloadpayout_instructions"
                     noWrap
                   >
                     <Trans>Learn More</Trans>

@@ -1,4 +1,3 @@
-import asyncio
 from pathlib import Path
 from secrets import token_bytes
 
@@ -11,12 +10,6 @@ from littlelambocoin.util.ints import uint32
 from littlelambocoin.wallet.derivation_record import DerivationRecord
 from littlelambocoin.wallet.util.wallet_types import WalletType
 from littlelambocoin.wallet.wallet_puzzle_store import WalletPuzzleStore
-
-
-@pytest.fixture(scope="module")
-def event_loop():
-    loop = asyncio.get_event_loop()
-    yield loop
 
 
 class TestPuzzleStore:

@@ -2,6 +2,7 @@
 import importlib
 import pathlib
 import platform
+import sysconfig
 
 from pkg_resources import get_distribution
 
@@ -71,22 +72,10 @@ hiddenimports.extend(entry_points)
 hiddenimports.extend(keyring_imports)
 
 binaries = [
-    (
-        f"{ROOT}/madmax/littlelambocoin_plot",
-        "madmax"
-    ),
-    (
-        f"{ROOT}/madmax/littlelambocoin_plot_k34",
-        "madmax"
-    )
 ]
 
 if not THIS_IS_MAC:
     binaries.extend([
-        (
-            f"{ROOT}/bladebit/bladebit",
-            "bladebit"
-        )
     ])
 
 if THIS_IS_WINDOWS:
@@ -98,7 +87,7 @@ if THIS_IS_WINDOWS:
 
 if THIS_IS_WINDOWS:
     littlelambocoin_mod = importlib.import_module("littlelambocoin")
-    dll_paths = ROOT / "*.dll"
+    dll_paths = pathlib.Path(sysconfig.get_path("platlib")) / "*.dll"
 
     binaries = [
         (
@@ -112,18 +101,6 @@ if THIS_IS_WINDOWS:
         (
             "C:\\Windows\\System32\\vcruntime140_1.dll",
             ".",
-        ),
-        (
-            f"{ROOT}\\madmax\\littlelambocoin_plot.exe",
-            "madmax"
-        ),
-        (
-            f"{ROOT}\\madmax\\littlelambocoin_plot_k34.exe",
-            "madmax"
-        ),
-        (
-            f"{ROOT}\\bladebit\\bladebit.exe",
-            "bladebit"
         ),
     ]
 
@@ -188,6 +165,9 @@ add_binary("daemon", f"{ROOT}/littlelambocoin/daemon/server.py", COLLECT_ARGS)
 
 for server in SERVERS:
     add_binary(f"start_{server}", f"{ROOT}/littlelambocoin/server/start_{server}.py", COLLECT_ARGS)
+
+add_binary("start_crawler", f"{ROOT}/littlelambocoin/seeder/start_crawler.py", COLLECT_ARGS)
+add_binary("start_seeder", f"{ROOT}/littlelambocoin/seeder/dns_server.py", COLLECT_ARGS)
 
 COLLECT_KWARGS = dict(
     strip=False,

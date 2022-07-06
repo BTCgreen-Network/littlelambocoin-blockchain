@@ -1,6 +1,8 @@
+[submodule "littlelambocoin-blockchain-gui"]
+	path = littlelambocoin-blockchain-gui
+	url = https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain-gui.git
+	branch = pools
 [submodule "mozilla-ca"]
 	path = mozilla-ca
 	url = https://github.com/Chia-Network/mozilla-ca.git
-[submodule "littlelambocoin-blockchain-gui"]
-	path = littlelambocoin-blockchain-gui
-	url = https://github.com/BTCgreen-Network/littlelambocoin-blockchain-gui.git
+        branch = main

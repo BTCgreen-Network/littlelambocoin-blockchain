@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { Trans } from '@lingui/macro';
 import { useCreateNewPoolWalletMutation } from '@littlelambocoin/api-react';
-import { ChevronRight as ChevronRightIcon } from '@material-ui/icons';
+import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
 import { Flex, Suspender } from '@littlelambocoin/core';
 import PlotNFTState from '../../constants/PlotNFTState';
 import useUnconfirmedPlotNFTs from '../../hooks/useUnconfirmedPlotNFTs';
