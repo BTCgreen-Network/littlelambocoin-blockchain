@@ -71,7 +71,7 @@ const Spacer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const url = 'https://littlelambocoin.com';
+const url = 'https://littlelambocoin.net';
 
 type Props = {
   version: string;

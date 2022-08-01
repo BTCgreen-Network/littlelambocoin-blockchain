@@ -14,3 +14,4 @@ export { default as mojoToLittlelambocoin } from './mojoToLittlelambocoin';
 export { default as mojoToLittlelambocoinLocaleString } from './mojoToLittlelambocoinLocaleString';
 export { default as sleep } from './sleep';
 export { default as useColorModeValue } from './useColorModeValue';
+export { default as validAddress } from './validAddress';

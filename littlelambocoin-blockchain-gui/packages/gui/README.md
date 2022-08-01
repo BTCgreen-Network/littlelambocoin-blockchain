@@ -1,5 +1,5 @@
 # littlelambocoin-blockchain
-![Alt text](https://www.littlelambocoin.com/img/littlelambocoin_logo.svg)
+![Alt text](https://www.littlelambocoin.net/img/littlelambocoin_logo.svg)
 
 ![GitHub contributors](https://img.shields.io/github/contributors/Littlelambocoin-Network/littlelambocoin-blockchain?logo=GitHub)
 
