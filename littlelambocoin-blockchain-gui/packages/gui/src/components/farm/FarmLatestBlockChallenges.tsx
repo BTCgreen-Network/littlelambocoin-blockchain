@@ -63,19 +63,6 @@ export default function FarmLatestBlockChallenges() {
         }
         pages
       />
-      <Typography variant="caption">
-        <Trans>
-          *Want to explore Littlelambocoin’s blocks further? Check out{' '}
-          <Link
-            color="primary"
-            href="https://www.littlelambocoinexplorer.com/"
-            target="_blank"
-          >
-            Littlelambocoin Explorer
-          </Link>{' '}
-          built by an open source developer.
-        </Trans>
-      </Typography>
     </Card>
   );
 }

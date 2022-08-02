@@ -59,7 +59,7 @@ export default function ProfileAdd() {
   const openExternal = useOpenExternal();
 
   function handleClick() {
-    openExternal('https://faucet.littlelambocoin.com/');
+    openExternal('https://faucet.littlelambocoin.net/');
   }
 
   async function handleSubmit(data: CreateProfileData) {
