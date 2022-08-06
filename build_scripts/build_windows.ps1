@@ -85,7 +85,7 @@ Write-Output "   ---"
 
 Write-Output "   ---"
 Write-Output "electron-packager"
-electron-packager . Littlelambocoin --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\littlelambocoin.ico --app-version=$packageVersion
+electron-packager . LLC --asar.unpack="**\daemon\**" --executablename=Littlelambocoin --overwrite --icon=.\src\assets\img\littlelambocoin.ico --app-version=$packageVersion
 Write-Output "   ---"
 
 Write-Output "   ---"
@@ -110,7 +110,7 @@ git status
 Write-Output "   ---"
 Write-Output "Moving final installers to expected location"
 Write-Output "   ---"
-Copy-Item ".\Littlelambocoin-win32-x64" -Destination "$env:GITHUB_WORKSPACE\littlelambocoin-blockchain-gui\" -Recurse
+Copy-Item ".\LLC-win32-x64" -Destination "$env:GITHUB_WORKSPACE\littlelambocoin-blockchain-gui\" -Recurse
 Copy-Item ".\release-builds" -Destination "$env:GITHUB_WORKSPACE\littlelambocoin-blockchain-gui\" -Recurse
 
 Write-Output "   ---"

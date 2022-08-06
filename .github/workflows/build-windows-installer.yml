@@ -176,7 +176,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Windows-Exe
-        path: ${{ github.workspace }}\littlelambocoin-blockchain-gui\Littlelambocoin-win32-x64\
+        path: ${{ github.workspace }}\littlelambocoin-blockchain-gui\LLC-win32-x64\
 
     - name: Upload Installer to artifacts
       uses: actions/upload-artifact@v3
