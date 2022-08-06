@@ -106,7 +106,7 @@ def run_generator(
         # the division operator may not be used with negative operands
     flags = COND_CANON_INTS | NO_NEG_DIV
     # else:
-    #    flags = 0
+    #   flags = 0
 
     args = create_generator_args(block_generator.generator_refs).first()
     _, block_result = block_generator.program.run_with_cost(max_cost, flags, args)

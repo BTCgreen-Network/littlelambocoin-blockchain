@@ -9,7 +9,7 @@ from littlelambocoin.server.start_service import run_service
 from littlelambocoin.simulator.SimulatorFullNodeRpcApi import SimulatorFullNodeRpcApi
 from littlelambocoin.util.config import load_config_cli
 from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
-from littlelambocoin.util.path import path_from_root
+from littlelambocoin.util.path import mkdir, path_from_root
 from tests.block_tools import BlockTools, create_block_tools, test_constants
 from tests.util.keyring import TempKeyring
 
@@ -22,7 +22,7 @@ SERVICE_NAME = "full_node"
 
 
 def service_kwargs_for_full_node_simulator(root_path: Path, config: Dict, bt: BlockTools) -> Dict:
-    path_from_root(root_path, config["database_path"]).parent.mkdir(parents=True, exist_ok=True)
+    mkdir(path_from_root(root_path, config["database_path"]).parent)
     constants = bt.constants
 
     node = FullNode(

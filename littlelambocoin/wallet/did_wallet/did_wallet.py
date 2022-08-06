@@ -98,6 +98,8 @@ class DIDWallet:
         self.wallet_info = await wallet_state_manager.user_store.create_wallet(
             name, WalletType.DECENTRALIZED_ID.value, info_as_string
         )
+        if self.wallet_info is None:
+            raise ValueError("Internal Error")
         self.wallet_id = self.wallet_info.id
         std_wallet_id = self.standard_wallet.wallet_id
         bal = await wallet_state_manager.get_confirmed_balance_for_wallet(std_wallet_id)
@@ -359,7 +361,7 @@ class DIDWallet:
         future_parent = LineageProof(
             coin.parent_coin_info,
             inner_puzzle.get_tree_hash(),
-            uint64(coin.amount),
+            coin.amount,
         )
 
         await self.add_parent(coin.name(), future_parent, True)
@@ -376,12 +378,12 @@ class DIDWallet:
             response = await node.request_puzzle_solution(puzzle_solution_request)
             req_puz_sol = response.response
             assert req_puz_sol.puzzle is not None
-            parent_innerpuz = did_wallet_puzzles.get_innerpuzzle_from_puzzle(req_puz_sol.puzzle.to_program())
+            parent_innerpuz = did_wallet_puzzles.get_innerpuzzle_from_puzzle(req_puz_sol.puzzle)
             assert parent_innerpuz is not None
             parent_info = LineageProof(
                 parent_state.coin.parent_coin_info,
                 parent_innerpuz.get_tree_hash(),
-                uint64(parent_state.coin.amount),
+                parent_state.coin.amount,
             )
             await self.add_parent(coin.parent_coin_info, parent_info, False)
 
@@ -392,8 +394,8 @@ class DIDWallet:
         """
         assert self.did_info.current_inner is not None
         assert self.did_info.origin_coin is not None
-        output_str = f"{self.did_info.origin_coin.parent_coin_info.hex()}:"
-        output_str += f"{self.did_info.origin_coin.puzzle_hash.hex()}:"
+        output_str = f"{self.did_info.origin_coin.parent_coin_info}:"
+        output_str += f"{self.did_info.origin_coin.puzzle_hash}:"
         output_str += f"{self.did_info.origin_coin.amount}:"
         if len(self.did_info.backup_ids) > 0:
             for did in self.did_info.backup_ids:
@@ -441,7 +443,7 @@ class DIDWallet:
             future_parent = LineageProof(
                 coin.parent_coin_info,
                 did_info.current_inner.get_tree_hash(),
-                uint64(coin.amount),
+                coin.amount,
             )
             await self.add_parent(coin.name(), future_parent, True)
             if children_state.spent_height != children_state.created_height:
@@ -469,17 +471,17 @@ class DIDWallet:
                 response = await node.request_puzzle_solution(puzzle_solution_request)
                 req_puz_sol = response.response
                 assert req_puz_sol.puzzle is not None
-                parent_innerpuz = did_wallet_puzzles.get_innerpuzzle_from_puzzle(req_puz_sol.puzzle.to_program())
+                parent_innerpuz = did_wallet_puzzles.get_innerpuzzle_from_puzzle(req_puz_sol.puzzle)
                 assert parent_innerpuz is not None
                 parent_info = LineageProof(
                     parent_state.coin.parent_coin_info,
                     parent_innerpuz.get_tree_hash(),
-                    uint64(parent_state.coin.amount),
+                    parent_state.coin.amount,
                 )
                 await self.add_parent(coin.parent_coin_info, parent_info, True)
         assert parent_info is not None
 
-    async def create_tandem_llc_tx(
+    async def create_tandem_littlelambocoin_tx(
         self, fee: uint64, announcement_to_assert: Optional[Announcement] = None
     ) -> TransactionRecord:
         littlelambocoin_coins = await self.standard_wallet.select_coins(fee)
@@ -566,7 +568,7 @@ class DIDWallet:
         spend_bundle = await self.sign(unsigned_spend_bundle)
         if fee > 0:
             announcement_to_make = coin.name()
-            littlelambocoin_tx = await self.create_tandem_llc_tx(fee, Announcement(coin.name(), announcement_to_make))
+            littlelambocoin_tx = await self.create_tandem_littlelambocoin_tx(fee, Announcement(coin.name(), announcement_to_make))
         else:
             announcement_to_make = None
             littlelambocoin_tx = None
@@ -661,7 +663,7 @@ class DIDWallet:
         spend_bundle = await self.sign(unsigned_spend_bundle)
         if fee > 0:
             announcement_to_make = coin.name()
-            littlelambocoin_tx = await self.create_tandem_llc_tx(fee, Announcement(coin.name(), announcement_to_make))
+            littlelambocoin_tx = await self.create_tandem_littlelambocoin_tx(fee, Announcement(coin.name(), announcement_to_make))
         else:
             littlelambocoin_tx = None
         if littlelambocoin_tx is not None and littlelambocoin_tx.spend_bundle is not None:
@@ -876,7 +878,7 @@ class DIDWallet:
             coin = coins.pop()
             parent = coin.parent_coin_info
             innerpuzhash = self.did_info.current_inner.get_tree_hash()
-            amount = uint64(coin.amount)
+            amount = coin.amount
             return (parent, innerpuzhash, amount)
         return None
 
@@ -1142,12 +1144,12 @@ class DIDWallet:
         future_parent = LineageProof(
             eve_coin.parent_coin_info,
             did_inner_hash,
-            uint64(eve_coin.amount),
+            eve_coin.amount,
         )
         eve_parent = LineageProof(
             launcher_coin.parent_coin_info,
             launcher_coin.puzzle_hash,
-            uint64(launcher_coin.amount),
+            launcher_coin.amount,
         )
         await self.add_parent(eve_coin.parent_coin_info, eve_parent, False)
         await self.add_parent(eve_coin.name(), future_parent, False)
@@ -1338,7 +1340,7 @@ class DIDWallet:
         :return: DIDInfo
         """
         details = backup_data.split(":")
-        origin = Coin(bytes32.fromhex(details[0]), bytes32.fromhex(details[1]), uint64(int(details[2])))
+        origin = Coin(bytes32(bytes.fromhex(details[0])), bytes32(bytes.fromhex(details[1])), uint64(int(details[2])))
         backup_ids = []
         if len(details[3]) > 0:
             for d in details[3].split(","):

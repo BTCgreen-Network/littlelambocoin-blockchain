@@ -12,6 +12,7 @@ from littlelambocoin.cmds.cmds_util import transaction_submitted_msg, transactio
 from littlelambocoin.cmds.show import print_connections
 from littlelambocoin.cmds.units import units
 from littlelambocoin.rpc.wallet_rpc_client import WalletRpcClient
+from littlelambocoin.server.outbound_message import NodeType
 from littlelambocoin.server.start_wallet import SERVICE_NAME
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.bech32m import bech32_decode, decode_puzzle_hash, encode_puzzle_hash
@@ -242,7 +243,7 @@ async def send(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> 
             return None
 
     print("Transaction not yet submitted to nodes")
-    print(f"To get status, use command: littlelambocoin wallet get_transaction -f {fingerprint} -tx 0x{tx_id}")
+    print(f"Do 'littlelambocoin wallet get_transaction -f {fingerprint} -tx 0x{tx_id}' to get status")
 
 
 async def get_address(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
@@ -256,6 +257,7 @@ async def delete_unconfirmed_transactions(args: dict, wallet_client: WalletRpcCl
     wallet_id = args["id"]
     await wallet_client.delete_unconfirmed_transactions(wallet_id)
     print(f"Successfully deleted all unconfirmed transactions for wallet id {wallet_id} on key {fingerprint}")
+
 
 async def get_derivation_index(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
     res = await wallet_client.get_current_derivation_index()
@@ -332,7 +334,6 @@ async def make_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: in
                                 },
                             }
                             if info.supports_did:
-                                assert info.royalty_puzzle_hash is not None
                                 driver_dict[id]["also"]["also"] = {
                                     "type": "ownership",
                                     "owner": "()",
@@ -367,13 +368,13 @@ async def make_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: in
             print("--------------")
             print()
             print("OFFERING:")
-            for name, data in printable_dict.items():
-                amount, unit, multiplier = data
+            for name, info in printable_dict.items():
+                amount, unit, multiplier = info
                 if multiplier < 0:
                     print(f"  - {amount} {name} ({int(Decimal(amount) * unit)} mojos)")
             print("REQUESTING:")
-            for name, data in printable_dict.items():
-                amount, unit, multiplier = data
+            for name, info in printable_dict.items():
+                amount, unit, multiplier = info
                 if multiplier > 0:
                     print(f"  - {amount} {name} ({int(Decimal(amount) * unit)} mojos)")
 
@@ -548,14 +549,14 @@ async def take_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: in
             offered, requested, nft_coin_id, nft_royalty_percentage
         )
         nft_royalty_currency: str = "Unknown CAT"
-        if nft_royalty_asset_id == "llc":
+        if nft_royalty_asset_id == "littlelambocoin":
             nft_royalty_currency = "LLC"
         else:
             result = await cat_name_resolver(bytes32.fromhex(nft_royalty_asset_id))
             if result is not None:
                 nft_royalty_currency = result[1]
 
-        nft_royalty_divisor = units["littlelambocoin"] if nft_royalty_asset_id == "llc" else units["cat"]
+        nft_royalty_divisor = units["littlelambocoin"] if nft_royalty_asset_id == "littlelambocoin" else units["cat"]
         nft_total_amount_requested_str = (
             f"{Decimal(nft_total_amount_requested) / nft_royalty_divisor} {nft_royalty_currency}"
         )
@@ -670,7 +671,7 @@ async def print_balances(args: dict, wallet_client: WalletRpcClient, fingerprint
 
     print(" ")
     trusted_peers: Dict = config["wallet"].get("trusted_peers", {})
-    await print_connections(wallet_client, trusted_peers)
+    await print_connections(wallet_client, time, NodeType, trusted_peers)
 
 
 async def get_wallet(wallet_client: WalletRpcClient, fingerprint: int = None) -> Optional[Tuple[WalletRpcClient, int]]:

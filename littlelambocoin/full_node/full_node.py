@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import asyncio
 import contextlib
 import dataclasses
@@ -73,7 +71,7 @@ from littlelambocoin.util.config import PEER_DB_PATH_KEY_DEPRECATED, process_con
 from littlelambocoin.util.db_wrapper import DBWrapper2
 from littlelambocoin.util.errors import ConsensusError, Err, ValidationError
 from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
-from littlelambocoin.util.path import path_from_root
+from littlelambocoin.util.path import mkdir, path_from_root
 from littlelambocoin.util.safe_cancel_task import cancel_task_safe
 from littlelambocoin.util.profiler import profile_task
 from datetime import datetime
@@ -158,7 +156,7 @@ class FullNode:
         self.peer_coin_ids: Dict[bytes32, Set[bytes32]] = {}  # Peer ID: Set[Coin ids]
         self.peer_puzzle_hash: Dict[bytes32, Set[bytes32]] = {}  # Peer ID: Set[puzzle_hash]
         self.peer_sub_counter: Dict[bytes32, int] = {}  # Peer ID: int (subscription count)
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        mkdir(self.db_path.parent)
         self._transaction_queue_task = None
 
     def _set_state_changed_callback(self, callback: Callable):
@@ -361,7 +359,7 @@ class FullNode:
             default_port = None
         if "dns_servers" in self.config:
             dns_servers = self.config["dns_servers"]
-        elif self.config["port"] == 4575:
+        elif self.config["port"] == 8444:
             # If `dns_servers` misses from the `config`, hardcode it if we're running mainnet.
             dns_servers.append("dns-introducer.littlelambocoin.com")
         try:

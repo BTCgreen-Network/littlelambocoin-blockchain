@@ -143,6 +143,7 @@ class HarvesterAPI:
                             plot_public_key = ProofOfSpace.generate_plot_public_key(
                                 local_sk.get_g1(), farmer_public_key, include_taproot
                             )
+
                             responses.append(
                                 (
                                     quality_str,

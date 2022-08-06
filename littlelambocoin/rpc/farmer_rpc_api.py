@@ -7,53 +7,40 @@ from typing_extensions import Protocol
 from littlelambocoin.farmer.farmer import Farmer
 from littlelambocoin.plot_sync.receiver import Receiver
 from littlelambocoin.protocols.harvester_protocol import Plot
-from littlelambocoin.rpc.rpc_server import Endpoint
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.byte_types import hexstr_to_bytes
-from littlelambocoin.util.ints import uint32
 from littlelambocoin.util.paginator import Paginator
-from littlelambocoin.util.streamable import Streamable, streamable
+from littlelambocoin.util.streamable import dataclass_from_dict
 from littlelambocoin.util.ws_message import WsRpcMessage, create_payload_dict
 
 
 class PaginatedRequestData(Protocol):
-    @property
-    def node_id(self) -> bytes32:
-        pass
-
-    @property
-    def page(self) -> uint32:
-        pass
-
-    @property
-    def page_size(self) -> uint32:
-        pass
+    node_id: bytes32
+    page: int
+    page_size: int
 
 
-@streamable
-@dataclasses.dataclass(frozen=True)
-class FilterItem(Streamable):
+@dataclasses.dataclass
+class FilterItem:
     key: str
     value: Optional[str]
 
 
-@streamable
-@dataclasses.dataclass(frozen=True)
-class PlotInfoRequestData(Streamable):
+@dataclasses.dataclass
+class PlotInfoRequestData:
     node_id: bytes32
-    page: uint32
-    page_size: uint32
+    page: int
+    page_size: int
     filter: List[FilterItem] = dataclasses.field(default_factory=list)
     sort_key: str = "filename"
     reverse: bool = False
 
 
-@streamable
-@dataclasses.dataclass(frozen=True)
-class PlotPathRequestData(Streamable):
+@dataclasses.dataclass
+class PlotPathRequestData:
     node_id: bytes32
-    page: uint32
-    page_size: uint32
+    page: int
+    page_size: int
     filter: List[str] = dataclasses.field(default_factory=list)
     reverse: bool = False
 
@@ -82,7 +69,7 @@ class FarmerRpcApi:
         self.service = farmer
         self.service_name = "littlelambocoin_farmer"
 
-    def get_routes(self) -> Dict[str, Endpoint]:
+    def get_routes(self) -> Dict[str, Callable]:
         return {
             "/get_signage_point": self.get_signage_point,
             "/get_signage_points": self.get_signage_points,
@@ -245,7 +232,7 @@ class FarmerRpcApi:
 
     async def get_harvester_plots_valid(self, request_dict: Dict[str, object]) -> Dict[str, object]:
         # TODO: Consider having a extra List[PlotInfo] in Receiver to avoid rebuilding the list for each call
-        request = PlotInfoRequestData.from_json_dict(request_dict)
+        request = dataclass_from_dict(PlotInfoRequestData, request_dict)
         plot_list = list(self.service.get_receiver(request.node_id).plots().values())
         # Apply filter
         plot_list = [
@@ -262,9 +249,10 @@ class FarmerRpcApi:
     def paginated_plot_path_request(
         self, source_func: Callable[[Receiver], List[str]], request_dict: Dict[str, object]
     ) -> Dict[str, object]:
-        request: PlotPathRequestData = PlotPathRequestData.from_json_dict(request_dict)
+        request: PlotPathRequestData = dataclass_from_dict(PlotPathRequestData, request_dict)
         receiver = self.service.get_receiver(request.node_id)
         source = source_func(receiver)
+        request = dataclass_from_dict(PlotPathRequestData, request_dict)
         # Apply filter
         source = [plot for plot in source if all(filter_item in plot for filter_item in request.filter)]
         # Apply reverse

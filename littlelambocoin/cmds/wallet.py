@@ -7,6 +7,7 @@ from littlelambocoin.cmds.plotnft import validate_fee
 from littlelambocoin.wallet.transaction_sorting import SortKey
 from littlelambocoin.wallet.util.wallet_types import WalletType
 
+
 @click.group("wallet", short_help="Manage your wallet")
 def wallet_cmd() -> None:
     pass

@@ -47,7 +47,7 @@ export default function OfferHeader(props: OfferHeaderProps) {
           {'This offer is no longer valid. To understand why, click '}
           <Link
             target="_blank"
-            href="https://chialisp.com/docs/tutorials/offers_gui_tutorial/#taker-attempts-to-accept-an-invalid-offer"
+            href="https://littlelambocoinlisp.com/docs/tutorials/offers_gui_tutorial/#taker-attempts-to-accept-an-invalid-offer"
           >
             here
           </Link> to learn more.

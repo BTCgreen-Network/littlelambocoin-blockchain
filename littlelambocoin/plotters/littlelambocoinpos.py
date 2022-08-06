@@ -14,9 +14,9 @@ from littlelambocoin.plotting.util import add_plot_directory, validate_plot_size
 log = logging.getLogger(__name__)
 
 
-def get_chiapos_install_info() -> Optional[Dict[str, Any]]:
-    chiapos_version: str = pkg_resources.get_distribution("chiapos").version
-    return {"display_name": "Littlelambocoin Proof of Space", "version": chiapos_version, "installed": True}
+def get_littlelambocoinpos_install_info() -> Optional[Dict[str, Any]]:
+    littlelambocoinpos_version: str = pkg_resources.get_distribution("chiapos").version
+    return {"display_name": "Littlelambocoin Proof of Space", "version": littlelambocoinpos_version, "installed": True}
 
 
 class Params:
@@ -55,7 +55,4 @@ def plot_littlelambocoin(args, root_path):
     )
     asyncio.run(create_plots(Params(args), plot_keys))
     if not args.exclude_final_dir:
-        try:
-            add_plot_directory(root_path, args.finaldir)
-        except ValueError as e:
-            print(e)
+        add_plot_directory(root_path, args.finaldir)

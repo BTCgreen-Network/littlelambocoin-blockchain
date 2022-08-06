@@ -95,11 +95,11 @@ def configure(
         if testnet:
             if testnet == "true" or testnet == "t":
                 print("Setting Testnet")
-                testnet_port = "58444"
+                testnet_port = "23333"
                 testnet_introducer = "introducer-testnet10.littlelambocoin.com"
-                testnet_dns_introducer = "dns-introducer-testnet10.littlelambocoin.com"
-                bootstrap_peers = ["testnet10-node.littlelambocoin.com"]
-                testnet = "testnet10"
+                testnet_dns_introducer = "dns-introducer-testnet0.littlelambocoin.com"
+                bootstrap_peers = ["testnet0-node.littlelambocoin.com"]
+                testnet = "testnet0"
                 config["full_node"]["port"] = int(testnet_port)
                 config["full_node"]["introducer_peer"]["port"] = int(testnet_port)
                 config["farmer"]["full_node_peer"]["port"] = int(testnet_port)
@@ -132,7 +132,7 @@ def configure(
 
             elif testnet == "false" or testnet == "f":
                 print("Setting Mainnet")
-                mainnet_port = "8444"
+                mainnet_port = "4575"
                 mainnet_introducer = "introducer.littlelambocoin.com"
                 mainnet_dns_introducer = "dns-introducer.littlelambocoin.com"
                 bootstrap_peers = ["node.littlelambocoin.com"]

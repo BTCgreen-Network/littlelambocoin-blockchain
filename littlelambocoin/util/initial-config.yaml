@@ -9,12 +9,6 @@ daemon_max_message_size: 50000000 # maximum size of RPC message in bytes
 inbound_rate_limit_percent: 100
 outbound_rate_limit_percent: 30
 
-# Limit the number of start_full_node worker processes to reduce ram and cpu usage
-# This allows users to farm more forks without running out of ram
-# Setting this too low reduces sync speed, but a synced node can stay synced with a multiprocessing_limit of 2
-# A value higher than 61 takes no effect, as chia limits the workers to 61 (windows server related python bug)
-# multiprocessing_limit: 4
-
 network_overrides: &network_overrides
   constants:
     mainnet:
@@ -26,85 +20,15 @@ network_overrides: &network_overrides
       MIN_PLOT_SIZE: 18
       GENESIS_CHALLENGE: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       NETWORK_TYPE: 1
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    testnet2:
-      MIN_PLOT_SIZE: 18
-      GENESIS_CHALLENGE: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
-      NETWORK_TYPE: 1
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    testnet3:
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_CHALLENGE: ca7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
       GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      MIN_PLOT_SIZE: 18
-      NETWORK_TYPE: 1
-      MEMPOOL_BLOCK_BUFFER: 10
-    testnet4:
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_CHALLENGE: dd7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
       GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      MIN_PLOT_SIZE: 18
-      NETWORK_TYPE: 1
-      MEMPOOL_BLOCK_BUFFER: 10
-      EPOCH_BLOCKS: 768
-      DIFFICULTY_STARTING: 30
-    testnet5:
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_CHALLENGE: ee7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      MIN_PLOT_SIZE: 18
-      NETWORK_TYPE: 1
-      MEMPOOL_BLOCK_BUFFER: 10
-      EPOCH_BLOCKS: 768
-      DIFFICULTY_STARTING: 30
-    testnet7:
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      GENESIS_CHALLENGE: 117816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015af
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      MIN_PLOT_SIZE: 18
-      NETWORK_TYPE: 1
-      MEMPOOL_BLOCK_BUFFER: 50
-      EPOCH_BLOCKS: 768
-      DIFFICULTY_STARTING: 30
-    testnet10:
-      AGG_SIG_ME_ADDITIONAL_DATA: ae83525ba8d1dd3f09b277de18ca3e43fc0af20d20c4b3e92ef2a48bd291ccb2
-      DIFFICULTY_CONSTANT_FACTOR: 10052721566054
-      DIFFICULTY_STARTING: 30
-      EPOCH_BLOCKS: 768
-      GENESIS_CHALLENGE: ae83525ba8d1dd3f09b277de18ca3e43fc0af20d20c4b3e92ef2a48bd291ccb2
-      GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      GENESIS_PRE_FARM_POOL_PUZZLE_HASH: ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c
-      MEMPOOL_BLOCK_BUFFER: 10
-      MIN_PLOT_SIZE: 18
-      NETWORK_TYPE: 1
   config:
     mainnet:
       address_prefix: "llc"
       default_full_node_port: 4575
     testnet0:
       address_prefix: "tllc"
-      default_full_node_port: 54575
-    testnet1:
-      address_prefix: "tllc"
-    testnet2:
-      address_prefix: "tllc"
-    testnet3:
-      address_prefix: "tllc"
-    testnet4:
-      address_prefix: "tllc"
-    testnet7:
-      address_prefix: "tllc"
-      default_full_node_port: 54575
-    testnet10:
-      address_prefix: "tllc"
-      default_full_node_port: 54575
+      default_full_node_port: 23333
 
 selected_network: &selected_network "mainnet"
 ALERTS_URL: https://download.littlelambocoin.com/notify/mainnet_alert.txt
@@ -140,7 +64,7 @@ logging: &logging
 seeder:
   # The fake full node used for crawling will run on this port.
   port: 4575
-  # Most full nodes on the network run on this port. (i.e. 4575 for mainnet, 54575 for testnet).
+  # Most full nodes on the network run on this port. (i.e. 4575 for mainnet, 23333 for testnet).
   other_peers_port: 4575
   # This will override the default full_node.peer_connect_timeout for the crawler full node
   peer_connect_timeout: 2
@@ -169,7 +93,7 @@ seeder:
   # Crawler is its own standalone service within the seeder component
   crawler:
     start_rpc_server: True
-    rpc_port: 8561
+    rpc_port: 21451
     ssl:
       private_crt: "config/ssl/crawler/private_crawler.crt"
       private_key: "config/ssl/crawler/private_crawler.key"
@@ -192,7 +116,7 @@ harvester:
     batch_sleep_milliseconds: 1 # Milliseconds the harvester sleeps between batch processing
 
 
-  # If True use parallel reads in chiapos
+  # If True use parallel reads in littlelambocoinpos
   parallel_read: True
 
   logging: *logging
@@ -315,7 +239,7 @@ timelord:
   multiprocessing_start_method: default
 
   start_rpc_server: True
-  rpc_port: 8557
+  rpc_port: 21450
 
   ssl:
     private_crt:  "config/ssl/timelord/private_timelord.crt"

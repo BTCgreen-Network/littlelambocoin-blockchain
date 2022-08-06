@@ -17,7 +17,7 @@ from littlelambocoin.seeder.crawl_store import CrawlStore
 from littlelambocoin.seeder.peer_record import PeerRecord, PeerReliability
 from littlelambocoin.server.server import LittlelambocoinServer
 from littlelambocoin.types.peer_info import PeerInfo
-from littlelambocoin.util.path import path_from_root
+from littlelambocoin.util.path import mkdir, path_from_root
 from littlelambocoin.util.ints import uint32, uint64
 
 log = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ class Crawler:
         self.best_timestamp_per_peer: Dict[str, int] = {}
         crawler_db_path: str = config.get("crawler_db_path", "crawler.db")
         self.db_path = path_from_root(root_path, crawler_db_path)
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        mkdir(self.db_path.parent)
         self.bootstrap_peers = config["bootstrap_peers"]
         self.minimum_height = config["minimum_height"]
         self.other_peers_port = config["other_peers_port"]

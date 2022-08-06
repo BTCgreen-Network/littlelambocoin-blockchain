@@ -26,7 +26,7 @@ from littlelambocoin.util.config import (
 )
 from littlelambocoin.util.db_version import set_db_version
 from littlelambocoin.util.keychain import Keychain
-from littlelambocoin.util.path import path_from_root
+from littlelambocoin.util.path import mkdir, path_from_root
 from littlelambocoin.util.ssl_check import (
     DEFAULT_PERMISSIONS_CERT_FILE,
     DEFAULT_PERMISSIONS_KEY_FILE,
@@ -184,7 +184,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
 def copy_files_rec(old_path: Path, new_path: Path):
     if old_path.is_file():
         print(f"{new_path}")
-        new_path.parent.mkdir(parents=True, exist_ok=True)
+        mkdir(new_path.parent)
         shutil.copy(old_path, new_path)
     elif old_path.is_dir():
         for old_path_child in old_path.iterdir():
@@ -518,7 +518,7 @@ def littlelambocoin_init(
             db_path_replaced = new_db_path.replace("CHALLENGE", config["selected_network"])
             db_path = path_from_root(root_path, db_path_replaced)
 
-            db_path.parent.mkdir(parents=True, exist_ok=True)
+            mkdir(db_path.parent)
             with sqlite3.connect(db_path) as connection:
                 set_db_version(connection, 1)
 
@@ -528,14 +528,10 @@ def littlelambocoin_init(
         config = load_config(root_path, "config.yaml")["full_node"]
         db_path_replaced = config["database_path"].replace("CHALLENGE", config["selected_network"])
         db_path = path_from_root(root_path, db_path_replaced)
-        db_path.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            # create new v2 db file
-            with sqlite3.connect(db_path) as connection:
-                set_db_version(connection, 2)
-        except sqlite3.OperationalError:
-            # db already exists, so we're good
-            pass
+        mkdir(db_path.parent)
+
+        with sqlite3.connect(db_path) as connection:
+            set_db_version(connection, 2)
 
     print("")
     print("To see your keys, run 'littlelambocoin keys show --show-mnemonic-seed'")

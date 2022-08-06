@@ -32,7 +32,7 @@ export default function PlotAddChoosePlotter(props: Props) {
   function displayablePlotters(plotters: PlotterMap<PlotterName, Plotter>): PlotterName[] {
     const displayablePlotters = Object.keys(plotters) as PlotterName[];
     // Sort littlelambocoinpos to the top of the list
-    displayablePlotters.sort((a, b) => a == PlotterName.CHIAPOS ? -1 : a.localeCompare(b));
+    displayablePlotters.sort((a, b) => a == PlotterName.LITTLELAMBOCOINPOS ? -1 : a.localeCompare(b));
     return displayablePlotters;
   }
 

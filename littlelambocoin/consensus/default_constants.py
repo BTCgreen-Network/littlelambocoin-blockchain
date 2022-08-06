@@ -19,7 +19,7 @@ testnet_kwargs = {
     "SIGNIFICANT_BITS": 8,  # The number of bits to look at in difficulty and min iters. The rest are zeroed
     "DISCRIMINANT_SIZE_BITS": 1024,  # Max is 1024 (based on ClassGroupElement int size)
     "NUMBER_ZERO_BITS_PLOT_FILTER": 9,  # H(plot signature of the challenge) must start with these many zeroes
-    "MIN_PLOT_SIZE": 29,  # 29 for mainnet
+    "MIN_PLOT_SIZE": 29,  # 32 for mainnet
     "MAX_PLOT_SIZE": 50,
     "SUB_SLOT_TIME_TARGET": 600,  # The target number of seconds per slot, mainnet 600
     "NUM_SP_INTERVALS_EXTRA": 3,  # The number of sp intervals to add to the signage point
@@ -56,7 +56,7 @@ testnet_kwargs = {
     "POOL_SUB_SLOT_ITERS": 37600000000,  # iters limit * NUM_SPS
     "TIMELORD_PUZZLE_HASH": bytes.fromhex(
         "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    ),
+    )
 }
 
 

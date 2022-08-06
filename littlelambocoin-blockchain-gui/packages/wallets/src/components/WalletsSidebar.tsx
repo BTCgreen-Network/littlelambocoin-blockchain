@@ -124,7 +124,7 @@ export default function WalletsSidebar() {
     });
 
   function handleOpenBlogPost() {
-    openExternal('https://www.chia.net/cat2blog');
+    openExternal('https://www.littlelambocoin.net/cat2blog');
   }
 
   function openTokensInfoDialog() {
@@ -154,7 +154,7 @@ export default function WalletsSidebar() {
                 size="large"
                 onClick={() =>
                   openExternal(
-                    'https://cat1.chia.net/#publicKey=' +
+                    'https://cat1.littlelambocoin.net/#publicKey=' +
                       privateKey.pk +
                       '&fingerprint=' +
                       fingerprint
@@ -172,7 +172,7 @@ export default function WalletsSidebar() {
           <p>
             <Trans>Want to see your old balance for yourself?</Trans>
           </p>
-          <Link target="_blank" href="https://www.chia.net/download/">
+          <Link target="_blank" href="https://www.littlelambocoin.net/download/">
             <Trans>Click here to download an older version of the wallet</Trans>
           </Link>
         </ContentStyled>
