@@ -15,7 +15,7 @@ function getInstallerConfig () {
 
   return Promise.resolve({
     name: "littlelambocoin-blockchain",
-    appDirectory: path.join(rootPath, 'LLC-win32-x64'),
+    appDirectory: path.join(rootPath, 'Littlelambocoin-win32-x64'),
     authors: 'Littlelambocoin Network',
     version: process.env.LITTLELAMBOCOIN_INSTALLER_VERSION,
     noMsi: true,
