@@ -57,12 +57,12 @@ do_install_npm_locally(){
     cd "${NPM_GLOBAL}"
     if [ "$NPM_VERSION" -lt "6" ]; then
       # Ubuntu image of Amazon ec2 instance surprisingly uses nodejs@3.5.2
-      # which doesn't support `npm ci` as of 27th Jan, 2022
+      # which doesn't support `npm i` as of 27th Jan, 2022
       echo "npm install"
       npm install
     else
-      echo "npm ci"
-      npm ci
+      echo "npm i"
+      npm i
     fi
     export N_PREFIX=${SCRIPT_DIR}/.n
     PATH="${N_PREFIX}/bin:$(npm bin):${PATH}"
@@ -88,7 +88,7 @@ do_install_npm_locally(){
 }
 
 # Work around for inconsistent `npm` exec path issue
-# https://github.com/LittlelambocoinNetwork/littlelambocoin-blockchain/pull/10460#issuecomment-1054492495
+# https://github.com/BTCgreen-Network/littlelambocoin-blockchain/pull/10460#issuecomment-1054492495
 patch_inconsistent_npm_issue(){
   node_module_dir=$1
   if [ ! -d "$node_module_dir" ]; then
@@ -178,26 +178,26 @@ echo ""
 if [ ! "$CI" ]; then
   echo "Running git submodule update --init --recursive."
   echo ""
-  git submodule update --init --recursive
+  #git submodule update --init --recursive
   echo "Running git submodule update."
   echo ""
-  git submodule update
+  #git submodule update
   cd littlelambocoin-blockchain-gui
 
   if [ "$SUBMODULE_BRANCH" ];
   then
-    git fetch --all
-    git reset --hard "$SUBMODULE_BRANCH"
+    #git fetch --all
+    #git reset --hard "$SUBMODULE_BRANCH"
     echo ""
     echo "Building the GUI with branch $SUBMODULE_BRANCH"
     echo ""
   fi
 
   # Work around for inconsistent `npm` exec path issue
-  # https://github.com/LittlelambocoinNetwork/littlelambocoin-blockchain/pull/10460#issuecomment-1054492495
+  # https://github.com/BTCgreen-Network/littlelambocoin-blockchain/pull/10460#issuecomment-1054492495
   patch_inconsistent_npm_issue "../node_modules"
 
-  npm ci
+  npm i
   npm audit fix || true
   npm run build
 

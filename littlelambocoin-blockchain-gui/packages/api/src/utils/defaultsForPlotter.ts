@@ -1,6 +1,6 @@
 import PlotterName from '../constants/PlotterName';
 import { PlotterDefaults } from '../@types/Plotter';
-import { bladebitDefaults, madmaxDefaults, littlelambocoinposDefaults } from '../constants/Plotters';
+import { bladebitDefaults, madmaxDefaults, chiaposDefaults } from '../constants/Plotters';
 
 export default function defaultsForPlotter(plotterName: PlotterName): PlotterDefaults {
   switch (plotterName) {
@@ -8,8 +8,8 @@ export default function defaultsForPlotter(plotterName: PlotterName): PlotterDef
       return bladebitDefaults;
     case PlotterName.MADMAX:
       return madmaxDefaults;
-    case PlotterName.LITTLELAMBOCOINPOS: // fallthrough
+    case PlotterName.CHIAPOS: // fallthrough
     default:
-      return littlelambocoinposDefaults;
+      return chiaposDefaults;
   }
 }

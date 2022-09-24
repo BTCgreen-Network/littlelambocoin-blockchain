@@ -71,7 +71,7 @@ const Spacer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const url = 'https://littlelambocoin.net';
+const url = 'https://littlelambocoin.com';
 
 type Props = {
   version: string;
@@ -147,7 +147,7 @@ export default function About(props: Props) {
         </VersionsTable>
 
         <BugReport
-          href="https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/issues"
+          href="https://github.com/BTCgreen-Network/littlelambocoin-blockchain/issues"
           target="_blank"
         >
           Report an issue

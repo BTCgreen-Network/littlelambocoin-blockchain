@@ -12,9 +12,10 @@ from littlelambocoin.plotting.util import parse_plot_info
 from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.ints import uint16, uint64
-from littlelambocoin.util.path import mkdir
+from littlelambocoin.util.misc import VersionedBlob
 from littlelambocoin.util.streamable import Streamable, streamable
 from littlelambocoin.wallet.derive_keys import master_sk_to_local_sk
+from littlelambocoin.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -30,13 +31,6 @@ class DiskCacheEntry(Streamable):
     pool_contract_puzzle_hash: Optional[bytes32]
     plot_public_key: G1Element
     last_use: uint64
-
-
-@streamable
-@dataclass(frozen=True)
-class DiskCache(Streamable):
-    version: uint16
-    data: bytes
 
 
 @streamable
@@ -69,8 +63,10 @@ class CacheEntry:
         else:
             assert isinstance(pool_public_key_or_puzzle_hash, bytes32)
             pool_contract_puzzle_hash = pool_public_key_or_puzzle_hash
-
-        local_sk = master_sk_to_local_sk(local_master_sk)
+        if prover.get_size() >= 32:
+            local_sk = master_sk_to_local_sk(local_master_sk)
+        else:
+            local_sk = chives_master_sk_to_local_sk(local_master_sk)
 
         plot_public_key: G1Element = ProofOfSpace.generate_plot_public_key(
             local_sk.get_g1(), farmer_public_key, pool_contract_puzzle_hash is not None
@@ -93,7 +89,7 @@ class Cache:
     expiry_seconds: int = 7 * 24 * 60 * 60  # Keep the cache entries alive for 7 days after its last access
 
     def __post_init__(self) -> None:
-        mkdir(self._path.parent)
+        self._path.parent.mkdir(parents=True, exist_ok=True)
 
     def __len__(self) -> int:
         return len(self._data)
@@ -124,7 +120,7 @@ class Cache:
             cache_data: CacheDataV1 = CacheDataV1(
                 [(plot_id, cache_entry) for plot_id, cache_entry in disk_cache_entries.items()]
             )
-            disk_cache: DiskCache = DiskCache(uint16(CURRENT_VERSION), bytes(cache_data))
+            disk_cache: VersionedBlob = VersionedBlob(uint16(CURRENT_VERSION), bytes(cache_data))
             serialized: bytes = bytes(disk_cache)
             self._path.write_bytes(serialized)
             self._changed = False
@@ -136,9 +132,9 @@ class Cache:
         try:
             serialized = self._path.read_bytes()
             log.info(f"Loaded {len(serialized)} bytes of cached data")
-            stored_cache: DiskCache = DiskCache.from_bytes(serialized)
+            stored_cache: VersionedBlob = VersionedBlob.from_bytes(serialized)
             if stored_cache.version == CURRENT_VERSION:
-                cache_data: CacheDataV1 = CacheDataV1.from_bytes(stored_cache.data)
+                cache_data: CacheDataV1 = CacheDataV1.from_bytes(stored_cache.blob)
                 self._data = {
                     Path(path): CacheEntry(
                         DiskProver.from_bytes(cache_entry.prover_data),

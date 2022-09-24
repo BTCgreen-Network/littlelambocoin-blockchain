@@ -20,7 +20,7 @@ color: rgb(128, 160, 194);
 async function openFAQURL(): Promise<void> {
   try {
     const shell: Shell = (window as any).shell;
-    await shell.openExternal('https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki/FAQ');
+    await shell.openExternal('https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/FAQ');
   }
   catch (e) {
     console.error(e);
@@ -30,7 +30,7 @@ async function openFAQURL(): Promise<void> {
 async function openSendFeedbackURL(): Promise<void> {
   try {
     const shell: Shell = (window as any).shell;
-    await shell.openExternal('https://feedback.littlelambocoin.net/lightwallet');
+    await shell.openExternal('https://feedback.littlelambocoin.com/lightwallet');
   }
   catch (e) {
     console.error(e);

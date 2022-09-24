@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Dict
+from typing import Generic, List, Optional, Tuple, TypeVar, Dict
 
 from littlelambocoin.consensus.coinbase import pool_parent_id, farmer_parent_id, timelord_parent_id
 from littlelambocoin.types.blockchain_format.coin import Coin
@@ -10,6 +10,15 @@ from littlelambocoin.util.bech32m import encode_puzzle_hash, decode_puzzle_hash
 from littlelambocoin.util.ints import uint8, uint32, uint64
 from littlelambocoin.util.streamable import Streamable, streamable
 from littlelambocoin.wallet.util.transaction_type import TransactionType
+
+
+T = TypeVar("T")
+
+
+@dataclass
+class ItemAndTransactionRecords(Generic[T]):
+    item: T
+    transaction_records: List["TransactionRecord"]
 
 
 @streamable
@@ -36,6 +45,8 @@ class TransactionRecord(Streamable):
     sent_to: List[Tuple[str, uint8, Optional[str]]]
     trade_id: Optional[bytes32]
     type: uint32  # TransactionType
+
+    # name is also called bundle_id and tx_id
     name: bytes32
     memos: List[Tuple[bytes32, List[bytes]]]
 
@@ -54,11 +65,8 @@ class TransactionRecord(Streamable):
             for block_index in range(self.confirmed_at_height, self.confirmed_at_height - 100, -1):
                 if block_index < 0:
                     return None
-                timelord_parent = timelord_parent_id(uint32(block_index), genesis_challenge)
                 pool_parent = pool_parent_id(uint32(block_index), genesis_challenge)
                 farmer_parent = farmer_parent_id(uint32(block_index), genesis_challenge)
-                if timelord_parent == self.additions[0].parent_coin_info:
-                    return uint32(block_index)
                 if pool_parent == self.additions[0].parent_coin_info:
                     return uint32(block_index)
                 if farmer_parent == self.additions[0].parent_coin_info:

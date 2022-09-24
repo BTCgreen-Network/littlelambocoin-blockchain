@@ -26,7 +26,7 @@ from littlelambocoin.util.config import (
 )
 from littlelambocoin.util.db_version import set_db_version
 from littlelambocoin.util.keychain import Keychain
-from littlelambocoin.util.path import mkdir, path_from_root
+from littlelambocoin.util.path import path_from_root
 from littlelambocoin.util.ssl_check import (
     DEFAULT_PERMISSIONS_CERT_FILE,
     DEFAULT_PERMISSIONS_KEY_FILE,
@@ -35,7 +35,6 @@ from littlelambocoin.util.ssl_check import (
     check_and_fix_permissions_for_ssl_file,
     fix_ssl,
 )
-from littlelambocoin.wallet.derive_chives_keys import master_sk_to_chives_pool_sk
 from littlelambocoin.wallet.derive_keys import (
     master_sk_to_pool_sk,
     master_sk_to_wallet_sk_intermediate,
@@ -43,10 +42,20 @@ from littlelambocoin.wallet.derive_keys import (
     _derive_path,
     _derive_path_unhardened,
 )
+from littlelambocoin.wallet.derive_chives_keys import chives_master_sk_to_pool_sk
 from littlelambocoin.cmds.configure import configure
 
-private_node_names: List[str] = ["full_node", "wallet", "farmer", "harvester", "timelord", "crawler", "daemon"]
-public_node_names: List[str] = ["full_node", "wallet", "farmer", "introducer", "timelord"]
+_all_private_node_names: List[str] = [
+    "full_node",
+    "wallet",
+    "farmer",
+    "harvester",
+    "timelord",
+    "crawler",
+    "data_layer",
+    "daemon",
+]
+_all_public_node_names: List[str] = ["full_node", "wallet", "farmer", "introducer", "timelord", "data_layer"]
 
 
 def dict_add_new_default(updated: Dict, default: Dict, do_not_migrate_keys: Dict[str, Any]):
@@ -79,12 +88,11 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         return None
 
     with lock_and_load_config(new_root, "config.yaml") as config:
-        pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
-        pool_child_pubkeys = pool_child_pubkeys + [master_sk_to_chives_pool_sk(sk).get_g1() for sk, _ in all_sks]
+        pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks] + [
+            chives_master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
         all_targets = []
         stop_searching_for_farmer = "llc_target_address" not in config["farmer"]
         stop_searching_for_pool = "llc_target_address" not in config["pool"]
-        stop_searching_for_timelord = "llc_target_address" not in config["timelord"]
         number_of_ph_to_search = 50
         selected = config["selected_network"]
         prefix = config["network_overrides"]["config"][selected]["address_prefix"]
@@ -111,10 +119,6 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 all_targets.append(
                     encode_puzzle_hash(create_puzzlehash_for_pk(_derive_path(intermediate_n, [i]).get_g1()), prefix)
                 )
-                if all_targets[-1] == config["timelord"].get("llc_target_address") or all_targets[-2] == config[
-                    "timelord"
-                ].get("llc_target_address"):
-                    stop_searching_for_timelord = True
                 if all_targets[-1] == config["farmer"].get("llc_target_address") or all_targets[-2] == config[
                     "farmer"
                 ].get("llc_target_address"):
@@ -152,18 +156,6 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
                 f"{config['pool']['llc_target_address']} with {all_targets[0]}"
             )
-        if "timelord" not in config:
-            config["timelord"] = {}
-        if "llc_target_address" not in config["timelord"]:
-            print(f"Setting the llc destination address for timelord reward to {all_targets[0]}")
-            config["timelord"]["llc_target_address"] = all_targets[0]
-            updated_target = True
-        elif config["timelord"]["llc_target_address"] not in all_targets:
-            print(
-                f"WARNING: using a timelord address which we don't have the private"
-                f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
-                f"{config['timelord']['llc_target_address']} with {all_targets[0]}"
-            )
         if updated_target:
             print(
                 f"To change the LLC destination addresses, edit the `llc_target_address` entries in"
@@ -184,7 +176,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
 def copy_files_rec(old_path: Path, new_path: Path):
     if old_path.is_file():
         print(f"{new_path}")
-        mkdir(new_path.parent)
+        new_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(old_path, new_path)
     elif old_path.is_dir():
         for old_path_child in old_path.iterdir():
@@ -235,6 +227,9 @@ def create_all_ssl(
     *,
     private_ca_crt_and_key: Optional[Tuple[bytes, bytes]] = None,
     node_certs_and_keys: Optional[Dict[str, Dict]] = None,
+    private_node_names: List[str] = _all_private_node_names,
+    public_node_names: List[str] = _all_public_node_names,
+    overwrite: bool = True,
 ):
     # remove old key and crt
     config_dir = root_path / "config"
@@ -256,7 +251,7 @@ def create_all_ssl(
     littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
     littlelambocoin_ca_crt_path = ca_dir / "littlelambocoin_ca.crt"
     littlelambocoin_ca_key_path = ca_dir / "littlelambocoin_ca.key"
-    write_ssl_cert_and_key(littlelambocoin_ca_crt_path, littlelambocoin_ca_crt, littlelambocoin_ca_key_path, littlelambocoin_ca_key)
+    write_ssl_cert_and_key(littlelambocoin_ca_crt_path, littlelambocoin_ca_crt, littlelambocoin_ca_key_path, littlelambocoin_ca_key, overwrite=overwrite)
 
     # If Private CA crt/key are passed-in, write them out
     if private_ca_crt_and_key is not None:
@@ -271,7 +266,13 @@ def create_all_ssl(
         ca_key = private_ca_key_path.read_bytes()
         ca_crt = private_ca_crt_path.read_bytes()
         generate_ssl_for_nodes(
-            ssl_dir, ca_crt, ca_key, prefix="private", nodes=private_node_names, node_certs_and_keys=node_certs_and_keys
+            ssl_dir,
+            ca_crt,
+            ca_key,
+            prefix="private",
+            nodes=private_node_names,
+            node_certs_and_keys=node_certs_and_keys,
+            overwrite=overwrite,
         )
     else:
         # This is entered when user copied over private CA
@@ -279,7 +280,13 @@ def create_all_ssl(
         ca_key = private_ca_key_path.read_bytes()
         ca_crt = private_ca_crt_path.read_bytes()
         generate_ssl_for_nodes(
-            ssl_dir, ca_crt, ca_key, prefix="private", nodes=private_node_names, node_certs_and_keys=node_certs_and_keys
+            ssl_dir,
+            ca_crt,
+            ca_key,
+            prefix="private",
+            nodes=private_node_names,
+            node_certs_and_keys=node_certs_and_keys,
+            overwrite=overwrite,
         )
 
     littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
@@ -422,12 +429,6 @@ def littlelambocoin_version_number() -> Tuple[str, str, str, str]:
     return major_release_number, minor_release_number, patch_release_number, dev_release_number
 
 
-def littlelambocoin_minor_release_number():
-    res = int(littlelambocoin_version_number()[2])
-    print(f"Install release number: {res}")
-    return res
-
-
 def littlelambocoin_full_version_str() -> str:
     major, minor, patch, dev = littlelambocoin_version_number()
     return f"{major}.{minor}.{patch}{dev}"
@@ -518,7 +519,7 @@ def littlelambocoin_init(
             db_path_replaced = new_db_path.replace("CHALLENGE", config["selected_network"])
             db_path = path_from_root(root_path, db_path_replaced)
 
-            mkdir(db_path.parent)
+            db_path.parent.mkdir(parents=True, exist_ok=True)
             with sqlite3.connect(db_path) as connection:
                 set_db_version(connection, 1)
 
@@ -528,10 +529,14 @@ def littlelambocoin_init(
         config = load_config(root_path, "config.yaml")["full_node"]
         db_path_replaced = config["database_path"].replace("CHALLENGE", config["selected_network"])
         db_path = path_from_root(root_path, db_path_replaced)
-        mkdir(db_path.parent)
-
-        with sqlite3.connect(db_path) as connection:
-            set_db_version(connection, 2)
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            # create new v2 db file
+            with sqlite3.connect(db_path) as connection:
+                set_db_version(connection, 2)
+        except sqlite3.OperationalError:
+            # db already exists, so we're good
+            pass
 
     print("")
     print("To see your keys, run 'littlelambocoin keys show --show-mnemonic-seed'")

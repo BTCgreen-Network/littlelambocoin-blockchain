@@ -1,9 +1,10 @@
 from typing import Optional
 
 import littlelambocoin.server.ws_connection as ws
-from littlelambocoin.full_node.full_node import full_node_protocol, wallet_protocol
+from littlelambocoin.protocols import full_node_protocol, wallet_protocol
 from littlelambocoin.seeder.crawler import Crawler
 from littlelambocoin.server.outbound_message import Message
+from littlelambocoin.server.server import LittlelambocoinServer
 from littlelambocoin.util.api_decorators import api_request, peer_required
 
 
@@ -20,7 +21,8 @@ class CrawlerAPI:
         return invoke
 
     @property
-    def server(self):
+    def server(self) -> LittlelambocoinServer:
+        assert self.crawler.server is not None
         return self.crawler.server
 
     @property

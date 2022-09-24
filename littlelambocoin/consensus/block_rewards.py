@@ -50,7 +50,7 @@ def calculate_base_farmer_reward(height: uint32) -> uint64:
         return uint64(0.5 * _mojo_per_littlelambocoin)
 
 
-def calculate_base_timelord_fee(height: uint32) -> uint64:
+def calculate_timelord_reward(height: uint32) -> uint64:
     """
     The base fee reward is 0.1% of total block reward
     !! These halving events will not be hit at the exact times

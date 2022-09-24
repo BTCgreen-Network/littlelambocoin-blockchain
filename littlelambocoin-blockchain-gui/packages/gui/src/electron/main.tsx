@@ -1,4 +1,14 @@
-import { app, dialog, net, shell, ipcMain, BrowserWindow, IncomingMessage, Menu, session, nativeImage } from 'electron';
+import {
+  app,
+  dialog,
+  net,
+  shell,
+  ipcMain,
+  BrowserWindow,
+  IncomingMessage,
+  Menu,
+  nativeImage,
+} from 'electron';
 import { initialize } from '@electron/remote/main';
 import path from 'path';
 import React from 'react';
@@ -7,18 +17,22 @@ import url from 'url';
 // import installExtension, { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import ReactDOMServer from 'react-dom/server';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+import fs from 'fs';
 // handle setupevents as quickly as possible
 import '../config/env';
 import handleSquirrelEvent from './handleSquirrelEvent';
 import loadConfig from '../util/loadConfig';
 import manageDaemonLifetime from '../util/manageDaemonLifetime';
 import littlelambocoinEnvironment from '../util/littlelambocoinEnvironment';
+import { setUserDataDir } from '../util/userData';
 import { i18n } from '../config/locales';
 import About from '../components/about/About';
 import packageJson from '../../package.json';
 import AppIcon from '../assets/img/littlelambocoin64x64.png';
+import windowStateKeeper from 'electron-window-state';
+import validateSha256 from './validateSha256';
 
-
+const isPlaywrightTesting = process.env.PLAYWRIGHT_TESTS === 'true';
 const NET = 'mainnet';
 
 app.disableHardwareAcceleration();
@@ -26,8 +40,14 @@ app.disableHardwareAcceleration();
 initialize();
 
 const appIcon = nativeImage.createFromPath(path.join(__dirname, AppIcon));
-let isSimulator = process.env.LOCAL_TEST === 'true';
-const isDev = process.env.NODE_ENV === 'development';
+const thumbCacheFolder = app.getPath('cache') + path.sep + app.getName();
+if (!fs.existsSync(thumbCacheFolder)) {
+  fs.mkdirSync(thumbCacheFolder);
+}
+const validatingProgress = {};
+
+// Set the userData directory to its location within LITTLELAMBOCOIN_ROOT/gui
+setUserDataDir();
 
 function renderAbout(): string {
   const sheet = new ServerStyleSheet();
@@ -64,7 +84,7 @@ function openAbout() {
 
   aboutWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
-    return { action: 'deny' }
+    return { action: 'deny' };
   });
 
   aboutWindow.once('closed', () => {
@@ -110,21 +130,9 @@ if (!handleSquirrelEvent()) {
     return true;
   };
 
-  let mainWindow = null;
+  let mainWindow: BrowserWindow | null = null;
 
   const createMenu = () => Menu.buildFromTemplate(getMenuTemplate());
-
-  function toggleSimulatorMode() {
-    isSimulator = !isSimulator;
-
-    if (mainWindow) {
-      mainWindow.webContents.send('simulator-mode', isSimulator);
-    }
-
-    if (app) {
-      app.applicationMenu = createMenu();
-    }
-  }
 
   // if any of these checks return false, don't do any other initialization since the app is quitting
   if (ensureSingleInstance() && ensureCorrectEnvironment()) {
@@ -137,6 +145,7 @@ if (!handleSquirrelEvent()) {
      ************************************************************ */
     let decidedToClose = false;
     let isClosing = false;
+    let mainWindowLaunchTasks: ((window: BrowserWindow) => void)[] = [];
 
     const createWindow = async () => {
       if (manageDaemonLifetime(NET)) {
@@ -149,129 +158,142 @@ if (!handleSquirrelEvent()) {
 
       ipcMain.handle('getVersion', () => app.getVersion());
 
-      ipcMain.handle('fetchTextResponse', async (_event, requestOptions, requestHeaders, requestData) => {
-        const request = net.request(requestOptions as any);
+      ipcMain.handle(
+        'fetchTextResponse',
+        async (_event, requestOptions, requestHeaders, requestData) => {
+          const request = net.request(requestOptions as any);
 
-        Object.entries(requestHeaders || {}).forEach(([header, value]) => {
-          request.setHeader(header, value as any);
-        });
-
-        let err: any | undefined = undefined;
-        let statusCode: number | undefined = undefined;
-        let statusMessage: string | undefined = undefined;
-        let responseBody: string | undefined = undefined;
-
-        try {
-          responseBody = await new Promise((resolve, reject) => {
-            request.on('response', (response: IncomingMessage) => {
-              statusCode = response.statusCode;
-              statusMessage = response.statusMessage;
-
-              response.on('data', (chunk) => {
-                const body = chunk.toString('utf8');
-
-                resolve(body);
-              });
-
-              response.on('error', (e: string) => {
-                reject(new Error(e));
-              });
-            });
-
-            request.on('error', (error: any) => {
-              reject(error);
-            })
-
-            request.write(requestData);
-            request.end();
+          Object.entries(requestHeaders || {}).forEach(([header, value]) => {
+            request.setHeader(header, value as any);
           });
-        }
-        catch (e) {
-          console.error(e);
-          err = e;
-        }
 
-        return { err, statusCode, statusMessage, responseBody };
-      });
+          let err: any | undefined = undefined;
+          let statusCode: number | undefined = undefined;
+          let statusMessage: string | undefined = undefined;
+          let responseBody: string | undefined = undefined;
 
-      ipcMain.handle('fetchBinaryContent', async (_event, requestOptions = {}, requestHeaders = {}, requestData?: any) => {
-        const { maxSize = Infinity , ...rest } = requestOptions;
-        const request = net.request(rest);
+          try {
+            responseBody = await new Promise((resolve, reject) => {
+              request.on('response', (response: IncomingMessage) => {
+                statusCode = response.statusCode;
+                statusMessage = response.statusMessage;
 
-        Object.entries(requestHeaders).forEach(([header, value]: [string, any]) => {
-          request.setHeader(header, value);
-        });
+                response.on('data', (chunk) => {
+                  const body = chunk.toString('utf8');
 
-        let error: Error | undefined;
-        let statusCode: number | undefined;
-        let statusMessage: string | undefined;
-        let contentType: string | undefined;
-        let encoding = 'binary';
-        let data: string | undefined;
+                  resolve(body);
+                });
 
-        const buffers: Buffer[] = [];
-        let totalLength = 0;
+                response.on('error', (e: string) => {
+                  reject(new Error(e));
+                });
+              });
 
-        try {
-          data = await new Promise((resolve, reject) => {
-            request.on('response', (response: IncomingMessage) => {
-              statusCode = response.statusCode;
-              statusMessage = response.statusMessage;
+              request.on('error', (error: any) => {
+                reject(error);
+              });
 
-              const rawContentType = response.headers['content-type'];
-              if (rawContentType) {
-                if (Array.isArray(rawContentType)) {
-                  contentType = rawContentType[0];
-                }
-                else {
-                  contentType = rawContentType;
-                }
+              request.write(requestData);
+              request.end();
+            });
+          } catch (e) {
+            console.error(e);
+            err = e;
+          }
 
-                if (contentType) {
-                  // extract charset from contentType
-                  const charsetMatch = contentType.match(/charset=([^;]+)/);
-                  if (charsetMatch) {
-                    encoding = charsetMatch[1];
+          return { err, statusCode, statusMessage, responseBody };
+        },
+      );
+
+      ipcMain.handle(
+        'fetchBinaryContent',
+        async (
+          _event,
+          requestOptions = {},
+          requestHeaders = {},
+          requestData?: any,
+        ) => {
+          const { maxSize = Infinity, ...rest } = requestOptions;
+          const request = net.request(rest);
+
+          Object.entries(requestHeaders).forEach(
+            ([header, value]: [string, any]) => {
+              request.setHeader(header, value);
+            },
+          );
+
+          let error: Error | undefined;
+          let statusCode: number | undefined;
+          let statusMessage: string | undefined;
+          let contentType: string | undefined;
+          let encoding = 'binary';
+          let data: string | undefined;
+
+          const buffers: Buffer[] = [];
+          let totalLength = 0;
+
+          try {
+            data = await new Promise((resolve, reject) => {
+              request.on('response', (response: IncomingMessage) => {
+                statusCode = response.statusCode;
+                statusMessage = response.statusMessage;
+
+                const rawContentType = response.headers['content-type'];
+                if (rawContentType) {
+                  if (Array.isArray(rawContentType)) {
+                    contentType = rawContentType[0];
+                  } else {
+                    contentType = rawContentType;
+                  }
+
+                  if (contentType) {
+                    // extract charset from contentType
+                    const charsetMatch = contentType.match(/charset=([^;]+)/);
+                    if (charsetMatch) {
+                      encoding = charsetMatch[1];
+                    }
                   }
                 }
+
+                response.on('data', (chunk) => {
+                  buffers.push(chunk);
+
+                  totalLength += chunk.byteLength;
+
+                  if (totalLength > maxSize) {
+                    reject(new Error('Response too large'));
+                    request.abort();
+                  }
+                });
+
+                response.on('end', () => {
+                  resolve(
+                    Buffer.concat(buffers).toString(encoding as BufferEncoding),
+                  );
+                });
+
+                response.on('error', (e: string) => {
+                  reject(new Error(e));
+                });
+              });
+
+              request.on('error', (error: any) => {
+                reject(error);
+              });
+
+              if (requestData) {
+                request.write(requestData);
               }
 
-              response.on('data', (chunk) => {
-                buffers.push(chunk);
-
-                totalLength += chunk.byteLength;
-
-                if (totalLength > maxSize) {
-                  reject(new Error('Response too large'));
-                  request.abort();
-                }
-              });
-
-              response.on('end', () => {
-                resolve(Buffer.concat(buffers).toString(encoding as BufferEncoding));
-              });
-
-              response.on('error', (e: string) => {
-                reject(new Error(e));
-              });
+              request.end();
             });
+          } catch (e: any) {
+            error = e;
+          }
 
-            request.on('error', (error: any) => {
-              reject(error);
-            })
-
-            if (requestData) {
-              request.write(requestData);
-            }
-
-            request.end();
-          });
-        } catch (e: any) {
-          error = e;
-        }
-
-        return { error, statusCode, statusMessage, encoding, data };
-      });
+          return { error, statusCode, statusMessage, encoding, data };
+        },
+      );
 
       ipcMain.handle('showMessageBox', async (_event, options) => {
         return await dialog.showMessageBox(mainWindow, options);
@@ -286,35 +308,50 @@ if (!handleSquirrelEvent()) {
       });
 
       ipcMain.handle('download', async (_event, options) => {
-        return await mainWindow.webContents.downloadURL(options.url);
+        if(mainWindow){
+          return mainWindow.webContents.downloadURL(options.url);
+        }
+        else{
+          console.error("mainWindow was not initialized");
+        }
+      });
+
+      ipcMain.handle('processLaunchTasks', async(_event) => {
+        const tasks = [...mainWindowLaunchTasks];
+
+        mainWindowLaunchTasks = [];
+
+        tasks.forEach((task) => task(mainWindow!));
       });
 
       decidedToClose = false;
+      const mainWindowState = windowStateKeeper({
+        defaultWidth: 1200,
+        defaultHeight: 1200,
+      });
       mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 1200,
+        x: mainWindowState.x,
+        y: mainWindowState.y,
+        width: mainWindowState.width,
+        height: mainWindowState.height,
         minWidth: 500,
         minHeight: 500,
         backgroundColor: '#ffffff',
-        show: false,
+        show: isPlaywrightTesting,
         webPreferences: {
           preload: `${__dirname}/preload.js`,
           nodeIntegration: true,
           contextIsolation: false,
-          nativeWindowOpen: true
+          nativeWindowOpen: true,
+          webSecurity: true,
         },
       });
 
-      if(process.platform === 'linux') {
+      mainWindowState.manage(mainWindow);
+
+      if (process.platform === 'linux') {
         mainWindow.setIcon(appIcon);
       }
-
-      /*
-      if (isSimulator || isDev) {
-        await app.whenReady();
-        installExtension(REDUX_DEVTOOLS);
-        installExtension(REACT_DEVELOPER_TOOLS);
-      }*/
 
       mainWindow.once('ready-to-show', () => {
         mainWindow.show();
@@ -344,10 +381,10 @@ if (!handleSquirrelEvent()) {
           const choice = dialog.showMessageBoxSync({
             type: 'question',
             buttons: [
-              i18n._(/* i18n */ {id: 'No'}),
-              i18n._(/* i18n */ {id: 'Yes'}),
+              i18n._(/* i18n */ { id: 'No' }),
+              i18n._(/* i18n */ { id: 'Yes' }),
             ],
-            title: i18n._(/* i18n */ {id: 'Confirm'}),
+            title: i18n._(/* i18n */ { id: 'Confirm' }),
             message: i18n._(
               /* i18n */ {
                 id: 'Are you sure you want to quit?',
@@ -361,7 +398,10 @@ if (!handleSquirrelEvent()) {
           isClosing = false;
           decidedToClose = true;
           mainWindow.webContents.send('exit-daemon');
-          mainWindow.setBounds({height: 500, width: 500});
+          // save the window state and unmange so we don't restore the mini exiting state
+          mainWindowState.saveState(mainWindow);
+          mainWindowState.unmanage(mainWindow);
+          mainWindow.setBounds({ height: 500, width: 500 });
           mainWindow.center();
           ipcMain.on('daemon-exited', (event, args) => {
             mainWindow.close();
@@ -371,20 +411,17 @@ if (!handleSquirrelEvent()) {
         }
       });
 
-
-
       const startUrl =
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : url.format({
-          pathname: path.join(__dirname, '/../renderer/index.html'),
-          protocol: 'file:',
-          slashes: true,
-        });
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000'
+          : url.format({
+              pathname: path.join(__dirname, '/../renderer/index.html'),
+              protocol: 'file:',
+              slashes: true,
+            });
 
       mainWindow.loadURL(startUrl);
-      require("@electron/remote/main").enable(mainWindow.webContents)
-
+      require('@electron/remote/main').enable(mainWindow.webContents);
     };
 
     const appReady = async () => {
@@ -396,6 +433,36 @@ if (!handleSquirrelEvent()) {
 
     app.on('window-all-closed', () => {
       app.quit();
+    });
+
+    app.on('open-file', (event, path) => {
+      event.preventDefault();
+
+      // App may have been launched with a file to open. Make sure we have a
+      // main window before trying to open a file.
+      if (!mainWindow) {
+        mainWindowLaunchTasks.push((window: BrowserWindow) => {
+          window.webContents.send('open-file', path);
+        });
+      }
+      else {
+        mainWindow?.webContents.send('open-file', path);
+      }
+    });
+
+    app.on('open-url', (event, url) => {
+      event.preventDefault();
+
+      // App may have been launched with a URL to open. Make sure we have a
+      // main window before trying to open a URL.
+      if (!mainWindow) {
+        mainWindowLaunchTasks.push((window: BrowserWindow) => {
+          window.webContents.send('open-url', url);
+        });
+      }
+      else {
+        mainWindow?.webContents.send('open-url', url);
+      }
     });
 
     ipcMain.on('load-page', (_, arg: { file: string; query: string }) => {
@@ -412,11 +479,28 @@ if (!handleSquirrelEvent()) {
       i18n.activate(locale);
       app.applicationMenu = createMenu();
     });
-
-    ipcMain.on('isSimulator', (event) => {
-      event.returnValue = isSimulator;
-    });
   }
+
+  function validatingInProgress(uri: string, action: string) {
+    if (action === 'stop') {
+      delete validatingProgress[uri];
+    }
+    if (action === 'start') {
+      validatingProgress[uri] = true;
+    }
+  }
+
+  ipcMain.handle('validateSha256Remote', (_event, options) => {
+    if (!validatingProgress[options.uri]) {
+      validateSha256(
+        thumbCacheFolder,
+        mainWindow,
+        options.uri,
+        options.force,
+        validatingInProgress,
+      );
+    }
+  });
 
   const getMenuTemplate = () => {
     const template = [
@@ -480,12 +564,12 @@ if (!handleSquirrelEvent()) {
                     : 'Ctrl+Shift+I',
                 click: () => mainWindow.toggleDevTools(),
               },
-              {
-                label: isSimulator
-                  ? i18n._(/* i18n */ { id: 'Disable Simulator' })
-                  : i18n._(/* i18n */ { id: 'Enable Simulator' }),
-                click: () => toggleSimulatorMode(),
-              },
+              //{
+              //label: isSimulator
+              //  ? i18n._(/* i18n */ { id: 'Disable Simulator' })
+              //   : i18n._(/* i18n */ { id: 'Enable Simulator' }),
+              // click: () => toggleSimulatorMode(),
+              //},
             ],
           },
           {
@@ -533,7 +617,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Littlelambocoin Blockchain Wiki' }),
             click: () => {
               openExternal(
-                'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki',
+                'https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki',
               );
             },
           },
@@ -541,7 +625,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Frequently Asked Questions' }),
             click: () => {
               openExternal(
-                'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki/FAQ',
+                'https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/FAQ',
               );
             },
           },
@@ -549,7 +633,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Release Notes' }),
             click: () => {
               openExternal(
-                'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/releases',
+                'https://github.com/BTCgreen-Network/littlelambocoin-blockchain/releases',
               );
             },
           },
@@ -557,7 +641,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Contribute on GitHub' }),
             click: () => {
               openExternal(
-                'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/blob/main/CONTRIBUTING.md',
+                'https://github.com/BTCgreen-Network/littlelambocoin-blockchain/blob/main/CONTRIBUTING.md',
               );
             },
           },
@@ -568,7 +652,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Report an Issue...' }),
             click: () => {
               openExternal(
-                'https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/issues',
+                'https://github.com/BTCgreen-Network/littlelambocoin-blockchain/issues',
               );
             },
           },

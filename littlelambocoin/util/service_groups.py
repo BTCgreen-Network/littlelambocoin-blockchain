@@ -1,7 +1,13 @@
 from typing import KeysView, Generator
 
 SERVICES_FOR_GROUP = {
-    "all": "littlelambocoin_harvester littlelambocoin_timelord_launcher littlelambocoin_timelord littlelambocoin_farmer littlelambocoin_full_node littlelambocoin_wallet".split(),
+    "all": (
+        "littlelambocoin_harvester littlelambocoin_timelord_launcher littlelambocoin_timelord littlelambocoin_farmer "
+        "littlelambocoin_full_node littlelambocoin_wallet littlelambocoin_data_layer littlelambocoin_data_layer_http"
+    ).split(),
+    # TODO: should this be `data_layer`?
+    "data": "littlelambocoin_wallet littlelambocoin_data_layer".split(),
+    "data_layer_http": "littlelambocoin_data_layer_http".split(),
     "node": "littlelambocoin_full_node".split(),
     "harvester": "littlelambocoin_harvester".split(),
     "farmer": "littlelambocoin_harvester littlelambocoin_farmer littlelambocoin_full_node littlelambocoin_wallet".split(),

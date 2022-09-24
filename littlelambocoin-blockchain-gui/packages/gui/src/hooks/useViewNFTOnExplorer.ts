@@ -22,7 +22,7 @@ function getSkyNFTURL(nft: NFTInfo, testnet: boolean) {
 }
 
 function getSpacescanURL(nft: NFTInfo, testnet: boolean) {
-  const url = `https://spacescan.io/${testnet ? 'tllc10' : 'llc'}/nft/${
+  const url = `https://spacescan.io/${testnet ? 'txch10' : 'llc'}/nft/${
     nft.$nftId
   }`;
   return url;
@@ -47,7 +47,6 @@ export default function useViewNFTOnExplorer() {
   const testnet = useCurrencyCode() === 'TLLC';
 
   function handleViewNFTOnExplorer(nft: NFTInfo, explorer: NFTExplorer) {
-    const { nftId: $nftId } = nft;
     const urlBuilder = UrlBuilderMapping[explorer];
     const url = urlBuilder(nft, testnet);
 

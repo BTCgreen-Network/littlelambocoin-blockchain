@@ -1,7 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import { Link, Table, Card } from '@littlelambocoin/core';
+import { Table, Card } from '@littlelambocoin/core';
 import {
   useGetSignagePointsQuery,
   useGetTotalHarvestersSummaryQuery,

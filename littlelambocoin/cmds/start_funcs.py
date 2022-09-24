@@ -5,24 +5,25 @@ import subprocess
 import sys
 
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional
 
+from littlelambocoin.cmds.keys_funcs import migrate_keys
 from littlelambocoin.cmds.passphrase_funcs import get_current_passphrase
 from littlelambocoin.daemon.client import DaemonProxy, connect_to_daemon_and_validate
-from littlelambocoin.util.keychain import Keychain, KeyringMaxUnlockAttempts
+from littlelambocoin.util.errors import KeychainMaxUnlockAttempts
+from littlelambocoin.util.keychain import Keychain
 from littlelambocoin.util.service_groups import services_for_groups
 
 
 def launch_start_daemon(root_path: Path) -> subprocess.Popen:
     os.environ["LITTLELAMBOCOIN_ROOT"] = str(root_path)
     # TODO: use startupinfo=subprocess.DETACHED_PROCESS on windows
-    littlelambocoin = sys.argv[0]
-    process = subprocess.Popen(f"{littlelambocoin} run_daemon --wait-for-unlock".split(), stdout=subprocess.PIPE)
+    process = subprocess.Popen([sys.argv[0], "run_daemon", "--wait-for-unlock"], stdout=subprocess.PIPE)
     return process
 
 
-async def create_start_daemon_connection(root_path: Path) -> Optional[DaemonProxy]:
-    connection = await connect_to_daemon_and_validate(root_path)
+async def create_start_daemon_connection(root_path: Path, config: Dict[str, Any]) -> Optional[DaemonProxy]:
+    connection = await connect_to_daemon_and_validate(root_path, config)
     if connection is None:
         print("Starting daemon")
         # launch a daemon
@@ -32,7 +33,7 @@ async def create_start_daemon_connection(root_path: Path) -> Optional[DaemonProx
             process.stdout.readline()
         await asyncio.sleep(1)
         # it prints "daemon: listening"
-        connection = await connect_to_daemon_and_validate(root_path)
+        connection = await connect_to_daemon_and_validate(root_path, config)
     if connection:
         passphrase = None
         if await connection.is_keyring_locked():
@@ -49,16 +50,23 @@ async def create_start_daemon_connection(root_path: Path) -> Optional[DaemonProx
     return None
 
 
-async def async_start(root_path: Path, group: str, restart: bool) -> None:
+async def async_start(
+    root_path: Path, config: Dict[str, Any], group: str, restart: bool, force_keyring_migration: bool
+) -> None:
     try:
-        daemon = await create_start_daemon_connection(root_path)
-    except KeyringMaxUnlockAttempts:
+        daemon = await create_start_daemon_connection(root_path, config)
+    except KeychainMaxUnlockAttempts:
         print("Failed to unlock keyring")
         return None
 
     if daemon is None:
         print("Failed to create the littlelambocoin daemon")
         return None
+
+    if force_keyring_migration:
+        if not await migrate_keys(root_path, True):
+            await daemon.close()
+            sys.exit(1)
 
     for service in services_for_groups(group):
         if await daemon.is_running(service_name=service):

@@ -44,7 +44,7 @@ if ($null -eq (Get-Command py -ErrorAction SilentlyContinue))
 }
 
 $supportedPythonVersions = "3.10", "3.9", "3.8", "3.7"
-if (Test-Path env:INSTALL_PYTHON_VERSION)
+if ("$env:INSTALL_PYTHON_VERSION" -ne "")
 {
     $pythonVersion = $env:INSTALL_PYTHON_VERSION
 }
@@ -112,7 +112,7 @@ Write-Output "For assistance join us on Keybase in the #support chat channel:"
 Write-Output "https://keybase.io/team/littlelambocoin_network.public"
 Write-Output ""
 Write-Output "Try the Quick Start Guide to running littlelambocoin-blockchain:"
-Write-Output "https://github.com/LittlelambocoinNetwork/littlelambocoin-blockchain/wiki/Quick-Start-Guide"
+Write-Output "https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Quick-Start-Guide"
 Write-Output ""
 Write-Output "To install the GUI type '.\Install-gui.ps1' after '.\venv\scripts\Activate.ps1'."
 Write-Output ""

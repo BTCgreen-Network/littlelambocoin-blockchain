@@ -7,9 +7,10 @@ import type {
   OfferSummaryRecord,
 } from '@littlelambocoin/api';
 import {
+  mojoToCAT,
   mojoToLittlelambocoin,
-  mojoToLittlelambocoinLocaleString,
   mojoToCATLocaleString,
+  mojoToLittlelambocoinLocaleString,
 } from '@littlelambocoin/core';
 import NFTOfferExchangeType from './NFTOfferExchangeType';
 import OfferState from './OfferState';
@@ -263,6 +264,10 @@ export function offerAssetIdForAssetType(
   assetType: OfferAsset,
   offerSummary: OfferSummaryRecord,
 ): string | undefined {
+  if (assetType === OfferAsset.LITTLELAMBOCOIN) {
+    return 'llc';
+  }
+
   const assetId = Object.keys(offerSummary.infos).find(
     (assetId) => offerAssetTypeForAssetId(assetId, offerSummary) === assetType,
   );
@@ -304,21 +309,36 @@ export function determineNFTOfferExchangeType(
   }
 
   return nftOffered
-    ? NFTOfferExchangeType.NFTForLLC
-    : NFTOfferExchangeType.LLCForNFT;
+    ? NFTOfferExchangeType.NFTForToken
+    : NFTOfferExchangeType.TokenForNFT;
 }
 
 /* ========================================================================== */
 
+export type GetNFTPriceWithoutRoyaltiesResult = {
+  amount: number;
+  assetId: string;
+  assetType: OfferAsset;
+};
+
 export function getNFTPriceWithoutRoyalties(
   summary: OfferSummaryRecord,
-): number | undefined {
-  // NFTs can only be exchanged for LLC currently
-  const amountInMojos = offerAssetAmountForAssetId('llc', summary);
-  if (amountInMojos === undefined) {
-    return undefined;
+): GetNFTPriceWithoutRoyaltiesResult | undefined {
+  for (const assetType of [OfferAsset.TOKEN, OfferAsset.LITTLELAMBOCOIN]) {
+    const assetId = offerAssetIdForAssetType(assetType, summary);
+    if (assetId) {
+      const amountInMojos = offerAssetAmountForAssetId(assetId, summary);
+      if (amountInMojos) {
+        const amountInTokens =
+          assetType === OfferAsset.LITTLELAMBOCOIN
+            ? mojoToLittlelambocoin(amountInMojos)
+            : mojoToCAT(amountInMojos);
+        return { amount: amountInTokens.toNumber(), assetId, assetType };
+      }
+    }
   }
-  return mojoToLittlelambocoin(amountInMojos).toNumber();
+
+  return undefined;
 }
 
 /* ========================================================================== */
@@ -346,7 +366,7 @@ export function calculateNFTRoyalties(
   //     (amount - parseFloat(royaltyAmountString) - makerFee).toFixed(12),
   //   );
   const totalAmount: number =
-    exchangeType === NFTOfferExchangeType.NFTForLLC
+    exchangeType === NFTOfferExchangeType.NFTForToken
       ? amount + royaltyAmount
       : amount + makerFee + royaltyAmount;
   const totalAmountString: string = formatAmount(totalAmount);

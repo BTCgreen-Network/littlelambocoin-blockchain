@@ -3,13 +3,11 @@ import { Trans } from '@lingui/macro';
 import styled from 'styled-components';
 import { Link, Typography, Tooltip, IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Table, Card, FormatBytes, FormatConnectionStatus } from '@littlelambocoin/core';
 import {
-  Table,
-  Card,
-  FormatBytes,
-  FormatConnectionStatus,
-} from '@littlelambocoin/core';
-import { useGetFarmerFullNodeConnectionsQuery, useIsServiceRunningQuery } from '@littlelambocoin/api-react';
+  useGetFarmerFullNodeConnectionsQuery,
+  useIsServiceRunningQuery,
+} from '@littlelambocoin/api-react';
 import type { Connection } from '@littlelambocoin/api';
 import { ServiceName } from '@littlelambocoin/api';
 import FarmCloseConnection from './FarmCloseConnection';
@@ -80,11 +78,14 @@ const cols = [
 
 export default function FarmFullNodeConnections() {
   const { data: connections = [] } = useGetFarmerFullNodeConnectionsQuery();
-  const { data: isRunning, isLoading } = useIsServiceRunningQuery({
-    service: ServiceName.FARMER,
-  }, {
-    pollingInterval: 1000,
-  });
+  const { data: isRunning, isLoading } = useIsServiceRunningQuery(
+    {
+      service: ServiceName.FARMER,
+    },
+    {
+      pollingInterval: 1000,
+    },
+  );
 
   return (
     <Card
@@ -96,13 +97,12 @@ export default function FarmFullNodeConnections() {
           {'The full node that your farmer is connected to is below. '}
           <Link
             target="_blank"
-            href="https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki/Network-Architecture"
+            href="https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Network-Architecture"
           >
             Learn more
           </Link>
         </Trans>
       }
-      interactive
       transparent
     >
       <Typography variant="caption" color="textSecondary">

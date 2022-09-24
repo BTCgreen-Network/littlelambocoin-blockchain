@@ -49,7 +49,7 @@ export default class Client extends EventEmitter {
     this.options = {
       timeout: 60 * 1000 * 10, // 10 minutes
       camelCase: true,
-      backupHost: 'https://backup.littlelambocoin.net',
+      backupHost: 'https://backup.littlelambocoin.com',
       debug: false,
       services: [],
       ...options,
@@ -68,7 +68,7 @@ export default class Client extends EventEmitter {
 
     if (this.options.services.length) {
       this.connect();
-    } 
+    }
   }
 
   getState(): {
@@ -204,7 +204,7 @@ export default class Client extends EventEmitter {
             origin: this.origin,
             destination: serviceName,
           }), 1000);
-          
+
           if (pingResponse.success) {
             break;
           }
@@ -348,7 +348,7 @@ export default class Client extends EventEmitter {
   }
 
   async send(message: Message, timeout?: number, disableFormat?: boolean): Promise<Response> {
-    const { 
+    const {
       connected,
       options: {
         timeout: defaultTimeout,
@@ -376,7 +376,7 @@ export default class Client extends EventEmitter {
         setTimeout(() => {
           if (this.requests.has(requestId)) {
             this.requests.delete(requestId);
-  
+
             reject(new ErrorData(`The request ${requestId} has timed out ${currentTimeout / 1000} seconds.`));
           }
         }, currentTimeout);

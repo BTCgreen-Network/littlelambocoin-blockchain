@@ -1,6 +1,6 @@
 enum NFTOfferExchangeType {
-  NFTForLLC = 'nft_for_llc',
-  LLCForNFT = 'llc_for_nft',
+  NFTForToken = 'nft_for_token',
+  TokenForNFT = 'token_for_nft',
 }
 
 export default NFTOfferExchangeType;

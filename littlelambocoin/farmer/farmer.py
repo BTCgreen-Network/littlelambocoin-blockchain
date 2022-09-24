@@ -11,12 +11,7 @@ from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 
 import littlelambocoin.server.ws_connection as ws  # lgtm [py/import-and-import-from]
 from littlelambocoin.consensus.constants import ConsensusConstants
-from littlelambocoin.daemon.keychain_proxy import (
-    KeychainProxy,
-    KeychainProxyConnectionFailure,
-    connect_to_keychain_and_validate,
-    wrap_local_keychain,
-)
+from littlelambocoin.daemon.keychain_proxy import KeychainProxy, connect_to_keychain_and_validate, wrap_local_keychain
 from littlelambocoin.plot_sync.delta import Delta
 from littlelambocoin.plot_sync.receiver import Receiver
 from littlelambocoin.pools.pool_config import PoolWalletConfig, add_auth_key, load_pool_config
@@ -42,6 +37,7 @@ from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.bech32m import decode_puzzle_hash
 from littlelambocoin.util.byte_types import hexstr_to_bytes
 from littlelambocoin.util.config import config_path_for_filename, load_config, lock_and_load_config, save_config
+from littlelambocoin.util.errors import KeychainProxyConnectionFailure
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint8, uint16, uint32, uint64
 from littlelambocoin.util.keychain import Keychain
@@ -53,11 +49,10 @@ from littlelambocoin.wallet.derive_keys import (
     match_address_to_sk,
 )
 from littlelambocoin.wallet.derive_chives_keys import (
-    master_sk_to_chives_farmer_sk,
-    master_sk_to_chives_pool_sk,
-    master_sk_to_chives_wallet_sk,
-    find_chives_authentication_sk,
-    find_chives_owner_sk,
+    chives_find_authentication_sk,
+    chives_find_owner_sk,
+    chives_master_sk_to_farmer_sk,
+    chives_master_sk_to_pool_sk,
 )
 from littlelambocoin.wallet.puzzles.singleton_top_layer import SINGLETON_MOD
 
@@ -132,7 +127,7 @@ class Farmer:
             else:
                 self.keychain_proxy = await connect_to_keychain_and_validate(self._root_path, self.log)
                 if not self.keychain_proxy:
-                    raise KeychainProxyConnectionFailure("Failed to connect to keychain service")
+                    raise KeychainProxyConnectionFailure()
         return self.keychain_proxy
 
     async def get_all_private_keys(self):
@@ -141,12 +136,15 @@ class Farmer:
 
     async def setup_keys(self) -> bool:
         no_keys_error_str = "No keys exist. Please run 'littlelambocoin keys generate' or open the UI."
-        self.all_root_sks: List[PrivateKey] = [sk for sk, _ in await self.get_all_private_keys()]
+        try:
+            self.all_root_sks: List[PrivateKey] = [sk for sk, _ in await self.get_all_private_keys()]
+        except KeychainProxyConnectionFailure:
+            return False
+
         self._private_keys = [master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
-            master_sk_to_pool_sk(sk) for sk in self.all_root_sks
-        ]
-        self._private_keys = self._private_keys + [master_sk_to_chives_farmer_sk(sk) for sk in self.all_root_sks] + [
-            master_sk_to_chives_pool_sk(sk) for sk in self.all_root_sks
+            master_sk_to_pool_sk(sk) for sk in self.all_root_sks] + [
+            chives_master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
+            chives_master_sk_to_pool_sk(sk) for sk in self.all_root_sks] + [
         ]
 
         if len(self.get_public_keys()) == 0:
@@ -425,10 +423,12 @@ class Farmer:
         if pool_config.p2_singleton_puzzle_hash in self.authentication_keys:
             return self.authentication_keys[pool_config.p2_singleton_puzzle_hash]
         auth_sk: Optional[PrivateKey] = find_authentication_sk(self.all_root_sks, pool_config.owner_public_key)
-        if auth_sk is None:
-            auth_sk = find_chives_authentication_sk(self.all_root_sks, pool_config.owner_public_key)
         if auth_sk is not None:
             self.authentication_keys[pool_config.p2_singleton_puzzle_hash] = auth_sk
+        else:
+            auth_sk: Optional[PrivateKey] = chives_find_authentication_sk(self.all_root_sks, pool_config.owner_public_key)
+            if auth_sk is not None:
+                self.authentication_keys[pool_config.p2_singleton_puzzle_hash] = auth_sk
         return auth_sk
 
     async def update_pool_state(self):
@@ -521,7 +521,7 @@ class Farmer:
                                 self.all_root_sks, pool_config.owner_public_key
                             )
                             if owner_sk_and_index is None:
-                                owner_sk_and_index = find_chives_owner_sk(
+                                owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = chives_find_owner_sk(
                                     self.all_root_sks, pool_config.owner_public_key
                                 )
                             assert owner_sk_and_index is not None
@@ -548,6 +548,10 @@ class Farmer:
                             owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = find_owner_sk(
                                 self.all_root_sks, pool_config.owner_public_key
                             )
+                            if owner_sk_and_index is None:
+                                owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = chives_find_owner_sk(
+                                        self.all_root_sks, pool_config.owner_public_key
+                                    )
                             assert owner_sk_and_index is not None
                             await self._pool_put_farmer(
                                 pool_config, authentication_token_timeout, owner_sk_and_index[0]
@@ -575,12 +579,6 @@ class Farmer:
             search_addresses: List[bytes32] = [self.farmer_target, self.pool_target]
             for sk, _ in all_sks:
                 found_addresses: Set[bytes32] = match_address_to_sk(sk, search_addresses, max_ph_to_search)
-
-                if ph == self.farmer_target:
-                    stop_searching_for_farmer = True
-                if ph == self.pool_target:
-                    stop_searching_for_pool = True
-                ph = create_puzzlehash_for_pk(master_sk_to_chives_wallet_sk(sk, uint32(i)).get_g1())
 
                 if not have_farmer_sk and self.farmer_target in found_addresses:
                     search_addresses.remove(self.farmer_target)

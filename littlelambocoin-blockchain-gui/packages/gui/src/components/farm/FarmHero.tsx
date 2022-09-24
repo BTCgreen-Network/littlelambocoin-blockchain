@@ -30,7 +30,7 @@ export default function FarmHero() {
               where your farm will be once you add a plot.{' '}
               <Link
                 target="_blank"
-                href="https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki/Network-Architecture"
+                href="https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Network-Architecture"
               >
                 Learn more
               </Link>

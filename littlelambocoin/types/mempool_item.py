@@ -3,7 +3,6 @@ from typing import List
 
 from littlelambocoin.consensus.cost_calculator import NPCResult
 from littlelambocoin.types.blockchain_format.coin import Coin
-from littlelambocoin.types.blockchain_format.program import SerializedProgram
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.spend_bundle import SpendBundle
 from littlelambocoin.util.ints import uint64
@@ -20,7 +19,6 @@ class MempoolItem(Streamable):
     spend_bundle_name: bytes32
     additions: List[Coin]
     removals: List[Coin]
-    program: SerializedProgram
 
     def __lt__(self, other):
         return self.fee_per_cost < other.fee_per_cost

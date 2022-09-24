@@ -2,10 +2,9 @@ import argparse
 import binascii
 import os
 from enum import Enum
-from littlelambocoin.plotters.bladebit import get_bladebit_install_info, plot_bladebit
-from littlelambocoin.plotters.littlelambocoinpos import get_littlelambocoinpos_install_info, plot_littlelambocoin
-from littlelambocoin.plotters.madmax import get_madmax_install_info, plot_madmax
-from littlelambocoin.plotters.install_plotter import install_plotter
+from littlelambocoin.plotters.bladebit import get_bladebit_install_info, plot_bladebit, install_bladebit
+from littlelambocoin.plotters.chiapos import get_chiapos_install_info, plot_littlelambocoin
+from littlelambocoin.plotters.madmax import get_madmax_install_info, plot_madmax, install_madmax
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -109,7 +108,7 @@ def build_parser(subparsers, root_path, option_list, name, plotter_desc):
                 help="K value.",
                 default=32,
             )
-        u_default = 0 if name == "littlelambocoinpos" else 256
+        u_default = 0 if name == "chiapos" else 256
         if option is Options.NUM_BUCKETS:
             parser.add_argument(
                 "-u",
@@ -314,6 +313,35 @@ def build_parser(subparsers, root_path, option_list, name, plotter_desc):
             )
 
 
+def install_plotter(plotter, root_path):
+    if plotter == "chiapos":
+        print("Chiapos already installed. No action taken.")
+        return
+    elif plotter == "madmax":
+        if not os.path.exists(root_path / "madmax-plotter/build/littlelambocoin_plot"):
+            print("Installing madmax plotter.")
+            try:
+                install_madmax(root_path)
+            except Exception as e:
+                print(f"Exception while installing madmax plotter: {e}")
+            return
+        else:
+            print("Madmax plotter already installed.")
+    elif plotter == "bladebit":
+        if not os.path.exists(root_path / "bladebit/.bin/release/bladebit"):
+            print("Installing bladebit plotter.")
+            try:
+                install_bladebit(root_path)
+            except Exception as e:
+                print(f"Exception while installing bladebit plotter: {e}")
+                return
+        else:
+            print("Bladebit plotter already installed.")
+    else:
+        print("Unknown plotter. No action taken.")
+        return
+
+
 def call_plotters(root_path: Path, args):
     # Add `plotters` section in LITTLELAMBOCOIN_ROOT.
     littlelambocoin_root_path = root_path
@@ -333,7 +361,7 @@ def call_plotters(root_path: Path, args):
             print(f"Cannot create plotters root path {root_path} {type(e)} {e}.")
     plotters = argparse.ArgumentParser(description="Available options.")
     subparsers = plotters.add_subparsers(help="Available options", dest="plotter")
-    build_parser(subparsers, root_path, littlelambocoin_plotter, "littlelambocoinpos", "Littlelambocoinpos Plotter")
+    build_parser(subparsers, root_path, littlelambocoin_plotter, "chiapos", "Chiapos Plotter")
     build_parser(subparsers, root_path, madmax_plotter, "madmax", "Madmax Plotter")
     build_parser(subparsers, root_path, bladebit_plotter, "bladebit", "Bladebit Plotter")
     install_parser = subparsers.add_parser("install", description="Install custom plotters.")
@@ -342,7 +370,7 @@ def call_plotters(root_path: Path, args):
     )
     args = plotters.parse_args(args)
 
-    if args.plotter == "littlelambocoinpos":
+    if args.plotter == "chiapos":
         plot_littlelambocoin(args, littlelambocoin_root_path)
     if args.plotter == "madmax":
         plot_madmax(args, littlelambocoin_root_path, root_path)
@@ -355,12 +383,12 @@ def call_plotters(root_path: Path, args):
 def get_available_plotters(root_path) -> Dict[str, Any]:
     plotters_root_path: Path = get_plotters_root_path(root_path)
     plotters: Dict[str, Any] = {}
-    littlelambocoinpos: Optional[Dict[str, Any]] = get_littlelambocoinpos_install_info()
+    chiapos: Optional[Dict[str, Any]] = get_chiapos_install_info()
     bladebit: Optional[Dict[str, Any]] = get_bladebit_install_info(plotters_root_path)
     madmax: Optional[Dict[str, Any]] = get_madmax_install_info(plotters_root_path)
 
-    if littlelambocoinpos is not None:
-        plotters["littlelambocoinpos"] = littlelambocoinpos
+    if chiapos is not None:
+        plotters["chiapos"] = chiapos
     if bladebit is not None:
         plotters["bladebit"] = bladebit
     if madmax is not None:

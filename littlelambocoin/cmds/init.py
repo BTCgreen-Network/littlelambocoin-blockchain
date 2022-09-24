@@ -1,5 +1,4 @@
 import click
-from littlelambocoin.util.keychain import supports_keyring_passphrase
 
 
 @click.command("init", short_help="Create or migrate the configuration")
@@ -34,7 +33,7 @@ def init_cmd(ctx: click.Context, create_certs: str, fix_ssl_permissions: bool, t
     - Run `littlelambocoin init -c [directory]` on your remote harvester,
       where [directory] is the the copy of your Farming Machine CA directory
     - Get more details on remote harvester on Littlelambocoin wiki:
-      https://github.com/LittlelambocoinNetwork/littlelambocoin-blockchain/wiki/Farming-on-many-machines
+      https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki/Farming-on-many-machines
     """
     from pathlib import Path
     from .init_funcs import init
@@ -51,13 +50,6 @@ def init_cmd(ctx: click.Context, create_certs: str, fix_ssl_permissions: bool, t
         testnet,
         v1_db,
     )
-
-
-if not supports_keyring_passphrase():
-    from littlelambocoin.cmds.passphrase_funcs import remove_passphrase_options_from_cmd
-
-    # TODO: Remove once keyring passphrase management is rolled out to all platforms
-    remove_passphrase_options_from_cmd(init_cmd)
 
 
 if __name__ == "__main__":

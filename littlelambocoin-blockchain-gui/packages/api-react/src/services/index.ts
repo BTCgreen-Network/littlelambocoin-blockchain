@@ -69,6 +69,7 @@ export const {
   useCloseFullNodeConnectionMutation,
   useGetBlockQuery,
   useGetBlockRecordQuery,
+  useGetFeeEstimateQuery,
 } = fullNode;
 
 // wallet hooks
@@ -155,6 +156,7 @@ export const {
   useGetDIDCurrentCoinInfoQuery,
 
   // NFTs
+  useGetNFTsByNFTIDsQuery,
   useGetNFTsQuery,
   useGetNFTWalletsWithDIDsQuery,
   useGetNFTInfoQuery,

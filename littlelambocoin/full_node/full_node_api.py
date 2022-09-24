@@ -1,11 +1,13 @@
 import asyncio
 import dataclasses
+import logging
 import time
 import traceback
+import functools
 from secrets import token_bytes
 from typing import Dict, List, Optional, Tuple, Set
 
-from blspy import AugSchemeMPL, G2Element
+from blspy import AugSchemeMPL, G2Element, G1Element
 from chiabip158 import PyBIP158
 
 import littlelambocoin.server.ws_connection as ws
@@ -21,15 +23,18 @@ from littlelambocoin.protocols.full_node_protocol import RejectBlock, RejectBloc
 from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
 from littlelambocoin.protocols.wallet_protocol import (
     PuzzleSolutionResponse,
+    RejectBlockHeaders,
     RejectHeaderBlocks,
     RejectHeaderRequest,
     CoinState,
     RespondSESInfo,
 )
+from littlelambocoin.server.server import LittlelambocoinServer
+from concurrent.futures import ThreadPoolExecutor
+from littlelambocoin.types.block_protocol import BlockInfo
 from littlelambocoin.server.outbound_message import Message, make_msg
 from littlelambocoin.types.blockchain_format.coin import Coin, hash_coin_ids
 from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
-from littlelambocoin.types.blockchain_format.program import Program
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.blockchain_format.sub_epoch_summary import SubEpochSummary
 from littlelambocoin.types.coin_record import CoinRecord
@@ -42,40 +47,48 @@ from littlelambocoin.types.peer_info import PeerInfo
 from littlelambocoin.types.transaction_queue_entry import TransactionQueueEntry
 from littlelambocoin.types.unfinished_block import UnfinishedBlock
 from littlelambocoin.util.api_decorators import api_request, peer_required, bytes_required, execute_task, reply_type
-from littlelambocoin.util.generator_tools import get_block_header
+from littlelambocoin.util.full_block_utils import header_block_from_block
+from littlelambocoin.util.generator_tools import get_block_header, tx_removals_and_additions
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 from littlelambocoin.util.merkle_set import MerkleSet
+from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
 
 
 class FullNodeAPI:
     full_node: FullNode
+    executor: ThreadPoolExecutor
 
-    def __init__(self, full_node) -> None:
+    def __init__(self, full_node: FullNode) -> None:
         self.full_node = full_node
+        self.executor = ThreadPoolExecutor(max_workers=1)
 
     @property
-    def server(self):
+    def server(self) -> LittlelambocoinServer:
+        assert self.full_node.server is not None
         return self.full_node.server
 
     @property
-    def log(self):
+    def log(self) -> logging.Logger:
         return self.full_node.log
 
     @property
-    def api_ready(self):
+    def api_ready(self) -> bool:
         return self.full_node.initialized
 
     @peer_required
     @api_request
     @reply_type([ProtocolMessageTypes.respond_peers])
-    async def request_peers(self, _request: full_node_protocol.RequestPeers, peer: ws.WSLittlelambocoinConnection):
+    async def request_peers(
+        self, _request: full_node_protocol.RequestPeers, peer: ws.WSLittlelambocoinConnection
+    ) -> Optional[Message]:
         if peer.peer_server_port is None:
             return None
         peer_info = PeerInfo(peer.peer_host, peer.peer_server_port)
         if self.full_node.full_node_peers is not None:
             msg = await self.full_node.full_node_peers.request_peers(peer_info)
             return msg
+        return None
 
     @peer_required
     @api_request
@@ -102,7 +115,7 @@ class FullNodeAPI:
     @execute_task
     @peer_required
     @api_request
-    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSLittlelambocoinConnection) -> Optional[Message]:
+    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSLittlelambocoinConnection) -> None:
         """
         A peer notifies us that they have added a new peak to their blockchain. If we don't have it,
         we can ask for it.
@@ -118,7 +131,8 @@ class FullNodeAPI:
             return None
 
         async with self.full_node.new_peak_sem:
-            return await self.full_node.new_peak(request, peer)
+            await self.full_node.new_peak(request, peer)
+        return None
 
     @peer_required
     @api_request
@@ -159,28 +173,28 @@ class FullNodeAPI:
             new_set.add(peer.peer_node_id)
             self.full_node.full_node_store.peers_with_tx[transaction.transaction_id] = new_set
 
-            async def tx_request_and_timeout(full_node: FullNode, transaction_id, task_id):
+            async def tx_request_and_timeout(full_node: FullNode, transaction_id: bytes32, task_id: bytes32) -> None:
                 counter = 0
                 try:
                     while True:
-                        # Limit to asking to a few peers, it's possible that this tx got included on chain already
+                        # Limit to asking a few peers, it's possible that this tx got included on chain already
                         # Highly unlikely that the peers that advertised a tx don't respond to a request. Also, if we
-                        # drop some transactions, we don't want to refetch too many times
-                        if counter == 10:
+                        # drop some transactions, we don't want to re-fetch too many times
+                        if counter == 5:
                             break
                         if transaction_id not in full_node.full_node_store.peers_with_tx:
                             break
-                        peers_with_tx: Set = full_node.full_node_store.peers_with_tx[transaction_id]
+                        peers_with_tx: Set[bytes32] = full_node.full_node_store.peers_with_tx[transaction_id]
                         if len(peers_with_tx) == 0:
                             break
                         peer_id = peers_with_tx.pop()
                         assert full_node.server is not None
                         if peer_id not in full_node.server.all_connections:
                             continue
-                        peer = full_node.server.all_connections[peer_id]
+                        random_peer = full_node.server.all_connections[peer_id]
                         request_tx = full_node_protocol.RequestTransaction(transaction.transaction_id)
                         msg = make_msg(ProtocolMessageTypes.request_transaction, request_tx)
-                        await peer.send_message(msg)
+                        await random_peer.send_message(msg)
                         await asyncio.sleep(5)
                         counter += 1
                         if full_node.mempool_manager.seen(transaction_id):
@@ -375,11 +389,11 @@ class FullNodeAPI:
         return msg
 
     @api_request
-    async def reject_block(self, request: full_node_protocol.RejectBlock):
+    async def reject_block(self, request: full_node_protocol.RejectBlock) -> None:
         self.log.debug(f"reject_block {request.height}")
 
     @api_request
-    async def reject_blocks(self, request: full_node_protocol.RejectBlocks):
+    async def reject_blocks(self, request: full_node_protocol.RejectBlocks) -> None:
         self.log.debug(f"reject_blocks {request.start_height} {request.end_height}")
 
     @api_request
@@ -424,7 +438,7 @@ class FullNodeAPI:
 
         # However, we want to eventually download from other peers, if this peer does not respond
         # Todo: keep track of who it was
-        async def eventually_clear():
+        async def eventually_clear() -> None:
             await asyncio.sleep(5)
             if block_hash in self.full_node.full_node_store.requesting_unfinished_blocks:
                 self.full_node.full_node_store.requesting_unfinished_blocks.remove(block_hash)
@@ -586,7 +600,7 @@ class FullNodeAPI:
                     sp.cc_proof,
                     sp.rc_vdf,
                     sp.rc_proof,
-                    sp.timelord_reward_puzzle_hash
+                    sp.timelord_puzzle_hash,
                 )
                 return make_msg(ProtocolMessageTypes.respond_signage_point, full_node_response)
             else:
@@ -636,7 +650,7 @@ class FullNodeAPI:
                     request.challenge_chain_proof,
                     request.reward_chain_vdf,
                     request.reward_chain_proof,
-                    request.timelord_reward_puzzle_hash
+                    request.timelord_reward_puzzle_hash,
                 ),
             )
 
@@ -773,14 +787,14 @@ class FullNodeAPI:
                         else:
                             block_generator = simple_solution_generator(spend_bundle)
 
-            def get_plot_sig(to_sign, _) -> G2Element:
+            def get_plot_sig(to_sign: bytes32, _extra: G1Element) -> G2Element:
                 if to_sign == request.challenge_chain_sp:
                     return request.challenge_chain_sp_signature
                 elif to_sign == request.reward_chain_sp:
                     return request.reward_chain_sp_signature
                 return G2Element()
 
-            def get_pool_sig(_1, _2) -> Optional[G2Element]:
+            def get_pool_sig(_1: PoolTarget, _2: Optional[G1Element]) -> Optional[G2Element]:
                 return request.pool_signature
 
             prev_b: Optional[BlockRecord] = peak
@@ -901,6 +915,7 @@ class FullNodeAPI:
                 request.proof_of_space,
                 cc_challenge_hash,
                 farmer_ph,
+                request.timelord_puzzle_hash,
                 pool_target,
                 get_plot_sig,
                 get_pool_sig,
@@ -948,6 +963,7 @@ class FullNodeAPI:
                     request.proof_of_space,
                     cc_challenge_hash,
                     farmer_ph,
+                    request.timelord_puzzle_hash,
                     pool_target,
                     get_plot_sig,
                     get_pool_sig,
@@ -1060,7 +1076,7 @@ class FullNodeAPI:
             request.challenge_chain_sp_proof,
             request.reward_chain_sp_vdf,
             request.reward_chain_sp_proof,
-            request.timelord_reward_puzzle_hash
+            request.timelord_reward_puzzlehash,
         )
         await self.respond_signage_point(full_node_message, peer)
 
@@ -1097,15 +1113,39 @@ class FullNodeAPI:
             msg = make_msg(ProtocolMessageTypes.reject_header_request, RejectHeaderRequest(request.height))
             return msg
         block: Optional[FullBlock] = await self.full_node.block_store.get_full_block(header_hash)
-        if block is not None:
-            tx_removals, tx_additions, _ = await self.full_node.blockchain.get_tx_removals_and_additions(block)
-            header_block = get_block_header(block, tx_additions, tx_removals)
-            msg = make_msg(
-                ProtocolMessageTypes.respond_block_header,
-                wallet_protocol.RespondBlockHeader(header_block),
+        if block is None:
+            return None
+
+        tx_removals: List[bytes32] = []
+        tx_additions: List[Coin] = []
+
+        if block.transactions_generator is not None:
+
+            block_generator: Optional[BlockGenerator] = await self.full_node.blockchain.get_block_generator(block)
+            # get_block_generator() returns None in case the block we specify
+            # does not have a generator (i.e. is not a transaction block).
+            # in this case we've already made sure `block` does have a
+            # transactions_generator, so the block_generator should always be set
+            assert block_generator is not None, "failed to get block_generator for tx-block"
+
+            npc_result = await asyncio.get_running_loop().run_in_executor(
+                self.executor,
+                functools.partial(
+                    get_name_puzzle_conditions,
+                    block_generator,
+                    self.full_node.constants.MAX_BLOCK_COST_CLVM,
+                    cost_per_byte=self.full_node.constants.COST_PER_BYTE,
+                    mempool_mode=False,
+                ),
             )
-            return msg
-        return None
+
+            tx_removals, tx_additions = tx_removals_and_additions(npc_result.conds)
+        header_block = get_block_header(block, tx_additions, tx_removals)
+        msg = make_msg(
+            ProtocolMessageTypes.respond_block_header,
+            wallet_protocol.RespondBlockHeader(header_block),
+        )
+        return msg
 
     @api_request
     async def request_additions(self, request: wallet_protocol.RequestAdditions) -> Optional[Message]:
@@ -1116,26 +1156,11 @@ class FullNodeAPI:
         if header_hash is None:
             raise ValueError(f"Block at height {request.height} not found")
 
-        block: Optional[FullBlock] = await self.full_node.block_store.get_full_block(header_hash)
-
-        # We lock so that the coin store does not get modified
-        if (
-            block is None
-            or block.is_transaction_block() is False
-            or self.full_node.blockchain.height_to_hash(block.height) != request.header_hash
-        ):
-            reject = wallet_protocol.RejectAdditionsRequest(request.height, header_hash)
-
-            msg = make_msg(ProtocolMessageTypes.reject_additions_request, reject)
-            return msg
-
-        assert block is not None and block.foliage_transaction_block is not None
-
         # Note: this might return bad data if there is a reorg in this time
-        additions = await self.full_node.coin_store.get_coins_added_at_height(block.height)
+        additions = await self.full_node.coin_store.get_coins_added_at_height(request.height)
 
-        if self.full_node.blockchain.height_to_hash(block.height) != request.header_hash:
-            raise ValueError(f"Block {block.header_hash} no longer in chain")
+        if self.full_node.blockchain.height_to_hash(request.height) != header_hash:
+            raise ValueError(f"Block {header_hash} no longer in chain, or invalid header_hash")
 
         puzzlehash_coins_map: Dict[bytes32, List[Coin]] = {}
         for coin_record in additions:
@@ -1150,7 +1175,7 @@ class FullNodeAPI:
         if request.puzzle_hashes is None:
             for puzzle_hash, coins in puzzlehash_coins_map.items():
                 coins_map.append((puzzle_hash, coins))
-            response = wallet_protocol.RespondAdditions(block.height, block.header_hash, coins_map, None)
+            response = wallet_protocol.RespondAdditions(request.height, header_hash, coins_map, None)
         else:
             # Create addition Merkle set
             addition_merkle_set = MerkleSet()
@@ -1159,12 +1184,13 @@ class FullNodeAPI:
                 addition_merkle_set.add_already_hashed(puzzle)
                 addition_merkle_set.add_already_hashed(hash_coin_ids([c.name() for c in coins]))
 
-            assert addition_merkle_set.get_root() == block.foliage_transaction_block.additions_root
             for puzzle_hash in request.puzzle_hashes:
+                # This is a proof of inclusion if it's in (result==True), or exclusion of it's not in
                 result, proof = addition_merkle_set.is_included_already_hashed(puzzle_hash)
                 if puzzle_hash in puzzlehash_coins_map:
                     coins_map.append((puzzle_hash, puzzlehash_coins_map[puzzle_hash]))
                     hash_coin_str = hash_coin_ids([c.name() for c in puzzlehash_coins_map[puzzle_hash]])
+                    # This is a proof of inclusion of all coin ids that have this ph
                     result_2, proof_2 = addition_merkle_set.is_included_already_hashed(hash_coin_str)
                     assert result
                     assert result_2
@@ -1173,9 +1199,8 @@ class FullNodeAPI:
                     coins_map.append((puzzle_hash, []))
                     assert not result
                     proofs_map.append((puzzle_hash, proof, None))
-            response = wallet_protocol.RespondAdditions(block.height, block.header_hash, coins_map, proofs_map)
-        msg = make_msg(ProtocolMessageTypes.respond_additions, response)
-        return msg
+            response = wallet_protocol.RespondAdditions(request.height, header_hash, coins_map, proofs_map)
+        return make_msg(ProtocolMessageTypes.respond_additions, response)
 
     @api_request
     async def request_removals(self, request: wallet_protocol.RequestRemovals) -> Optional[Message]:
@@ -1211,7 +1236,7 @@ class FullNodeAPI:
 
         # If there are no transactions, respond with empty lists
         if block.transactions_generator is None:
-            proofs: Optional[List]
+            proofs: Optional[List[Tuple[bytes32, bytes]]]
             if request.coin_names is None:
                 proofs = None
             else:
@@ -1243,7 +1268,9 @@ class FullNodeAPI:
         return msg
 
     @api_request
-    async def send_transaction(self, request: wallet_protocol.SendTransaction, *, test=False) -> Optional[Message]:
+    async def send_transaction(
+        self, request: wallet_protocol.SendTransaction, *, test: bool = False
+    ) -> Optional[Message]:
         spend_name = request.transaction.name()
         if self.full_node.mempool_manager.get_spendbundle(spend_name) is not None:
             self.full_node.mempool_manager.remove_seen(spend_name)
@@ -1295,36 +1322,84 @@ class FullNodeAPI:
         if header_hash is None:
             return reject_msg
 
-        block: Optional[FullBlock] = await self.full_node.block_store.get_full_block(header_hash)
+        block: Optional[BlockInfo] = await self.full_node.block_store.get_block_info(header_hash)
 
         if block is None or block.transactions_generator is None:
             return reject_msg
 
         block_generator: Optional[BlockGenerator] = await self.full_node.blockchain.get_block_generator(block)
         assert block_generator is not None
-        error, puzzle, solution = get_puzzle_and_solution_for_coin(
-            block_generator, coin_name, self.full_node.constants.MAX_BLOCK_COST_CLVM
+        error, puzzle, solution = await asyncio.get_running_loop().run_in_executor(
+            self.executor, get_puzzle_and_solution_for_coin, block_generator, coin_record.coin
         )
 
         if error is not None:
             return reject_msg
 
-        pz = Program.to(puzzle)
-        sol = Program.to(solution)
+        assert puzzle is not None
+        assert solution is not None
 
-        wrapper = PuzzleSolutionResponse(coin_name, height, pz, sol)
+        wrapper = PuzzleSolutionResponse(coin_name, height, puzzle, solution)
         response = wallet_protocol.RespondPuzzleSolution(wrapper)
         response_msg = make_msg(ProtocolMessageTypes.respond_puzzle_solution, response)
         return response_msg
 
     @api_request
+    async def request_block_headers(self, request: wallet_protocol.RequestBlockHeaders) -> Optional[Message]:
+        """Returns header blocks by directly streaming bytes into Message
+
+        This method should be used instead of RequestHeaderBlocks
+        """
+        reject = RejectBlockHeaders(request.start_height, request.end_height)
+
+        if request.end_height < request.start_height or request.end_height - request.start_height > 128:
+            return make_msg(ProtocolMessageTypes.reject_block_headers, reject)
+        if self.full_node.block_store.db_wrapper.db_version == 2:
+            try:
+                blocks_bytes = await self.full_node.block_store.get_block_bytes_in_range(
+                    request.start_height, request.end_height
+                )
+            except ValueError:
+                return make_msg(ProtocolMessageTypes.reject_block_headers, reject)
+
+        else:
+            height_to_hash = self.full_node.blockchain.height_to_hash
+            header_hashes: List[bytes32] = []
+            for i in range(request.start_height, request.end_height + 1):
+                header_hash: Optional[bytes32] = height_to_hash(uint32(i))
+                if header_hash is None:
+                    return make_msg(ProtocolMessageTypes.reject_header_blocks, reject)
+                header_hashes.append(header_hash)
+
+            blocks_bytes = await self.full_node.block_store.get_block_bytes_by_hash(header_hashes)
+        if len(blocks_bytes) != (request.end_height - request.start_height + 1):  # +1 because interval is inclusive
+            return make_msg(ProtocolMessageTypes.reject_block_headers, reject)
+        return_filter = request.return_filter
+        header_blocks_bytes: List[bytes] = [header_block_from_block(memoryview(b), return_filter) for b in blocks_bytes]
+
+        # we're building the RespondHeaderBlocks manually to avoid cost of
+        # dynamic serialization
+        # ---
+        # we start building RespondBlockHeaders response (start_height, end_height)
+        # and then need to define size of list object
+        respond_header_blocks_manually_streamed: bytes = (
+            bytes(uint32(request.start_height))
+            + bytes(uint32(request.end_height))
+            + len(header_blocks_bytes).to_bytes(4, "big", signed=False)
+        )
+        # and now stream the whole list in bytes
+        respond_header_blocks_manually_streamed += b"".join(header_blocks_bytes)
+        return make_msg(ProtocolMessageTypes.respond_block_headers, respond_header_blocks_manually_streamed)
+
+    @api_request
     async def request_header_blocks(self, request: wallet_protocol.RequestHeaderBlocks) -> Optional[Message]:
+        """DEPRECATED: please use RequestBlockHeaders"""
         if request.end_height < request.start_height or request.end_height - request.start_height > 32:
             return None
-
+        height_to_hash = self.full_node.blockchain.height_to_hash
         header_hashes: List[bytes32] = []
         for i in range(request.start_height, request.end_height + 1):
-            header_hash: Optional[bytes32] = self.full_node.blockchain.height_to_hash(uint32(i))
+            header_hash: Optional[bytes32] = height_to_hash(uint32(i))
             if header_hash is None:
                 reject = RejectHeaderBlocks(request.start_height, request.end_height)
                 msg = make_msg(ProtocolMessageTypes.reject_header_blocks, reject)
@@ -1334,8 +1409,11 @@ class FullNodeAPI:
         blocks: List[FullBlock] = await self.full_node.block_store.get_blocks_by_hash(header_hashes)
         header_blocks = []
         for block in blocks:
-            added_coins_records = await self.full_node.coin_store.get_coins_added_at_height(block.height)
-            removed_coins_records = await self.full_node.coin_store.get_coins_removed_at_height(block.height)
+            added_coins_records_coroutine = self.full_node.coin_store.get_coins_added_at_height(block.height)
+            removed_coins_records_coroutine = self.full_node.coin_store.get_coins_removed_at_height(block.height)
+            added_coins_records, removed_coins_records = await asyncio.gather(
+                added_coins_records_coroutine, removed_coins_records_coroutine
+            )
             added_coins = [record.coin for record in added_coins_records if not record.coinbase]
             removal_names = [record.coin.name() for record in removed_coins_records]
             header_block = get_block_header(block, added_coins, removal_names)
@@ -1348,10 +1426,11 @@ class FullNodeAPI:
         return msg
 
     @api_request
-    async def respond_compact_proof_of_time(self, request: timelord_protocol.RespondCompactProofOfTime):
+    async def respond_compact_proof_of_time(self, request: timelord_protocol.RespondCompactProofOfTime) -> None:
         if self.full_node.sync_store.get_sync_mode():
             return None
         await self.full_node.respond_compact_proof_of_time(request)
+        return None
 
     @execute_task
     @peer_required
@@ -1359,18 +1438,18 @@ class FullNodeAPI:
     @bytes_required
     async def new_compact_vdf(
         self, request: full_node_protocol.NewCompactVDF, peer: ws.WSLittlelambocoinConnection, request_bytes: bytes = b""
-    ):
+    ) -> None:
         if self.full_node.sync_store.get_sync_mode():
             return None
 
         if len(self.full_node.compact_vdf_sem._waiters) > 20:
             self.log.debug(f"Ignoring NewCompactVDF: {request}, _waiters")
-            return
+            return None
 
         name = std_hash(request_bytes)
         if name in self.full_node.compact_vdf_requests:
             self.log.debug(f"Ignoring NewCompactVDF: {request}, already requested")
-            return
+            return None
         self.full_node.compact_vdf_requests.add(name)
 
         # this semaphore will only allow a limited number of tasks call
@@ -1380,27 +1459,34 @@ class FullNodeAPI:
                 await self.full_node.new_compact_vdf(request, peer)
             finally:
                 self.full_node.compact_vdf_requests.remove(name)
+        return None
 
     @peer_required
     @api_request
     @reply_type([ProtocolMessageTypes.respond_compact_vdf])
-    async def request_compact_vdf(self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSLittlelambocoinConnection):
+    async def request_compact_vdf(
+        self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSLittlelambocoinConnection
+    ) -> None:
         if self.full_node.sync_store.get_sync_mode():
             return None
         await self.full_node.request_compact_vdf(request, peer)
+        return None
 
     @peer_required
     @api_request
-    async def respond_compact_vdf(self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSLittlelambocoinConnection):
+    async def respond_compact_vdf(
+        self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSLittlelambocoinConnection
+    ) -> None:
         if self.full_node.sync_store.get_sync_mode():
             return None
         await self.full_node.respond_compact_vdf(request, peer)
+        return None
 
     @peer_required
     @api_request
     async def register_interest_in_puzzle_hash(
         self, request: wallet_protocol.RegisterForPhUpdates, peer: ws.WSLittlelambocoinConnection
-    ):
+    ) -> Message:
         if peer.peer_node_id not in self.full_node.peer_puzzle_hash:
             self.full_node.peer_puzzle_hash[peer.peer_node_id] = set()
 
@@ -1442,7 +1528,7 @@ class FullNodeAPI:
     @api_request
     async def register_interest_in_coin(
         self, request: wallet_protocol.RegisterForCoinUpdates, peer: ws.WSLittlelambocoinConnection
-    ):
+    ) -> Message:
         if peer.peer_node_id not in self.full_node.peer_coin_ids:
             self.full_node.peer_coin_ids[peer.peer_node_id] = set()
 
@@ -1479,7 +1565,7 @@ class FullNodeAPI:
         return msg
 
     @api_request
-    async def request_ses_hashes(self, request: wallet_protocol.RequestSESInfo):
+    async def request_ses_hashes(self, request: wallet_protocol.RequestSESInfo) -> Message:
         """Returns the start and end height of a sub-epoch for the height specified in request"""
 
         ses_height = self.full_node.blockchain.get_ses_heights()

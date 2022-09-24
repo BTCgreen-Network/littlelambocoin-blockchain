@@ -1,7 +1,17 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { Button, CopyToClipboard, Card, Loading, Flex, TooltipIcon } from '@littlelambocoin/core';
-import { useGetCurrentAddressQuery, useGetNextAddressMutation } from '@littlelambocoin/api-react';
+import {
+  ButtonLoading,
+  CopyToClipboard,
+  Card,
+  Loading,
+  Flex,
+  TooltipIcon,
+} from '@littlelambocoin/core';
+import {
+  useGetCurrentAddressQuery,
+  useGetNextAddressMutation,
+} from '@littlelambocoin/api-react';
 import {
   Box,
   TextField,
@@ -19,7 +29,8 @@ export default function WalletReceiveAddress(props: WalletReceiveAddressProps) {
   const { data: address, isLoading } = useGetCurrentAddressQuery({
     walletId,
   });
-  const [newAddress] = useGetNextAddressMutation();
+  const [newAddress, { isLoading: isLoadingNewAddress }] =
+    useGetNextAddressMutation();
 
   async function handleNewAddress() {
     await newAddress({
@@ -36,17 +47,22 @@ export default function WalletReceiveAddress(props: WalletReceiveAddressProps) {
           &nbsp;
           <TooltipIcon>
             <Trans>
-              HD or Hierarchical Deterministic keys are a type of public key/private
-              key scheme where one private key can have a nearly infinite number of
-              different public keys (and therefore wallet receive addresses) that
-              will all ultimately come back to and be spendable by a single private
-              key.
+              HD or Hierarchical Deterministic keys are a type of public
+              key/private key scheme where one private key can have a nearly
+              infinite number of different public keys (and therefore wallet
+              receive addresses) that will all ultimately come back to and be
+              spendable by a single private key.
             </Trans>
           </TooltipIcon>
         </Typography>
-        <Button onClick={handleNewAddress} variant="outlined">
+        <ButtonLoading
+          onClick={handleNewAddress}
+          loading={isLoadingNewAddress}
+          variant="outlined"
+          data-testid="WalletReceiveAddress-new-address"
+        >
           <Trans>New Address</Trans>
-        </Button>
+        </ButtonLoading>
       </Flex>
 
       <Card>
@@ -60,11 +76,17 @@ export default function WalletReceiveAddress(props: WalletReceiveAddressProps) {
                   label={<Trans>Address</Trans>}
                   value={address}
                   variant="filled"
-                  InputProps={{
+                  inputProps={{
+                    'data-testid': 'WalletReceiveAddress-address',
                     readOnly: true,
+                  }}
+                  InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <CopyToClipboard value={address} />
+                        <CopyToClipboard
+                          value={address}
+                          data-testid="WalletReceiveAddress-address-copy"
+                        />
                       </InputAdornment>
                     ),
                   }}

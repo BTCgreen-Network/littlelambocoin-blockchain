@@ -51,8 +51,8 @@ export default function NFTSummary(props: NFTSummaryProps) {
       return [[], []];
     }
 
-    let properties: React.ReactElement[] = [];
-    let rankings: React.ReactElement[] = [];
+    const properties: React.ReactElement[] = [];
+    const rankings: React.ReactElement[] = [];
 
     const collectionNameProperty = metadata?.collection_name ? (
       <NFTProperty
@@ -63,11 +63,11 @@ export default function NFTSummary(props: NFTSummaryProps) {
     ) : null;
 
     const editionProperty =
-      nft?.seriesNumber && nft?.seriesTotal > 1 ? (
+      nft?.editionNumber && nft?.editionTotal > 1 ? (
         <NFTProperty
           attribute={{
             name: t`Edition #`,
-            value: `${nft.seriesNumber}/${nft.seriesTotal}`,
+            value: `${nft.editionNumber}/${nft.editionTotal}`,
           }}
           size="small"
           color="secondary"
@@ -82,8 +82,7 @@ export default function NFTSummary(props: NFTSummaryProps) {
       properties.push(editionProperty);
     }
 
-    metadata
-      ?.attributes
+    metadata?.attributes
       ?.filter((attribute: NFTAttribute) => !isRankingAttribute(attribute))
       .forEach((attribute: NFTAttribute) =>
         properties.push(
@@ -91,8 +90,7 @@ export default function NFTSummary(props: NFTSummaryProps) {
         ),
       );
 
-    metadata
-      ?.attributes
+    metadata?.attributes
       ?.filter((attribute: NFTAttribute) => isRankingAttribute(attribute))
       .forEach((attribute: NFTAttribute) =>
         rankings.push(
@@ -128,7 +126,7 @@ export default function NFTSummary(props: NFTSummaryProps) {
     return (
       <Flex flexDirection="row" alignItems="center" gap={1} {...rest}>
         <Typography variant="body2">{truncatedNftId}</Typography>
-        <TooltipIcon interactive>
+        <TooltipIcon>
           <Flex flexDirection="column" gap={1}>
             <Flex flexDirection="column" gap={0}>
               <Flex>
@@ -167,19 +165,17 @@ export default function NFTSummary(props: NFTSummaryProps) {
       <CardContent style={{ paddingBottom: `${bottomPadding}` }}>
         <Flex flexDirection="column" gap={2}>
           <Flex flexDirection="row" gap={2}>
-            {nft && (
-              <Box
-                borderRadius={2}
-                overflow="hidden"
-                alignItems="center"
-                justifyContent="center"
-                width="80px"
-                minWidth="80px"
-                height="80px"
-              >
-                <NFTPreview nft={nft} height={80} />
-              </Box>
-            )}
+            <Box
+              borderRadius={2}
+              overflow="hidden"
+              alignItems="center"
+              justifyContent="center"
+              width="80px"
+              minWidth="80px"
+              height="80px"
+            >
+              <NFTPreview nft={nft} height={80} disableThumbnail />
+            </Box>
             <Flex
               flexDirection="column"
               gap={0}

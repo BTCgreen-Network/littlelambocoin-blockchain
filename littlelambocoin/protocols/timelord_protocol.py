@@ -64,7 +64,7 @@ class NewSignagePointVDF(Streamable):
     challenge_chain_sp_proof: VDFProof
     reward_chain_sp_vdf: VDFInfo
     reward_chain_sp_proof: VDFProof
-    timelord_reward_puzzle_hash: bytes32
+    timelord_reward_puzzlehash: bytes32
 
 
 @streamable

@@ -9,6 +9,8 @@ enum ServiceName {
   TIMELORD = 'littlelambocoin_timelord',
   INTRODUCER = 'littlelambocoin_introducer',
   EVENTS = 'wallet_ui',
-};
+  DATALAYER = 'littlelambocoin_data_layer',
+  DATALAYER_SERVER = 'littlelambocoin_data_layer_http',
+}
 
 export default ServiceName;

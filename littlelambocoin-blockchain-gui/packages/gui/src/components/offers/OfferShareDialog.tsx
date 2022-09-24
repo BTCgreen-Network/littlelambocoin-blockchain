@@ -73,7 +73,7 @@ type CommonDialogProps = {
 
 type OfferShareServiceDialogProps = CommonOfferProps & CommonDialogProps;
 
-const testnetDummyHost = 'offers-api-sim.littlelambocoin.net';
+const testnetDummyHost = 'offers-api-sim.littlelambocoin.com';
 
 const OfferSharingProviders: {
   [key in OfferSharingService]: OfferSharingProvider;
@@ -243,7 +243,7 @@ async function postToOfferBin(
   console.log('OfferBin upload completed');
 
   if (testnet) {
-    return 'https://www.littlelambocoin.net/offers';
+    return 'https://www.littlelambocoin.com/offers';
   }
 
   const { hash } = JSON.parse(responseBody);
@@ -294,7 +294,7 @@ async function postToHashgreen(
     console.log('Hashgreen upload completed');
 
     if (testnet) {
-      return 'https://www.littlelambocoin.net/offers';
+      return 'https://www.littlelambocoin.com/offers';
     }
 
     const jsonObj = JSON.parse(responseBody);
@@ -869,7 +869,7 @@ function OfferShareKeybaseDialog(props: OfferShareServiceDialogProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isJoiningTeam, setIsJoiningTeam] = React.useState(false);
   const [shared, setShared] = React.useState(false);
-  const teamName = testnet ? 'testllcoffersdev' : KeybaseTeamName;
+  const teamName = testnet ? 'testxchoffersdev' : KeybaseTeamName;
   const channelName = testnet ? 'offers' : KeybaseChannelName;
 
   function handleClose() {

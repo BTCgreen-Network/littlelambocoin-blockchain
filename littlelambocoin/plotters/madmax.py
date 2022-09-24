@@ -120,7 +120,7 @@ def install_madmax(plotters_root_path: Path):
             [
                 "git",
                 "clone",
-                "https://github.com/LittlelambocoinNetwork/littlelambocoin-plotter-madmax.git",
+                "https://github.com/Chia-Network/chia-plotter-madmax.git",
                 MADMAX_PLOTTER_DIR,
             ],
             "Could not clone madmax git repository",
@@ -175,7 +175,7 @@ def dir_with_trailing_slash(dir: str) -> str:
 
 
 def plot_madmax(args, littlelambocoin_root_path: Path, plotters_root_path: Path):
-    if sys.platform not in ["win32", "cygwin"]:
+    if sys.platform != "win32" and sys.platform != "cygwin":
         import resource
 
         # madMAx has a ulimit -n requirement > 296:
@@ -236,7 +236,7 @@ def plot_madmax(args, littlelambocoin_root_path: Path, plotters_root_path: Path)
         call_args.append("-k")
         call_args.append(str(args.size))
     try:
-        asyncio.run(run_plotter(call_args, progress))
+        asyncio.run(run_plotter(littlelambocoin_root_path, args.plotter, call_args, progress))
     except Exception as e:
         print(f"Exception while plotting: {type(e)} {e}")
         print(f"Traceback: {traceback.format_exc()}")

@@ -13,8 +13,8 @@ from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.bech32m import decode_puzzle_hash
 from littlelambocoin.util.keychain import Keychain
-from littlelambocoin.util.path import mkdir
 from littlelambocoin.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_local_sk, master_sk_to_pool_sk
+from littlelambocoin.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -61,9 +61,8 @@ class PlotKeysResolver:
         if self.resolved_keys is not None:
             return self.resolved_keys
 
-        keychain_proxy: Optional[KeychainProxy] = None
         if self.connect_to_daemon:
-            keychain_proxy = await connect_to_keychain_and_validate(self.root_path, self.log)
+            keychain_proxy: Optional[KeychainProxy] = await connect_to_keychain_and_validate(self.root_path, self.log)
         else:
             keychain_proxy = wrap_local_keychain(Keychain(), log=self.log)
 
@@ -84,6 +83,8 @@ class PlotKeysResolver:
                 pool_public_key = await self.get_pool_public_key(keychain_proxy)
 
         self.resolved_keys = PlotKeys(farmer_public_key, pool_public_key, self.pool_contract_address)
+        if keychain_proxy is not None:
+            await keychain_proxy.close()
         return self.resolved_keys
 
     async def get_sk(self, keychain_proxy: Optional[KeychainProxy] = None) -> Optional[Tuple[PrivateKey, bytes]]:
@@ -164,15 +165,15 @@ async def create_plots(
 
     tmp_dir_created = False
     if not args.tmp_dir.exists():
-        mkdir(args.tmp_dir)
+        args.tmp_dir.mkdir(parents=True, exist_ok=True)
         tmp_dir_created = True
 
     tmp2_dir_created = False
     if not args.tmp2_dir.exists():
-        mkdir(args.tmp2_dir)
+        args.tmp2_dir.mkdir(parents=True, exist_ok=True)
         tmp2_dir_created = True
 
-    mkdir(args.final_dir)
+    args.final_dir.mkdir(parents=True, exist_ok=True)
 
     created_plots: Dict[bytes32, Path] = {}
     existing_plots: Dict[bytes32, Path] = {}
@@ -187,9 +188,14 @@ async def create_plots(
         # The plot public key is the combination of the harvester and farmer keys
         # New plots will also include a taproot of the keys, for extensibility
         include_taproot: bool = keys.pool_contract_puzzle_hash is not None
-        plot_public_key = ProofOfSpace.generate_plot_public_key(
-            master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
-        )
+        if args.size >= 32:
+            plot_public_key = ProofOfSpace.generate_plot_public_key(
+                master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
+            )
+        else:
+            plot_public_key = ProofOfSpace.generate_plot_public_key(
+                chives_master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
+            )
 
         # The plot id is based on the harvester, farmer, and pool keys
         if keys.pool_public_key is not None:

@@ -20,10 +20,8 @@ import {
 } from '@mui/icons-material';
 import {
   Card,
-  CardKeyValue,
   CopyToClipboard,
   Flex,
-  Loading,
   StateColor,
   TableControlled,
   useCurrencyCode,
@@ -118,7 +116,7 @@ const getCols = (type: WalletType, isSyncing, getOfferRecord, navigate) => [
         <Flex
           flexDirection="column"
           gap={1}
-          onClick={event => {
+          onClick={(event) => {
             if (!isSyncing) {
               handleRowClick(event, row, getOfferRecord, navigate);
             }
@@ -142,7 +140,6 @@ const getCols = (type: WalletType, isSyncing, getOfferRecord, navigate) => [
                 </Flex>
               </Flex>
             }
-            interactive
           >
             <span>
               {shouldObscureAddress
@@ -255,9 +252,13 @@ type Props = {
 export default function WalletHistory(props: Props) {
   const { walletId } = props;
 
-  const { data: walletState, isLoading: isWalletSyncLoading } = useGetSyncStatusQuery({}, {
-    pollingInterval: 10000,
-  });
+  const { data: walletState, isLoading: isWalletSyncLoading } =
+    useGetSyncStatusQuery(
+      {},
+      {
+        pollingInterval: 10000,
+      }
+    );
   const { wallet, loading: isWalletLoading, unit } = useWallet(walletId);
   const {
     transactions,
@@ -320,10 +321,10 @@ export default function WalletHistory(props: Props) {
         metadata={metadata}
         expandedCellShift={1}
         uniqueField="name"
-        expandedField={row => {
+        expandedField={(row) => {
           const { confirmedAtHeight, memos } = row;
           const memoValues = memos ? Object.values(memos) : [];
-          const memoValuesDecoded = memoValues.map(memoHex => {
+          const memoValuesDecoded = memoValues.map((memoHex) => {
             try {
               const buf = new Buffer(memoHex, 'hex');
               const decodedValue = buf.toString('utf8');
@@ -367,12 +368,12 @@ export default function WalletHistory(props: Props) {
               label: <Trans>Memos</Trans>,
               value: memosDescription,
             },
-          ].filter(item => !!item);
+          ].filter((item) => !!item);
 
           return (
             <TableBase size="small">
               <TableBody>
-                {rows.map(row => (
+                {rows.map((row) => (
                   <TableRow key={row.key}>
                     <StyledTableCellSmall>
                       <Typography

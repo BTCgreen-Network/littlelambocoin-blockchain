@@ -71,31 +71,6 @@ const ContentStyled = styled.div`
   padding: 5px 20px;
 `;
 
-const CatTwoIconStyled = styled.div`
-  position: relative;
-  background: #d9d9d9;
-  width: 127px;
-  height: 103px;
-  border-radius: 50%;
-  margin: 0 auto 15px;
-  > div {
-    width: 9px;
-    height: 9px;
-    background-color: #c178aa;
-    border-radius: 50%;
-  }
-  > div:first-child {
-    position: absolute;
-    left: 62px;
-    top: 25px;
-  }
-  > div:nth-child(2) {
-    position: absolute;
-    left: 78px;
-    top: 25px;
-  }
-`;
-
 const ActionsStyled = styled.div`
   margin: 25px;
   display: inline-block;
@@ -119,12 +94,17 @@ export default function WalletsSidebar() {
     useGetLoggedInFingerprintQuery();
 
   const { data: privateKey, isLoading: isLoadingPrivateKey } =
-    useGetPrivateKeyQuery({
-      fingerprint,
-    });
+    useGetPrivateKeyQuery(
+      {
+        fingerprint,
+      },
+      {
+        skip: !fingerprint,
+      }
+    );
 
   function handleOpenBlogPost() {
-    openExternal('https://www.littlelambocoin.net/cat2blog');
+    openExternal('https://www.littlelambocoin.com/cat2blog');
   }
 
   function openTokensInfoDialog() {
@@ -154,7 +134,7 @@ export default function WalletsSidebar() {
                 size="large"
                 onClick={() =>
                   openExternal(
-                    'https://cat1.littlelambocoin.net/#publicKey=' +
+                    'https://cat1.littlelambocoin.com/#publicKey=' +
                       privateKey.pk +
                       '&fingerprint=' +
                       fingerprint
@@ -164,7 +144,11 @@ export default function WalletsSidebar() {
               >
                 <Trans>Check my snapshot balance</Trans>
               </Button>
-              <Button variant="outlined" size="large" onClick={handleOpenBlogPost}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={handleOpenBlogPost}
+              >
                 <Trans>Read the blog post for details</Trans>
               </Button>
             </Flex>
@@ -172,7 +156,7 @@ export default function WalletsSidebar() {
           <p>
             <Trans>Want to see your old balance for yourself?</Trans>
           </p>
-          <Link target="_blank" href="https://www.littlelambocoin.net/download/">
+          <Link target="_blank" href="https://www.littlelambocoin.com/download/">
             <Trans>Click here to download an older version of the wallet</Trans>
           </Link>
         </ContentStyled>
@@ -209,6 +193,7 @@ export default function WalletsSidebar() {
             onSelect={handleSelect}
             key={wallet.id}
             selected={wallet.id === Number(walletId)}
+            data-testid={`WalletsSidebar-wallet-${wallet.id}`}
           >
             <Flex flexDirection="column">
               <Typography>{primaryTitle}</Typography>

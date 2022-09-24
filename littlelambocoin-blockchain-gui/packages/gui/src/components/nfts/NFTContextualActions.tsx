@@ -4,31 +4,43 @@ import { useCopyToClipboard } from 'react-use';
 import { Trans } from '@lingui/macro';
 import type { NFTInfo } from '@littlelambocoin/api';
 import { useSetNFTStatusMutation } from '@littlelambocoin/api-react';
-import { AlertDialog, DropdownActions, useOpenDialog } from '@littlelambocoin/core';
+import {
+  AlertDialog,
+  DropdownActions,
+  MenuItem,
+  useOpenDialog,
+} from '@littlelambocoin/core';
 import type { DropdownActionsChildProps } from '@littlelambocoin/core';
 import {
   LinkSmall as LinkSmallIcon,
   NFTsSmall as NFTsSmallIcon,
   OffersSmall as OffersSmallIcon,
 } from '@littlelambocoin/icons';
-import { ListItemIcon, MenuItem, Typography } from '@mui/material';
+import { ListItemIcon, Typography } from '@mui/material';
 import {
   ArrowForward as TransferIcon,
   Cancel as CancelIcon,
   Link as LinkIcon,
   Download as DownloadIcon,
   PermIdentity as PermIdentityIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  DeleteForever as DeleteForeverIcon,
 } from '@mui/icons-material';
 import { NFTTransferDialog, NFTTransferResult } from './NFTTransferAction';
+import NFTOfferExchangeType from '../offers/NFTOfferExchangeType';
 import NFTMoveToProfileDialog from './NFTMoveToProfileDialog';
 import NFTSelection from '../../types/NFTSelection';
 import useOpenUnsafeLink from '../../hooks/useOpenUnsafeLink';
+import useHiddenNFTs from '../../hooks/useHiddenNFTs';
+import useBurnAddress from '../../hooks/useBurnAddress';
 import useViewNFTOnExplorer, {
   NFTExplorer,
 } from '../../hooks/useViewNFTOnExplorer';
 import isURL from 'validator/lib/isURL';
 import download from '../../util/download';
 import { stripHexPrefix } from '../../util/utils';
+import NFTBurnDialog from './NFTBurnDialog';
 
 /* ========================================================================== */
 /*                          Common Action Types/Enums                         */
@@ -40,11 +52,13 @@ export enum NFTContextualActionTypes {
   Transfer = 1 << 1, // 2
   MoveToProfile = 1 << 2, // 4
   CancelUnconfirmedTransaction = 1 << 3, // 8
-  CopyNFTId = 1 << 4, // 16
-  CopyURL = 1 << 5, // 32
-  ViewOnExplorer = 1 << 6, // 64
-  OpenInBrowser = 1 << 7, // 128
-  Download = 1 << 8, // 256
+  Hide = 1 << 4,
+  Burn = 1 << 5,
+  CopyNFTId = 1 << 6, // 16
+  CopyURL = 1 << 7, // 32
+  ViewOnExplorer = 1 << 8, // 64
+  OpenInBrowser = 1 << 9, // 128
+  Download = 1 << 10, // 256
 
   All = CreateOffer |
     Transfer |
@@ -54,11 +68,12 @@ export enum NFTContextualActionTypes {
     CopyURL |
     ViewOnExplorer |
     OpenInBrowser |
-    Download,
+    Download |
+    Hide |
+    Burn,
 }
 
 type NFTContextualActionProps = {
-  onClose: () => void;
   selection?: NFTSelection;
 };
 
@@ -71,7 +86,7 @@ type NFTCopyNFTIdContextualActionProps = NFTContextualActionProps;
 function NFTCopyNFTIdContextualAction(
   props: NFTCopyNFTIdContextualActionProps,
 ) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const [, copyToClipboard] = useCopyToClipboard();
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const disabled = (selection?.items.length ?? 0) !== 1;
@@ -85,13 +100,7 @@ function NFTCopyNFTIdContextualAction(
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleCopy();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleCopy} disabled={disabled} close>
       <ListItemIcon>
         <NFTsSmallIcon />
       </ListItemIcon>
@@ -111,7 +120,7 @@ type NFTCreateOfferContextualActionProps = NFTContextualActionProps;
 function NFTCreateOfferContextualAction(
   props: NFTCreateOfferContextualActionProps,
 ) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const navigate = useNavigate();
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const disabled =
@@ -125,19 +134,14 @@ function NFTCreateOfferContextualAction(
     navigate('/dashboard/offers/create-with-nft', {
       state: {
         nft: selectedNft,
+        exchangeType: NFTOfferExchangeType.NFTForToken,
         referrerPath: location.hash.split('#').slice(-1)[0],
       },
     });
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleCreateOffer();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleCreateOffer} disabled={disabled} close>
       <ListItemIcon>
         <OffersSmallIcon />
       </ListItemIcon>
@@ -155,7 +159,7 @@ function NFTCreateOfferContextualAction(
 type NFTTransferContextualActionProps = NFTContextualActionProps;
 
 function NFTTransferContextualAction(props: NFTTransferContextualActionProps) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const openDialog = useOpenDialog();
 
   const selectedNft: NFTInfo | undefined = selection?.items[0];
@@ -191,13 +195,7 @@ function NFTTransferContextualAction(props: NFTTransferContextualActionProps) {
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleTransferNFT();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleTransferNFT} disabled={disabled} close>
       <ListItemIcon>
         <TransferIcon />
       </ListItemIcon>
@@ -217,7 +215,7 @@ type NFTMoveToProfileContextualActionProps = NFTContextualActionProps;
 function NFTMoveToProfileContextualAction(
   props: NFTMoveToProfileContextualActionProps,
 ) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const openDialog = useOpenDialog();
 
   const selectedNft: NFTInfo | undefined = selection?.items[0];
@@ -255,13 +253,7 @@ function NFTMoveToProfileContextualAction(
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleTransferNFT();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleTransferNFT} disabled={disabled} close>
       <ListItemIcon>
         <PermIdentityIcon />
       </ListItemIcon>
@@ -282,7 +274,7 @@ type NFTCancelUnconfirmedTransactionContextualActionProps =
 function NFTCancelUnconfirmedTransactionContextualAction(
   props: NFTCancelUnconfirmedTransactionContextualActionProps,
 ) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const [setNFTStatus] = useSetNFTStatusMutation(); // Not really cancelling, just updating the status
   const openDialog = useOpenDialog();
 
@@ -321,12 +313,10 @@ function NFTCancelUnconfirmedTransactionContextualAction(
 
   return (
     <MenuItem
-      onClick={() => {
-        onClose();
-        handleCancelUnconfirmedTransaction();
-      }}
+      onClick={handleCancelUnconfirmedTransaction}
       disabled={disabled}
-      divider={true}
+      divider
+      close
     >
       <ListItemIcon>
         <CancelIcon />
@@ -347,7 +337,7 @@ type NFTOpenInBrowserContextualActionProps = NFTContextualActionProps;
 function NFTOpenInBrowserContextualAction(
   props: NFTOpenInBrowserContextualActionProps,
 ) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const openUnsafeLink = useOpenUnsafeLink();
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const haveDataUrl = selectedNft?.dataUris?.length && selectedNft?.dataUris[0];
@@ -370,13 +360,7 @@ function NFTOpenInBrowserContextualAction(
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleOpenInBrowser();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleOpenInBrowser} disabled={disabled} close>
       <ListItemIcon>
         <LinkSmallIcon />
       </ListItemIcon>
@@ -394,7 +378,7 @@ function NFTOpenInBrowserContextualAction(
 type NFTCopyURLContextualActionProps = NFTContextualActionProps;
 
 function NFTCopyURLContextualAction(props: NFTCopyURLContextualActionProps) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const [, copyToClipboard] = useCopyToClipboard();
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const haveDataUrl = selectedNft?.dataUris?.length && selectedNft?.dataUris[0];
@@ -410,14 +394,7 @@ function NFTCopyURLContextualAction(props: NFTCopyURLContextualActionProps) {
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleCopy();
-      }}
-      disabled={disabled}
-      divider={true}
-    >
+    <MenuItem onClick={handleCopy} disabled={disabled} divider close>
       <ListItemIcon>
         <LinkIcon />
       </ListItemIcon>
@@ -440,7 +417,7 @@ type NFTViewOnExplorerContextualActionProps = NFTContextualActionProps & {
 function NFTViewOnExplorerContextualAction(
   props: NFTViewOnExplorerContextualActionProps,
 ) {
-  const { onClose, selection, title, explorer } = props;
+  const { selection, title, explorer } = props;
   const viewOnExplorer = useViewNFTOnExplorer();
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const disabled = !selectedNft;
@@ -452,13 +429,7 @@ function NFTViewOnExplorerContextualAction(
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleView();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleView} disabled={disabled} close>
       <ListItemIcon>
         <LinkSmallIcon />
       </ListItemIcon>
@@ -476,7 +447,7 @@ function NFTViewOnExplorerContextualAction(
 type NFTDownloadContextualActionProps = NFTContextualActionProps;
 
 function NFTDownloadContextualAction(props: NFTDownloadContextualActionProps) {
-  const { onClose, selection } = props;
+  const { selection } = props;
   const selectedNft: NFTInfo | undefined = selection?.items[0];
   const disabled = !selectedNft;
   const dataUrl = selectedNft?.dataUris?.[0];
@@ -497,13 +468,7 @@ function NFTDownloadContextualAction(props: NFTDownloadContextualActionProps) {
   }
 
   return (
-    <MenuItem
-      onClick={() => {
-        onClose();
-        handleDownload();
-      }}
-      disabled={disabled}
-    >
+    <MenuItem onClick={handleDownload} disabled={disabled} close>
       <ListItemIcon>
         <DownloadIcon />
       </ListItemIcon>
@@ -514,6 +479,85 @@ function NFTDownloadContextualAction(props: NFTDownloadContextualActionProps) {
   );
 }
 
+/* ========================================================================== */
+/*                          Hide NFT                                     */
+/* ========================================================================== */
+
+type NFTHideContextualActionProps = NFTContextualActionProps;
+
+function NFTHideContextualAction(props: NFTHideContextualActionProps) {
+  const { selection } = props;
+  const selectedNft: NFTInfo | undefined = selection?.items[0];
+  const disabled = !selectedNft;
+  const dataUrl = selectedNft?.dataUris?.[0];
+  const [isNFTHidden, setIsNFTHidden] = useHiddenNFTs();
+
+  const isHidden = isNFTHidden(selectedNft);
+
+  function handleToggle() {
+    if (!selectedNft) {
+      return;
+    }
+
+    setIsNFTHidden(selectedNft, !isHidden);
+  }
+
+  if (!dataUrl) {
+    return null;
+  }
+
+  return (
+    <MenuItem onClick={handleToggle} disabled={disabled} close>
+      <ListItemIcon>
+        {isHidden ? <VisibilityIcon /> : <VisibilityOffIcon />}
+      </ListItemIcon>
+      <Typography variant="inherit" noWrap>
+        {isHidden ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
+      </Typography>
+    </MenuItem>
+  );
+}
+
+/* ========================================================================== */
+/*                          Burn NFT                                     */
+/* ========================================================================== */
+
+type NFTBurnContextualActionProps = NFTContextualActionProps;
+
+function NFTBurnContextualAction(props: NFTBurnContextualActionProps) {
+  const { selection } = props;
+
+  const openDialog = useOpenDialog();
+  const burnAddress = useBurnAddress();
+
+  const selectedNft: NFTInfo | undefined = selection?.items[0];
+  const disabled =
+    !selectedNft || !burnAddress || selectedNft?.pendingTransaction;
+  const dataUrl = selectedNft?.dataUris?.[0];
+
+  async function handleBurn() {
+    if (!selectedNft) {
+      return;
+    }
+
+    await openDialog(<NFTBurnDialog nft={selectedNft} />);
+  }
+
+  if (!dataUrl) {
+    return null;
+  }
+
+  return (
+    <MenuItem onClick={handleBurn} disabled={disabled} divider close>
+      <ListItemIcon>
+        <DeleteForeverIcon />
+      </ListItemIcon>
+      <Typography variant="inherit" noWrap>
+        <Trans>Burn</Trans>
+      </Typography>
+    </MenuItem>
+  );
+}
 /* ========================================================================== */
 /*                             Contextual Actions                             */
 /* ========================================================================== */
@@ -556,6 +600,16 @@ export default function NFTContextualActions(props: NFTContextualActionsProps) {
         action: NFTCancelUnconfirmedTransactionContextualAction,
         props: {},
       },
+
+      [NFTContextualActionTypes.Hide]: {
+        action: NFTHideContextualAction,
+        props: {},
+      },
+      [NFTContextualActionTypes.Burn]: {
+        action: NFTBurnContextualAction,
+        props: {},
+      },
+
       [NFTContextualActionTypes.ViewOnExplorer]: [
         {
           action: NFTViewOnExplorerContextualAction,
@@ -604,13 +658,13 @@ export default function NFTContextualActions(props: NFTContextualActionsProps) {
 
   return (
     <DropdownActions label={label} variant="outlined" {...rest}>
-      {({ onClose }: DropdownActionsChildProps) => (
-        <>
-          {actions.map(({ action: Action, props: actionProps }) => (
-            <Action onClose={onClose} selection={selection} {...actionProps} />
-          ))}
-        </>
-      )}
+      {actions.map(({ action: Action, props: actionProps }, index) => (
+        <Action
+          key={`${index}-${actionProps?.title}`}
+          selection={selection}
+          {...actionProps}
+        />
+      ))}
     </DropdownActions>
   );
 }

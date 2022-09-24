@@ -5,10 +5,18 @@ from typing import Awaitable, Callable, Dict, List, Optional, Set, Tuple, Union
 from chiabip158 import PyBIP158
 
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_base_timelord_fee, calculate_pool_reward
+from littlelambocoin.consensus.block_rewards import (
+    calculate_base_farmer_reward,
+    calculate_pool_reward,
+    calculate_timelord_reward,
+)
 from littlelambocoin.consensus.block_root_validation import validate_block_merkle_roots
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
-from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
+from littlelambocoin.consensus.coinbase import (
+    create_farmer_coin,
+    create_pool_coin,
+    create_timelord_coin,
+)
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.cost_calculator import NPCResult
 from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
@@ -117,7 +125,7 @@ async def validate_block_body(
         timelord_coin = create_timelord_coin(
             prev_transaction_block_height,
             prev_transaction_block.timelord_puzzle_hash,
-            uint64(calculate_base_timelord_fee(prev_transaction_block.height)),
+            calculate_timelord_reward(prev_transaction_block.height),
             constants.GENESIS_CHALLENGE,
         )
         # Adds the previous block
@@ -149,7 +157,7 @@ async def validate_block_body(
                     create_timelord_coin(
                         curr_b.height,
                         curr_b.timelord_puzzle_hash,
-                        calculate_base_timelord_fee(curr_b.height),
+                        calculate_timelord_reward(curr_b.height),
                         constants.GENESIS_CHALLENGE,
                     )
                 )
@@ -226,10 +234,10 @@ async def validate_block_body(
         assert npc_result.conds is not None
 
         for spend in npc_result.conds.spends:
-            removals.append(spend.coin_id)
-            removals_puzzle_dic[spend.coin_id] = spend.puzzle_hash
+            removals.append(bytes32(spend.coin_id))
+            removals_puzzle_dic[bytes32(spend.coin_id)] = bytes32(spend.puzzle_hash)
             for puzzle_hash, amount, _ in spend.create_coin:
-                c = Coin(spend.coin_id, puzzle_hash, uint64(amount))
+                c = Coin(bytes32(spend.coin_id), bytes32(puzzle_hash), uint64(amount))
                 additions.append((c, c.name()))
     else:
         assert npc_result is None
@@ -331,7 +339,6 @@ async def validate_block_body(
                     min(constants.MAX_BLOCK_COST_CLVM, curr.transactions_info.cost),
                     cost_per_byte=constants.COST_PER_BYTE,
                     mempool_mode=False,
-                    height=curr.height,
                 )
                 removals_in_curr, additions_in_curr = tx_removals_and_additions(curr_npc_result.conds)
             else:
@@ -446,7 +453,7 @@ async def validate_block_body(
     assert_fee_sum: uint64 = uint64(0)
     if npc_result:
         assert npc_result.conds is not None
-        assert_fee_sum = npc_result.conds.reserve_fee
+        assert_fee_sum = uint64(npc_result.conds.reserve_fee)
 
     # 17. Check that the assert fee sum <= fees, and that each reserved fee is non-negative
     if fees < assert_fee_sum:
@@ -492,7 +499,7 @@ async def validate_block_body(
 
     # The pairing cache is not useful while syncing as each pairing is seen
     # only once, so the extra effort of populating it is not justified.
-    # However, we force caching of pairings just for unfinished blocks
+    # However, we force llching of pairings just for unfinished blocks
     # as the cache is likely to be useful when validating the corresponding
     # finished blocks later.
     if validate_signature:

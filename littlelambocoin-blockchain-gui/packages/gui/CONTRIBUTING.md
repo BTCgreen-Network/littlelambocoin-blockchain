@@ -6,10 +6,10 @@ We are happy that you are taking a look at the code for Littlelambocoin, a proof
 A lot of fascinating new cryptography and blockchain concepts are used and implemented here.
 This repo includes the code for the Littlelambocoin GUI in electron/react and TypeScript.
 
-It is an input to the [littlelambocoin-blockchain](https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain) repository which also includes a verifiable delay function implementation that it imports from the [littlelambocoinvdf repo](https://github.com/Littlelambocoin-Network/littlelambocoinvdf) (in c/c++), and a proof of space implementation that it imports from the [littlelambocoinpos repo](https://github.com/Littlelambocoin-Network/littlelambocoinpos). BLS signatures are imported from the [bls-signatures repo](https://github.com/Littlelambocoin-Network/bls-signatures) as blspy. There is an additional dependency on the [littlelambocoinbip158 repo](https://github.com/Littlelambocoin-Network/littlelambocoinbip158).
+It is an input to the [littlelambocoin-blockchain](https://github.com/BTCgreen-Network/littlelambocoin-blockchain) repository which also includes a verifiable delay function implementation that it imports from the [littlelambocoinvdf repo](https://github.com/BTCgreen-Network/littlelambocoinvdf) (in c/c++), and a proof of space implementation that it imports from the [chiapos repo](https://github.com/BTCgreen-Network/chiapos). BLS signatures are imported from the [bls-signatures repo](https://github.com/BTCgreen-Network/bls-signatures) as blspy. There is an additional dependency on the [littlelambocoinbip158 repo](https://github.com/BTCgreen-Network/littlelambocoinbip158).
 For major platforms, binary and source wheels are shipped to PyPI from each dependent repo and then littlelambocoin-blockchain can pip install those from PyPI or they can be prepackaged as is done for the Windows and MacOS installer. On unsupported platforms, pip will fall back to the source distributions to be compiled locally.
 
-If you want to learn more about this project, read the [wiki](https://github.com/Littlelambocoin-Network/littlelambocoin-blockchain/wiki), or check out the [green paper](https://www.littlelambocoin.net/assets/LittlelambocoinGreenPaper.pdf).
+If you want to learn more about this project, read the [wiki](https://github.com/BTCgreen-Network/littlelambocoin-blockchain/wiki), or check out the [green paper](https://www.littlelambocoin.com/assets/LittlelambocoinGreenPaper.pdf).
 
 ## Contributions
 

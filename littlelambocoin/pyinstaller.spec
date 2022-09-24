@@ -19,7 +19,7 @@ def solve_name_collision_problem(analysis):
     There is a collision between the `littlelambocoin` file name (which is the executable)
     and the `littlelambocoin` directory, which contains non-code resources like `english.txt`.
     We move all the resources in the zipped area so there is no
-    need to create the `chia` directory, since the names collide.
+    need to create the `littlelambocoin` directory, since the names collide.
 
     Fetching data now requires going into a zip file, so it will be slower.
     It's best if files that are used frequently are cached.
@@ -55,6 +55,7 @@ version_data = copy_metadata(get_distribution("littlelambocoin-blockchain"))[0]
 block_cipher = None
 
 SERVERS = [
+    "data_layer",
     "wallet",
     "full_node",
     "harvester",
@@ -63,7 +64,7 @@ SERVERS = [
     "timelord",
 ]
 
-# TODO: collapse all these entry points into one `littlelambocoin_exec` entrypoint that accepts the server as a parameter
+# TODO: collapse all these entry points into one `chia_exec` entrypoint that accepts the server as a parameter
 
 entry_points = ["littlelambocoin.cmds.littlelambocoin"] + [f"littlelambocoin.server.start_{s}" for s in SERVERS]
 
@@ -72,22 +73,12 @@ hiddenimports.extend(entry_points)
 hiddenimports.extend(keyring_imports)
 
 binaries = [
-    (
-        f"{ROOT}/madmax/littlelambocoin_plot",
-        "madmax"
-    ),
-    (
-        f"{ROOT}/madmax/littlelambocoin_plot_k34",
-        "madmax"
-    )
+
 ]
 
 if not THIS_IS_MAC:
     binaries.extend([
-        (
-            f"{ROOT}/bladebit/bladebit",
-            "bladebit"
-        )
+
     ])
 
 if THIS_IS_WINDOWS:
@@ -98,7 +89,7 @@ if THIS_IS_WINDOWS:
     entry_points.extend(["aiohttp", "littlelambocoin.util.bip39"])
 
 if THIS_IS_WINDOWS:
-    littlelambocoin_mod = importlib.import_module("littlelambocoin")
+    chia_mod = importlib.import_module("littlelambocoin")
     dll_paths = pathlib.Path(sysconfig.get_path("platlib")) / "*.dll"
 
     binaries = [
@@ -113,18 +104,6 @@ if THIS_IS_WINDOWS:
         (
             "C:\\Windows\\System32\\vcruntime140_1.dll",
             ".",
-        ),
-        (
-            f"{ROOT}\\madmax\\littlelambocoin_plot.exe",
-            "madmax"
-        ),
-        (
-            f"{ROOT}\\madmax\\littlelambocoin_plot_k34.exe",
-            "madmax"
-        ),
-        (
-            f"{ROOT}\\bladebit\\bladebit.exe",
-            "bladebit"
         ),
     ]
 
@@ -192,6 +171,7 @@ for server in SERVERS:
 
 add_binary("start_crawler", f"{ROOT}/littlelambocoin/seeder/start_crawler.py", COLLECT_ARGS)
 add_binary("start_seeder", f"{ROOT}/littlelambocoin/seeder/dns_server.py", COLLECT_ARGS)
+add_binary("start_data_layer_http", f"{ROOT}/littlelambocoin/data_layer/data_layer_server.py", COLLECT_ARGS)
 
 COLLECT_KWARGS = dict(
     strip=False,

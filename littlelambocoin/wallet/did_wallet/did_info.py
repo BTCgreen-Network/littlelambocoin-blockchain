@@ -8,8 +8,6 @@ from littlelambocoin.wallet.lineage_proof import LineageProof
 from littlelambocoin.types.blockchain_format.program import Program
 from littlelambocoin.types.blockchain_format.coin import Coin
 
-DID_HRP = "did:littlelambocoin:"
-
 
 @streamable
 @dataclass(frozen=True)

@@ -9,11 +9,11 @@ from littlelambocoin.wallet.cat_wallet.lineage_store import CATLineageStore
 from littlelambocoin.wallet.lineage_proof import LineageProof
 from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
 from littlelambocoin.wallet.cat_wallet.cat_utils import (
-    CAT_MOD,
     construct_cat_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
     SpendableCAT,
 )
+from littlelambocoin.wallet.puzzles.cat_loader import CAT_MOD
 from littlelambocoin.wallet.cat_wallet.cat_info import CATInfo
 from littlelambocoin.wallet.transaction_record import TransactionRecord
 
@@ -78,7 +78,7 @@ class GenesisById(LimitationsProgram):
         wallet.lineage_store = await CATLineageStore.create(
             wallet.wallet_state_manager.db_wrapper, tail.get_tree_hash().hex()
         )
-        await wallet.add_lineage(origin_id, LineageProof(), False)
+        await wallet.add_lineage(origin_id, LineageProof())
 
         minted_cat_puzzle_hash: bytes32 = construct_cat_puzzle(CAT_MOD, tail.get_tree_hash(), cat_inner).get_tree_hash()
 
@@ -108,10 +108,7 @@ class GenesisById(LimitationsProgram):
         signed_eve_spend = await wallet.sign(eve_spend)
 
         if wallet.cat_info.my_tail is None:
-            await wallet.save_info(
-                CATInfo(tail.get_tree_hash(), tail),
-                False,
-            )
+            await wallet.save_info(CATInfo(tail.get_tree_hash(), tail))
 
         return tx_record, SpendBundle.aggregate([tx_record.spend_bundle, signed_eve_spend])
 
