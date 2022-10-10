@@ -42,7 +42,6 @@ class ConsensusConstants:
     AGG_SIG_ME_ADDITIONAL_DATA: bytes
     GENESIS_PRE_FARM_POOL_PUZZLE_HASH: bytes32  # The block at height must pay out to this pool puzzle hash
     GENESIS_PRE_FARM_FARMER_PUZZLE_HASH: bytes32  # The block at height must pay out to this farmer puzzle hash
-    TIMELORD_PUZZLE_HASH: bytes32 # The block at height must pay out to this timelord puzzle hash
     MAX_VDF_WITNESS_SIZE: int  # The maximum number of classgroup elements within an n-wesolowski proof
     # Size of mempool = 10x the size of block
     MEMPOOL_BLOCK_BUFFER: int
@@ -60,6 +59,7 @@ class ConsensusConstants:
     MAX_GENERATOR_SIZE: uint32
     MAX_GENERATOR_REF_LIST_SIZE: uint32
     POOL_SUB_SLOT_ITERS: uint64
+    TIMELORD_PUZZLE_HASH: bytes32
 
     def replace(self, **changes: object) -> "ConsensusConstants":
         return dataclasses.replace(self, **changes)

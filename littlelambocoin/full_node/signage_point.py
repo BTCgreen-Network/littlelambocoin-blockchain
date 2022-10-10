@@ -13,4 +13,4 @@ class SignagePoint(Streamable):
     cc_proof: Optional[VDFProof]
     rc_vdf: Optional[VDFInfo]
     rc_proof: Optional[VDFProof]
-    timelord_puzzle_hash: Optional[bytes32]
+    timelord_reward_puzzle_hash: Optional[bytes32]

@@ -1722,8 +1722,8 @@ def create_test_foliage(
     blocks: BlockchainInterface,
     total_iters_sp: uint128,
     timestamp: uint64,
+    timelord_reward_puzzle_hash: bytes32,
     farmer_reward_puzzlehash: bytes32,
-    timelord_reward_puzzlehash: bytes32,
     pool_target: PoolTarget,
     get_plot_signature: Callable[[bytes32, G1Element], G2Element],
     get_pool_signature: Callable[[PoolTarget, Optional[G1Element]], Optional[G2Element]],
@@ -1744,7 +1744,7 @@ def create_test_foliage(
         total_iters_sp: total iters at the signage point
         timestamp: timestamp to put into the foliage block
         farmer_reward_puzzlehash: where to pay out farming reward
-        timelord_reward_puzzlehash: where to pay out timelord reward
+        timelord_reward_puzzle_hash: where to pay out timelord reward
         pool_target: where to pay out pool reward
         get_plot_signature: retrieve the signature corresponding to the plot public key
         get_pool_signature: retrieve the signature corresponding to the pool public key
@@ -1784,7 +1784,7 @@ def create_test_foliage(
         pool_target,
         pool_target_signature,
         farmer_reward_puzzlehash,
-        timelord_reward_puzzlehash,
+        timelord_reward_puzzle_hash,
         extension_data,
     )
 

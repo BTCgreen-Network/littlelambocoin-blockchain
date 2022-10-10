@@ -1245,7 +1245,6 @@ class FullNode:
             f"{self.constants.NUM_SPS_SUB_SLOT}: "
             f"CC: {request.challenge_chain_vdf.output.get_hash()} "
             f"RC: {request.reward_chain_vdf.output.get_hash()} "
-            f"Timelord reward: {bytes(request.timelord_reward_puzzle_hash).hex()} "
         )
         self.signage_point_times[request.index_from_challenge] = time.time()
         sub_slot_tuple = self.full_node_store.get_sub_slot(request.challenge_chain_vdf.challenge)
@@ -1369,16 +1368,7 @@ class FullNode:
                     and sp.timelord_reward_puzzle_hash is not None
                 )
                 await self.signage_point_post_processing(
-                    RespondSignagePoint(
-                        index,
-                        sp.cc_vdf,
-                        sp.cc_proof,
-                        sp.rc_vdf,
-                        sp.rc_proof,
-                        sp.timelord_puzzle_hash,
-                    ),
-                    peer,
-                    sub_slots[1],
+                    RespondSignagePoint(index, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof, sp.timelord_reward_puzzle_hash), peer, sub_slots[1]
                 )
 
         if sub_slots[1] is None:
@@ -1394,7 +1384,7 @@ class FullNode:
                 block.challenge_chain_sp_proof,
                 block.reward_chain_block.reward_chain_sp_vdf,
                 block.reward_chain_sp_proof,
-                block.foliage.foliage_block_data.timelord_reward_puzzle_hash,
+                block.foliage.foliage_block_data.timelord_reward_puzzle_hash
             ),
             skip_vdf_validation=True,
         )
@@ -2029,6 +2019,8 @@ class FullNode:
                     False,
                 )
 
+            timelord_reward_puzzle_hash: bytes32 = self.constants.TIMELORD_PUZZLE_HASH
+
             peak = self.blockchain.get_peak()
             if peak is not None and peak.height > 2:
                 next_sub_slot_iters = self.blockchain.get_next_slot_iters(peak.header_hash, True)
@@ -2062,7 +2054,7 @@ class FullNode:
                     request.end_of_slot_bundle.challenge_chain.get_hash(),
                     uint8(0),
                     request.end_of_slot_bundle.reward_chain.end_of_slot_vdf.challenge,
-                    timelord_reward_puzzle_hash,
+                    timelord_reward_puzzle_hash
                 )
                 msg = make_msg(ProtocolMessageTypes.new_signage_point_or_end_of_sub_slot, broadcast)
                 await self.server.send_to_all_except([msg], NodeType.FULL_NODE, peer.peer_node_id)
@@ -2078,7 +2070,7 @@ class FullNode:
                     next_difficulty,
                     next_sub_slot_iters,
                     uint8(0),
-                    timelord_reward_puzzle_hash,
+                    timelord_reward_puzzle_hash
                 )
                 msg = make_msg(ProtocolMessageTypes.new_signage_point, broadcast_farmer)
                 await self.server.send_to_all([msg], NodeType.FARMER)

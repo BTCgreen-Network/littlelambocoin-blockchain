@@ -9,6 +9,7 @@ import time
 import traceback
 from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
+from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 from chiavdf import create_discriminant, prove
 
@@ -37,7 +38,6 @@ from littlelambocoin.util.config import process_config_start_method
 from littlelambocoin.util.ints import uint8, uint16, uint32, uint64, uint128
 from littlelambocoin.util.setproctitle import getproctitle, setproctitle
 from littlelambocoin.util.streamable import Streamable, streamable
-from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 log = logging.getLogger(__name__)
 
@@ -462,14 +462,18 @@ class Timelord:
                     # This proof is on an outdated challenge, so don't use it
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
-                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
+                if "llc_target_address" not in self.config:
+                    log.warning("llc_target_address missing in the config, rewards will be lost")
+                    timelord_reward_puzzle_hash: bytes32 = self.constants.TIMELORD_PUZZLE_HASH
+                else:
+                    timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
                     dataclasses.replace(cc_info, number_of_iterations=iters_from_sub_slot_start),
                     cc_proof,
                     rc_info,
                     rc_proof,
-                    timelord_reward_puzzle_hash,
+                    timelord_reward_puzzle_hash
                 )
                 if self.server is not None:
                     msg = make_msg(ProtocolMessageTypes.new_signage_point_vdf, response)

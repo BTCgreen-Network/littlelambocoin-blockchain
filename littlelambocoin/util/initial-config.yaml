@@ -311,6 +311,9 @@ timelord:
     public_crt:  "config/ssl/timelord/public_timelord.crt"
     public_key:  "config/ssl/timelord/public_timelord.key"
 
+  # Replace this with a real receive address
+  # llc_target_address: tllc102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
+
 full_node:
   # The full node server (if run) will run on this port
   port: 4575
