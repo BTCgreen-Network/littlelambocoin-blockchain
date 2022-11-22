@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import asyncio
 import cProfile
 import logging
@@ -15,12 +17,12 @@ import aiosqlite
 import click
 import zstd
 
-import littlelambocoin.server.ws_connection as ws
 from littlelambocoin.cmds.init_funcs import littlelambocoin_init
 from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
 from littlelambocoin.full_node.full_node import FullNode
 from littlelambocoin.protocols import full_node_protocol
 from littlelambocoin.server.outbound_message import Message, NodeType
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.simulator.block_tools import make_unfinished_block
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.full_block import FullBlock
@@ -69,7 +71,9 @@ class FakeServer:
     async def get_peer_info(self) -> Optional[PeerInfo]:
         return None
 
-    def get_full_node_outgoing_connections(self) -> List[ws.WSLittlelambocoinConnection]:
+    def get_connections(
+        self, node_type: Optional[NodeType] = None, *, outbound: Optional[bool] = False
+    ) -> List[WSLittlelambocoinConnection]:
         return []
 
     def is_duplicate_or_self_connection(self, target_node: PeerInfo) -> bool:
@@ -155,7 +159,7 @@ async def run_sync_test(
             else:
                 height = 0
 
-            peer: ws.WSLittlelambocoinConnection = FakePeer()  # type: ignore[assignment]
+            peer: WSLittlelambocoinConnection = FakePeer()  # type: ignore[assignment]
 
             print()
             counter = 0
@@ -353,7 +357,7 @@ async def run_sync_checkpoint(
         full_node.set_server(FakeServer())  # type: ignore[arg-type]
         await full_node._start()
 
-        peer: ws.WSLittlelambocoinConnection = FakePeer()  # type: ignore[assignment]
+        peer: WSLittlelambocoinConnection = FakePeer()  # type: ignore[assignment]
 
         print()
         height = 0

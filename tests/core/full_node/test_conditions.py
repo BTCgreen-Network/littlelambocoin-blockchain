@@ -24,7 +24,7 @@ from littlelambocoin.types.spend_bundle import SpendBundle
 from littlelambocoin.util.errors import Err
 from littlelambocoin.util.ints import uint32
 from littlelambocoin.simulator.block_tools import BlockTools
-from tests.util.keyring import TempKeyring
+from littlelambocoin.simulator.keyring import TempKeyring
 
 from .ram_db import create_ram_blockchain
 from ...blockchain.blockchain_test_utils import _validate_and_add_block

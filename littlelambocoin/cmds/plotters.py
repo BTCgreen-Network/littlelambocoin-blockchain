@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import click
+
 from littlelambocoin.plotters.plotters import call_plotters
 
 

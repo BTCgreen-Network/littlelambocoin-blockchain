@@ -1,21 +1,23 @@
-import click
-import colorama
+from __future__ import annotations
+
 import os
 import sys
 import time
-
-from littlelambocoin.daemon.client import acquire_connection_to_daemon
-from littlelambocoin.util.config import load_config
-from littlelambocoin.util.errors import KeychainMaxUnlockAttempts
-from littlelambocoin.util.keychain import Keychain, supports_os_passphrase_storage
-from littlelambocoin.util.keyring_wrapper import KeyringWrapper, DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE
-from littlelambocoin.util.misc import prompt_yes_no
-from littlelambocoin.util.ws_message import WsRpcMessage
 from getpass import getpass
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
+import click
+import colorama
+
+from littlelambocoin.daemon.client import acquire_connection_to_daemon
+from littlelambocoin.util.config import load_config
+from littlelambocoin.util.errors import KeychainMaxUnlockAttempts
+from littlelambocoin.util.keychain import Keychain, supports_os_passphrase_storage
+from littlelambocoin.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE, KeyringWrapper
+from littlelambocoin.util.misc import prompt_yes_no
+from littlelambocoin.util.ws_message import WsRpcMessage
 
 DEFAULT_PASSPHRASE_PROMPT = (
     colorama.Fore.YELLOW + colorama.Style.BRIGHT + "(Unlock Keyring)" + colorama.Style.RESET_ALL + " Passphrase: "

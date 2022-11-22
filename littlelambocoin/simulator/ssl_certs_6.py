@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, Tuple
 
 SSL_TEST_PRIVATE_CA_CRT = b"""-----BEGIN CERTIFICATE-----
@@ -46,7 +48,7 @@ VKHCjaMymCdKmbEeHMff4DgxeZBaiKrn+JH52zJ1EVr1tmsi+kKAObiBkhbjDr5X
 pm1nIc4+5JDnK+FW9264Ni8gpOqbuiR8j5jSyKsSJr6gcLdqrintwQa/MEkoahwJ
 qE8JAKGRAoGBALTTp3skePMl/wCpdzvOqNMvJzoDV9xX1ttPCKF0pNOKMmFdSRib
 8JN6dpRuQ5CugLYqNQgMExxgpytduGVRsALp/hKNo7MYCmLRsRAcSIe6YpgvnVYw
-y+ufj7QhG3hCPBMLLC2YHLTAAAkzdiookyhTmtfWtSZJuZlUYgLsMQ9g
+y+ufj7QhG3hCPBMCAC2YHLTAAAkzdiookyhTmtfWtSZJuZlUYgLsMQ9g
 -----END RSA PRIVATE KEY-----
 """
 

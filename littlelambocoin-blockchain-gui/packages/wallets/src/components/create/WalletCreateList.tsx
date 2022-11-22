@@ -1,13 +1,10 @@
+import { Flex } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import { Share as ShareIcon, Speed as SpeedIcon, HomeWork as HomeWorkIcon } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { Trans } from '@lingui/macro';
-import { Grid, Typography } from '@mui/material';
-import {
-  Share as ShareIcon,
-  Speed as SpeedIcon,
-  HomeWork as HomeWorkIcon,
-} from '@mui/icons-material';
-import { Flex } from '@littlelambocoin/core';
+
 import WalletCreateCard from './WalletCreateCard';
 
 export default function WalletCreateList() {

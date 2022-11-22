@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from littlelambocoin.protocols import full_node_protocol

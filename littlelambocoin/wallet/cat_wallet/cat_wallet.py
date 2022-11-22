@@ -97,7 +97,7 @@ class CATWallet:
             raise ValueError("Not enough balance")
         self.wallet_state_manager = wallet_state_manager
 
-        # We use 00 bytes because it's not optional. We must check this is overidden during issuance.
+        # We use 00 bytes because it's not optional. We must check this is overridden during issuance.
         empty_bytes = bytes32(32 * b"\0")
         self.cat_info = CATInfo(empty_bytes, None)
         info_as_string = bytes(self.cat_info).hex()
@@ -187,9 +187,10 @@ class CATWallet:
 
         limitations_program_hash_hex = bytes32.from_hexstr(limitations_program_hash_hex).hex()  # Normalize the format
 
-        for id, wallet in wallet_state_manager.wallets.items():
-            if wallet.type() == CATWallet.type():
-                if wallet.get_asset_id() == limitations_program_hash_hex:  # type: ignore
+        for id, w in wallet_state_manager.wallets.items():
+            if w.type() == CATWallet.type():
+                assert isinstance(w, CATWallet)
+                if w.get_asset_id() == limitations_program_hash_hex:
                     self.log.warning("Not creating wallet for already existing CAT wallet")
                     raise ValueError("Wallet already exists")
 
@@ -259,26 +260,26 @@ class CATWallet:
     def id(self) -> uint32:
         return self.wallet_info.id
 
-    async def get_confirmed_balance(self, record_list: Optional[Set[WalletCoinRecord]] = None) -> uint64:
+    async def get_confirmed_balance(self, record_list: Optional[Set[WalletCoinRecord]] = None) -> uint128:
         if record_list is None:
             record_list = await self.wallet_state_manager.coin_store.get_unspent_coins_for_wallet(self.id())
 
-        amount: uint64 = uint64(0)
+        amount: uint128 = uint128(0)
         for record in record_list:
             lineage = await self.get_lineage_proof_for_coin(record.coin)
             if lineage is not None:
-                amount = uint64(amount + record.coin.amount)
+                amount = uint128(amount + record.coin.amount)
 
         self.log.info(f"Confirmed balance for cat wallet {self.id()} is {amount}")
-        return uint64(amount)
+        return uint128(amount)
 
     async def get_unconfirmed_balance(self, unspent_records: Optional[Set[WalletCoinRecord]] = None) -> uint128:
         return await self.wallet_state_manager.get_unconfirmed_balance(self.id(), unspent_records)
 
-    async def get_max_send_amount(self, records: Optional[Set[WalletCoinRecord]] = None) -> int:
+    async def get_max_send_amount(self, records: Optional[Set[WalletCoinRecord]] = None) -> uint128:
         spendable: List[WalletCoinRecord] = list(await self.get_cat_spendable_coins())
         if len(spendable) == 0:
-            return 0
+            return uint128(0)
         spendable.sort(reverse=True, key=lambda record: record.coin.amount)
         if self.cost_of_single_tx is None:
             coin = spendable[0].coin
@@ -309,7 +310,7 @@ class CATWallet:
             if current_cost + self.cost_of_single_tx > max_cost:
                 break
 
-        return total_amount
+        return uint128(total_amount)
 
     async def get_name(self) -> str:
         return self.wallet_info.name
@@ -387,6 +388,9 @@ class CATWallet:
     async def get_new_puzzlehash(self) -> bytes32:
         return await self.standard_wallet.get_new_puzzlehash()
 
+    def require_derivation_paths(self) -> bool:
+        return True
+
     def puzzle_for_pk(self, pubkey: G1Element) -> Program:
         inner_puzzle = self.standard_wallet.puzzle_for_pk(pubkey)
         cat_puzzle: Program = construct_cat_puzzle(CAT_MOD, self.cat_info.limitations_program_hash, inner_puzzle)
@@ -449,6 +453,7 @@ class CATWallet:
         exclude: Optional[List[Coin]] = None,
         min_coin_amount: Optional[uint64] = None,
         max_coin_amount: Optional[uint64] = None,
+        excluded_coin_amounts: Optional[List[uint64]] = None,
     ) -> Set[Coin]:
         """
         Returns a set of coins that can be used for generating a new transaction.
@@ -473,6 +478,7 @@ class CATWallet:
             uint128(amount),
             exclude,
             min_coin_amount,
+            excluded_coin_amounts,
         )
         assert sum(c.amount for c in coins) >= amount
         return coins
@@ -536,6 +542,8 @@ class CATWallet:
         amount_to_claim: uint64,
         announcement_to_assert: Optional[Announcement] = None,
         min_coin_amount: Optional[uint64] = None,
+        max_coin_amount: Optional[uint64] = None,
+        exclude_coin_amounts: Optional[List[uint64]] = None,
     ) -> Tuple[TransactionRecord, Optional[Announcement]]:
         """
         This function creates a non-CAT transaction to pay fees, contribute funds for issuance, and absorb melt value.
@@ -544,7 +552,12 @@ class CATWallet:
         """
         announcement = None
         if fee > amount_to_claim:
-            littlelambocoin_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
+            littlelambocoin_coins = await self.standard_wallet.select_coins(
+                fee,
+                min_coin_amount=min_coin_amount,
+                max_coin_amount=max_coin_amount,
+                excluded_coin_amounts=exclude_coin_amounts,
+            )
             origin_id = list(littlelambocoin_coins)[0].name()
             littlelambocoin_tx = await self.standard_wallet.generate_signed_transaction(
                 uint64(0),
@@ -568,7 +581,12 @@ class CATWallet:
             assert message is not None
             announcement = Announcement(origin_id, message)
         else:
-            littlelambocoin_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
+            littlelambocoin_coins = await self.standard_wallet.select_coins(
+                fee,
+                min_coin_amount=min_coin_amount,
+                max_coin_amount=max_coin_amount,
+                excluded_coin_amounts=exclude_coin_amounts,
+            )
             selected_amount = sum([c.amount for c in littlelambocoin_coins])
             littlelambocoin_tx = await self.standard_wallet.generate_signed_transaction(
                 uint64(selected_amount + amount_to_claim - fee),
@@ -590,6 +608,9 @@ class CATWallet:
         coin_announcements_to_consume: Optional[Set[Announcement]] = None,
         puzzle_announcements_to_consume: Optional[Set[Announcement]] = None,
         min_coin_amount: Optional[uint64] = None,
+        max_coin_amount: Optional[uint64] = None,
+        exclude_coin_amounts: Optional[List[uint64]] = None,
+        exclude_coins: Optional[Set[Coin]] = None,
     ) -> Tuple[SpendBundle, Optional[TransactionRecord]]:
         if coin_announcements_to_consume is not None:
             coin_announcements_bytes: Optional[Set[bytes32]] = {a.name() for a in coin_announcements_to_consume}
@@ -609,7 +630,17 @@ class CATWallet:
         starting_amount: int = payment_amount - extra_delta
 
         if coins is None:
-            cat_coins = await self.select_coins(uint64(starting_amount), min_coin_amount=min_coin_amount)
+            if exclude_coins is None:
+                exclude_coins = set()
+            cat_coins = await self.select_coins(
+                uint64(starting_amount),
+                exclude=list(exclude_coins),
+                min_coin_amount=min_coin_amount,
+                max_coin_amount=max_coin_amount,
+                excluded_coin_amounts=exclude_coin_amounts,
+            )
+        elif exclude_coins is not None:
+            raise ValueError("Can't exclude coins when also specifically including coins")
         else:
             cat_coins = coins
 
@@ -657,6 +688,8 @@ class CATWallet:
                             uint64(regular_littlelambocoin_to_claim),
                             announcement_to_assert=announcement,
                             min_coin_amount=min_coin_amount,
+                            max_coin_amount=max_coin_amount,
+                            exclude_coin_amounts=exclude_coin_amounts,
                         )
                         innersol = self.standard_wallet.make_solution(
                             primaries=primaries,
@@ -666,7 +699,11 @@ class CATWallet:
                         )
                     elif regular_littlelambocoin_to_claim > fee:
                         littlelambocoin_tx, _ = await self.create_tandem_llc_tx(
-                            fee, uint64(regular_littlelambocoin_to_claim), min_coin_amount=min_coin_amount
+                            fee,
+                            uint64(regular_littlelambocoin_to_claim),
+                            min_coin_amount=min_coin_amount,
+                            max_coin_amount=max_coin_amount,
+                            exclude_coin_amounts=exclude_coin_amounts,
                         )
                         innersol = self.standard_wallet.make_solution(
                             primaries=primaries,
@@ -726,6 +763,9 @@ class CATWallet:
         coin_announcements_to_consume: Optional[Set[Announcement]] = None,
         puzzle_announcements_to_consume: Optional[Set[Announcement]] = None,
         min_coin_amount: Optional[uint64] = None,
+        max_coin_amount: Optional[uint64] = None,
+        exclude_coin_amounts: Optional[List[uint64]] = None,
+        exclude_cat_coins: Optional[Set[Coin]] = None,
     ) -> List[TransactionRecord]:
         if memos is None:
             memos = [[] for _ in range(len(puzzle_hashes))]
@@ -743,7 +783,7 @@ class CATWallet:
         if not ignore_max_send_amount:
             max_send = await self.get_max_send_amount()
             if payment_sum > max_send:
-                raise ValueError(f"Can't send more than {max_send} in a single transaction")
+                raise ValueError(f"Can't send more than {max_send} mojos in a single transaction")
         unsigned_spend_bundle, littlelambocoin_tx = await self.generate_unsigned_spendbundle(
             payments,
             fee,
@@ -751,6 +791,9 @@ class CATWallet:
             coin_announcements_to_consume=coin_announcements_to_consume,
             puzzle_announcements_to_consume=puzzle_announcements_to_consume,
             min_coin_amount=min_coin_amount,
+            max_coin_amount=max_coin_amount,
+            exclude_coin_amounts=exclude_coin_amounts,
+            exclude_coins=exclude_cat_coins,
         )
         spend_bundle = await self.sign(unsigned_spend_bundle)
         # TODO add support for array in stored records
@@ -820,7 +863,7 @@ class CATWallet:
         self.wallet_info = wallet_info
         await self.wallet_state_manager.user_store.update_wallet(wallet_info)
 
-    def match_puzzle_info(self, puzzle_driver: PuzzleInfo) -> bool:
+    async def match_puzzle_info(self, puzzle_driver: PuzzleInfo) -> bool:
         return (
             AssetType(puzzle_driver.type()) == AssetType.CAT
             and puzzle_driver["tail"] == bytes.fromhex(self.get_asset_id())
@@ -831,9 +874,19 @@ class CATWallet:
         return PuzzleInfo({"type": AssetType.CAT.value, "tail": "0x" + self.get_asset_id()})
 
     async def get_coins_to_offer(
-        self, asset_id: Optional[bytes32], amount: uint64, min_coin_amount: Optional[uint64] = None
+        self,
+        asset_id: Optional[bytes32],
+        amount: uint64,
+        min_coin_amount: Optional[uint64] = None,
+        max_coin_amount: Optional[uint64] = None,
     ) -> Set[Coin]:
         balance = await self.get_confirmed_balance()
         if balance < amount:
             raise Exception(f"insufficient funds in wallet {self.id()}")
-        return await self.select_coins(amount, min_coin_amount=min_coin_amount)
+        return await self.select_coins(amount, min_coin_amount=min_coin_amount, max_coin_amount=max_coin_amount)
+
+
+if TYPE_CHECKING:
+    from littlelambocoin.wallet.wallet_protocol import WalletProtocol
+
+    _dummy: WalletProtocol = CATWallet()

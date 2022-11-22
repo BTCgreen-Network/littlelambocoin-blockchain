@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from littlelambocoin.util.ints import uint64
 
 from .constants import ConsensusConstants
@@ -7,10 +9,10 @@ default_kwargs = {
     "MIN_BLOCKS_PER_CHALLENGE_BLOCK": 16,  # Must be less than half of SLOT_BLOCKS_TARGET
     "MAX_SUB_SLOT_BLOCKS": 128,  # Must be less than half of SUB_EPOCH_BLOCKS
     "NUM_SPS_SUB_SLOT": 64,  # Must be a power of 2
-    "SUB_SLOT_ITERS_STARTING": 2 ** 27,
+    "SUB_SLOT_ITERS_STARTING": 2**27,
     # DIFFICULTY_STARTING is the starting difficulty for the first epoch, which is then further
     # multiplied by another factor of DIFFICULTY_CONSTANT_FACTOR, to be used in the VDF iter calculation formula.
-    "DIFFICULTY_CONSTANT_FACTOR": 2 ** 64,
+    "DIFFICULTY_CONSTANT_FACTOR": 2**64,
     "DIFFICULTY_STARTING": 5,
     "DIFFICULTY_CHANGE_MAX_FACTOR": 3,  # The next difficulty is truncated to range [prev / FACTOR, prev * FACTOR]
     # These 3 constants must be changed at the same time
@@ -37,6 +39,9 @@ default_kwargs = {
     "GENESIS_PRE_FARM_FARMER_PUZZLE_HASH": bytes.fromhex(
         "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
     ),
+    "GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH": bytes.fromhex(
+        "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
+    ),
     "MAX_VDF_WITNESS_SIZE": 64,
     # Size of mempool = 50x the size of block
     "MEMPOOL_BLOCK_BUFFER": 50,
@@ -53,9 +58,6 @@ default_kwargs = {
     "MAX_GENERATOR_SIZE": 1000000,
     "MAX_GENERATOR_REF_LIST_SIZE": 512,  # Number of references allowed in the block generator ref list
     "POOL_SUB_SLOT_ITERS": 37600000000,  # iters limit * NUM_SPS
-    "TIMELORD_PUZZLE_HASH": bytes.fromhex(
-        "ca57868a01ad8c49a786049175cfcb13cae445380cc0cfc724c7ecf9bf8b718c"
-    )
 }
 
 

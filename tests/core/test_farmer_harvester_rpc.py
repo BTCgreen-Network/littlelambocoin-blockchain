@@ -1,4 +1,5 @@
-from asyncio import constants
+from __future__ import annotations
+
 import dataclasses
 import logging
 import operator
@@ -172,7 +173,7 @@ async def test_farmer_signage_point_endpoints(harvester_farmer_environment):
         return len(await farmer_rpc_client.get_signage_points()) > 0
 
     sp = farmer_protocol.NewSignagePoint(
-        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), ConsensusConstants.TIMELORD_PUZZLE_HASH,
+        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), ConsensusConstants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH,
     )
     await farmer_api.new_signage_point(sp)
 
@@ -292,7 +293,7 @@ async def test_farmer_get_pool_state(harvester_farmer_environment, self_hostname
             pool_dict[key].insert(0, before_24h)
 
     sp = farmer_protocol.NewSignagePoint(
-        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), ConsensusConstants.TIMELORD_PUZZLE_HASH,
+        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), ConsensusConstants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH,
     )
     await farmer_api.new_signage_point(sp)
     client_pool_state = await farmer_rpc_client.get_pool_state()

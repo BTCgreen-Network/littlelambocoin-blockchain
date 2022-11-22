@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import time
 from dataclasses import dataclass, field
@@ -25,7 +27,9 @@ from littlelambocoin.protocols.harvester_protocol import (
     PlotSyncResponse,
     PlotSyncStart,
 )
-from littlelambocoin.server.ws_connection import ProtocolMessageTypes, WSLittlelambocoinConnection, make_msg
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import make_msg
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.ints import int16, uint32, uint64
 from littlelambocoin.util.misc import get_list_or_len
@@ -102,7 +106,7 @@ class Receiver:
             log.error(f"_update_callback: node_id {self.connection().peer_node_id}, raised {e}")
 
     def reset(self) -> None:
-        log.error(f"reset: node_id {self.connection().peer_node_id}, current_sync: {self._current_sync}")
+        log.info(f"reset: node_id {self.connection().peer_node_id}, current_sync: {self._current_sync}")
         self._current_sync = Sync()
         self._last_sync = Sync()
         self._plots.clear()

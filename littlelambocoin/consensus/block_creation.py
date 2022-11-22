@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import random
 from dataclasses import replace
@@ -9,9 +11,17 @@ from chia_rs import compute_merkle_set_root
 from chiabip158 import PyBIP158
 
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_base_timelord_fee, calculate_pool_reward
+from littlelambocoin.consensus.block_rewards import (
+    calculate_base_farmer_reward,
+    calculate_pool_reward,
+    calculate_timelord_reward,
+)
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
-from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
+from littlelambocoin.consensus.coinbase import (
+    create_farmer_coin,
+    create_pool_coin,
+    create_timelord_coin,
+    )
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.cost_calculator import NPCResult
 from littlelambocoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
@@ -62,12 +72,13 @@ def create_foliage(
         constants: consensus constants being used for this chain
         reward_block_unfinished: the reward block to look at, potentially at the signage point
         block_generator: transactions to add to the foliage block, if created
-        aggregate_sig: aggregate of all transctions (or infinity element)
+        aggregate_sig: aggregate of all transactions (or infinity element)
         prev_block: the previous block at the signage point
         blocks: dict from header hash to blocks, of all ancestor blocks
         total_iters_sp: total iters at the signage point
         timestamp: timestamp to put into the foliage block
         farmer_reward_puzzlehash: where to pay out farming reward
+        timelord_reward_puzzlehash: where to pay out timelord reward
         pool_target: where to pay out pool reward
         get_plot_signature: retrieve the signature corresponding to the plot public key
         get_pool_signature: retrieve the signature corresponding to the pool public key
@@ -167,15 +178,17 @@ def create_foliage(
                 uint64(calculate_base_farmer_reward(curr.height) + curr.fees),
                 constants.GENESIS_CHALLENGE,
             )
-
             timelord_coin = create_timelord_coin(
-                curr.height,
-                curr.timelord_puzzle_hash,
-                calculate_base_timelord_fee(curr.height),
-                constants.GENESIS_CHALLENGE
+                curr.height, curr.timelord_puzzle_hash,
+                calculate_timelord_reward(curr.height),
+                constants.GENESIS_CHALLENGE,
             )
             assert curr.header_hash == prev_transaction_block.header_hash
-            reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
+            reward_claims_incorporated += [
+                pool_coin,
+                farmer_coin,
+                timelord_coin
+                ]
 
             if curr.height > 0:
                 curr = blocks.block_record(curr.prev_hash)
@@ -196,10 +209,14 @@ def create_foliage(
                     timelord_coin = create_timelord_coin(
                         curr.height,
                         curr.timelord_puzzle_hash,
-                        calculate_base_timelord_fee(curr.height),
+                        calculate_timelord_reward(curr.height),
                         constants.GENESIS_CHALLENGE,
                     )
-                    reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
+                    reward_claims_incorporated += [
+                        pool_coin,
+                        farmer_coin,
+                        timelord_coin,
+                        ]
                     curr = blocks.block_record(curr.prev_hash)
         additions.extend(reward_claims_incorporated.copy())
         for coin in additions:
@@ -329,7 +346,6 @@ def create_unfinished_block(
         proof_of_space: proof of space of the block to create
         slot_cc_challenge: challenge hash at the sp sub-slot
         farmer_reward_puzzle_hash: where to pay out farmer rewards
-        timelord_reward_puzzle_hash: where to pay out farmer rewards
         pool_target: where to pay out pool rewards
         get_plot_signature: function that returns signature corresponding to plot public key
         get_pool_signature: function that returns signature corresponding to pool public key
@@ -337,7 +353,7 @@ def create_unfinished_block(
         timestamp: timestamp to add to the foliage block, if created
         seed: seed to randomize chain
         block_generator: transactions to add to the foliage block, if created
-        aggregate_sig: aggregate of all transctions (or infinity element)
+        aggregate_sig: aggregate of all transactions (or infinity element)
         additions: Coins added in spend_bundle
         removals: Coins removed in spend_bundle
         prev_block: previous block (already in chain) from the signage point
@@ -378,7 +394,7 @@ def create_unfinished_block(
                     curr = blocks.block_record(curr.prev_hash)
                 assert curr.finished_reward_slot_hashes is not None
                 rc_sp_hash = curr.finished_reward_slot_hashes[-1]
-        signage_point = SignagePoint(None, None, None, None, signage_point.timelord_reward_puzzle_hash)
+        signage_point = SignagePoint(None, None, None, None, signage_point.timelord_puzzle_hash)
 
     cc_sp_signature: Optional[G2Element] = get_plot_signature(cc_sp_hash, proof_of_space.plot_public_key)
     rc_sp_signature: Optional[G2Element] = get_plot_signature(rc_sp_hash, proof_of_space.plot_public_key)
@@ -414,7 +430,7 @@ def create_unfinished_block(
         total_iters_sp,
         timestamp,
         farmer_reward_puzzle_hash,
-        signage_point.timelord_reward_puzzle_hash,
+        signage_point.timelord_puzzle_hash,
         pool_target,
         get_plot_signature,
         get_pool_signature,

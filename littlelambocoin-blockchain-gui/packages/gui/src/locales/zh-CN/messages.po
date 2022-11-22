@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh_CN\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-04 12:03\n"
+"PO-Revision-Date: 2022-10-24 18:15\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -46,11 +46,11 @@ msgstr "<0>需要一些LLC？</0>"
 msgid "<0>Use one (1) mojo to create a Profile.</0>"
 msgstr "<0>使用一个 (1) mojo 创建资料。</0>"
 
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:97
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:86
 msgid "A harvester is a service running on a machine where plot(s) are actually stored. A farmer and harvester talk to a full node to see the state of the chain. View your network of connected harvesters below Learn more"
 msgstr "收割机是一个在存有农田文件的机器上运行的服务。农民和收割机通过和全节点交互来得到链的状态。你可以在下面看到你网络所连接的收割机。了解更多"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:155
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:160
 msgid "A value of {0} is recommended"
 msgstr "建议值 {0}"
 
@@ -78,7 +78,7 @@ msgid "Action"
 msgstr "操作"
 
 #: src/components/farm/FarmFullNodeConnections.tsx:64
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:64
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:61
 #: src/components/nfts/NFTContextualActions.tsx:574
 msgid "Actions"
 msgstr "操作"
@@ -92,7 +92,7 @@ msgstr "添加 CAT 钱包以提供更多选项"
 msgid "Add Plot Directory"
 msgstr "添加农田文件夹"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:70
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:75
 msgid "Add Plot to Queue"
 msgstr "将农田开垦任务加入队列"
 
@@ -140,7 +140,11 @@ msgstr "所有 NFT"
 msgid "All Profiles"
 msgstr "所有配置"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:238
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:431
+msgid "Alternate bucket writing"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:354
 msgid "Alternate tmpdir/tmpdir2"
 msgstr "备用的 tmpdir/tmpdir2"
 
@@ -218,7 +222,7 @@ msgstr "余额: {standardBalance} LLC"
 msgid "Base Farmer Reward Amount"
 msgstr "基础耕种奖励数量"
 
-#: src/components/offers/OfferShareDialog.tsx:1066
+#: src/components/offers/OfferShareDialog.tsx:1216
 msgid "Before posting an offer in Keybase to the #{channelName} channel, you must first join the {teamName} team. Please note that it might take a few moments to join the channel."
 msgstr "在 Keybase#{channelName} 频道发布报价之前您必须先加入 {teamName} 团队。 请注意，加入频道可能需要一点时间。"
 
@@ -259,8 +263,8 @@ msgid "Blocks"
 msgstr "区块"
 
 #: src/components/plot/add/PlotAddSelectFinalDirectory.tsx:73
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:92
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:124
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:95
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:145
 msgid "Browse"
 msgstr "浏览"
 
@@ -276,7 +280,7 @@ msgstr ""
 
 #: src/components/nfts/NFTBurnDialog.tsx:122
 #~ msgid "Burning a non-fungible token means destroying it. Burned NFTs are sent to a verifiably un-spendable address, eliminating your NFT from the blockchain. However, transactions leading up to the burn will remain on the blockchain ledger."
-#~ msgstr ""
+#~ msgstr "Burning a non-fungible token means destroying it. Burned NFTs are sent to a verifiably un-spendable address, eliminating your NFT from the blockchain. However, transactions leading up to the burn will remain on the blockchain ledger."
 
 #: src/components/nfts/NFTBurnDialog.tsx:125
 msgid "Burning a non-fungible token means removing it from circulation by sending it to a verifiably un-spendable address. However, transactions leading up to the burn will remain on the blockchain ledger."
@@ -286,17 +290,9 @@ msgstr ""
 msgid "Buy an NFT"
 msgstr ""
 
-#: src/components/offers/NFTOfferEditor.tsx:261
-#~ msgid "LLC for NFT"
-#~ msgstr "LLC兑换NFT"
-
-#: src/electron/main.tsx:678
-msgid "Littlelambocoin"
-msgstr "奇亚"
-
-#: src/electron/main.tsx:617
-msgid "Littlelambocoin Blockchain Wiki"
-msgstr "奇亚区块链项目维基"
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:243
+msgid "Cache size (GB)"
+msgstr ""
 
 #: src/components/app/AppPassPrompt.tsx:184
 #: src/components/backup/BackupCreate.tsx:51
@@ -310,8 +306,8 @@ msgstr "奇亚区块链项目维基"
 #: src/components/offers/OfferAcceptConfirmationDialog.tsx:26
 #: src/components/offers/OfferDataEntryDialog.tsx:67
 #: src/components/offers/OfferEditorConfirmationDialog.tsx:18
-#: src/components/offers/OfferShareDialog.tsx:1098
-#: src/components/offers/OfferShareDialog.tsx:1271
+#: src/components/offers/OfferShareDialog.tsx:1248
+#: src/components/offers/OfferShareDialog.tsx:1415
 #: src/components/plotNFT/PlotNFTPayoutInstructionsDialog.tsx:127
 #: src/components/plotNFT/select/PlotNFTSelectBase.tsx:86
 #: src/components/plotNFT/select/PlotNFTSelectFaucet.tsx:29
@@ -383,11 +379,19 @@ msgstr "在 SkyNFT 上检查出处"
 msgid "Check Provenance on Spacescan.io"
 msgstr "在Spacescan.io 上检查出处"
 
+#: src/electron/main.tsx:678
+msgid "Littlelambocoin"
+msgstr "奇亚"
+
+#: src/electron/main.tsx:617
+msgid "Littlelambocoin Blockchain Wiki"
+msgstr "奇亚区块链项目维基"
+
 #: src/components/app/AppSelectMode.tsx:155
 msgid "Choose Farming Mode"
 msgstr "选择耕作模式"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:34
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:39
 msgid "Choose Number of Plots"
 msgstr "选择要开垦的数量"
 
@@ -411,13 +415,14 @@ msgstr "申领奖励"
 #: src/components/nfts/NFTMoveToProfileDialog.tsx:450
 #: src/components/nfts/NFTTransferAction.tsx:162
 #: src/components/offers/OfferManager.tsx:193
-#: src/components/offers/OfferShareDialog.tsx:575
-#: src/components/offers/OfferShareDialog.tsx:656
-#: src/components/offers/OfferShareDialog.tsx:738
-#: src/components/offers/OfferShareDialog.tsx:840
-#: src/components/offers/OfferShareDialog.tsx:1031
-#: src/components/offers/OfferShareDialog.tsx:1163
-#: src/components/offers/OfferShareDialog.tsx:1453
+#: src/components/offers/OfferShareDialog.tsx:639
+#: src/components/offers/OfferShareDialog.tsx:721
+#: src/components/offers/OfferShareDialog.tsx:804
+#: src/components/offers/OfferShareDialog.tsx:907
+#: src/components/offers/OfferShareDialog.tsx:989
+#: src/components/offers/OfferShareDialog.tsx:1181
+#: src/components/offers/OfferShareDialog.tsx:1314
+#: src/components/offers/OfferShareDialog.tsx:1601
 #: src/components/plot/PlotAddDirectoryDialog.tsx:130
 #: src/components/plot/queue/PlotQueueLogDialog.tsx:81
 msgid "Close"
@@ -496,7 +501,7 @@ msgstr "连接到其它节点"
 msgid "Connect to pool"
 msgstr "连接到农业合作社"
 
-#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:20
+#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:16
 msgid "Connected"
 msgstr "已连接"
 
@@ -505,12 +510,12 @@ msgstr "已连接"
 msgid "Connecting to daemon"
 msgstr "正在连接到进程"
 
-#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:18
+#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:14
 msgid "Connection Status"
 msgstr "连接状态"
 
-#: src/components/farm/FarmFullNodeConnections.tsx:109
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:107
+#: src/components/farm/FarmFullNodeConnections.tsx:102
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:96
 msgid "Connection Status:"
 msgstr "连接状态："
 
@@ -520,7 +525,7 @@ msgstr "连接类型"
 
 #: src/components/fullNode/FullNodeConnections.tsx:106
 #~ msgid "Connections"
-#~ msgstr "连接数"
+#~ msgstr "Connections"
 
 #: src/electron/main.tsx:641
 msgid "Contribute on GitHub"
@@ -629,19 +634,19 @@ msgstr "当前积点余额"
 msgid "Data Hash"
 msgstr "数据哈希"
 
-#: src/components/settings/Settings.tsx:87
-msgid "Data Layer"
-msgstr ""
-
 #: src/components/nfts/NFTDetails.tsx:153
 msgid "Data URL {0}"
 msgstr "数据 URL {0}"
+
+#: src/components/settings/Settings.tsx:87
+msgid "DataLayer"
+msgstr ""
 
 #: src/components/farm/FarmLastAttemptedProof.tsx:30
 msgid "Date"
 msgstr "日期"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:93
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:98
 msgid "Delay"
 msgstr "延迟"
 
@@ -708,7 +713,7 @@ msgstr "开发者"
 msgid "Developer Tools"
 msgstr "开发者工具"
 
-#: src/components/offers/OfferShareDialog.tsx:550
+#: src/components/offers/OfferShareDialog.tsx:614
 msgid "Dexie URL"
 msgstr "Dexie 链接"
 
@@ -717,13 +722,29 @@ msgstr "Dexie 链接"
 msgid "Difficulty"
 msgstr "难度"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:266
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:388
 msgid "Disable NUMA"
 msgstr "禁用 NUMA"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:215
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:411
+msgid "Disable assigning automatic thread affinity. This is useful when running multiple simultaneous instances of Bladebit as you can manually assign thread affinity yourself when launching Bladebit."
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:390
+msgid "Disable automatic NUMA aware memory binding. If you set this parameter in a NUMA system you will likely get degraded performance."
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:331
 msgid "Disable bitfield plotting"
 msgstr "开垦时禁用位域"
+
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:107
+msgid "Disable direct I/O on the temp 1 directory in order to extract maximum performance with RAM disk"
+msgstr ""
+
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:163
+msgid "Disable direct I/O on the temp 2 directory in order to extract maximum performance with RAM disk"
+msgstr ""
 
 #: src/components/fullNode/FullNodeCloseConnection.tsx:20
 msgid "Disconnect"
@@ -733,7 +754,7 @@ msgstr "断开连接"
 msgid "Display Offer Data"
 msgstr "显示报价数据"
 
-#: src/components/offers/OfferShareDialog.tsx:1446
+#: src/components/offers/OfferShareDialog.tsx:1594
 #: src/hooks/useOpenUnsafeLink.tsx:77
 msgid "Do not show this dialog again"
 msgstr "不再显示此对话框"
@@ -747,7 +768,7 @@ msgstr "你的机器上有已经完成的农田文件吗？ <0>添加农田文�
 msgid "Do you want to burn this NFT?"
 msgstr ""
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:55
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:60
 msgid "Does your machine support parallel plotting?"
 msgstr "您的机器是否支持并行开垦？"
 
@@ -761,11 +782,11 @@ msgstr ""
 
 #: src/components/offers/OfferImport.tsx:146
 #~ msgid "Drag & drop an offer file below to view its details"
-#~ msgstr "拖放一个报价文件以查看其详细信息"
+#~ msgstr "Drag & drop an offer file below to view its details"
 
 #: src/components/offers/OfferImport.tsx:166
 #~ msgid "Drag and drop offer file"
-#~ msgstr "把报价文件拖放到此处"
+#~ msgstr "Drag and drop offer file"
 
 #: src/components/backup/BackupRestore.tsx:172
 msgid "Drag and drop your backup file"
@@ -803,7 +824,7 @@ msgid "Enable Auto Login"
 msgstr ""
 
 #: src/components/settings/SettingsDataLayer.tsx:38
-msgid "Enable Data Layer"
+msgid "Enable DataLayer"
 msgstr ""
 
 #: src/components/settings/SettingsDataLayer.tsx:52
@@ -853,7 +874,7 @@ msgstr "预计区块发现时间"
 msgid "Estimated sum of all the plotted disk space of all farmers in the network"
 msgstr "估计网络中所有农民已开垦农田占用磁盘空间量"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:279
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:450
 msgid "Exclude final directory"
 msgstr "不耕种最终输出文件夹"
 
@@ -870,7 +891,7 @@ msgstr "失败"
 msgid "Failed to decode NFT identifier"
 msgstr "无法解码 NFT 标识符"
 
-#: src/components/offers/OfferShareDialog.tsx:420
+#: src/components/offers/OfferShareDialog.tsx:478
 msgid "Failed to execute Keybase command: {stderr}"
 msgstr "无法执行Keybase 命令: {stderr}"
 
@@ -882,7 +903,7 @@ msgstr "设置私钥密码失败: {0}"
 msgid "Failed to update passphrase: {0}"
 msgstr "设置私钥密码失败: {0}"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:297
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:469
 msgid "Farmer Public Key"
 msgstr "农民公钥"
 
@@ -980,7 +1001,7 @@ msgstr ""
 
 #: src/components/nfts/NFTPreview.tsx:26
 #~ msgid "File is over 10MB"
-#~ msgstr "文件超过 10MB"
+#~ msgstr "File is over 10MB"
 
 #: src/components/plot/PlotHarvesterPlots.tsx:81
 #: src/components/plot/PlotHarvesterPlotsDuplicate.tsx:13
@@ -1036,14 +1057,18 @@ msgstr "常规"
 msgid "Go collect some gems"
 msgstr "收集一些宝石吧"
 
-#: src/components/offers/OfferShareDialog.tsx:1028
-#: src/components/offers/OfferShareDialog.tsx:1089
+#: src/components/offers/OfferShareDialog.tsx:1178
+#: src/components/offers/OfferShareDialog.tsx:1239
 msgid "Go to #{channelName}"
 msgstr "跳转至 #{channelName}"
 
-#: src/components/offers/OfferShareDialog.tsx:1160
+#: src/components/offers/OfferShareDialog.tsx:1311
 msgid "Go to Offerpool"
 msgstr "转到报价库"
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:433
+msgid "Halves the temp2 cache size requirements by alternating bucket writing methods between tables."
+msgstr ""
 
 #: src/components/plot/PlotHarvesters.tsx:39
 msgid "Harvesters"
@@ -1057,7 +1082,7 @@ msgstr ""
 msgid "Hash mismatch."
 msgstr ""
 
-#: src/components/offers/OfferShareDialog.tsx:815
+#: src/components/offers/OfferShareDialog.tsx:882
 msgid "Hashgreen DEX URL"
 msgstr "HashGreen 去中心化交易所网址"
 
@@ -1103,7 +1128,7 @@ msgid "Hooray, no files here!"
 msgstr "今后，这里没有文件！"
 
 #: src/components/farm/FarmFullNodeConnections.tsx:33
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:33
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:30
 msgid "Host Name"
 msgstr "主机名"
 
@@ -1120,11 +1145,11 @@ msgstr "IP地址"
 msgid "IP address / host"
 msgstr "IP地址 / 主机"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:129
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:150
 msgid "If none selected, then it will default to the temporary directory."
 msgstr "如果未指定，将会使用上述临时目录。"
 
-#: src/components/offers/OfferShareDialog.tsx:767
+#: src/components/offers/OfferShareDialog.tsx:833
 msgid "If selected, your offer will be not be shared publicly."
 msgstr "如果选中，您的报价将不会公开共享。"
 
@@ -1138,7 +1163,7 @@ msgstr "如果您已经共享了您的报价文件，您可能需要提交交易
 
 #: src/components/nfts/NFTBurnDialog.tsx:79
 #~ msgid "If you proceed, this NFT will be permanently deleted. Are you sure you want to continue?"
-#~ msgstr ""
+#~ msgstr "If you proceed, this NFT will be permanently deleted. Are you sure you want to continue?"
 
 #: src/components/nfts/NFTPreview.tsx:369
 msgid "Image Hash Mismatch"
@@ -1158,7 +1183,7 @@ msgstr "处理中"
 msgid "In exchange for"
 msgstr "以兑换"
 
-#: src/components/offers/OfferShareDialog.tsx:1254
+#: src/components/offers/OfferShareDialog.tsx:1398
 msgid "In exchange for:"
 msgstr "交换："
 
@@ -1175,24 +1200,20 @@ msgstr "索引"
 msgid "Initializing..."
 msgstr "正在初始化..."
 
-#: src/components/offers/OfferShareDialog.tsx:1061
+#: src/components/offers/OfferShareDialog.tsx:1211
 msgid "Install Keybase"
 msgstr "安装 Keybase"
 
 #: src/hooks/useAcceptOfferHook.tsx:78
-msgid ""
-"Insufficient funds available to accept offer. Ensure that your\n"
+msgid "Insufficient funds available to accept offer. Ensure that your\n"
 "spendable balance is sufficient to cover the offer amount."
-msgstr ""
-"可用资金不足，无法接受报价。请确保您的\n"
+msgstr "可用资金不足，无法接受报价。请确保您的\n"
 "可支出余额足以支付报价金额。"
 
 #: src/components/offers/OfferEditor.tsx:182
-msgid ""
-"Insufficient funds available to create offer. Ensure that your\n"
+msgid "Insufficient funds available to create offer. Ensure that your\n"
 "spendable balance is sufficient to cover the offer amount."
-msgstr ""
-"可用的资金不足，无法创建报价。请确保您的\n"
+msgstr "可用的资金不足，无法创建报价。请确保您的\n"
 "可支出余额足以支付报价金额。"
 
 #: src/components/offers/NFTOfferEditor.tsx:698
@@ -1235,7 +1256,7 @@ msgstr "加入农业合作社来获得持续的LLC耕种收益。创建一个农
 msgid "Join farming pools"
 msgstr "加入联合耕作池"
 
-#: src/components/offers/OfferShareDialog.tsx:1078
+#: src/components/offers/OfferShareDialog.tsx:1228
 msgid "Join {teamName}"
 msgstr "加入 {teamName}"
 
@@ -1244,11 +1265,11 @@ msgstr "加入 {teamName}"
 msgid "K-Size"
 msgstr "K值大小"
 
-#: src/components/offers/OfferShareDialog.tsx:964
+#: src/components/offers/OfferShareDialog.tsx:1114
 msgid "Keybase command failed {e}. If you haven't installed Keybase, you can download from https://keybase.io"
 msgstr "Keybase 命令失败 {e}。如果您尚未安装 Keybase，您可以从 https://keybase.io 下载"
 
-#: src/components/offers/OfferShareDialog.tsx:1053
+#: src/components/offers/OfferShareDialog.tsx:1203
 msgid "Keybase is a secure messaging and file sharing application. To share an offer in the Keybase {teamName} team, you must first have Keybase installed."
 msgstr "Keybase 是一个安全的消息和文件共享应用程序。要在Keybase {teamName} 团队中分享一个报价，您必须先安装 Keybase。"
 
@@ -1257,7 +1278,7 @@ msgid "Keyring migration failed: {0}"
 msgstr "钥匙串迁移失败： {0}"
 
 #: src/components/farm/FarmFullNodeConnections.tsx:61
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:61
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:58
 msgid "KiB Up/Down"
 msgstr "KiB 上传/下载"
 
@@ -1407,7 +1428,7 @@ msgstr "迁移支持私钥密码保护"
 msgid "Minimum Difficulty"
 msgstr "最小难度"
 
-#: src/components/offers/OfferShareDialog.tsx:631
+#: src/components/offers/OfferShareDialog.tsx:696
 msgid "MintGarden URL"
 msgstr "MintGarden 网址"
 
@@ -1419,7 +1440,7 @@ msgstr "铸造在区块高度"
 msgid "Minter:"
 msgstr ""
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:98
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:103
 msgid "Minutes"
 msgstr "分钟"
 
@@ -1435,7 +1456,7 @@ msgstr ""
 msgid "Missing preview_video_hash key"
 msgstr ""
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:118
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:123
 msgid "More memory slightly increases speed"
 msgstr "增加内存可以略微提高速度"
 
@@ -1510,7 +1531,7 @@ msgstr "NFT 详细信息不可用"
 
 #: src/components/offers/NFTOfferEditor.tsx:256
 #~ msgid "NFT for LLC"
-#~ msgstr "NFT换取LLC"
+#~ msgstr "NFT for LLC"
 
 #: src/components/offers/NFTOfferPreview.tsx:56
 msgid "NFT identifier does not reference a valid NFT coin."
@@ -1548,6 +1569,10 @@ msgstr "下一步"
 msgid "No"
 msgstr "否"
 
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:409
+msgid "No CPU Affinity"
+msgstr ""
+
 #: src/components/farm/card/FarmCardLastHeightFarmed.tsx:15
 msgid "No blocks farmed yet"
 msgstr "尚未有区块有收获"
@@ -1574,7 +1599,7 @@ msgid "Node Count"
 msgstr "节点个数"
 
 #: src/components/farm/FarmFullNodeConnections.tsx:29
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:29
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:26
 #: src/components/fullNode/FullNodeConnections.tsx:25
 msgid "Node ID"
 msgstr "节点ID"
@@ -1615,31 +1640,52 @@ msgstr "未接受"
 msgid "Not confirmed"
 msgstr "未确认"
 
-#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:20
+#: src/components/fullNode/card/FullNodeCardConnectionStatus.tsx:16
 msgid "Not connected"
 msgstr "未连接"
 
 #: src/components/block/FarmManageFarmingRewards.tsx:163
 #: src/components/farm/FarmManageFarmingRewards.tsx:176
-msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 0.25XCH reward for pooling plots."
-msgstr "请注意，这将不会改变你的合作社耕作支付地址。这只会影响旧农田文件，以及0.25XCH的合作社耕作奖励。"
+msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 0.25LLC reward for pooling plots."
+msgstr "请注意，这将不会改变你的合作社耕作支付地址。这只会影响旧农田文件，以及0.25LLC的合作社耕作奖励。"
 
 #: src/components/plotNFT/PlotExternalNFTCard.tsx:119
 #: src/components/plotNFT/PlotNFTCard.tsx:161
 msgid "Number of Plots"
 msgstr "农田数"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:171
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:176
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:189
 msgid "Number of buckets"
 msgstr "桶数量"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:188
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:211
 msgid "Number of buckets for phase 3 & 4"
 msgstr "第三和第四阶段的桶数"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:136
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:141
 msgid "Number of threads"
 msgstr "线程数量"
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:288
+msgid "Number of threads for C table processing"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:260
+msgid "Number of threads for F1 generation"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:302
+msgid "Number of threads for Phase 2"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:316
+msgid "Number of threads for Phase 3"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:274
+msgid "Number of threads for forward propagation"
+msgstr ""
 
 #: src/components/offers/OfferDataDialog.tsx:75
 #: src/components/plotNFT/PlotNFTGetPoolLoginLinkDialog.tsx:87
@@ -1655,12 +1701,13 @@ msgstr "报价资料"
 msgid "Offer Identifier"
 msgstr "报价标识符"
 
-#: src/components/offers/OfferShareDialog.tsx:545
-#: src/components/offers/OfferShareDialog.tsx:626
-#: src/components/offers/OfferShareDialog.tsx:708
-#: src/components/offers/OfferShareDialog.tsx:810
-#: src/components/offers/OfferShareDialog.tsx:1019
-#: src/components/offers/OfferShareDialog.tsx:1144
+#: src/components/offers/OfferShareDialog.tsx:609
+#: src/components/offers/OfferShareDialog.tsx:691
+#: src/components/offers/OfferShareDialog.tsx:774
+#: src/components/offers/OfferShareDialog.tsx:877
+#: src/components/offers/OfferShareDialog.tsx:959
+#: src/components/offers/OfferShareDialog.tsx:1169
+#: src/components/offers/OfferShareDialog.tsx:1295
 msgid "Offer Shared"
 msgstr "已共享报价"
 
@@ -1672,7 +1719,7 @@ msgstr "因为您没有被请求的资产，所以不能接受报价"
 msgid "Offer has been accepted and is awaiting confirmation."
 msgstr "报价已被接受，正在等待确认。"
 
-#: src/components/offers/OfferShareDialog.tsx:713
+#: src/components/offers/OfferShareDialog.tsx:779
 msgid "OfferBin URL"
 msgstr "OfferBin 网址"
 
@@ -1715,6 +1762,26 @@ msgstr "打开链接"
 #: src/components/nfts/NFTContextualActions.tsx:368
 msgid "Open in Browser"
 msgstr "在浏览器中打开"
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:289
+msgid "Override the thread count for C table processing"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:261
+msgid "Override the thread count for F1 generation"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:303
+msgid "Override the thread count for Phase 2"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:317
+msgid "Override the thread count for Phase 3"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:275
+msgid "Override the thread count for forward propagation"
+msgstr ""
 
 #: src/components/nfts/NFTDetails.tsx:74
 msgid "Owner DID"
@@ -1855,8 +1922,8 @@ msgstr ""
 msgid "Please specify final directory"
 msgstr "请指定最终输出文件夹"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:73
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:77
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:76
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:80
 msgid "Please specify temporary directory"
 msgstr "请指定临时目录"
 
@@ -1869,7 +1936,7 @@ msgid "Please wait for wallet synchronization"
 msgstr "请等待钱包同步"
 
 #: src/components/farm/card/FarmCardPlotCount.tsx:11
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:44
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:49
 msgid "Plot Count"
 msgstr "农田数"
 
@@ -1881,11 +1948,11 @@ msgstr "农田ID"
 msgid "Plot Key"
 msgstr "农田密钥"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:318
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:490
 msgid "Plot NFT Plot Target Address"
 msgstr "绘制NFT 绘图目标地址"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:319
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:491
 msgid "Plot NFT Pool Contract Address"
 msgstr "NFT农业合作社地址"
 
@@ -1902,7 +1969,7 @@ msgstr "农田公钥"
 msgid "Plot Size"
 msgstr "农田大小"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:74
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:79
 msgid "Plot in Parallel"
 msgstr "并发开垦"
 
@@ -1935,6 +2002,10 @@ msgstr "缺少密钥的农田"
 msgid "Plots are allocated space on your hard drive used to farm and earn Littlelambocoin.<0>Learn more</0>"
 msgstr "农田就是在你的硬盘上分配的一块空间，用来收获奇亚币。<0>了解更多</0>"
 
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:228
+msgid "Plots in the same queue will run in serial"
+msgstr ""
+
 #: src/components/plot/add/PlotAddChoosePlotter.tsx:103
 msgid "Plotter"
 msgstr "开垦机"
@@ -1948,11 +2019,11 @@ msgstr "正在开垦"
 msgid "Plotting Manager"
 msgstr "开垦管理器"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:58
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:63
 msgid "Plotting in parallel can save time. Otherwise, add plot(s) to the queue."
 msgstr "并发开垦可以有效节省开垦时间但对系统资源要求很高。系统硬件不够的话建议选择按队列顺序开垦。"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:217
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:333
 msgid "Plotting with bitfield enabled has about 30% less overall writes and is now almost always faster. You may see reduced memory requirements with bitfield plotting disabled. If your CPU design is from before 2010 you may have to disable bitfield plotting."
 msgstr "在开垦农田时启用位域会减少约30%的磁盘写入，而且大多数情况下会更快。但如果您在开垦时禁用位域，占用的内存则可能会减少。如果您的CPU是2010年以前的型号，您可能必须禁用位域才能开垦。"
 
@@ -1988,7 +2059,7 @@ msgid "Pool Payout Instructions"
 msgstr "农业合作社支付说明"
 
 #: src/components/block/Block.jsx:242
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:308
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:480
 msgid "Pool Public Key"
 msgstr "池公钥"
 
@@ -2037,7 +2108,7 @@ msgstr "合作社耕作"
 
 #: src/components/block/FullNodeAddConnection.tsx:76
 #: src/components/farm/FarmFullNodeConnections.tsx:39
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:39
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:36
 #: src/components/fullNode/FullNodeAddConnection.tsx:75
 #: src/components/fullNode/FullNodeConnections.tsx:35
 msgid "Port"
@@ -2099,7 +2170,7 @@ msgstr "空间证明的大小"
 msgid "Proofs Found"
 msgstr "已找到证明"
 
-#: src/components/nfts/NFTProperties.tsx:100
+#: src/components/nfts/NFTProperties.tsx:103
 msgid "Properties"
 msgstr "属性"
 
@@ -2116,7 +2187,7 @@ msgid "Puzzle Hash"
 msgstr "拼图哈希"
 
 #: src/components/plot/PlotPlotting.tsx:24
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:204
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:227
 msgid "Queue Name"
 msgstr "队列名"
 
@@ -2124,11 +2195,11 @@ msgstr "队列名"
 msgid "Queued"
 msgstr "排队中"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:117
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:122
 msgid "RAM max usage"
 msgstr "内存最大使用量"
 
-#: src/components/nfts/NFTRankings.tsx:80
+#: src/components/nfts/NFTRankings.tsx:83
 msgid "Rankings"
 msgstr "排名"
 
@@ -2226,7 +2297,7 @@ msgstr "按头部哈希搜索区块"
 msgid "Search on Tail Database"
 msgstr "在 Tail 数据库中搜索"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:106
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:127
 msgid "Second temporary folder location"
 msgstr "第二临时文件夹位置"
 
@@ -2234,7 +2305,7 @@ msgstr "第二临时文件夹位置"
 msgid "Secure your keychain using a strong passphrase"
 msgstr "使用加强私钥密码保护您的钥匙链"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:100
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:121
 msgid "Select 2nd Temporary Directory"
 msgstr "选择第二临时文件夹"
 
@@ -2250,7 +2321,7 @@ msgstr "选择报价文件"
 msgid "Select Profile"
 msgstr "选择档案"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:52
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:55
 msgid "Select Temporary Directory"
 msgstr "选择临时文件夹"
 
@@ -2262,7 +2333,7 @@ msgstr "选择客户端模式"
 msgid "Select the final destination for the folder where you would like the plot to be stored. We recommend you use a large slow hard drive (like external HDD)."
 msgstr "选择您希望保存农田文件的最终输出文件夹。我们建议您使用大容量、慢速的硬盘（比如外置机械硬盘）。"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:54
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:57
 msgid "Select the temporary destination for the folder where you would like the plot to be stored. We recommend you use a fast drive."
 msgstr "选择您希望保存农田文件的临时输出文件夹。我们建议您使用速度快的驱动器。"
 
@@ -2275,8 +2346,8 @@ msgid "Select your Plot NFT from the dropdown or create a new one."
 msgstr "从下拉菜单中选择现有农田NFT，或者新建。"
 
 #: src/components/plot/add/PlotAddSelectFinalDirectory.tsx:73
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:90
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:122
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:93
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:143
 msgid "Selected"
 msgstr "已选择"
 
@@ -2310,40 +2381,44 @@ msgid "Settings"
 msgstr "设置"
 
 #: src/components/offers/OfferManager.tsx:425
-#: src/components/offers/OfferShareDialog.tsx:1105
-#: src/components/offers/OfferShareDialog.tsx:1278
+#: src/components/offers/OfferShareDialog.tsx:1255
+#: src/components/offers/OfferShareDialog.tsx:1422
 msgid "Share"
 msgstr "分享"
 
-#: src/components/offers/OfferShareDialog.tsx:1405
+#: src/components/offers/OfferShareDialog.tsx:1553
 msgid "Share Offer"
 msgstr "分享报价"
 
-#: src/components/offers/OfferShareDialog.tsx:765
+#: src/components/offers/OfferShareDialog.tsx:831
 msgid "Share Privately"
 msgstr "私下分享"
 
-#: src/components/offers/OfferShareDialog.tsx:587
+#: src/components/offers/OfferShareDialog.tsx:651
 msgid "Share on Dexie"
 msgstr "分享到 Dexie"
 
-#: src/components/offers/OfferShareDialog.tsx:852
+#: src/components/offers/OfferShareDialog.tsx:919
 msgid "Share on Hashgreen DEX"
 msgstr "分享到Hashgreen DEX"
 
-#: src/components/offers/OfferShareDialog.tsx:1048
+#: src/components/offers/OfferShareDialog.tsx:1198
 msgid "Share on Keybase"
 msgstr "分享到Keybase"
 
-#: src/components/offers/OfferShareDialog.tsx:668
+#: src/components/offers/OfferShareDialog.tsx:733
 msgid "Share on MintGarden"
 msgstr "分享到MintGarden"
 
-#: src/components/offers/OfferShareDialog.tsx:750
+#: src/components/offers/OfferShareDialog.tsx:816
 msgid "Share on OfferBin"
 msgstr "分享到OfferBin"
 
-#: src/components/offers/OfferShareDialog.tsx:1175
+#: src/components/offers/OfferShareDialog.tsx:1001
+msgid "Share on Spacescan.io"
+msgstr ""
+
+#: src/components/offers/OfferShareDialog.tsx:1326
 msgid "Share on offerpool"
 msgstr "分享到Offerpool"
 
@@ -2363,16 +2438,20 @@ msgstr ""
 msgid "Show Preview"
 msgstr "显示预览"
 
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:247
+msgid "Size of cache to reserve for I/O"
+msgstr ""
+
 #: src/components/app/AppKeyringMigrator.tsx:64
 #: src/components/app/AppKeyringMigrator.tsx:267
 #~ msgid "Skip"
-#~ msgstr "跳过"
+#~ msgstr "Skip"
 
 #: src/components/app/AppKeyringMigrator.tsx:63
 #~ msgid "Skip Keyring Migration"
-#~ msgstr "跳过密钥串迁移"
+#~ msgstr "Skip Keyring Migration"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:281
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:452
 msgid "Skips adding a final directory to harvester for farming"
 msgstr "勾选此项，将不会自动把最终目录添加到收割机进行耕种"
 
@@ -2380,7 +2459,11 @@ msgstr "勾选此项，将不会自动把最终目录添加到收割机进行耕
 msgid "Smooth out your LLC farming rewards by joining a pool."
 msgstr "加入农业合作社来稳定LLC耕作收益。"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:138
+#: src/components/offers/OfferShareDialog.tsx:964
+msgid "Spacescan.io URL"
+msgstr ""
+
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:143
 msgid "Specify a value of 0 to use all available threads"
 msgstr "输 0 即使用所有可用线程"
 
@@ -2452,7 +2535,7 @@ msgstr "正在同步 <0/> / <1/>"
 msgid "Target Puzzle Hash"
 msgstr "目标迷题哈希"
 
-#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:64
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:67
 msgid "Temporary folder location"
 msgstr "临时文件夹位置"
 
@@ -2486,7 +2569,12 @@ msgstr "NFT 传输交易已成功提交到区块链。"
 msgid "The derivation index sets the range of wallet addresses that the wallet scans the blockchain for. This number is generally higher if you have a lot of transactions or canceled offers for LLC, CATs, or NFTs. If you believe your balance is incorrect because it’s missing coins, then increasing the derivation index could help the wallet include the missing coins in the balance total."
 msgstr "衍生指数设置钱包链扫描钱包地址的范围。 如果您有大量交易或取消了 LLC、CATs 或 NFT 的报价，这个数字通常更高。 如果你认为你的余额是不正确的，因为它缺少硬币， 增加衍生指数可以帮助钱包在余额总额中包括缺失的硬币。"
 
-#: src/components/farm/FarmFullNodeConnections.tsx:96
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:105
+#: src/components/plot/add/PlotAddSelectTemporaryDirectory.tsx:161
+msgid "The folder is on a RAM Disk"
+msgstr ""
+
+#: src/components/farm/FarmFullNodeConnections.tsx:89
 msgid "The full node that your farmer is connected to is below. <0>Learn more</0>"
 msgstr "你的农场连接的全节点如下.<0>了解更多</0>"
 
@@ -2633,7 +2721,7 @@ msgstr "此农田NFT绑定了其它密钥。你仍然可以用此农田NFT开垦
 msgid "This table shows you the last time your farm attempted to win a block challenge. <0>Learn more</0>"
 msgstr "这个表格里面显示的是你的农场尝试过的区块挑战. <0>了解更多</0>"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:154
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:159
 msgid "Thread Multiplier for Phase 2"
 msgstr "第 2 阶段的线程倍数"
 
@@ -2720,6 +2808,10 @@ msgstr "总VDF迭代数"
 msgid "Total iterations since the start of the blockchain"
 msgstr "自区块开始以来的迭代数"
 
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:371
+msgid "Touch all pages of buffer allocations before starting to plot."
+msgstr ""
+
 #: src/components/app/AppSelectMode.tsx:96
 msgid "Trade tokens"
 msgstr "交易令牌"
@@ -2754,11 +2846,11 @@ msgstr "无法为创建者版税百分比大于100%的 NFT 创建报价"
 msgid "Unable to create an offer where the net amount is negative"
 msgstr "无法创建净额为负数的报价单"
 
-#: src/components/offers/OfferShareDialog.tsx:979
+#: src/components/offers/OfferShareDialog.tsx:1129
 msgid "Unable to open Keybase. Install Keybase from https://keybase.io"
 msgstr "无法打开 Keybase。请从 https://keybase.io 安装 Keybase"
 
-#: src/components/offers/OfferShareDialog.tsx:886
+#: src/components/offers/OfferShareDialog.tsx:1036
 msgid "Unable to open browser. Install Keybase from https://keybase.io"
 msgstr "无法打开浏览器。请从 https://keybase.io 安装 Keybase"
 
@@ -2841,20 +2933,20 @@ msgstr "查看农业合作社登录地址"
 msgid "View an Offer"
 msgstr "查看报价"
 
-#: src/components/offers/OfferShareDialog.tsx:568
+#: src/components/offers/OfferShareDialog.tsx:632
 msgid "View on Dexie"
 msgstr "在 Dexie 上查看"
 
-#: src/components/offers/OfferShareDialog.tsx:833
+#: src/components/offers/OfferShareDialog.tsx:900
 msgid "View on Hashgreen DEX"
 msgstr "在 Hashgreen DEX 上查看"
 
 #: src/components/nfts/NFTContextualActions.tsx:617
-#: src/components/offers/OfferShareDialog.tsx:649
+#: src/components/offers/OfferShareDialog.tsx:714
 msgid "View on MintGarden"
 msgstr "在 MintGarden 上查看"
 
-#: src/components/offers/OfferShareDialog.tsx:731
+#: src/components/offers/OfferShareDialog.tsx:797
 msgid "View on OfferBin"
 msgstr "在OfferBin上查看"
 
@@ -2863,6 +2955,7 @@ msgid "View on SkyNFT"
 msgstr "在 SkyNFT 上查看"
 
 #: src/components/nfts/NFTContextualActions.tsx:631
+#: src/components/offers/OfferShareDialog.tsx:982
 msgid "View on Spacescan.io"
 msgstr "在 Spacescan.io 上查看"
 
@@ -2897,11 +2990,11 @@ msgstr "钱包未定义"
 msgid "Want to Join a Pool? Create a Plot NFT"
 msgstr "想要加入农业合作社？创建一个农田NFT"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:87
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:92
 msgid "Want to have a delay before the next plot starts?"
 msgstr "想要在开垦下一块农田前等待一会？"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:252
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:369
 msgid "Warm start"
 msgstr "热启动"
 
@@ -2944,6 +3037,10 @@ msgstr "您想要将指定的 NFT 移动到一个资料之下吗？"
 #: src/components/nfts/NFTTransferAction.tsx:226
 msgid "Would you like to transfer the specified NFT to a new owner?"
 msgstr "您想要将指定的 NFT 转移给一个新的所有者吗？"
+
+#: src/components/offers/NFTOfferEditor.tsx:261
+#~ msgid "LLC for NFT"
+#~ msgstr "LLC for NFT"
 
 #: src/components/plot/add/PlotAddChooseSize.tsx:48
 #: src/electron/main.tsx:385
@@ -3022,11 +3119,11 @@ msgstr "你将会收到 <0/> 至 {address}"
 msgid "Your Farm Overview"
 msgstr "农场概览"
 
-#: src/components/farm/FarmFullNodeConnections.tsx:93
+#: src/components/farm/FarmFullNodeConnections.tsx:86
 msgid "Your Full Node Connection"
 msgstr "你的全节点连接"
 
-#: src/components/farm/FarmYourHarvesterNetwork.tsx:94
+#: src/components/farm/FarmYourHarvesterNetwork.tsx:83
 msgid "Your Harvester Network"
 msgstr "你的收割网络"
 
@@ -3040,21 +3137,21 @@ msgstr "您的钥匙串已锁定"
 
 #: src/components/app/AppKeyringMigrator.tsx:69
 #~ msgid "Your keys have not been migrated to a new keyring. You will be unable to create new keys or delete existing keys until migration completes. Are you sure you want to skip migrating your keys?"
-#~ msgstr "您的密钥尚未迁移到新的密钥串中。在迁移完成之前，您将无法创建新密钥或删除现有密钥。 您确定要跳过密钥迁移吗？"
+#~ msgstr "Your keys have not been migrated to a new keyring. You will be unable to create new keys or delete existing keys until migration completes. Are you sure you want to skip migrating your keys?"
 
 #: src/components/app/AppKeyringMigrator.tsx:112
 #~ msgid "Your keys need to be migrated to a new keyring that is optionally secured by a master passphrase."
-#~ msgstr "您的密钥需要迁移到一个新的密钥串，该密钥串可以选择由主私钥密码进行保护。"
+#~ msgstr "Your keys need to be migrated to a new keyring that is optionally secured by a master passphrase."
 
 #: src/components/app/AppKeyringMigrator.tsx:118
 #~ msgid "Your keys need to be migrated to a new keyring that is secured by a master passphrase."
-#~ msgstr "您的密钥需要迁移到由私钥密码保护的新密钥串中。"
+#~ msgstr "Your keys need to be migrated to a new keyring that is secured by a master passphrase."
 
-#: src/components/offers/OfferShareDialog.tsx:1023
+#: src/components/offers/OfferShareDialog.tsx:1173
 msgid "Your offer has been successfully posted to Keybase."
 msgstr "您的报价已成功发布到Keybase"
 
-#: src/components/offers/OfferShareDialog.tsx:1249
+#: src/components/offers/OfferShareDialog.tsx:1393
 msgid "Your offer:"
 msgstr "您的报价："
 
@@ -3100,12 +3197,12 @@ msgstr "p2SingletonPuzzleHash 未定义"
 msgid "{0, plural, one {mojo} other {mojos}}"
 msgstr "{0, plural, one {mojo} other {mojos}}"
 
-#: src/components/offers/OfferShareDialog.tsx:1148
+#: src/components/offers/OfferShareDialog.tsx:1299
 msgid "{0}"
 msgstr "{0}"
 
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:172
-#: src/components/plot/add/PlotAddNumberOfPlots.tsx:189
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:177
+#: src/components/plot/add/PlotAddNumberOfPlots.tsx:212
 msgid "{0} buckets is recommended"
 msgstr "推荐{0} 个bucket"
 
@@ -3135,3 +3232,4 @@ msgstr "{max_value}中的{value}"
 #: src/components/plot/add/PlotAddChoosePlotter.tsx:118
 msgid "{warning}"
 msgstr "{warning}"
+

@@ -1,6 +1,5 @@
+import { useGetLoggedInFingerprintQuery, useLocalStorage } from '@littlelambocoin/api-react';
 import { useCallback } from 'react';
-import { useLocalStorage } from '@littlelambocoin/core';
-import { useGetLoggedInFingerprintQuery } from '@littlelambocoin/api-react';
 
 export default function useHiddenWallet(): {
   hide: (walletId: number) => void;

@@ -1,36 +1,48 @@
 # flake8: noqa E402 # See imports after multiprocessing.set_start_method
 import aiohttp
+import datetime
 import multiprocessing
 import os
-from secrets import token_bytes
+import sysconfig
+from typing import Iterator
 
+# TODO: update after resolution in https://github.com/pytest-dev/pytest/issues/7469
+from _pytest.fixtures import SubRequest
 import pytest
 import pytest_asyncio
 import tempfile
 
-from tests.setup_nodes import setup_node_and_wallet, setup_n_nodes, setup_two_nodes
-from pathlib import Path
-from typing import Any, AsyncIterator, Dict, List, Tuple
+
+from typing import Any, AsyncIterator, Dict, List, Tuple, Union
 from littlelambocoin.server.start_service import Service
 
 # Set spawn after stdlib imports, but before other imports
 from littlelambocoin.clvm.spend_sim import SimClient, SpendSim
+from littlelambocoin.full_node.full_node_api import FullNodeAPI
 from littlelambocoin.protocols import full_node_protocol
-from littlelambocoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
+from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.simulator.full_node_simulator import FullNodeSimulator
+
+
 from littlelambocoin.types.peer_info import PeerInfo
 from littlelambocoin.util.config import create_default_littlelambocoin_config, lock_and_load_config
 from littlelambocoin.util.ints import uint16
+from littlelambocoin.simulator.setup_services import setup_daemon, setup_introducer, setup_timelord
+from littlelambocoin.util.task_timing import (
+    main as task_instrumentation_main,
+    start_task_instrumentation,
+    stop_task_instrumentation,
+)
+from littlelambocoin.wallet.wallet import Wallet
+from tests.core.data_layer.util import LittlelambocoinRoot
 from tests.core.node_height import node_height_at_least
-from tests.setup_nodes import (
+from littlelambocoin.simulator.setup_nodes import (
     setup_simulators_and_wallets,
     setup_node_and_wallet,
     setup_full_system,
-    setup_daemon,
     setup_n_nodes,
-    setup_introducer,
-    setup_timelord,
     setup_two_nodes,
+    setup_simulators_and_wallets_service,
 )
 from tests.simulation.test_simulation import test_constants_modified
 from littlelambocoin.simulator.time_out_assert import time_out_assert
@@ -42,8 +54,29 @@ multiprocessing.set_start_method("spawn")
 from pathlib import Path
 from littlelambocoin.util.keyring_wrapper import KeyringWrapper
 from littlelambocoin.simulator.block_tools import BlockTools, test_constants, create_block_tools, create_block_tools_async
-from tests.util.keyring import TempKeyring
-from tests.setup_nodes import setup_farmer_multi_harvester
+from littlelambocoin.simulator.keyring import TempKeyring
+from littlelambocoin.simulator.setup_nodes import setup_farmer_multi_harvester
+
+
+@pytest.fixture(name="node_name_for_file")
+def node_name_for_file_fixture(request: SubRequest) -> str:
+    # TODO: handle other characters banned on windows
+    return request.node.name.replace(os.sep, "_")
+
+
+@pytest.fixture(name="test_time_for_file")
+def test_time_for_file_fixture(request: SubRequest) -> str:
+    return datetime.datetime.now().isoformat().replace(":", "_")
+
+
+@pytest.fixture(name="task_instrumentation")
+def task_instrumentation_fixture(node_name_for_file: str, test_time_for_file: str) -> Iterator[None]:
+    target_directory = f"task-profile-{node_name_for_file}-{test_time_for_file}"
+
+    start_task_instrumentation()
+    yield
+    stop_task_instrumentation(target_dir=target_directory)
+    task_instrumentation_main(args=[target_directory])
 
 
 @pytest.fixture(scope="session")
@@ -82,7 +115,7 @@ async def empty_blockchain(request):
     Provides a list of 10 valid blocks, as well as a blockchain with 9 blocks added to it.
     """
     from tests.util.blockchain import create_blockchain
-    from tests.setup_nodes import test_constants
+    from littlelambocoin.simulator.setup_nodes import test_constants
 
     bc1, db_wrapper, db_path = await create_blockchain(test_constants, request.param)
     yield bc1
@@ -90,6 +123,11 @@ async def empty_blockchain(request):
     await db_wrapper.close()
     bc1.shut_down()
     db_path.unlink()
+
+
+@pytest.fixture(scope="function")
+def latest_db_version():
+    return 2
 
 
 @pytest.fixture(scope="function", params=[1, 2])
@@ -290,13 +328,21 @@ async def two_nodes_sim_and_wallets():
 
 @pytest_asyncio.fixture(scope="function")
 async def two_nodes_sim_and_wallets_services():
-    async for _ in setup_simulators_and_wallets(2, 0, {}, yield_services=True):
+    async for _ in setup_simulators_and_wallets_service(2, 0, {}):
         yield _
 
 
 @pytest_asyncio.fixture(scope="function")
-async def wallet_node_sim_and_wallet():
+async def wallet_node_sim_and_wallet() -> AsyncIterator[
+    Tuple[List[Union[FullNodeAPI, FullNodeSimulator]], List[Tuple[Wallet, LittlelambocoinServer]], BlockTools],
+]:
     async for _ in setup_simulators_and_wallets(1, 1, {}):
+        yield _
+
+
+@pytest_asyncio.fixture(scope="function")
+async def one_wallet_and_one_simulator_services():
+    async for _ in setup_simulators_and_wallets_service(1, 1, {}):
         yield _
 
 
@@ -316,8 +362,8 @@ async def two_wallet_nodes(request):
 
 
 @pytest_asyncio.fixture(scope="function")
-async def two_wallet_nodes_services():
-    async for _ in setup_simulators_and_wallets(1, 2, {}, yield_services=True):
+async def two_wallet_nodes_services() -> AsyncIterator[Tuple[List[Service], List[FullNodeSimulator], BlockTools]]:
+    async for _ in setup_simulators_and_wallets_service(1, 2, {}):
         yield _
 
 
@@ -421,11 +467,12 @@ async def wallet_and_node():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def one_node_one_block(wallet_a):
+async def one_node_one_block() -> AsyncIterator[Tuple[Union[FullNodeAPI, FullNodeSimulator], LittlelambocoinServer, BlockTools]]:
     async_gen = setup_simulators_and_wallets(1, 0, {})
     nodes, _, bt = await async_gen.__anext__()
     full_node_1 = nodes[0]
     server_1 = full_node_1.full_node.server
+    wallet_a = bt.get_pool_wallet_tool()
 
     reward_ph = wallet_a.get_new_puzzlehash()
     blocks = bt.get_consecutive_blocks(
@@ -450,13 +497,14 @@ async def one_node_one_block(wallet_a):
 
 
 @pytest_asyncio.fixture(scope="function")
-async def two_nodes_one_block(wallet_a):
+async def two_nodes_one_block():
     async_gen = setup_simulators_and_wallets(2, 0, {})
     nodes, _, bt = await async_gen.__anext__()
     full_node_1 = nodes[0]
     full_node_2 = nodes[1]
     server_1 = full_node_1.full_node.server
     server_2 = full_node_2.full_node.server
+    wallet_a = bt.get_pool_wallet_tool()
 
     reward_ph = wallet_a.get_new_puzzlehash()
     blocks = bt.get_consecutive_blocks(
@@ -533,6 +581,13 @@ async def get_daemon(bt):
         yield _
 
 
+@pytest.fixture(scope="function")
+def empty_keyring():
+    with TempKeyring(user="user-littlelambocoin-1.8", service="littlelambocoin-user-littlelambocoin-1.8") as keychain:
+        yield keychain
+        KeyringWrapper.cleanup_shared_instance()
+
+
 @pytest_asyncio.fixture(scope="function")
 async def get_temp_keyring():
     with TempKeyring() as keychain:
@@ -573,8 +628,8 @@ async def wallets_prefarm(two_wallet_nodes, self_hostname, trusted):
     """
     Sets up the node with 10 blocks, and returns a payer and payee wallet.
     """
-    farm_blocks = 10
-    buffer = 4
+    farm_blocks = 3
+    buffer = 1
     full_nodes, wallets, _ = two_wallet_nodes
     full_node_api = full_nodes[0]
     full_node_server = full_node_api.server
@@ -582,9 +637,6 @@ async def wallets_prefarm(two_wallet_nodes, self_hostname, trusted):
     wallet_node_1, wallet_server_1 = wallets[1]
     wallet_0 = wallet_node_0.wallet_state_manager.main_wallet
     wallet_1 = wallet_node_1.wallet_state_manager.main_wallet
-
-    ph0 = await wallet_0.get_new_puzzlehash()
-    ph1 = await wallet_1.get_new_puzzlehash()
 
     if trusted:
         wallet_node_0.config["trusted_peers"] = {full_node_server.node_id.hex(): full_node_server.node_id.hex()}
@@ -596,29 +648,41 @@ async def wallets_prefarm(two_wallet_nodes, self_hostname, trusted):
     await wallet_server_0.start_client(PeerInfo(self_hostname, uint16(full_node_server._port)), None)
     await wallet_server_1.start_client(PeerInfo(self_hostname, uint16(full_node_server._port)), None)
 
-    for i in range(0, farm_blocks):
-        await full_node_api.farm_new_transaction_block(FarmNewBlockProtocol(ph0))
-
-    for i in range(0, farm_blocks):
-        await full_node_api.farm_new_transaction_block(FarmNewBlockProtocol(ph1))
-
-    for i in range(0, buffer):
-        await full_node_api.farm_new_transaction_block(FarmNewBlockProtocol(bytes32(token_bytes(nbytes=32))))
+    wallet_0_rewards = await full_node_api.farm_blocks(count=farm_blocks, wallet=wallet_0)
+    wallet_1_rewards = await full_node_api.farm_blocks(count=farm_blocks, wallet=wallet_1)
+    await full_node_api.process_blocks(count=buffer)
 
     await time_out_assert(30, wallet_is_synced, True, wallet_node_0, full_node_api)
     await time_out_assert(30, wallet_is_synced, True, wallet_node_1, full_node_api)
 
-    return wallet_node_0, wallet_node_1, full_node_api
+    assert await wallet_0.get_confirmed_balance() == wallet_0_rewards
+    assert await wallet_0.get_unconfirmed_balance() == wallet_0_rewards
+    assert await wallet_1.get_confirmed_balance() == wallet_1_rewards
+    assert await wallet_1.get_unconfirmed_balance() == wallet_1_rewards
+
+    return (wallet_node_0, wallet_0_rewards), (wallet_node_1, wallet_1_rewards), full_node_api
 
 
 @pytest_asyncio.fixture(scope="function")
 async def introducer(bt):
+    async for service in setup_introducer(bt, 0):
+        yield service._api, service._node.server
+
+
+@pytest_asyncio.fixture(scope="function")
+async def introducer_service(bt):
     async for _ in setup_introducer(bt, 0):
         yield _
 
 
 @pytest_asyncio.fixture(scope="function")
 async def timelord(bt):
+    async for service in setup_timelord(uint16(0), False, test_constants, bt):
+        yield service._api, service._node.server
+
+
+@pytest_asyncio.fixture(scope="function")
+async def timelord_service(bt):
     async for _ in setup_timelord(uint16(0), False, test_constants, bt):
         yield _
 
@@ -654,8 +718,25 @@ def root_path_populated_with_config(tmp_littlelambocoin_root) -> Path:
 
 @pytest.fixture(scope="function")
 def config_with_address_prefix(root_path_populated_with_config: Path, prefix: str) -> Dict[str, Any]:
-    updated_config: Dict[str, Any] = {}
     with lock_and_load_config(root_path_populated_with_config, "config.yaml") as config:
         if prefix is not None:
             config["network_overrides"]["config"][config["selected_network"]]["address_prefix"] = prefix
     return config
+
+
+@pytest.fixture(name="scripts_path", scope="session")
+def scripts_path_fixture() -> Path:
+    scripts_string = sysconfig.get_path("scripts")
+    if scripts_string is None:
+        raise Exception("These tests depend on the scripts path existing")
+
+    return Path(scripts_string)
+
+
+@pytest.fixture(name="littlelambocoin_root", scope="function")
+def littlelambocoin_root_fixture(tmp_path: Path, scripts_path: Path) -> LittlelambocoinRoot:
+    root = LittlelambocoinRoot(path=tmp_path.joinpath("littlelambocoin_root"), scripts_path=scripts_path)
+    root.run(args=["init"])
+    root.run(args=["configure", "--set-log-level", "INFO"])
+
+    return root

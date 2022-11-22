@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 import logging
 import random
@@ -20,7 +22,7 @@ from littlelambocoin.protocols.harvester_protocol import (
     PlotSyncResponse,
     PlotSyncStart,
 )
-from littlelambocoin.server.ws_connection import NodeType
+from littlelambocoin.server.outbound_message import NodeType
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.ints import uint8, uint32, uint64
 from littlelambocoin.util.misc import get_list_or_len

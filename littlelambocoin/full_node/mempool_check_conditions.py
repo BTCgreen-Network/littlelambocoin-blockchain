@@ -13,21 +13,18 @@ from littlelambocoin.util.errors import Err
 from littlelambocoin.util.ints import uint32, uint64, uint16
 from littlelambocoin.wallet.puzzles.rom_bootstrap_generator import get_generator
 from littlelambocoin.types.blockchain_format.program import SerializedProgram
-from littlelambocoin.wallet.puzzles.load_clvm import load_serialized_clvm
+from littlelambocoin.wallet.puzzles.load_clvm import load_serialized_clvm_maybe_recompile
 from littlelambocoin.consensus.default_constants import DEFAULT_CONSTANTS
 
 from littlelambocoin.types.blockchain_format.program import Program
 
 GENERATOR_MOD = get_generator()
 
-DESERIALIZE_MOD = load_serialized_clvm("littlelambocoinlisp_deserialisation.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
+DESERIALIZE_MOD = load_serialized_clvm_maybe_recompile(
+    "littlelambocoinlisp_deserialisation.clvm", package_or_requirement="littlelambocoin.wallet.puzzles"
+)
 
 log = logging.getLogger(__name__)
-
-
-def unwrap(x: Optional[uint32]) -> uint32:
-    assert x is not None
-    return x
 
 
 def get_name_puzzle_conditions(

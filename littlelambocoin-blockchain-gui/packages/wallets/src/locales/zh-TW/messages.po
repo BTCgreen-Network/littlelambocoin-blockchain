@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh_TW\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-27 18:40\n"
+"PO-Revision-Date: 2022-10-24 18:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -42,7 +42,7 @@ msgstr "增加備份 ID"
 
 #: src/components/hero/WalletHeroAdd.tsx:99
 #~ msgid "Add Custom Token"
-#~ msgstr "新增自訂義代幣"
+#~ msgstr "Add Custom Token"
 
 #: src/components/WalletsList.tsx:54
 #: src/components/WalletsManageTokens.tsx:174
@@ -104,12 +104,6 @@ msgstr "授權收款人錢包"
 msgid "Balance"
 msgstr "餘額"
 
-#: src/components/cat/WalletCATSelect.tsx:24
-#: src/components/create/WalletCreateList.tsx:35
-#: src/constants/WalletName.ts:23
-msgid "Littlelambocoin Asset Token"
-msgstr "奇亞資產代幣"
-
 #: src/components/PasteMnemonic.tsx:78
 #: src/components/WalletRenameDialog.tsx:90
 msgid "Cancel"
@@ -123,6 +117,12 @@ msgstr "不能寄送奇亞到有色地址。請輸入奇亞地址。"
 #: src/components/WalletsSidebar.tsx:145
 msgid "Check my snapshot balance"
 msgstr ""
+
+#: src/components/cat/WalletCATSelect.tsx:24
+#: src/components/create/WalletCreateList.tsx:35
+#: src/constants/WalletName.ts:23
+msgid "Littlelambocoin Asset Token"
+msgstr "奇亞資產代幣"
 
 #: src/components/WalletsSidebar.tsx:160
 msgid "Click here to download an older version of the wallet"
@@ -147,7 +147,7 @@ msgstr "已確認於高度"
 
 #: src/components/WalletStatusHeader.tsx:40
 #~ msgid "Connected ({0})"
-#~ msgstr "連接 {0}"
+#~ msgstr "Connected ({0})"
 
 #: src/components/WalletConnections.tsx:62
 msgid "Connection type"
@@ -155,7 +155,7 @@ msgstr "連線類型"
 
 #: src/components/WalletConnections.tsx:80
 #~ msgid "Connections"
-#~ msgstr "連線"
+#~ msgstr "Connections"
 
 #: src/components/rateLimited/WalletRateLimited.jsx:305
 #: src/components/rateLimited/WalletRateLimited.jsx:427
@@ -177,7 +177,7 @@ msgstr "建立一個證明封包"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:76
 #~ msgid "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
-#~ msgstr "從現有的TAIL建立奇亞資產代幣錢包"
+#~ msgstr "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
 
 #: src/components/did/WalletDIDCreate.tsx:113
 msgid "Create Distributed Identity Wallet"
@@ -213,7 +213,7 @@ msgstr "建立交易"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:75
 #~ msgid "Create custom CAT Wallet"
-#~ msgstr "建立顧客CAT錢包"
+#~ msgstr "Create custom CAT Wallet"
 
 #: src/constants/WalletName.ts:20
 msgid "Custody Wallet"
@@ -267,7 +267,7 @@ msgstr "拖放證明封包"
 msgid "Drag and drop your recovery backup file"
 msgstr "拖放您的備份檔案"
 
-#: src/components/WalletImport.tsx:133
+#: src/components/WalletImport.tsx:151
 msgid "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
 msgstr "輸入你已存的 24 字助記符號以復原您的 Littlelambocoin 錢包。"
 
@@ -296,8 +296,7 @@ msgstr "檔案名稱"
 
 #: src/components/WalletReceiveAddress.tsx:49
 msgid "HD or Hierarchical Deterministic keys are a type of public key/private key scheme where one private key can have a nearly infinite number of different public keys (and therefore wallet receive addresses) that will all ultimately come back to and be spendable by a single private key."
-msgstr ""
-"HD or Hierarchical Deterministic keys are a type of public key/private key scheme where one private key can have a nearly infinite number of different public keys (and therefore wallet receive addresses) that will all ultimately come back to and be spendable by a single private key.\n"
+msgstr "HD or Hierarchical Deterministic keys are a type of public key/private key scheme where one private key can have a nearly infinite number of different public keys (and therefore wallet receive addresses) that will all ultimately come back to and be spendable by a single private key.\n"
 "一個私鑰可以分成幾乎無限數量的不同公鑰(指錢包地址)，這些不同的公鑰(指錢包地址)都將回歸到同一個私鑰。"
 
 #: src/components/WalletConnections.tsx:27
@@ -312,7 +311,7 @@ msgstr "如果您想加快交易速度，請刪除未確認的交易並以更高
 msgid "Import"
 msgstr "匯入"
 
-#: src/components/WalletImport.tsx:130
+#: src/components/WalletImport.tsx:148
 msgid "Import Wallet from Mnemonics"
 msgstr "以助記符號匯入錢包"
 
@@ -343,7 +342,7 @@ msgstr "連接列表是空的"
 
 #: src/components/WalletReceiveAddressField.tsx:40
 msgid "Loading..."
-msgstr ""
+msgstr "讀取中..."
 
 #: src/components/cat/WalletDID.tsx:805
 #: src/components/did/WalletDID.tsx:805
@@ -396,12 +395,12 @@ msgstr ""
 msgid "New Address"
 msgstr "新位址"
 
-#: src/components/WalletAdd.tsx:73
+#: src/components/WalletAdd.tsx:91
 msgid "New Wallet"
 msgstr "新錢包"
 
-#: src/components/WalletAdd.tsx:107
-#: src/components/WalletImport.tsx:164
+#: src/components/WalletAdd.tsx:151
+#: src/components/WalletImport.tsx:189
 msgid "Next"
 msgstr "下一步"
 
@@ -424,7 +423,7 @@ msgstr "尚無"
 
 #: src/components/WalletStatusHeader.tsx:38
 #~ msgid "Not Connected"
-#~ msgstr "未連接"
+#~ msgstr "Not Connected"
 
 #: src/components/WalletStatus.tsx:57
 msgid "Not Synced"
@@ -451,7 +450,7 @@ msgstr "只允許一個備份檔案。"
 msgid "Outgoing"
 msgstr "匯出"
 
-#: src/components/WalletImport.tsx:95
+#: src/components/WalletImport.tsx:101
 msgid "Paste Mnemonic"
 msgstr ""
 
@@ -506,7 +505,7 @@ msgstr "請輸入一個 PuzzleHash"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:40
 #~ msgid "Please enter a valid CAT name"
-#~ msgstr ""
+#~ msgstr "Please enter a valid CAT name"
 
 #: src/components/cat/WalletCATCreateExistingSimple.tsx:41
 msgid "Please enter a valid asset id"
@@ -677,7 +676,7 @@ msgstr ""
 
 #: src/components/WalletsList.tsx:32
 msgid "Select Wallet"
-msgstr ""
+msgstr "選擇錢包"
 
 #: src/components/create/WalletCreateList.tsx:28
 msgid "Select Wallet Type"
@@ -807,7 +806,7 @@ msgstr "到"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:85
 #~ msgid "Token and Asset Issuance Limitations"
-#~ msgstr ""
+#~ msgstr "Token and Asset Issuance Limitations"
 
 #: src/components/cat/WalletCATCreateSimple.tsx:45
 msgid "Token has empty asset id"
@@ -847,6 +846,11 @@ msgstr "檢視未結餘額"
 msgid "Wallet Connections"
 msgstr ""
 
+#: src/components/WalletAdd.tsx:128
+#: src/components/WalletImport.tsx:176
+msgid "Wallet Name"
+msgstr ""
+
 #: src/components/cat/WalletCAT.tsx:75
 #: src/components/cat/WalletDID.tsx:1118
 #: src/components/did/WalletDID.tsx:1118
@@ -869,7 +873,7 @@ msgstr ""
 msgid "We've made an upgrade to the CAT standard which requires all CATs to be re-issued. You will be airdropped your new tokens as they are re-issued by the original issuers. The airdropped tokens will be based on the balance as of block height:<0/><1/><2/>(Approximate time: July 26th, 2022 @ 17:00 UTC)"
 msgstr ""
 
-#: src/components/WalletAdd.tsx:76
+#: src/components/WalletAdd.tsx:94
 msgid "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
 msgstr "歡迎！以下的字是用來為你的錢包備份。沒有這些你將會無法進入你的錢包。將這些安全保存好！寫下每個字，包括他們旁邊的順序數字。（順序很重要）"
 
@@ -886,6 +890,7 @@ msgstr ""
 msgid "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
 msgstr ""
 
-#: src/components/WalletImport.tsx:71
+#: src/components/WalletImport.tsx:77
 msgid "Your pasted list does not include 24 valid mnemonic words."
 msgstr ""
+

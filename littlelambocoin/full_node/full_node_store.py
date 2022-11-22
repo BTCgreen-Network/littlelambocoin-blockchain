@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from asyncio import constants
 import dataclasses
 import logging
 import time
@@ -221,7 +220,7 @@ class FullNodeStore:
 
         self.future_cache_key_times[signage_point.rc_vdf.challenge] = int(time.time())
         self.future_sp_cache[signage_point.rc_vdf.challenge].append((index, signage_point))
-        log.info(f"Don't have rc hash {signage_point.rc_vdf.challenge}. llching signage point {index}.")
+        log.info(f"Don't have rc hash {signage_point.rc_vdf.challenge}. caching signage point {index}.")
 
     def get_future_ip(self, rc_challenge_hash: bytes32) -> List[timelord_protocol.NewInfusionPointVDF]:
         return self.future_ip_cache.get(rc_challenge_hash, [])
@@ -313,7 +312,7 @@ class FullNodeStore:
                     self.future_eos_cache[rc_challenge] = []
                 self.future_eos_cache[rc_challenge].append(eos)
                 self.future_cache_key_times[rc_challenge] = int(time.time())
-                log.info(f"Don't have challenge hash {rc_challenge}, llching EOS")
+                log.info(f"Don't have challenge hash {rc_challenge}, caching EOS")
                 return None
 
             if peak.deficit == self.constants.MIN_BLOCKS_PER_CHALLENGE_BLOCK:
@@ -604,11 +603,11 @@ class FullNodeStore:
     def get_signage_point(self, cc_signage_point: bytes32) -> Optional[SignagePoint]:
         assert len(self.finished_sub_slots) >= 1
         if cc_signage_point == self.constants.GENESIS_CHALLENGE:
-            return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
+            return SignagePoint(None, None, None, None, self.constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
 
         for sub_slot, sps, _ in self.finished_sub_slots:
             if sub_slot is not None and sub_slot.challenge_chain.get_hash() == cc_signage_point:
-                return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
+                return SignagePoint(None, None, None, None, self.constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
             for sp in sps:
                 if sp is not None:
                     assert sp.cc_vdf is not None
@@ -628,7 +627,7 @@ class FullNodeStore:
 
             if cc_hash == challenge_hash:
                 if index == 0:
-                    return SignagePoint(None, None, None, None, self.constants.TIMELORD_PUZZLE_HASH)
+                    return SignagePoint(None, None, None, None, self.constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
                 sp: Optional[SignagePoint] = sps[index]
                 if sp is not None:
                     assert sp.rc_vdf is not None

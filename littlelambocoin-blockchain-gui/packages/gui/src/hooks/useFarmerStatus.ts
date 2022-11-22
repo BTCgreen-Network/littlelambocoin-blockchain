@@ -1,22 +1,14 @@
 import { ServiceName } from '@littlelambocoin/api';
-import { useIsServiceRunningQuery } from '@littlelambocoin/api-react';
+import { useService } from '@littlelambocoin/api-react';
+
 import FarmerStatus from '../constants/FarmerStatus';
 import FullNodeState from '../constants/FullNodeState';
 import useFullNodeState from './useFullNodeState';
 
 export default function useFarmerStatus(): FarmerStatus {
-  const { state: fullNodeState, isLoading: isLoadingFullNodeState } =
-    useFullNodeState();
+  const { state: fullNodeState, isLoading: isLoadingFullNodeState } = useFullNodeState();
 
-  const { data: isRunning, isLoading: isLoadingIsRunning } =
-    useIsServiceRunningQuery(
-      {
-        service: ServiceName.FARMER,
-      },
-      {
-        pollingInterval: 1000,
-      },
-    );
+  const { isRunning, isLoading: isLoadingIsRunning } = useService(ServiceName.FARMER);
 
   const isLoading = isLoadingIsRunning || isLoadingFullNodeState;
 

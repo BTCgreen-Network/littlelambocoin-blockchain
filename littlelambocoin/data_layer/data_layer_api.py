@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from littlelambocoin.data_layer.data_layer import DataLayer

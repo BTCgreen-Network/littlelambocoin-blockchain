@@ -1,14 +1,17 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 from chia_rs import CoinState, RespondToPhUpdates
 
+from littlelambocoin.full_node.fee_estimate import FeeEstimateGroup
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.blockchain_format.program import SerializedProgram
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.header_block import HeaderBlock
 from littlelambocoin.types.spend_bundle import SpendBundle
-from littlelambocoin.util.ints import uint8, uint32, uint128
+from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 from littlelambocoin.util.streamable import Streamable, streamable
 
 """
@@ -256,3 +259,19 @@ class RequestSESInfo(Streamable):
 class RespondSESInfo(Streamable):
     reward_chain_hash: List[bytes32]
     heights: List[List[uint32]]
+
+
+@streamable
+@dataclass(frozen=True)
+class RequestFeeEstimates(Streamable):
+    """
+    time_targets (List[uint64]): Epoch timestamps in seconds to estimate FeeRates for.
+    """
+
+    time_targets: List[uint64]
+
+
+@streamable
+@dataclass(frozen=True)
+class RespondFeeEstimates(Streamable):
+    estimates: FeeEstimateGroup

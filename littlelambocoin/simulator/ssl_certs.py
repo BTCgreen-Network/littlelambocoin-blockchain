@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 from dataclasses import dataclass
 from typing import Dict, Generic, List, Tuple, TypeVar
@@ -36,7 +38,7 @@ class SSLTestCollateralTracker:
 
 
 @dataclass
-class SSLTestLLCertAndPrivateKey(SSLTestCollateralTracker):
+class SSLTestCACertAndPrivateKey(SSLTestCollateralTracker):
     cert_and_key: Tuple[bytes, bytes]
 
 
@@ -62,17 +64,17 @@ class SSLTestCollateralWrapper(Generic[_T_SSLTestCollateral]):
 # Private CA certs/keys
 # ---------------------------------------------------------------------------
 
-SSL_TEST_PRIVATE_CA_CERTS_AND_KEYS: List[SSLTestLLCertAndPrivateKey] = [
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_1),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_2),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_3),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_4),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_5),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_6),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_7),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_8),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_9),
-    SSLTestLLCertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_10),
+SSL_TEST_PRIVATE_CA_CERTS_AND_KEYS: List[SSLTestCACertAndPrivateKey] = [
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_1),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_2),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_3),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_4),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_5),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_6),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_7),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_8),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_9),
+    SSLTestCACertAndPrivateKey(SSL_TEST_PRIVATE_CA_CERT_AND_KEY_10),
 ]
 
 # ---------------------------------------------------------------------------
@@ -99,7 +101,7 @@ ssl_test_private_ca_certs_and_keys_gen = (
 )
 
 
-def get_next_private_ca_cert_and_key() -> SSLTestCollateralWrapper[SSLTestLLCertAndPrivateKey]:
+def get_next_private_ca_cert_and_key() -> SSLTestCollateralWrapper[SSLTestCACertAndPrivateKey]:
     return SSLTestCollateralWrapper(next(ssl_test_private_ca_certs_and_keys_gen))
 
 

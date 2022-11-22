@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import asyncio
+import sys
+from typing import Optional, Tuple
 
 import click
-import sys
-
-from typing import Optional, Tuple
 
 
 @click.group("keys", short_help="Manage your keys")
@@ -11,6 +12,7 @@ from typing import Optional, Tuple
 def keys_cmd(ctx: click.Context):
     """Create, delete, view and use your key pairs"""
     from pathlib import Path
+
     from .keys_funcs import migrate_keys
 
     root_path: Path = ctx.obj["root_path"]
@@ -54,10 +56,19 @@ def generate_cmd(ctx: click.Context, label: Optional[str]):
     show_default=True,
     is_flag=True,
 )
-def show_cmd(show_mnemonic_seed, non_observer_derivation):
+@click.option(
+    "--json",
+    "-j",
+    help=("Displays all the keys in keychain as JSON"),
+    default=False,
+    show_default=True,
+    is_flag=True,
+)
+@click.pass_context
+def show_cmd(ctx: click.Context, show_mnemonic_seed, non_observer_derivation, json):
     from .keys_funcs import show_all_keys
 
-    show_all_keys(show_mnemonic_seed, non_observer_derivation)
+    show_all_keys(ctx.obj["root_path"], show_mnemonic_seed, non_observer_derivation, json)
 
 
 @keys_cmd.command("add", short_help="Add a private key by mnemonic")
@@ -296,8 +307,10 @@ def search_cmd(
     prefix: Optional[str],
 ):
     import sys
-    from .keys_funcs import search_derive, resolve_derivation_master_key
+
     from blspy import PrivateKey
+
+    from .keys_funcs import resolve_derivation_master_key, search_derive
 
     private_key: Optional[PrivateKey] = None
     fingerprint: Optional[int] = ctx.obj.get("fingerprint", None)

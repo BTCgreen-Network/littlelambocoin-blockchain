@@ -42,6 +42,7 @@ from littlelambocoin.util.block_cache import BlockCache
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint8, uint32, uint64, uint128
 from littlelambocoin.util.setproctitle import getproctitle, setproctitle
+from littlelambocoin.types.blockchain_format.proof_of_space import verify_and_get_quality_string
 
 log = logging.getLogger(__name__)
 
@@ -636,7 +637,6 @@ class WeightProofHandler:
                         ses_fork_idx,
                     )
                 )
-
                 valid, _ = await task
         return valid, fork_point, summaries
 
@@ -675,7 +675,7 @@ def _get_weights_for_sampling(
     queries = -WeightProofHandler.LAMBDA_L * math.log(2, prob_of_adv_succeeding)
     for i in range(int(queries) + 1):
         u = rng.random()
-        q = 1 - delta ** u
+        q = 1 - delta**u
         # todo check division and type conversions
         weight = q * float(total_weight)
         weight_to_check.append(uint128(int(weight)))
@@ -1307,7 +1307,8 @@ def _validate_pospace_recent_chain(
     else:
         cc_sp_hash = block.reward_chain_block.challenge_chain_sp_vdf.output.get_hash()
     assert cc_sp_hash is not None
-    q_str = block.reward_chain_block.proof_of_space.verify_and_get_quality_string(
+    q_str = verify_and_get_quality_string(
+        block.reward_chain_block.proof_of_space,
         constants,
         challenge if not overflow else prev_challenge,
         cc_sp_hash,
@@ -1354,7 +1355,8 @@ def __validate_pospace(
 
     # validate proof of space
     assert sub_slot_data.proof_of_space is not None
-    q_str = sub_slot_data.proof_of_space.verify_and_get_quality_string(
+    q_str = verify_and_get_quality_string(
+        sub_slot_data.proof_of_space,
         constants,
         challenge,
         cc_sp_hash,

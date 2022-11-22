@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import { t, Trans } from '@lingui/macro';
-import { CopyToClipboard, Loading, Flex } from '@littlelambocoin/core';
 import { useGetCurrentAddressQuery, useGetNextAddressMutation } from '@littlelambocoin/api-react';
-import {
-  TextField,
-  InputAdornment,
-  IconButton,
-} from '@mui/material';
+import { CopyToClipboard, Loading, Flex } from '@littlelambocoin/core';
+import { t, Trans } from '@lingui/macro';
 import { Autorenew } from '@mui/icons-material';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
+import React, { useState } from 'react';
 
 export type WalletReceiveAddressProps = {
   walletId?: number;
@@ -50,7 +46,7 @@ export default function WalletReceiveAddressField(props: WalletReceiveAddressPro
                 <IconButton onClick={handleNewAddress} size="small">
                   <Autorenew />
                 </IconButton>
-            )}
+              )}
             </Flex>
           </InputAdornment>
         ),

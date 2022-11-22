@@ -4,4 +4,3 @@
 set -e
 
 unlink /usr/bin/littlelambocoin || true
-unlink /opt/littlelambocoin || true

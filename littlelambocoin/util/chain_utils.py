@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List
 
 from clvm.casts import int_from_bytes
@@ -6,10 +8,7 @@ from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.blockchain_format.program import SerializedProgram
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.condition_opcodes import ConditionOpcode
-from littlelambocoin.util.condition_tools import (
-    conditions_dict_for_solution,
-    created_outputs_for_conditions_dict,
-)
+from littlelambocoin.util.condition_tools import conditions_dict_for_solution, created_outputs_for_conditions_dict
 
 
 def additions_for_solution(

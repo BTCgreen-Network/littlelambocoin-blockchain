@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import logging
 import time
@@ -21,7 +23,9 @@ from littlelambocoin.protocols.harvester_protocol import (
     PlotSyncResponse,
     PlotSyncStart,
 )
-from littlelambocoin.server.ws_connection import NodeType, ProtocolMessageTypes, WSLittlelambocoinConnection, make_msg
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import NodeType, make_msg
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.util.generator_tools import list_to_batches
 from littlelambocoin.util.ints import int16, uint32, uint64
 
@@ -92,7 +96,7 @@ class Sender:
     _messages: List[MessageGenerator[PayloadType]]
     _last_sync_id: uint64
     _stop_requested = False
-    _task: Optional[asyncio.Task]  # type: ignore[type-arg]  # Asks for Task parameter which doesn't work
+    _task: Optional[asyncio.Task[None]]
     _response: Optional[ExpectedResponse]
 
     def __init__(self, plot_manager: PlotManager) -> None:

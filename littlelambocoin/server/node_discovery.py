@@ -7,7 +7,6 @@ from secrets import randbits
 from typing import Dict, Optional, List, Set
 
 
-import littlelambocoin.server.ws_connection as ws
 import dns.asyncresolver
 from littlelambocoin.protocols import full_node_protocol, introducer_protocol
 from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
@@ -17,6 +16,7 @@ from littlelambocoin.server.address_manager_sqlite_store import create_address_m
 from littlelambocoin.server.outbound_message import NodeType, make_msg, Message
 from littlelambocoin.server.peer_store_resolver import PeerStoreResolver
 from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.types.peer_info import PeerInfo, TimestampedPeerInfo
 from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint64
@@ -26,9 +26,9 @@ MAX_TOTAL_PEERS_RECEIVED = 3000
 MAX_CONCURRENT_OUTBOUND_CONNECTIONS = 70
 NETWORK_ID_DEFAULT_PORTS = {
     "mainnet": 4575,
-    "testnet7": 58444,
-    "testnet10": 58444,
-    "testnet8": 58445,
+    "testnet7": 54575,
+    "testnet10": 54575,
+    "testnet8": 518758,
 }
 
 
@@ -138,7 +138,7 @@ class FullNodeDiscovery:
     def add_message(self, message, data):
         self.message_queue.put_nowait((message, data))
 
-    async def on_connect(self, peer: ws.WSLittlelambocoinConnection):
+    async def on_connect(self, peer: WSLittlelambocoinConnection):
         if (
             peer.is_outbound is False
             and peer.peer_server_port is not None
@@ -165,7 +165,7 @@ class FullNodeDiscovery:
             await peer.send_message(msg)
 
     # Updates timestamps each time we receive a message for outbound connections.
-    async def update_peer_timestamp_on_message(self, peer: ws.WSLittlelambocoinConnection):
+    async def update_peer_timestamp_on_message(self, peer: WSLittlelambocoinConnection):
         if (
             peer.is_outbound
             and peer.peer_server_port is not None
@@ -184,7 +184,7 @@ class FullNodeDiscovery:
 
     def _num_needed_peers(self) -> int:
         target = self.target_outbound_count
-        outgoing = len(self.server.get_full_node_outgoing_connections())
+        outgoing = len(self.server.get_connections(NodeType.FULL_NODE, outbound=True))
         return max(0, target - outgoing)
 
     """
@@ -203,7 +203,7 @@ class FullNodeDiscovery:
         if self.introducer_info is None:
             return None
 
-        async def on_connect(peer: ws.WSLittlelambocoinConnection):
+        async def on_connect(peer: WSLittlelambocoinConnection):
             msg = make_msg(ProtocolMessageTypes.request_peers_introducer, introducer_protocol.RequestPeersIntroducer())
             await peer.send_message(msg)
 
@@ -217,7 +217,7 @@ class FullNodeDiscovery:
                 )
                 return
             if self.resolver is None:
-                self.log.warn("Skipping DNS query: asyncresolver not initialized.")
+                self.log.warning("Skipping DNS query: asyncresolver not initialized.")
                 return
             for rdtype in ["A", "AAAA"]:
                 peers: List[TimestampedPeerInfo] = []
@@ -234,9 +234,9 @@ class FullNodeDiscovery:
                 if len(peers) > 0:
                     await self._respond_peers_common(full_node_protocol.RespondPeers(peers), None, False)
         except Exception as e:
-            self.log.warn(f"querying DNS introducer failed: {e}")
+            self.log.warning(f"querying DNS introducer failed: {e}")
 
-    async def on_connect_callback(self, peer: ws.WSLittlelambocoinConnection):
+    async def on_connect_callback(self, peer: WSLittlelambocoinConnection):
         if self.server.on_connect is not None:
             await self.server.on_connect(peer)
         else:
@@ -320,7 +320,7 @@ class FullNodeDiscovery:
 
                 # Only connect out to one peer per network group (/16 for IPv4).
                 groups = set()
-                full_node_connected = self.server.get_full_node_outgoing_connections()
+                full_node_connected = self.server.get_connections(NodeType.FULL_NODE, outbound=True)
                 connected = [c.get_peer_info() for c in full_node_connected]
                 connected = [c for c in connected if c is not None]
                 for conn in full_node_connected:
@@ -456,7 +456,7 @@ class FullNodeDiscovery:
             await asyncio.sleep(cleanup_interval)
 
             # Perform the cleanup only if we have at least 3 connections.
-            full_node_connected = self.server.get_full_node_connections()
+            full_node_connected = self.server.get_connections(NodeType.FULL_NODE)
             connected = [c.get_peer_info() for c in full_node_connected]
             connected = [c for c in connected if c is not None]
             if self.address_manager is not None and len(connected) >= 3:
@@ -642,7 +642,7 @@ class FullNodePeers(FullNodeDiscovery):
                 if not relay_peer_info.is_valid():
                     continue
                 # https://en.bitcoin.it/wiki/Satoshi_Client_Node_Discovery#Address_Relay
-                connections = self.server.get_full_node_connections()
+                connections = self.server.get_connections(NodeType.FULL_NODE)
                 hashes = []
                 cur_day = int(time.time()) // (24 * 60 * 60)
                 for connection in connections:

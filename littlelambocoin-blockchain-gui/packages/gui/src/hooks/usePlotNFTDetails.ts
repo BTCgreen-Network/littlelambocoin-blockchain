@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
 import type { PlotNFT, Plot } from '@littlelambocoin/api';
 import { useIsWalletSynced } from '@littlelambocoin/wallets';
+import { useMemo } from 'react';
+
 import PlotNFTState from '../constants/PlotNFTState';
 import usePlotNFTName from './usePlotNFTName';
 

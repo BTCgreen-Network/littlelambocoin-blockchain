@@ -8,7 +8,7 @@ from littlelambocoin.types.weight_proof import WeightProof
 from littlelambocoin.util.generator_tools import get_block_header
 from littlelambocoin.wallet.key_val_store import KeyValStore
 from littlelambocoin.wallet.wallet_blockchain import WalletBlockchain
-from tests.setup_nodes import test_constants
+from littlelambocoin.simulator.block_tools import test_constants
 from tests.util.db_connection import DBConnection
 
 

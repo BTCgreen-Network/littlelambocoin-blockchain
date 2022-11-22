@@ -18,7 +18,7 @@ from littlelambocoin.util.hash import std_hash
 from littlelambocoin.util.ints import uint64, uint32
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 from littlelambocoin.simulator.wallet_tools import WalletTool
-from tests.setup_nodes import test_constants
+from littlelambocoin.simulator.block_tools import test_constants
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from tests.util.db_connection import DBConnection
 

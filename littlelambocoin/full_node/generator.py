@@ -3,16 +3,19 @@ from typing import List, Optional, Union, Tuple
 from littlelambocoin.types.blockchain_format.program import Program, SerializedProgram
 from littlelambocoin.types.generator_types import BlockGenerator, GeneratorBlockCacheInterface, CompressorArg
 from littlelambocoin.util.ints import uint32
-from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
 from littlelambocoin.wallet.puzzles.rom_bootstrap_generator import get_generator
 
 GENERATOR_MOD = get_generator()
 
-DECOMPRESS_BLOCK = load_clvm("block_program_zero.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
-DECOMPRESS_PUZZLE = load_clvm("decompress_puzzle.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
-# DECOMPRESS_CSE = load_clvm("decompress_coin_spend_entry.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
+DECOMPRESS_BLOCK = load_clvm_maybe_recompile("block_program_zero.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
+DECOMPRESS_PUZZLE = load_clvm_maybe_recompile("decompress_puzzle.clvm", package_or_requirement="littlelambocoin.wallet.puzzles")
+# DECOMPRESS_CSE = load_clvm_maybe_recompile(
+#     "decompress_coin_spend_entry.clvm",
+#     package_or_requirement="littlelambocoin.wallet.puzzles",
+# )
 
-DECOMPRESS_CSE_WITH_PREFIX = load_clvm(
+DECOMPRESS_CSE_WITH_PREFIX = load_clvm_maybe_recompile(
     "decompress_coin_spend_entry_with_prefix.clvm", package_or_requirement="littlelambocoin.wallet.puzzles"
 )
 log = logging.getLogger(__name__)

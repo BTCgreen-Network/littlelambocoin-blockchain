@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 import logging
 from typing import Awaitable, Callable, Dict, List, Optional, Set, Tuple, Union
@@ -5,10 +7,18 @@ from typing import Awaitable, Callable, Dict, List, Optional, Set, Tuple, Union
 from chiabip158 import PyBIP158
 
 from littlelambocoin.consensus.block_record import BlockRecord
-from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_base_timelord_fee, calculate_pool_reward
+from littlelambocoin.consensus.block_rewards import (
+    calculate_base_farmer_reward,
+    calculate_pool_reward,
+    calculate_timelord_reward,
+)
 from littlelambocoin.consensus.block_root_validation import validate_block_merkle_roots
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
-from littlelambocoin.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
+from littlelambocoin.consensus.coinbase import (
+    create_farmer_coin,
+    create_pool_coin,
+    create_timelord_coin,
+)
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.cost_calculator import NPCResult
 from littlelambocoin.consensus.find_fork_point import find_fork_point_in_chain
@@ -117,7 +127,7 @@ async def validate_block_body(
         timelord_coin = create_timelord_coin(
             prev_transaction_block_height,
             prev_transaction_block.timelord_puzzle_hash,
-            calculate_base_timelord_fee(prev_transaction_block.height),
+            calculate_timelord_reward(prev_transaction_block.height),
             constants.GENESIS_CHALLENGE,
         )
         # Adds the previous block
@@ -149,7 +159,7 @@ async def validate_block_body(
                     create_timelord_coin(
                         curr_b.height,
                         curr_b.timelord_puzzle_hash,
-                        calculate_base_timelord_fee(curr_b.height),
+                        calculate_timelord_reward(curr_b.height),
                         constants.GENESIS_CHALLENGE,
                     )
                 )
@@ -491,7 +501,7 @@ async def validate_block_body(
 
     # The pairing cache is not useful while syncing as each pairing is seen
     # only once, so the extra effort of populating it is not justified.
-    # However, we force llching of pairings just for unfinished blocks
+    # However, we force caching of pairings just for unfinished blocks
     # as the cache is likely to be useful when validating the corresponding
     # finished blocks later.
     if validate_signature:

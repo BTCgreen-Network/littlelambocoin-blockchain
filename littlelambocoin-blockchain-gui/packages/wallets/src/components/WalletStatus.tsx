@@ -1,10 +1,11 @@
-import React from 'react';
-import { Trans } from '@lingui/macro';
-import { Loading, State, StateIndicator } from '@littlelambocoin/core';
-import { useGetSyncStatusQuery } from '@littlelambocoin/api-react';
-import { Box, Typography } from '@mui/material';
-import getWalletSyncingStatus from '../utils/getWalletSyncingStatus';
 import { SyncingStatus } from '@littlelambocoin/api';
+import { useGetSyncStatusQuery } from '@littlelambocoin/api-react';
+import { Loading, State, StateIndicator } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import { Box, Typography } from '@mui/material';
+import React from 'react';
+
+import getWalletSyncingStatus from '../utils/getWalletSyncingStatus';
 import WalletStatusHeight from './WalletStatusHeight';
 
 export type WalletStatusProps = {

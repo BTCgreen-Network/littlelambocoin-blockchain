@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List
 
 from littlelambocoin.types.blockchain_format.coin import Coin

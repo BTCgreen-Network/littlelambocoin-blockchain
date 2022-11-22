@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from littlelambocoin.util.streamable import Streamable, streamable

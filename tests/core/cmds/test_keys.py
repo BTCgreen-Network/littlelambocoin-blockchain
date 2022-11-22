@@ -1,9 +1,10 @@
+import json
 import os
 import pytest
 import re
 
 from littlelambocoin.cmds.littlelambocoin import cli
-from littlelambocoin.cmds.keys import delete_all_cmd, generate_and_print_cmd, show_cmd, sign_cmd, verify_cmd
+from littlelambocoin.cmds.keys import delete_all_cmd, generate_and_print_cmd, sign_cmd, verify_cmd
 from littlelambocoin.util.config import load_config
 from littlelambocoin.util.file_keyring import FileKeyring
 from littlelambocoin.util.keychain import KeyData, DEFAULT_USER, DEFAULT_SERVICE, Keychain, generate_mnemonic
@@ -11,7 +12,6 @@ from littlelambocoin.util.keyring_wrapper import DEFAULT_KEYS_ROOT_PATH, Keyring
 from click.testing import CliRunner, Result
 from keyring.backend import KeyringBackend
 from pathlib import Path
-from tests.util.keyring import TempKeyring
 from typing import Dict, List, Optional
 
 
@@ -61,13 +61,6 @@ class DummyLegacyKeyring(KeyringBackend):
 
     def delete_password(self, service, username):
         del self.service_dict[service][username]
-
-
-@pytest.fixture(scope="function")
-def empty_keyring():
-    with TempKeyring(user="user-littlelambocoin-1.8", service="littlelambocoin-user-littlelambocoin-1.8") as keychain:
-        yield keychain
-        KeyringWrapper.cleanup_shared_instance()
 
 
 @pytest.fixture(scope="function")
@@ -358,7 +351,7 @@ class TestKeysCommands:
             else:
                 assert label == key.label
 
-    def test_show(self, keyring_with_one_key):
+    def test_show(self, keyring_with_one_key, tmp_path):
         """
         Test that the `littlelambocoin keys show` command shows the correct key.
         """
@@ -367,13 +360,54 @@ class TestKeysCommands:
 
         assert len(keychain.get_all_private_keys()) == 1
 
+        keys_root_path = keychain.keyring_wrapper.keys_root_path
+        base_params = [
+            "--no-force-legacy-keyring-migration",
+            "--root-path",
+            os.fspath(tmp_path),
+            "--keys-root-path",
+            os.fspath(keys_root_path),
+        ]
         runner = CliRunner()
-        result: Result = runner.invoke(show_cmd, [])
+        cmd_params = ["keys", "show"]
+        # Generate a new config
+        assert runner.invoke(cli, [*base_params, "init"]).exit_code == 0
+        # Run the command
+        result: Result = runner.invoke(cli, [*base_params, *cmd_params])
 
         # assert result.exit_code == 0
-        assert result.output.find(f"Fingerprint: {TEST_FINGERPRINT}") != 0
+        assert result.output.find(f"Fingerprint: {TEST_FINGERPRINT}") != -1
 
-    def test_show_mnemonic(self, keyring_with_one_key):
+    def test_show_json(self, keyring_with_one_key, tmp_path):
+        """
+        Test that the `littlelambocoin keys show --json` command shows the correct key.
+        """
+
+        keychain = keyring_with_one_key
+
+        assert len(keychain.get_all_private_keys()) == 1
+
+        keys_root_path = keychain.keyring_wrapper.keys_root_path
+        base_params = [
+            "--no-force-legacy-keyring-migration",
+            "--root-path",
+            os.fspath(tmp_path),
+            "--keys-root-path",
+            os.fspath(keys_root_path),
+        ]
+        runner = CliRunner()
+        cmd_params = ["keys", "show", "--json"]
+        # Generate a new config
+        assert runner.invoke(cli, [*base_params, "init"]).exit_code == 0
+        # Run the command
+        result: Result = runner.invoke(cli, [*base_params, *cmd_params])
+
+        json_result = json.loads(result.output)
+
+        # assert result.exit_code == 0
+        assert json_result["keys"][0]["fingerprint"] == TEST_FINGERPRINT
+
+    def test_show_mnemonic(self, keyring_with_one_key, tmp_path):
         """
         Test that the `littlelambocoin keys show --show-mnemonic-seed` command shows the key's mnemonic seed.
         """
@@ -382,13 +416,54 @@ class TestKeysCommands:
 
         assert len(keychain.get_all_private_keys()) == 1
 
+        keys_root_path = keychain.keyring_wrapper.keys_root_path
+        base_params = [
+            "--no-force-legacy-keyring-migration",
+            "--root-path",
+            os.fspath(tmp_path),
+            "--keys-root-path",
+            os.fspath(keys_root_path),
+        ]
         runner = CliRunner()
-        result: Result = runner.invoke(show_cmd, ["--show-mnemonic-seed"])
+        cmd_params = ["keys", "show", "--show-mnemonic-seed"]
+        # Generate a new config
+        assert runner.invoke(cli, [*base_params, "init"]).exit_code == 0
+        # Run the command
+        result: Result = runner.invoke(cli, [*base_params, *cmd_params])
 
         # assert result.exit_code == 0
-        assert result.output.find(f"Fingerprint: {TEST_FINGERPRINT}") != 0
-        assert result.output.find("Mnemonic: seed (24 secret words):") != 0
-        assert result.output.find(TEST_MNEMONIC_SEED) != 0
+        assert result.output.find(f"Fingerprint: {TEST_FINGERPRINT}") != -1
+        assert result.output.find("Mnemonic seed (24 secret words):") != -1
+        assert result.output.find(TEST_MNEMONIC_SEED) != -1
+
+    def test_show_mnemonic_json(self, keyring_with_one_key, tmp_path):
+        """
+        Test that the `littlelambocoin keys show --show-mnemonic-seed --json` command shows the key's mnemonic seed.
+        """
+
+        keychain = keyring_with_one_key
+
+        assert len(keychain.get_all_private_keys()) == 1
+
+        keys_root_path = keychain.keyring_wrapper.keys_root_path
+        base_params = [
+            "--no-force-legacy-keyring-migration",
+            "--root-path",
+            os.fspath(tmp_path),
+            "--keys-root-path",
+            os.fspath(keys_root_path),
+        ]
+        runner = CliRunner()
+        cmd_params = ["keys", "show", "--show-mnemonic-seed", "--json"]
+        # Generate a new config
+        assert runner.invoke(cli, [*base_params, "init"]).exit_code == 0
+        # Run the command
+        result: Result = runner.invoke(cli, [*base_params, *cmd_params])
+        json_result = json.loads(result.output)
+
+        # assert result.exit_code == 0
+        assert json_result["keys"][0]["fingerprint"] == TEST_FINGERPRINT
+        assert json_result["keys"][0]["mnemonic"] == TEST_MNEMONIC_SEED
 
     def test_add_interactive(self, tmp_path, empty_keyring):
         """
@@ -545,7 +620,7 @@ class TestKeysCommands:
         result: Result = runner.invoke(generate_and_print_cmd, [])
 
         assert result.exit_code == 0
-        assert result.output.find("Mnemonic (24 secret words):") != 0
+        assert result.output.find("Mnemonic (24 secret words):") != -1
 
     def test_sign(self, keyring_with_one_key):
         """
@@ -572,7 +647,7 @@ class TestKeysCommands:
         assert (
             result.output.find(
                 (
-                    "Signature: a82e7d1b87d8c25a6cllc603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf9"
+                    "Signature: a82e7d1b87d8c25a6ccac603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf9"
                     "aa41c10beaab54a830fc6f7e5e25a9144f73e38a6fb852a87e36d80f575a6f84359144e6e9499ba9208912de55"
                     "a1f7514cd8cfa166ae48e64"
                 )
@@ -644,7 +719,7 @@ class TestKeysCommands:
         assert (
             result.output.find(
                 (
-                    "Signature: a82e7d1b87d8c25a6cllc603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf"
+                    "Signature: a82e7d1b87d8c25a6ccac603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf"
                     "9aa41c10beaab54a830fc6f7e5e25a9144f73e38a6fb852a87e36d80f575a6f84359144e6e9499ba9208912de"
                     "55a1f7514cd8cfa166ae48e64"
                 )
@@ -659,7 +734,7 @@ class TestKeysCommands:
 
         message: str = "hello world"
         signature: str = (
-            "a82e7d1b87d8c25a6cllc603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf9aa41c10beaab54a83"
+            "a82e7d1b87d8c25a6ccac603194011d73f71fc76c17c1ce4ee53484f81874f116b1cb9dd991bcf9aa41c10beaab54a83"
             "0fc6f7e5e25a9144f73e38a6fb852a87e36d80f575a6f84359144e6e9499ba9208912de55a1f7514cd8cfa166ae48e64"
         )
         public_key: str = (

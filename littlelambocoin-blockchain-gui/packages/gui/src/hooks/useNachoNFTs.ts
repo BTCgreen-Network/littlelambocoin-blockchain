@@ -1,14 +1,8 @@
-import { useGetNFTsByNFTIDsQuery } from '@littlelambocoin/api-react';
-import { useLocalStorage } from '@littlelambocoin/core';
+import { useGetNFTsByNFTIDsQuery, useLocalStorage } from '@littlelambocoin/api-react';
 
 export default function useNachoNFTs() {
   const [nachoNFTsString] = useLocalStorage('nachoNFTs', '');
-  const nachoNFTIDs = nachoNFTsString
-    .split(',')
-    .map((nachoNFT: string) => nachoNFT.trim());
+  const nachoNFTIDs = nachoNFTsString.split(',').map((nachoNFT: string) => nachoNFT.trim());
 
-  return useGetNFTsByNFTIDsQuery(
-    { nftIds: nachoNFTIDs },
-    { skip: !nachoNFTsString || nachoNFTIDs.length === 0 },
-  );
+  return useGetNFTsByNFTIDsQuery({ nftIds: nachoNFTIDs }, { skip: !nachoNFTsString || nachoNFTIDs.length === 0 });
 }

@@ -1,23 +1,15 @@
-import React, { useMemo } from 'react';
-import { Plural, t, Trans } from '@lingui/macro';
-import {
-  CopyToClipboard,
-  Flex,
-  Link,
-  FormatLargeNumber,
-  TooltipIcon,
-  mojoToCATLocaleString,
-} from '@littlelambocoin/core';
-import { Box, Typography } from '@mui/material';
-import useAssetIdName from '../../hooks/useAssetIdName';
 import { WalletType } from '@littlelambocoin/api';
-import { useGetNFTInfoQuery } from '@littlelambocoin/api-react';
-import { formatAmountForWalletType } from './utils';
-import { launcherIdToNFTId } from '../../util/nfts';
-import { stripHexPrefix } from '../../util/utils';
-import { didToDIDId } from '../../util/dids';
-import NFTSummary from '../nfts/NFTSummary';
+import { CopyToClipboard, Flex, Link, FormatLargeNumber, TooltipIcon, mojoToCATLocaleString } from '@littlelambocoin/core';
+import { Plural, t, Trans } from '@lingui/macro';
+import { Box, Typography } from '@mui/material';
+import React from 'react';
 import styled from 'styled-components';
+
+import useAssetIdName from '../../hooks/useAssetIdName';
+import useNFTMinterDID from '../../hooks/useNFTMinterDID';
+import { launcherIdToNFTId } from '../../util/nfts';
+import NFTSummary from '../nfts/NFTSummary';
+import { formatAmountForWalletType } from './utils';
 
 /* ========================================================================== */
 
@@ -36,9 +28,7 @@ type OfferMojoAmountProps = {
   mojos: number;
 };
 
-function OfferMojoAmount(
-  props: OfferMojoAmountProps,
-): React.ReactElement | null {
+function OfferMojoAmount(props: OfferMojoAmountProps): React.ReactElement | null {
   const { mojos } = props;
 
   return (
@@ -57,10 +47,7 @@ OfferMojoAmount.defaultProps = {
   mojos: 0,
 };
 
-function shouldShowMojoAmount(
-  mojos: number,
-  mojoThreshold = 1000000000 /* 1 billion */,
-): boolean {
+function shouldShowMojoAmount(mojos: number, mojoThreshold = 1000000000 /* 1 billion */): boolean {
   return mojoThreshold > 0 && mojos < mojoThreshold;
 }
 
@@ -73,34 +60,11 @@ type OfferSummaryNFTRowProps = {
   showNFTPreview: boolean;
 };
 
-export function OfferSummaryNFTRow(
-  props: OfferSummaryNFTRowProps,
-): React.ReactElement {
+export function OfferSummaryNFTRow(props: OfferSummaryNFTRowProps): React.ReactElement {
   const { launcherId, rowNumber, showNFTPreview } = props;
   const nftId = launcherIdToNFTId(launcherId);
 
-  const { data: nft } = useGetNFTInfoQuery({ coinId: launcherId ?? '' });
-
-  const minter = useMemo(() => {
-    if (!nft) {
-      return undefined;
-    }
-    const { minterDid } = nft;
-    if (!minterDid) {
-      return undefined;
-    }
-    const hexDIDId = stripHexPrefix(minterDid);
-    const didId = didToDIDId(hexDIDId);
-
-    if (
-      didId ===
-      'did:littlelambocoin:19qf3g9876t0rkq7tfdkc28cxfy424yzanea29rkzylq89kped9hq3q7wd2'
-    ) {
-      return 'Littlelambocoin Network';
-    }
-
-    return didId;
-  }, [nft]);
+  const { didId: minterDID, didName: minterDIDName, isLoading: isLoadingMinterDID } = useNFTMinterDID(nftId);
 
   return (
     <Flex flexDirection="column" gap={2}>
@@ -151,9 +115,9 @@ export function OfferSummaryNFTRow(
             </Flex>
           )}
         </Box>
-        {minter && (
+        {!isLoadingMinterDID && (
           <Typography variant="body2" color="textSecondary">
-            <Trans>Minter:</Trans> {minter}
+            <Trans>Minter:</Trans> {minterDIDName ?? minterDID}
           </Typography>
         )}
       </Flex>
@@ -171,15 +135,8 @@ type OfferSummaryTokenRowProps = {
   overrideNFTSellerAmount?: number;
 };
 
-export function OfferSummaryTokenRow(
-  props: OfferSummaryTokenRowProps,
-): React.ReactElement {
-  const {
-    assetId,
-    amount: originalAmount,
-    rowNumber,
-    overrideNFTSellerAmount,
-  } = props;
+export function OfferSummaryTokenRow(props: OfferSummaryTokenRowProps): React.ReactElement {
+  const { assetId, amount: originalAmount, rowNumber, overrideNFTSellerAmount } = props;
   const { lookupByAssetId } = useAssetIdName();
   const assetIdInfo = lookupByAssetId(assetId);
   const amount = overrideNFTSellerAmount ?? originalAmount;
@@ -188,20 +145,14 @@ export function OfferSummaryTokenRow(
     : mojoToCATLocaleString(amount);
   const displayName = assetIdInfo?.displayName ?? t`Unknown CAT`;
   const tooltipDisplayName = assetIdInfo?.name ?? t`Unknown CAT`;
-  const showMojoAmount =
-    assetIdInfo?.walletType === WalletType.STANDARD_WALLET &&
-    shouldShowMojoAmount(amount);
+  const showMojoAmount = assetIdInfo?.walletType === WalletType.STANDARD_WALLET && shouldShowMojoAmount(amount);
 
   return (
     <Flex alignItems="center" gap={1}>
       <Typography variant="body1" component="div">
         <Flex flexDirection="row" alignItems="center" gap={1}>
           {rowNumber !== undefined && (
-            <Typography
-              variant="body1"
-              color="secondary"
-              style={{ fontWeight: 'bold' }}
-            >{`${rowNumber})`}</Typography>
+            <Typography variant="body1" color="secondary" style={{ fontWeight: 'bold' }}>{`${rowNumber})`}</Typography>
           )}
           <Typography>
             {displayAmount} {displayName}
@@ -221,10 +172,7 @@ export function OfferSummaryTokenRow(
                 <StyledTitle>Name</StyledTitle>
               </Box>
               {(!assetIdInfo || assetIdInfo?.walletType === WalletType.CAT) && (
-                <Link
-                  href={`https://www.taildatabase.com/tail/${assetId.toLowerCase()}`}
-                  target="_blank"
-                >
+                <Link href={`https://www.taildatabase.com/tail/${assetId.toLowerCase()}`} target="_blank">
                   <Trans>Search on Tail Database</Trans>
                 </Link>
               )}
@@ -237,10 +185,7 @@ export function OfferSummaryTokenRow(
               <StyledTitle>Asset ID</StyledTitle>
               <Flex alignItems="center" gap={1}>
                 <StyledValue>{assetId.toLowerCase()}</StyledValue>
-                <CopyToClipboard
-                  value={assetId.toLowerCase()}
-                  fontSize="small"
-                />
+                <CopyToClipboard value={assetId.toLowerCase()} fontSize="small" />
               </Flex>
             </Flex>
           )}

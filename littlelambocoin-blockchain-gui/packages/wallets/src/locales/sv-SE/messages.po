@@ -8,7 +8,7 @@ msgstr ""
 "Language: sv_SE\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-27 18:38\n"
+"PO-Revision-Date: 2022-10-24 18:14\n"
 "Last-Translator: \n"
 "Language-Team: Swedish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -42,7 +42,7 @@ msgstr "Lägg till säkerhetskopierings-ID"
 
 #: src/components/hero/WalletHeroAdd.tsx:99
 #~ msgid "Add Custom Token"
-#~ msgstr "Lägg till eget token"
+#~ msgstr "Add Custom Token"
 
 #: src/components/WalletsList.tsx:54
 #: src/components/WalletsManageTokens.tsx:174
@@ -104,12 +104,6 @@ msgstr "Plånbok för auktoriserad betalningsmottagare"
 msgid "Balance"
 msgstr "Saldo"
 
-#: src/components/cat/WalletCATSelect.tsx:24
-#: src/components/create/WalletCreateList.tsx:35
-#: src/constants/WalletName.ts:23
-msgid "Littlelambocoin Asset Token"
-msgstr "Littlelambocoin tillgångstoken (CAT)"
-
 #: src/components/PasteMnemonic.tsx:78
 #: src/components/WalletRenameDialog.tsx:90
 msgid "Cancel"
@@ -124,9 +118,15 @@ msgstr "Det går inte att skicka littlelambocoin till färgad adress. Ange en li
 msgid "Check my snapshot balance"
 msgstr ""
 
+#: src/components/cat/WalletCATSelect.tsx:24
+#: src/components/create/WalletCreateList.tsx:35
+#: src/constants/WalletName.ts:23
+msgid "Littlelambocoin Asset Token"
+msgstr "Littlelambocoin tillgångstoken (CAT)"
+
 #: src/components/WalletsSidebar.tsx:160
 msgid "Click here to download an older version of the wallet"
-msgstr ""
+msgstr "Klicka här för att ladda ner en äldre version av plånboken"
 
 #: src/components/cat/WalletDID.tsx:984
 #: src/components/did/WalletDID.tsx:984
@@ -147,7 +147,7 @@ msgstr "Bekräftad vid höjd"
 
 #: src/components/WalletStatusHeader.tsx:40
 #~ msgid "Connected ({0})"
-#~ msgstr "Anslutna ({0})"
+#~ msgstr "Connected ({0})"
 
 #: src/components/WalletConnections.tsx:62
 msgid "Connection type"
@@ -155,7 +155,7 @@ msgstr "Anslutningstyp"
 
 #: src/components/WalletConnections.tsx:80
 #~ msgid "Connections"
-#~ msgstr "Anslutningar"
+#~ msgstr "Connections"
 
 #: src/components/rateLimited/WalletRateLimited.jsx:305
 #: src/components/rateLimited/WalletRateLimited.jsx:427
@@ -177,7 +177,7 @@ msgstr "Skapa ett attestpaket"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:76
 #~ msgid "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
-#~ msgstr "Skapa plånbok för Littlelambocoin tillgångstoken (CAT) från existerande TAIL"
+#~ msgstr "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
 
 #: src/components/did/WalletDIDCreate.tsx:113
 msgid "Create Distributed Identity Wallet"
@@ -195,7 +195,7 @@ msgstr "Skapa ny plånbok"
 #: src/components/cat/WalletCAT.tsx:113
 #: src/components/standard/WalletStandard.tsx:48
 msgid "Create Offer"
-msgstr ""
+msgstr "Skapa erbjudande"
 
 #: src/components/create/createRLAdmin.jsx:187
 msgid "Create Rate Limited Admin Wallet"
@@ -213,7 +213,7 @@ msgstr "Skapa transaktion"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:75
 #~ msgid "Create custom CAT Wallet"
-#~ msgstr "Skapa plånbok för eget CAT"
+#~ msgstr "Create custom CAT Wallet"
 
 #: src/constants/WalletName.ts:20
 msgid "Custody Wallet"
@@ -229,7 +229,7 @@ msgstr "DID-plånbok"
 
 #: src/constants/WalletName.ts:38
 msgid "Datalayer Wallet"
-msgstr ""
+msgstr "Plånbok för DataLayer"
 
 #: src/components/WalletHistory.tsx:198
 msgid "Date"
@@ -267,7 +267,7 @@ msgstr "Dra och släpp attestpaket"
 msgid "Drag and drop your recovery backup file"
 msgstr "Drag och släpp din säkerhetskopierade fil"
 
-#: src/components/WalletImport.tsx:133
+#: src/components/WalletImport.tsx:151
 msgid "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
 msgstr "Skriv in din sparade minnesfras på 24 ord för att återställa din Littlelambocoin-plånbok."
 
@@ -310,7 +310,7 @@ msgstr "Om du vill påskynda transaktionen, ta bort obekräftade transaktioner o
 msgid "Import"
 msgstr "Importera"
 
-#: src/components/WalletImport.tsx:130
+#: src/components/WalletImport.tsx:148
 msgid "Import Wallet from Mnemonics"
 msgstr "Importera plånbok från minnesfras"
 
@@ -341,7 +341,7 @@ msgstr "Lista över anslutningar är tom"
 
 #: src/components/WalletReceiveAddressField.tsx:40
 msgid "Loading..."
-msgstr ""
+msgstr "Läser in …"
 
 #: src/components/cat/WalletDID.tsx:805
 #: src/components/did/WalletDID.tsx:805
@@ -384,7 +384,7 @@ msgstr "Min publika nyckel"
 
 #: src/constants/WalletName.ts:35
 msgid "NFT Wallet"
-msgstr ""
+msgstr "NFT-plånbok"
 
 #: src/components/cat/WalletCATCreateExistingSimple.tsx:71
 msgid "Name"
@@ -394,12 +394,12 @@ msgstr "Namn"
 msgid "New Address"
 msgstr "Ny adress"
 
-#: src/components/WalletAdd.tsx:73
+#: src/components/WalletAdd.tsx:91
 msgid "New Wallet"
 msgstr "Ny plånbok"
 
-#: src/components/WalletAdd.tsx:107
-#: src/components/WalletImport.tsx:164
+#: src/components/WalletAdd.tsx:151
+#: src/components/WalletImport.tsx:189
 msgid "Next"
 msgstr "Nästa"
 
@@ -422,7 +422,7 @@ msgstr "Inte tillgänglig"
 
 #: src/components/WalletStatusHeader.tsx:38
 #~ msgid "Not Connected"
-#~ msgstr "Inte ansluten"
+#~ msgstr "Not Connected"
 
 #: src/components/WalletStatus.tsx:57
 msgid "Not Synced"
@@ -449,7 +449,7 @@ msgstr "Endast en säkerhetskopieringsfil är tillåten."
 msgid "Outgoing"
 msgstr "Utgående"
 
-#: src/components/WalletImport.tsx:95
+#: src/components/WalletImport.tsx:101
 msgid "Paste Mnemonic"
 msgstr "Klistra in minnesfras"
 
@@ -483,14 +483,14 @@ msgstr "Ange 0 som avgift. Positiv avgift stöds ännu inte för RL."
 #: src/components/cat/WalletDID.tsx:924
 #: src/components/did/WalletDID.tsx:924
 msgid "Please enter a coin"
-msgstr "Vänligen ange ett mynt"
+msgstr "Ange ett mynt"
 
 #: src/components/cat/WalletDID.tsx:525
 #: src/components/cat/WalletDID.tsx:914
 #: src/components/did/WalletDID.tsx:525
 #: src/components/did/WalletDID.tsx:914
 msgid "Please enter a filename"
-msgstr "Vänligen ange ett filnamn"
+msgstr "Ange ett filnamn"
 
 #: src/components/cat/WalletDID.tsx:934
 #: src/components/did/WalletDID.tsx:934
@@ -504,7 +504,7 @@ msgstr "Ange en pusselhash"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:40
 #~ msgid "Please enter a valid CAT name"
-#~ msgstr "Skriv in ett giltigt CAT-namn"
+#~ msgstr "Please enter a valid CAT name"
 
 #: src/components/cat/WalletCATCreateExistingSimple.tsx:41
 msgid "Please enter a valid asset id"
@@ -594,7 +594,7 @@ msgstr "Pusselhash"
 
 #: src/constants/WalletName.ts:8
 msgid "RL Wallet"
-msgstr ""
+msgstr "RL-plånbok"
 
 #: src/components/create/WalletCreateList.tsx:48
 msgid "Rate Limited"
@@ -611,7 +611,7 @@ msgstr "Konfiguration av spenderbegränsad användarplånbok"
 
 #: src/components/WalletsSidebar.tsx:152
 msgid "Read the blog post for details"
-msgstr ""
+msgstr "Läs blogginlägget för mer information"
 
 #: src/components/WalletHeader.tsx:64
 msgid "Receive"
@@ -805,7 +805,7 @@ msgstr "Till"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:85
 #~ msgid "Token and Asset Issuance Limitations"
-#~ msgstr "Begränsningar för utgivning av token och tillgång"
+#~ msgstr "Token and Asset Issuance Limitations"
 
 #: src/components/cat/WalletCATCreateSimple.tsx:45
 msgid "Token has empty asset id"
@@ -843,7 +843,12 @@ msgstr "Visa väntande saldon"
 
 #: src/components/WalletConnections.tsx:80
 msgid "Wallet Connections"
-msgstr ""
+msgstr "Plånbokens anslutningar"
+
+#: src/components/WalletAdd.tsx:128
+#: src/components/WalletImport.tsx:176
+msgid "Wallet Name"
+msgstr "Plånboksnamn"
 
 #: src/components/cat/WalletCAT.tsx:75
 #: src/components/cat/WalletDID.tsx:1118
@@ -861,13 +866,13 @@ msgstr "Plånbok {walletId} kunde inte hittas"
 
 #: src/components/WalletsSidebar.tsx:157
 msgid "Want to see your old balance for yourself?"
-msgstr ""
+msgstr "Vill du se ditt gamla saldo för dig själv?"
 
 #: src/components/WalletsSidebar.tsx:119
 msgid "We've made an upgrade to the CAT standard which requires all CATs to be re-issued. You will be airdropped your new tokens as they are re-issued by the original issuers. The airdropped tokens will be based on the balance as of block height:<0/><1/><2/>(Approximate time: July 26th, 2022 @ 17:00 UTC)"
-msgstr ""
+msgstr "Vi har gjort en uppgradering av CAT-standarden som kräver att alla CAT:er ges ut på nytt. Du kommer automatiskt att få dina nya token allteftersom de ges ut på nytt av de ursprungliga utgivarna. Dessa återutgivna token kommer att baseras på saldot vid blockhöjden: <0/><1/><2/>(Ungefärlig tidpunkt: 26 juli, 2022 @ 17:00 UTC)"
 
-#: src/components/WalletAdd.tsx:76
+#: src/components/WalletAdd.tsx:94
 msgid "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
 msgstr "Välkommen! Följande ord används för din plånboks säkerhetskopia. Utan dem förlorar du åtkomst till din plånbok, så spara dom säkert! Skriv ner varje ord tillsammans med ordningsnumret vid sidan om. (Ordningen är viktig)"
 
@@ -877,13 +882,14 @@ msgstr "När du fått konfigurationsinfopaketet av din administratör anger du d
 
 #: src/components/WalletsSidebar.tsx:115
 msgid "Your CAT tokens have been upgraded!"
-msgstr ""
+msgstr "Dina CAT-token har uppgraderats!"
 
 #: src/components/cat/WalletDID.tsx:326
 #: src/components/did/WalletDID.tsx:326
 msgid "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
 msgstr "Ditt DID kräver minst {dids_num_req} attesteringsfil{0} för återställning. Ladda upp ytterligare filer."
 
-#: src/components/WalletImport.tsx:71
+#: src/components/WalletImport.tsx:77
 msgid "Your pasted list does not include 24 valid mnemonic words."
 msgstr "Den lista du klistrat in är inte en giltig minnesfras med 24 ord."
+

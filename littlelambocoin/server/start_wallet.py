@@ -14,6 +14,7 @@ from littlelambocoin.util.littlelambocoin_logging import initialize_service_logg
 from littlelambocoin.util.config import load_config_cli, load_config
 from littlelambocoin.util.default_root import DEFAULT_ROOT_PATH
 from littlelambocoin.util.keychain import Keychain
+from littlelambocoin.util.task_timing import maybe_manage_task_instrumentation
 from littlelambocoin.wallet.wallet_node import WalletNode
 
 # See: https://bugs.python.org/issue29288
@@ -30,7 +31,7 @@ def create_wallet_service(
     consensus_constants: ConsensusConstants,
     keychain: Optional[Keychain] = None,
     connect_to_daemon: bool = True,
-) -> Service:
+) -> Service[WalletNode]:
     service_config = config[SERVICE_NAME]
 
     overrides = service_config["network_overrides"]["constants"][service_config["selected_network"]]
@@ -74,7 +75,6 @@ def create_wallet_service(
         service_name=SERVICE_NAME,
         on_connect_callback=node.on_connect,
         connect_peers=connect_peers,
-        auth_connect_peers=False,
         network_id=network_id,
         rpc_info=rpc_info,
         advertised_port=service_config["port"],
@@ -109,13 +109,9 @@ async def async_main() -> int:
 
 def main() -> int:
     freeze_support()
-    if os.getenv("LITTLELAMBOCOIN_INSTRUMENT_WALLET", 0) != 0:
-        from littlelambocoin.util.task_timing import start_task_instrumentation, stop_task_instrumentation
-        import atexit
 
-        start_task_instrumentation()
-        atexit.register(stop_task_instrumentation)
-    return async_run(async_main())
+    with maybe_manage_task_instrumentation(enable=os.environ.get("LITTLELAMBOCOIN_INSTRUMENT_WALLET") is not None):
+        return async_run(async_main())
 
 
 if __name__ == "__main__":

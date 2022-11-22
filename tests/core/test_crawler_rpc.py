@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from littlelambocoin.rpc.crawler_rpc_api import CrawlerRpcApi

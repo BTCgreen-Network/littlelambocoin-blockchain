@@ -1,15 +1,18 @@
-from blspy import PrivateKey  # pyright: reportMissingImports=false
-from littlelambocoin.util.default_root import DEFAULT_KEYS_ROOT_PATH
-from littlelambocoin.util.file_keyring import FileKeyring
-from littlelambocoin.util.misc import prompt_yes_no
-from keyrings.cryptfile.cryptfile import CryptFileKeyring  # pyright: reportMissingImports=false
-from keyring.backends.macOS import Keyring as MacKeyring
-from keyring.backends.Windows import WinVaultKeyring as WinKeyring
-from keyring.errors import KeyringError, PasswordDeleteError
+from __future__ import annotations
+
 from pathlib import Path
 from sys import platform
 from typing import Any, List, Optional, Tuple, Type, Union
 
+from blspy import PrivateKey  # pyright: reportMissingImports=false
+from keyring.backends.macOS import Keyring as MacKeyring
+from keyring.backends.Windows import WinVaultKeyring as WinKeyring
+from keyring.errors import KeyringError, PasswordDeleteError
+from keyrings.cryptfile.cryptfile import CryptFileKeyring  # pyright: reportMissingImports=false
+
+from littlelambocoin.util.default_root import DEFAULT_KEYS_ROOT_PATH
+from littlelambocoin.util.file_keyring import FileKeyring
+from littlelambocoin.util.misc import prompt_yes_no
 
 # We want to protect the keyring, even if a user-specified master passphrase isn't provided
 #
@@ -48,7 +51,8 @@ def get_os_passphrase_store() -> Optional[OSPassphraseStore]:
 
 def check_legacy_keyring_keys_present(keyring: LegacyKeyring) -> bool:
     from keyring.credentials import Credential
-    from littlelambocoin.util.keychain import default_keychain_user, default_keychain_service, get_private_key_user, MAX_KEYS
+
+    from littlelambocoin.util.keychain import MAX_KEYS, default_keychain_service, default_keychain_user, get_private_key_user
 
     keychain_user: str = default_keychain_user()
     keychain_service: str = default_keychain_service()
@@ -112,7 +116,7 @@ class KeyringWrapper:
         self.keys_root_path = keys_root_path
         if force_legacy:
             legacy_keyring = get_legacy_keyring_instance()
-            if check_legacy_keyring_keys_present(legacy_keyring):
+            if legacy_keyring is not None and check_legacy_keyring_keys_present(legacy_keyring):
                 self.legacy_keyring = legacy_keyring
         else:
             self.refresh_keyrings()
@@ -172,14 +176,14 @@ class KeyringWrapper:
         KeyringWrapper.__keys_root_path = keys_root_path
 
     @staticmethod
-    def get_shared_instance(create_if_necessary=True):
+    def get_shared_instance(create_if_necessary: bool = True):
         if not KeyringWrapper.__shared_instance and create_if_necessary:
             KeyringWrapper.__shared_instance = KeyringWrapper(keys_root_path=KeyringWrapper.__keys_root_path)
 
         return KeyringWrapper.__shared_instance
 
     @staticmethod
-    def cleanup_shared_instance():
+    def cleanup_shared_instance() -> None:
         KeyringWrapper.__shared_instance = None
 
     @staticmethod
@@ -241,7 +245,7 @@ class KeyringWrapper:
         """
         Sets a new master passphrase for the keyring
         """
-        from littlelambocoin.util.errors import KeychainRequiresMigration, KeychainCurrentPassphraseIsInvalid
+        from littlelambocoin.util.errors import KeychainCurrentPassphraseIsInvalid, KeychainRequiresMigration
         from littlelambocoin.util.keychain import supports_os_passphrase_storage
 
         # Require a valid current_passphrase
@@ -383,7 +387,7 @@ class KeyringWrapper:
         return prompt_yes_no("Begin keyring migration?")
 
     def migrate_legacy_keys(self) -> MigrationResults:
-        from littlelambocoin.util.keychain import get_private_key_user, Keychain, MAX_KEYS
+        from littlelambocoin.util.keychain import MAX_KEYS, Keychain, get_private_key_user
 
         print("Migrating contents from legacy keyring")
 

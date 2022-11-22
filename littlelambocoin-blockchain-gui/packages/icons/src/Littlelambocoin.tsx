@@ -1,5 +1,6 @@
-import React from 'react';
 import { SvgIcon, SvgIconProps } from '@mui/material';
+import React from 'react';
+
 import LittlelambocoinIcon from './images/littlelambocoin.svg';
 
 export default function Keys(props: SvgIconProps) {

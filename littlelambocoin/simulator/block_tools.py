@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import copy
 import logging
@@ -18,7 +20,7 @@ from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 from chia_rs import compute_merkle_set_root
 from chiabip158 import PyBIP158
 
-from littlelambocoin.cmds.init_funcs import create_all_ssl, create_default_littlelambocoin_config
+from littlelambocoin.cmds.init_funcs import create_default_littlelambocoin_config
 from littlelambocoin.consensus.block_creation import unfinished_block_to_full_block
 from littlelambocoin.consensus.block_record import BlockRecord
 from littlelambocoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
@@ -59,7 +61,7 @@ from littlelambocoin.plotting.util import (
 from littlelambocoin.server.server import ssl_context_for_client
 from littlelambocoin.simulator.socket import find_available_listen_port
 from littlelambocoin.simulator.ssl_certs import (
-    SSLTestLLCertAndPrivateKey,
+    SSLTestCACertAndPrivateKey,
     SSLTestCollateralWrapper,
     SSLTestNodeCertsAndKeys,
     get_next_nodes_certs_and_keys,
@@ -67,12 +69,20 @@ from littlelambocoin.simulator.ssl_certs import (
 )
 from littlelambocoin.simulator.time_out_assert import time_out_assert_custom_interval
 from littlelambocoin.simulator.wallet_tools import WalletTool
+from littlelambocoin.ssl.create_ssl import create_all_ssl
 from littlelambocoin.types.blockchain_format.classgroup import ClassgroupElement
 from littlelambocoin.types.blockchain_format.coin import Coin, hash_coin_ids
 from littlelambocoin.types.blockchain_format.foliage import Foliage, FoliageBlockData, FoliageTransactionBlock, TransactionsInfo
 from littlelambocoin.types.blockchain_format.pool_target import PoolTarget
 from littlelambocoin.types.blockchain_format.program import INFINITE_COST
-from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.proof_of_space import (
+    ProofOfSpace,
+    calculate_pos_challenge,
+    generate_plot_public_key,
+    generate_taproot_sk,
+    passes_plot_filter,
+    verify_and_get_quality_string,
+)
 from littlelambocoin.types.blockchain_format.reward_chain_block import RewardChainBlockUnfinished
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.types.blockchain_format.slots import (
@@ -115,7 +125,7 @@ test_constants = DEFAULT_CONSTANTS.replace(
     **{
         "MIN_PLOT_SIZE": 18,
         "MIN_BLOCKS_PER_CHALLENGE_BLOCK": 12,
-        "DIFFICULTY_STARTING": 2 ** 10,
+        "DIFFICULTY_STARTING": 2**10,
         "DISCRIMINANT_SIZE_BITS": 16,
         "SUB_EPOCH_BLOCKS": 170,
         "WEIGHT_PROOF_THRESHOLD": 2,
@@ -126,7 +136,7 @@ test_constants = DEFAULT_CONSTANTS.replace(
         "EPOCH_BLOCKS": 340,
         "BLOCKS_CACHE_SIZE": 340 + 3 * 50,  # Coordinate with the above values
         "SUB_SLOT_TIME_TARGET": 600,  # The target number of seconds per slot, mainnet 600
-        "SUB_SLOT_ITERS_STARTING": 2 ** 10,  # Must be a multiple of 64
+        "SUB_SLOT_ITERS_STARTING": 2**10,  # Must be a multiple of 64
         "NUMBER_ZERO_BITS_PLOT_FILTER": 1,  # H(plot signature of the challenge) must start with these many zeroes
         "MAX_FUTURE_TIME": 3600
         * 24
@@ -178,7 +188,7 @@ class BlockTools:
             # Hold onto the wrappers so that they can keep track of whether the certs/keys
             # are in use by another BlockTools instance.
             self.ssl_ca_cert_and_key_wrapper: SSLTestCollateralWrapper[
-                SSLTestLLCertAndPrivateKey
+                SSLTestCACertAndPrivateKey
             ] = get_next_private_ca_cert_and_key()
             self.ssl_nodes_certs_and_keys_wrapper: SSLTestCollateralWrapper[
                 SSLTestNodeCertsAndKeys
@@ -231,7 +241,7 @@ class BlockTools:
         self.total_result = PlotRefreshResult()
 
         def test_callback(event: PlotRefreshEvents, update_result: PlotRefreshResult):
-            assert update_result.duration < 5
+            assert update_result.duration < 15
             if event == PlotRefreshEvents.started:
                 self.total_result = PlotRefreshResult()
 
@@ -253,7 +263,7 @@ class BlockTools:
             self.root_path,
             refresh_parameter=PlotsRefreshParameter(batch_size=uint32(2)),
             refresh_callback=test_callback,
-            match_str=self.plot_dir_name if not automated_testing else None,
+            match_str=str(self.plot_dir.relative_to(DEFAULT_ROOT_PATH.parent)) if not automated_testing else None,
         )
 
     async def setup_keys(self, fingerprint: Optional[int] = None, reward_ph: Optional[bytes32] = None):
@@ -320,16 +330,21 @@ class BlockTools:
             self._config = add_plot_directory(self.root_path, str(path))
 
     async def setup_plots(
-        self, num_og_plots: int = 15, num_pool_plots: int = 5, num_non_keychain_plots: int = 3, plot_size: int = 20
+        self,
+        num_og_plots: int = 15,
+        num_pool_plots: int = 5,
+        num_non_keychain_plots: int = 3,
+        plot_size: int = 20,
+        bitfield: bool = True,
     ):
         self.add_plot_directory(self.plot_dir)
         assert self.created_plots == 0
         # OG Plots
         for i in range(num_og_plots):
-            await self.new_plot(plot_size=plot_size)
+            await self.new_plot(plot_size=plot_size, bitfield=bitfield)
         # Pool Plots
         for i in range(num_pool_plots):
-            await self.new_plot(self.pool_ph, plot_size=plot_size)
+            await self.new_plot(self.pool_ph, plot_size=plot_size, bitfield=bitfield)
         # Some plots with keys that are not in the keychain
         for i in range(num_non_keychain_plots):
             await self.new_plot(
@@ -337,6 +352,7 @@ class BlockTools:
                 plot_keys=PlotKeys(G1Element(), G1Element(), None),
                 exclude_plots=True,
                 plot_size=plot_size,
+                bitfield=bitfield,
             )
         await self.refresh_plots()
         assert len(self.plot_manager.plots) == len(self.expected_plots)
@@ -349,6 +365,7 @@ class BlockTools:
         plot_keys: Optional[PlotKeys] = None,
         exclude_plots: bool = False,
         plot_size: int = 20,
+        bitfield: bool = True,
     ) -> Optional[bytes32]:
         final_dir = self.plot_dir
         if path is not None:
@@ -370,7 +387,7 @@ class BlockTools:
         args.buckets = 0
         args.stripe_size = 2000
         args.num_threads = 0
-        args.nobitfield = False
+        args.nobitfield = not bitfield
         args.exclude_final_dir = False
         args.list_duplicates = False
         try:
@@ -466,12 +483,12 @@ class BlockTools:
                 else:
                     local_sk = chives_master_sk_to_local_sk(local_master_sk)
                     farmer_sk = chives_master_sk_to_farmer_sk(self.all_sks[0])
-                agg_pk = ProofOfSpace.generate_plot_public_key(local_sk.get_g1(), farmer_sk.get_g1(), include_taproot)
+                agg_pk = generate_plot_public_key(local_sk.get_g1(), farmer_sk.get_g1(), include_taproot)
                 assert agg_pk == plot_pk
                 harv_share = AugSchemeMPL.sign(local_sk, m, agg_pk)
                 farm_share = AugSchemeMPL.sign(farmer_sk, m, agg_pk)
                 if include_taproot:
-                    taproot_sk: PrivateKey = ProofOfSpace.generate_taproot_sk(local_sk.get_g1(), farmer_sk.get_g1())
+                    taproot_sk: PrivateKey = generate_taproot_sk(local_sk.get_g1(), farmer_sk.get_g1())
                     taproot_share: G2Element = AugSchemeMPL.sign(taproot_sk, m, agg_pk)
                 else:
                     taproot_share = G2Element()
@@ -571,7 +588,7 @@ class BlockTools:
         curr = latest_block
         while not curr.is_transaction_block:
             curr = blocks[curr.prev_hash]
-        start_timestamp = curr.timestamp
+        last_timestamp = curr.timestamp
         start_height = curr.height
 
         curr = latest_block
@@ -663,7 +680,7 @@ class BlockTools:
                         if transaction_data is not None:
                             additions = transaction_data.additions()
                             removals = transaction_data.removals()
-                        assert start_timestamp is not None
+                        assert last_timestamp is not None
                         if proof_of_space.pool_contract_puzzle_hash is not None:
                             if pool_reward_puzzle_hash is not None:
                                 # The caller wants to be paid to a specific address, but this PoSpace is tied to an
@@ -705,7 +722,7 @@ class BlockTools:
                             slot_rc_challenge,
                             farmer_reward_puzzle_hash,
                             pool_target,
-                            start_timestamp,
+                            last_timestamp,
                             start_height,
                             time_per_block,
                             block_generator,
@@ -730,6 +747,8 @@ class BlockTools:
                             transaction_data_included = True
                             previous_generator = None
                             keep_going_until_tx_block = False
+                            assert full_block.foliage_transaction_block is not None
+                            last_timestamp = full_block.foliage_transaction_block.timestamp
                         else:
                             if guarantee_transaction_block:
                                 continue
@@ -943,7 +962,7 @@ class BlockTools:
                     for required_iters, proof_of_space in sorted(qualified_proofs, key=lambda t: t[0]):
                         if blocks_added_this_sub_slot == constants.MAX_SUB_SLOT_BLOCKS:
                             break
-                        assert start_timestamp is not None
+                        assert last_timestamp is not None
 
                         if proof_of_space.pool_contract_puzzle_hash is not None:
                             if pool_reward_puzzle_hash is not None:
@@ -983,7 +1002,7 @@ class BlockTools:
                             slot_rc_challenge,
                             farmer_reward_puzzle_hash,
                             pool_target,
-                            start_timestamp,
+                            last_timestamp,
                             start_height,
                             time_per_block,
                             block_generator,
@@ -1011,6 +1030,8 @@ class BlockTools:
                             transaction_data_included = True
                             previous_generator = None
                             keep_going_until_tx_block = False
+                            assert full_block.foliage_transaction_block is not None
+                            last_timestamp = full_block.foliage_transaction_block.timestamp
                         elif guarantee_transaction_block:
                             continue
                         if pending_ses:
@@ -1251,8 +1272,8 @@ class BlockTools:
             plot_id: bytes32 = plot_info.prover.get_id()
             if force_plot_id is not None and plot_id != force_plot_id:
                 continue
-            if ProofOfSpace.passes_plot_filter(constants, plot_id, challenge_hash, signage_point):
-                new_challenge: bytes32 = ProofOfSpace.calculate_pos_challenge(plot_id, challenge_hash, signage_point)
+            if passes_plot_filter(constants, plot_id, challenge_hash, signage_point):
+                new_challenge: bytes32 = calculate_pos_challenge(plot_id, challenge_hash, signage_point)
                 qualities = plot_info.prover.get_qualities_for_challenge(new_challenge)
 
                 for proof_index, quality_str in enumerate(qualities):
@@ -1280,9 +1301,7 @@ class BlockTools:
                         else:
                             assert isinstance(pool_public_key_or_puzzle_hash, bytes32)
                             include_taproot = True
-                        plot_pk = ProofOfSpace.generate_plot_public_key(
-                            local_sk.get_g1(), farmer_public_key, include_taproot
-                        )
+                        plot_pk = generate_plot_public_key(local_sk.get_g1(), farmer_public_key, include_taproot)
                         proof_of_space: ProofOfSpace = ProofOfSpace(
                             new_challenge,
                             plot_info.pool_public_key,
@@ -1311,7 +1330,7 @@ def get_signage_point(
     normalized_to_identity_cc_sp: bool = False,
 ) -> SignagePoint:
     if signage_point_index == 0:
-        return SignagePoint(None, None, None, None, constants.TIMELORD_PUZZLE_HASH)
+        return SignagePoint(None, None, None, None, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
     sp_iters = calculate_sp_iters(constants, sub_slot_iters, signage_point_index)
     overflow = is_overflow_block(constants, signage_point_index)
     sp_total_iters = uint128(
@@ -1356,7 +1375,7 @@ def get_signage_point(
             sp_iters,
             True,
         )
-    return SignagePoint(cc_sp_vdf, cc_sp_proof, rc_sp_vdf, rc_sp_proof, constants.TIMELORD_PUZZLE_HASH)
+    return SignagePoint(cc_sp_vdf, cc_sp_proof, rc_sp_vdf, rc_sp_proof, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
 
 
 def finish_block(
@@ -1473,7 +1492,11 @@ def get_challenges(
 def get_plot_dir(plot_dir_name: str = "test-plots", automated_testing: bool = True) -> Path:
     root_dir = DEFAULT_ROOT_PATH.parent
     if not automated_testing:  # make sure we don't accidentally stack directories.
-        root_dir = root_dir.parent if root_dir.parts[-1] == plot_dir_name.split("/")[0] else root_dir
+        root_dir = (
+            root_dir.parent
+            if root_dir.parts[-1] == plot_dir_name.split("/")[0] or root_dir.parts[-1] == plot_dir_name.split("\\")[0]
+            else root_dir
+        )
     cache_path = root_dir.joinpath(plot_dir_name)
 
     ci = os.environ.get("CI")
@@ -1506,8 +1529,8 @@ def load_block_list(
             assert full_block.reward_chain_block.challenge_chain_sp_vdf is not None
             challenge = full_block.reward_chain_block.challenge_chain_sp_vdf.challenge
             sp_hash = full_block.reward_chain_block.challenge_chain_sp_vdf.output.get_hash()
-        quality_str = full_block.reward_chain_block.proof_of_space.verify_and_get_quality_string(
-            constants, challenge, sp_hash
+        quality_str = verify_and_get_quality_string(
+            full_block.reward_chain_block.proof_of_space, constants, challenge, sp_hash
         )
         assert quality_str is not None
         required_iters: uint64 = calculate_iterations_quality(
@@ -1601,7 +1624,7 @@ def get_full_block_and_block_record(
     slot_rc_challenge: bytes32,
     farmer_reward_puzzle_hash: bytes32,
     pool_target: PoolTarget,
-    start_timestamp: uint64,
+    last_timestamp: uint64,
     start_height: uint32,
     time_per_block: float,
     block_generator: Optional[BlockGenerator],
@@ -1625,17 +1648,11 @@ def get_full_block_and_block_record(
     current_time: bool = False,
     block_time_residual: float = 0.0,
 ) -> Tuple[FullBlock, BlockRecord, float]:
+    time_delta, block_time_residual = round_timestamp(time_per_block, block_time_residual)
     if current_time is True:
-        if prev_block.timestamp is not None:
-            time_delta, block_time_residual = round_timestamp(time_per_block, block_time_residual)
-            timestamp = uint64(max(int(time.time()), prev_block.timestamp + time_delta))
-        else:
-            timestamp = uint64(int(time.time()))
+        timestamp = uint64(max(int(time.time()), last_timestamp + time_delta))
     else:
-        time_delta, block_time_residual = round_timestamp(
-            (prev_block.height + 1 - start_height) * time_per_block, block_time_residual
-        )
-        timestamp = uint64(start_timestamp + time_delta)
+        timestamp = uint64(last_timestamp + time_delta)
     sp_iters = calculate_sp_iters(constants, sub_slot_iters, signage_point_index)
     ip_iters = calculate_ip_iters(constants, sub_slot_iters, signage_point_index, required_iters)
 
@@ -1722,7 +1739,7 @@ def create_test_foliage(
     blocks: BlockchainInterface,
     total_iters_sp: uint128,
     timestamp: uint64,
-    timelord_reward_puzzle_hash: bytes32,
+    timelord_reward_puzzlehash: bytes32,
     farmer_reward_puzzlehash: bytes32,
     pool_target: PoolTarget,
     get_plot_signature: Callable[[bytes32, G1Element], G2Element],
@@ -1738,13 +1755,13 @@ def create_test_foliage(
         constants: consensus constants being used for this chain
         reward_block_unfinished: the reward block to look at, potentially at the signage point
         block_generator: transactions to add to the foliage block, if created
-        aggregate_sig: aggregate of all transctions (or infinity element)
+        aggregate_sig: aggregate of all transactions (or infinity element)
         prev_block: the previous block at the signage point
         blocks: dict from header hash to blocks, of all ancestor blocks
         total_iters_sp: total iters at the signage point
         timestamp: timestamp to put into the foliage block
         farmer_reward_puzzlehash: where to pay out farming reward
-        timelord_reward_puzzle_hash: where to pay out timelord reward
+        timelord_reward_puzzlehash: where to pay out timelord reward
         pool_target: where to pay out pool reward
         get_plot_signature: retrieve the signature corresponding to the plot public key
         get_pool_signature: retrieve the signature corresponding to the pool public key
@@ -1784,7 +1801,7 @@ def create_test_foliage(
         pool_target,
         pool_target_signature,
         farmer_reward_puzzlehash,
-        timelord_reward_puzzle_hash,
+        timelord_reward_puzzlehash,
         extension_data,
     )
 
@@ -1999,7 +2016,7 @@ def create_test_unfinished_block(
         timestamp: timestamp to add to the foliage block, if created
         seed: seed to randomize chain
         block_generator: transactions to add to the foliage block, if created
-        aggregate_sig: aggregate of all transctions (or infinity element)
+        aggregate_sig: aggregate of all transactions (or infinity element)
         additions: Coins added in spend_bundle
         removals: Coins removed in spend_bundle
         prev_block: previous block (already in chain) from the signage point
@@ -2040,7 +2057,7 @@ def create_test_unfinished_block(
                     curr = blocks.block_record(curr.prev_hash)
                 assert curr.finished_reward_slot_hashes is not None
                 rc_sp_hash = curr.finished_reward_slot_hashes[-1]
-        signage_point = SignagePoint(None, None, None, None, constants.TIMELORD_PUZZLE_HASH)
+        signage_point = SignagePoint(None, None, None, None, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
 
     cc_sp_signature: Optional[G2Element] = get_plot_signature(
         cc_sp_hash,

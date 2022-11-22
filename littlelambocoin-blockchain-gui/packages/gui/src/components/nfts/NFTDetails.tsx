@@ -1,19 +1,13 @@
-import React, { useMemo } from 'react';
+import { Flex, CardKeyValue, CopyToClipboard, Tooltip, Truncate, truncateValue, Link } from '@littlelambocoin/core';
 import { Trans } from '@lingui/macro';
-import {
-  Flex,
-  CardKeyValue,
-  CopyToClipboard,
-  Tooltip,
-  Truncate,
-  truncateValue,
-  Link,
-} from '@littlelambocoin/core';
 import { Box, Typography } from '@mui/material';
-import { stripHexPrefix } from '../../util/utils';
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+
+import useNFTMinterDID from '../../hooks/useNFTMinterDID';
 import { didToDIDId } from '../../util/dids';
 import { convertRoyaltyToPercentage } from '../../util/nfts';
-import styled from 'styled-components';
+import { stripHexPrefix } from '../../util/utils';
 
 /* ========================================================================== */
 
@@ -30,6 +24,12 @@ const StyledValue = styled(Box)`
 
 export default function NFTDetails(props: NFTDetailsProps) {
   const { nft, metadata } = props;
+  const {
+    didId: minterDID,
+    hexDIDId: minterHexDIDId,
+    didName: minterDIDName,
+    isLoading: isLoadingMinterDID,
+  } = useNFTMinterDID(nft.$nftId);
 
   const details = useMemo(() => {
     if (!nft) {
@@ -59,9 +59,9 @@ export default function NFTDetails(props: NFTDetailsProps) {
       },
     ].filter(Boolean);
 
-    let hexDIDId = undefined;
-    let didId = undefined;
-    let truncatedDID = undefined;
+    let hexDIDId;
+    let didId;
+    let truncatedDID;
 
     if (nft.ownerDid) {
       hexDIDId = stripHexPrefix(nft.ownerDid);
@@ -95,11 +95,7 @@ export default function NFTDetails(props: NFTDetailsProps) {
                 </Flex>
                 <Flex alignItems="center" gap={1}>
                   <StyledValue>{hexDIDId}</StyledValue>
-                  <CopyToClipboard
-                    value={hexDIDId}
-                    fontSize="small"
-                    invertColor
-                  />
+                  <CopyToClipboard value={hexDIDId} fontSize="small" invertColor />
                 </Flex>
               </Flex>
             </Flex>
@@ -129,14 +125,53 @@ export default function NFTDetails(props: NFTDetailsProps) {
       label: <Trans>Royalty Percentage</Trans>,
       value: (
         <>
-          {nft.royaltyPercentage ? (
-            `${convertRoyaltyToPercentage(nft.royaltyPercentage)}%`
-          ) : (
-            <Trans>Unassigned</Trans>
-          )}
+          {nft.royaltyPercentage ? `${convertRoyaltyToPercentage(nft.royaltyPercentage)}%` : <Trans>Unassigned</Trans>}
         </>
       ),
     });
+
+    if (!isLoadingMinterDID) {
+      const truncatedDID = truncateValue(minterDID ?? '', {});
+
+      rows.push({
+        key: 'minterDID',
+        label: <Trans>Minter DID</Trans>,
+        value: minterDID ? (
+          <Tooltip
+            title={
+              <Flex flexDirection="column" gap={1}>
+                <Flex flexDirection="column" gap={0}>
+                  <Flex>
+                    <Box flexGrow={1}>
+                      <StyledTitle>DID ID</StyledTitle>
+                    </Box>
+                  </Flex>
+                  <Flex alignItems="center" gap={1}>
+                    <StyledValue>{minterDID}</StyledValue>
+                    <CopyToClipboard value={minterDID} fontSize="small" invertColor />
+                  </Flex>
+                </Flex>
+                <Flex flexDirection="column" gap={0}>
+                  <Flex>
+                    <Box flexGrow={1}>
+                      <StyledTitle>DID ID (Hex)</StyledTitle>
+                    </Box>
+                  </Flex>
+                  <Flex alignItems="center" gap={1}>
+                    <StyledValue>{minterHexDIDId}</StyledValue>
+                    <CopyToClipboard value={minterHexDIDId} fontSize="small" invertColor />
+                  </Flex>
+                </Flex>
+              </Flex>
+            }
+          >
+            <Typography variant="body2">{minterDIDName ?? truncatedDID}</Typography>
+          </Tooltip>
+        ) : (
+          <Trans>Unassigned</Trans>
+        ),
+      });
+    }
 
     if (nft.mintHeight) {
       rows.push({
@@ -233,18 +268,14 @@ export default function NFTDetails(props: NFTDetailsProps) {
     }
 
     if (metadata?.preview_image_uris) {
-      const value = metadata?.preview_image_uris.map(
-        (uri: string, idx: number) => {
-          return (
-            <span>
-              &nbsp;
-              <Link to={uri} target="_blank">
-                {uri}
-              </Link>
-            </span>
-          );
-        },
-      );
+      const value = metadata?.preview_image_uris.map((uri: string, idx: number) => (
+        <span>
+          &nbsp;
+          <Link href={uri} target="_blank">
+            {uri}
+          </Link>
+        </span>
+      ));
       rows.push({
         key: 'preview_image_uris',
         label: <Trans>Preview image uris</Trans>,
@@ -253,18 +284,14 @@ export default function NFTDetails(props: NFTDetailsProps) {
     }
 
     if (Array.isArray(metadata?.preview_video_uris)) {
-      const value = metadata?.preview_video_uris.map(
-        (uri: string, idx: number) => {
-          return (
-            <span>
-              &nbsp;
-              <Link target="_blank" to={uri}>
-                {uri}
-              </Link>
-            </span>
-          );
-        },
-      );
+      const value = metadata?.preview_video_uris.map((uri: string, idx: number) => (
+        <span>
+          &nbsp;
+          <Link target="_blank" href={uri}>
+            {uri}
+          </Link>
+        </span>
+      ));
       rows.push({
         key: 'preview_video_uris',
         label: <Trans>Preview video uris</Trans>,

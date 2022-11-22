@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { Trans } from '@lingui/macro';
-import { useCurrencyCode, mojoToLittlelambocoinLocaleString, CardSimple, useLocale } from '@littlelambocoin/core';
 import { useGetFarmedAmountQuery } from '@littlelambocoin/api-react';
+import { useCurrencyCode, mojoToLittlelambocoinLocaleString, CardSimple, useLocale } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import React, { useMemo } from 'react';
 
 export default function FarmCardUserFees() {
   const currencyCode = useCurrencyCode();

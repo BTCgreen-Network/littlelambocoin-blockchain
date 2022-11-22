@@ -13,8 +13,7 @@ from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.types.peer_info import PeerInfo
 from littlelambocoin.util.ints import uint16
 from tests.conftest import node_with_params
-from tests.setup_nodes import test_constants
-
+from littlelambocoin.simulator.block_tools import test_constants
 
 constants = test_constants
 rl_v2 = [Capability.BASE, Capability.BLOCK_HEADERS, Capability.RATE_LIMITS_V2]

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import shutil
 import sqlite3
@@ -7,14 +9,9 @@ from typing import Any, Dict, List, Optional, Tuple
 import yaml
 
 from littlelambocoin import __version__
+from littlelambocoin.cmds.configure import configure
 from littlelambocoin.consensus.coinbase import create_puzzlehash_for_pk
-from littlelambocoin.ssl.create_ssl import (
-    ensure_ssl_dirs,
-    generate_ca_signed_cert,
-    get_littlelambocoin_ca_crt_key,
-    make_ca_cert,
-    write_ssl_cert_and_key,
-)
+from littlelambocoin.ssl.create_ssl import create_all_ssl
 from littlelambocoin.util.bech32m import encode_puzzle_hash
 from littlelambocoin.util.config import (
     create_default_littlelambocoin_config,
@@ -36,26 +33,13 @@ from littlelambocoin.util.ssl_check import (
     fix_ssl,
 )
 from littlelambocoin.wallet.derive_keys import (
+    _derive_path,
+    _derive_path_unhardened,
     master_sk_to_pool_sk,
     master_sk_to_wallet_sk_intermediate,
     master_sk_to_wallet_sk_unhardened_intermediate,
-    _derive_path,
-    _derive_path_unhardened,
 )
 from littlelambocoin.wallet.derive_chives_keys import chives_master_sk_to_pool_sk
-from littlelambocoin.cmds.configure import configure
-
-_all_private_node_names: List[str] = [
-    "full_node",
-    "wallet",
-    "farmer",
-    "harvester",
-    "timelord",
-    "crawler",
-    "data_layer",
-    "daemon",
-]
-_all_public_node_names: List[str] = ["full_node", "wallet", "farmer", "introducer", "timelord", "data_layer"]
 
 
 def dict_add_new_default(updated: Dict, default: Dict, do_not_migrate_keys: Dict[str, Any]):
@@ -93,7 +77,6 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         all_targets = []
         stop_searching_for_farmer = "llc_target_address" not in config["farmer"]
         stop_searching_for_pool = "llc_target_address" not in config["pool"]
-        stop_searching_for_timelord = "llc_target_address" not in config["timelord"]
         number_of_ph_to_search = 50
         selected = config["selected_network"]
         prefix = config["network_overrides"]["config"][selected]["address_prefix"]
@@ -106,7 +89,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
             }
 
         for i in range(number_of_ph_to_search):
-            if stop_searching_for_farmer and stop_searching_for_pool and stop_searching_for_timelord and i > 0:
+            if stop_searching_for_farmer and stop_searching_for_pool and i > 0:
                 break
             for sk, _ in all_sks:
                 intermediate_n = intermediates[bytes(sk)]["non-observer"]
@@ -128,10 +111,6 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                     "llc_target_address"
                 ):
                     stop_searching_for_pool = True
-                if all_targets[-1] == config["timelord"].get("llc_target_address") or all_targets[-2] == config["timelord"].get(
-                    "llc_target_address"
-                ):
-                    stop_searching_for_timelord = True
 
         # Set the destinations, if necessary
         updated_target: bool = False
@@ -160,20 +139,6 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 f"WARNING: using a pool address which we might not have the private"
                 f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
                 f"{config['pool']['llc_target_address']} with {all_targets[0]}"
-            )
-
-        if "llc_target_address" not in config["timelord"]:
-            print(
-                f"Setting the llc destination for the timelord reward ( 1% of block reward )"
-                f" to {all_targets[0]}"
-            )
-            config["timelord"]["llc_target_address"] = all_targets[0]
-            updated_target = True
-        elif config["timelord"]["llc_target_address"] not in all_targets:
-            print(
-                f"WARNING: using a farmer address which we might not have the private"
-                f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
-                f"{config['timelord']['llc_target_address']} with {all_targets[0]}"
             )
         if updated_target:
             print(
@@ -239,113 +204,6 @@ def migrate_from(
     create_all_ssl(new_root)
 
     return 1
-
-
-def create_all_ssl(
-    root_path: Path,
-    *,
-    private_ca_crt_and_key: Optional[Tuple[bytes, bytes]] = None,
-    node_certs_and_keys: Optional[Dict[str, Dict]] = None,
-    private_node_names: List[str] = _all_private_node_names,
-    public_node_names: List[str] = _all_public_node_names,
-    overwrite: bool = True,
-):
-    # remove old key and crt
-    config_dir = root_path / "config"
-    old_key_path = config_dir / "trusted.key"
-    old_crt_path = config_dir / "trusted.crt"
-    if old_key_path.exists():
-        print(f"Old key not needed anymore, deleting {old_key_path}")
-        os.remove(old_key_path)
-    if old_crt_path.exists():
-        print(f"Old crt not needed anymore, deleting {old_crt_path}")
-        os.remove(old_crt_path)
-
-    ssl_dir = config_dir / "ssl"
-    ca_dir = ssl_dir / "ca"
-    ensure_ssl_dirs([ssl_dir, ca_dir])
-
-    private_ca_key_path = ca_dir / "private_ca.key"
-    private_ca_crt_path = ca_dir / "private_ca.crt"
-    littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
-    littlelambocoin_ca_crt_path = ca_dir / "littlelambocoin_ca.crt"
-    littlelambocoin_ca_key_path = ca_dir / "littlelambocoin_ca.key"
-    write_ssl_cert_and_key(littlelambocoin_ca_crt_path, littlelambocoin_ca_crt, littlelambocoin_ca_key_path, littlelambocoin_ca_key, overwrite=overwrite)
-
-    # If Private CA crt/key are passed-in, write them out
-    if private_ca_crt_and_key is not None:
-        private_ca_crt, private_ca_key = private_ca_crt_and_key
-        write_ssl_cert_and_key(private_ca_crt_path, private_ca_crt, private_ca_key_path, private_ca_key)
-
-    if not private_ca_key_path.exists() or not private_ca_crt_path.exists():
-        # Create private CA
-        print(f"Can't find private CA, creating a new one in {root_path} to generate TLS certificates")
-        make_ca_cert(private_ca_crt_path, private_ca_key_path)
-        # Create private certs for each node
-        ca_key = private_ca_key_path.read_bytes()
-        ca_crt = private_ca_crt_path.read_bytes()
-        generate_ssl_for_nodes(
-            ssl_dir,
-            ca_crt,
-            ca_key,
-            prefix="private",
-            nodes=private_node_names,
-            node_certs_and_keys=node_certs_and_keys,
-            overwrite=overwrite,
-        )
-    else:
-        # This is entered when user copied over private CA
-        print(f"Found private CA in {root_path}, using it to generate TLS certificates")
-        ca_key = private_ca_key_path.read_bytes()
-        ca_crt = private_ca_crt_path.read_bytes()
-        generate_ssl_for_nodes(
-            ssl_dir,
-            ca_crt,
-            ca_key,
-            prefix="private",
-            nodes=private_node_names,
-            node_certs_and_keys=node_certs_and_keys,
-            overwrite=overwrite,
-        )
-
-    littlelambocoin_ca_crt, littlelambocoin_ca_key = get_littlelambocoin_ca_crt_key()
-    generate_ssl_for_nodes(
-        ssl_dir,
-        littlelambocoin_ca_crt,
-        littlelambocoin_ca_key,
-        prefix="public",
-        nodes=public_node_names,
-        overwrite=False,
-        node_certs_and_keys=node_certs_and_keys,
-    )
-
-
-def generate_ssl_for_nodes(
-    ssl_dir: Path,
-    ca_crt: bytes,
-    ca_key: bytes,
-    *,
-    prefix: str,
-    nodes: List[str],
-    overwrite: bool = True,
-    node_certs_and_keys: Optional[Dict[str, Dict]] = None,
-):
-    for node_name in nodes:
-        node_dir = ssl_dir / node_name
-        ensure_ssl_dirs([node_dir])
-        key_path = node_dir / f"{prefix}_{node_name}.key"
-        crt_path = node_dir / f"{prefix}_{node_name}.crt"
-        if node_certs_and_keys is not None:
-            certs_and_keys = node_certs_and_keys.get(node_name, {}).get(prefix, {})
-            crt = certs_and_keys.get("crt", None)
-            key = certs_and_keys.get("key", None)
-            if crt is not None and key is not None:
-                write_ssl_cert_and_key(crt_path, crt, key_path, key)
-                continue
-
-        if key_path.exists() and crt_path.exists() and overwrite is False:
-            continue
-        generate_ca_signed_cert(ca_crt, ca_key, crt_path, key_path)
 
 
 def copy_cert_files(cert_path: Path, new_path: Path):

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import cProfile
 import random
 import sqlite3
@@ -11,11 +13,11 @@ import click
 import zstd
 
 from littlelambocoin.simulator.block_tools import create_block_tools
+from littlelambocoin.simulator.keyring import TempKeyring
 from littlelambocoin.types.blockchain_format.coin import Coin
 from littlelambocoin.types.spend_bundle import SpendBundle
 from littlelambocoin.util.littlelambocoin_logging import initialize_logging
 from littlelambocoin.util.ints import uint32, uint64
-from tests.util.keyring import TempKeyring
 from tools.test_constants import test_constants
 
 

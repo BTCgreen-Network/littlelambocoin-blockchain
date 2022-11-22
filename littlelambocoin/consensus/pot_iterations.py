@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.pos_quality import _expected_plot_size
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32

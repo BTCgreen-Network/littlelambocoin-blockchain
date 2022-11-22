@@ -8,7 +8,7 @@ msgstr ""
 "Language: en_US\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-04 12:03\n"
+"PO-Revision-Date: 2022-10-24 18:17\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -104,12 +104,6 @@ msgstr "Authorized Payee Wallet"
 msgid "Balance"
 msgstr "Balance"
 
-#: src/components/cat/WalletCATSelect.tsx:24
-#: src/components/create/WalletCreateList.tsx:35
-#: src/constants/WalletName.ts:23
-msgid "Littlelambocoin Asset Token"
-msgstr "Littlelambocoin Asset Token"
-
 #: src/components/PasteMnemonic.tsx:78
 #: src/components/WalletRenameDialog.tsx:90
 msgid "Cancel"
@@ -123,6 +117,12 @@ msgstr "Cannot send littlelambocoin to coloured address. Please enter a littlela
 #: src/components/WalletsSidebar.tsx:145
 msgid "Check my snapshot balance"
 msgstr "Check my snapshot balance"
+
+#: src/components/cat/WalletCATSelect.tsx:24
+#: src/components/create/WalletCreateList.tsx:35
+#: src/constants/WalletName.ts:23
+msgid "Littlelambocoin Asset Token"
+msgstr "Littlelambocoin Asset Token"
 
 #: src/components/WalletsSidebar.tsx:160
 msgid "Click here to download an older version of the wallet"
@@ -229,7 +229,7 @@ msgstr "DID Wallet"
 
 #: src/constants/WalletName.ts:38
 msgid "Datalayer Wallet"
-msgstr "Datalayer Wallet"
+msgstr ""
 
 #: src/components/WalletHistory.tsx:198
 msgid "Date"
@@ -267,7 +267,7 @@ msgstr "Drag and drop attestation packet(s)"
 msgid "Drag and drop your recovery backup file"
 msgstr "Drag and drop your recovery backup file"
 
-#: src/components/WalletImport.tsx:133
+#: src/components/WalletImport.tsx:151
 msgid "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
 msgstr "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
 
@@ -310,7 +310,7 @@ msgstr "If you would like to speed up the transaction, please delete unconfirmed
 msgid "Import"
 msgstr "Import"
 
-#: src/components/WalletImport.tsx:130
+#: src/components/WalletImport.tsx:148
 msgid "Import Wallet from Mnemonics"
 msgstr "Import Wallet from Mnemonics"
 
@@ -394,12 +394,12 @@ msgstr "Name"
 msgid "New Address"
 msgstr "New Address"
 
-#: src/components/WalletAdd.tsx:73
+#: src/components/WalletAdd.tsx:91
 msgid "New Wallet"
 msgstr "New Wallet"
 
-#: src/components/WalletAdd.tsx:107
-#: src/components/WalletImport.tsx:164
+#: src/components/WalletAdd.tsx:151
+#: src/components/WalletImport.tsx:189
 msgid "Next"
 msgstr "Next"
 
@@ -449,7 +449,7 @@ msgstr "Only one backup file is allowed."
 msgid "Outgoing"
 msgstr "Outgoing"
 
-#: src/components/WalletImport.tsx:95
+#: src/components/WalletImport.tsx:101
 msgid "Paste Mnemonic"
 msgstr "Paste Mnemonic"
 
@@ -845,6 +845,11 @@ msgstr "View pending balances"
 msgid "Wallet Connections"
 msgstr "Wallet Connections"
 
+#: src/components/WalletAdd.tsx:128
+#: src/components/WalletImport.tsx:176
+msgid "Wallet Name"
+msgstr ""
+
 #: src/components/cat/WalletCAT.tsx:75
 #: src/components/cat/WalletDID.tsx:1118
 #: src/components/did/WalletDID.tsx:1118
@@ -867,7 +872,7 @@ msgstr "Want to see your old balance for yourself?"
 msgid "We've made an upgrade to the CAT standard which requires all CATs to be re-issued. You will be airdropped your new tokens as they are re-issued by the original issuers. The airdropped tokens will be based on the balance as of block height:<0/><1/><2/>(Approximate time: July 26th, 2022 @ 17:00 UTC)"
 msgstr "We've made an upgrade to the CAT standard which requires all CATs to be re-issued. You will be airdropped your new tokens as they are re-issued by the original issuers. The airdropped tokens will be based on the balance as of block height:<0/><1/><2/>(Approximate time: July 26th, 2022 @ 17:00 UTC)"
 
-#: src/components/WalletAdd.tsx:76
+#: src/components/WalletAdd.tsx:94
 msgid "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
 msgstr "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
 
@@ -884,6 +889,7 @@ msgstr "Your CAT tokens have been upgraded!"
 msgid "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
 msgstr "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
 
-#: src/components/WalletImport.tsx:71
+#: src/components/WalletImport.tsx:77
 msgid "Your pasted list does not include 24 valid mnemonic words."
 msgstr "Your pasted list does not include 24 valid mnemonic words."
+

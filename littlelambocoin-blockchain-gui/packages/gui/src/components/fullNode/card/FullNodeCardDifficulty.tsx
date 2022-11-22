@@ -1,7 +1,7 @@
-import React from 'react';
-import { Trans } from '@lingui/macro';
-import { FormatLargeNumber, CardSimple } from '@littlelambocoin/core';
 import { useGetBlockchainStateQuery } from '@littlelambocoin/api-react';
+import { FormatLargeNumber, CardSimple } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import React from 'react';
 
 export default function FullNodeCardDifficulty() {
   const { data, isLoading, error } = useGetBlockchainStateQuery();

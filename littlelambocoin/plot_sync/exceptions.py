@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from typing import Any
 
 from littlelambocoin.plot_sync.util import ErrorCodes, State
 from littlelambocoin.protocols.harvester_protocol import PlotSyncIdentifier
-from littlelambocoin.server.ws_connection import NodeType
+from littlelambocoin.server.outbound_message import NodeType
 from littlelambocoin.util.ints import uint64
 
 

@@ -8,7 +8,7 @@ msgstr ""
 "Language: uk_UA\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-27 18:40\n"
+"PO-Revision-Date: 2022-10-24 18:14\n"
 "Last-Translator: \n"
 "Language-Team: Ukrainian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -18,9 +18,9 @@ msgstr ""
 "X-Crowdin-File: /main/packages/core/src/locales/en-US/messages.po\n"
 "X-Crowdin-File-ID: 1886\n"
 
-#: src/components/EstimatedFee/EstimatedFee.tsx:131
+#: src/components/EstimatedFee/EstimatedFee.tsx:162
 msgid "<0>{0}</0>"
-msgstr ""
+msgstr "<0>{0}</0>"
 
 #: src/components/Amount/Amount.tsx:103
 msgid "Amount"
@@ -28,22 +28,32 @@ msgstr "Кількість"
 
 #: src/components/Settings/SettingsApp.tsx:76
 msgid "Appearance"
-msgstr ""
+msgstr "Зовнішній вигляд"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:164
+msgid "Are you sure you want to continue? Type in the fingerprint of this wallet key to confirm deletion."
+msgstr "Ви впевнені, що хочете продовжити? Введіть fingerprint цього гаманця для підтвердження видалення."
 
 #: src/components/FormBackButton/FormBackButton.tsx:47
-#: src/screens/SelectKey/SelectKey.tsx:82
-#: src/screens/SelectKey/SelectKeyItem.tsx:93
+#: src/screens/SelectKey/SelectKey.tsx:84
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:183
 msgid "Back"
 msgstr "Назад"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:147
-msgid "Can be backed up to mnemonic seed"
-msgstr "Може бути збережений в якості резервної копії за допомогою мнемонічного зерна"
+#~ msgid "Can be backed up to mnemonic seed"
+#~ msgstr "Can be backed up to mnemonic seed"
 
 #: src/components/ConfirmDialog/ConfirmDialog.tsx:32
 #: src/hooks/useKeyringMigrationPrompt.tsx:17
+#: src/screens/SelectKey/SelectKeyRenameForm.tsx:83
 msgid "Cancel"
 msgstr "Відміна"
+
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:49
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:72
+msgid "Close"
+msgstr "Закрити"
 
 #: src/components/FormatConnectionStatus/FormatConnectionStatus.tsx:51
 msgid "Connected"
@@ -57,52 +67,57 @@ msgstr "Скопійовано"
 msgid "Copy to Clipboard"
 msgstr "Скопіювати до буферу обміну"
 
-#: src/screens/SelectKey/SelectKey.tsx:187
+#: src/screens/SelectKey/SelectKey.tsx:188
 msgid "Create a new private key"
 msgstr "Створити новий приватний ключ"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:163
-msgid "DANGER: permanently delete private key"
-msgstr "НЕБЕЗПЕКА: видалити приватний ключ назавжди"
+#~ msgid "DANGER: permanently delete private key"
+#~ msgstr "DANGER: permanently delete private key"
 
 #: src/components/Settings/SettingsApp.tsx:83
 msgid "Dark"
-msgstr ""
+msgstr "Темний"
 
-#: src/screens/SelectKey/SelectKey.tsx:81
-#: src/screens/SelectKey/SelectKeyItem.tsx:92
+#: src/screens/SelectKey/SelectKey.tsx:83
+#: src/screens/SelectKey/SelectKeyItem.tsx:113
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:193
 msgid "Delete"
 msgstr "Видалити"
 
-#: src/screens/SelectKey/SelectKey.tsx:209
-#: src/screens/SelectKey/SelectKey.tsx:80
+#: src/screens/SelectKey/SelectKey.tsx:210
+#: src/screens/SelectKey/SelectKey.tsx:82
 msgid "Delete all keys"
 msgstr "Видалити всі ключі"
 
-#: src/screens/SelectKey/SelectKeyItem.tsx:91
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:112
 msgid "Delete key {fingerprint}"
-msgstr ""
+msgstr "Видалити ключ {fingerprint}"
 
-#: src/screens/SelectKey/SelectKey.tsx:86
+#: src/screens/SelectKey/SelectKey.tsx:88
 msgid "Deleting all keys will permanently remove the keys from your computer, make sure you have backups. Are you sure you want to continue?"
 msgstr "Видалення усіх ключів призведе до безповоротного видалення ключів з Вашого комп'ютеру. Переконайтесь, що маєте резервні копії. Ви впевнені, що хочете продовжити?"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:124
-msgid "Deleting the key will permanently remove the key from your computer, make sure you have backups. Are you sure you want to continue?"
-msgstr "Видалення ключа призведе до безповоротного його видалення з Вашого комп'ютеру. Переконайтесь, що маєте резервні копії. Ви впевнені, що хочете продовжити?"
+#~ msgid "Deleting the key will permanently remove the key from your computer, make sure you have backups. Are you sure you want to continue?"
+#~ msgstr "Deleting the key will permanently remove the key from your computer, make sure you have backups. Are you sure you want to continue?"
+
+#: src/screens/SelectKey/SelectKeyItem.tsx:105
+msgid "Details"
+msgstr "Докладніше"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:68
 msgid "Disable"
-msgstr ""
+msgstr "Вимкнути"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:67
 msgid "Disable Passphrase Protection"
-msgstr ""
+msgstr "Вимкнути захист кодовою фразою"
 
 #: src/components/Back/Back.tsx:35
 #: src/components/FormBackButton/FormBackButton.tsx:27
 msgid "Discard"
-msgstr ""
+msgstr "Скасувати"
 
 #: src/components/CardSimple/CardSimple.tsx:63
 #: src/hooks/useShowError.tsx:11
@@ -111,26 +126,37 @@ msgstr "Помилка"
 
 #: src/components/ErrorBoundary/ErrorBoundary.tsx:78
 msgid "Error:"
-msgstr ""
+msgstr "Помилка:"
+
+#: src/screens/SelectKey/SelectKeyRenameForm.tsx:87
+msgid "Esc"
+msgstr "Esc"
 
 #: src/components/LayoutMain/LayoutFooter.tsx:50
 #~ msgid "FAQ"
-#~ msgstr ""
+#~ msgstr "FAQ"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:67
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:67
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:96
+msgid "Farmer Public Key"
+msgstr "Публічний ключ фермера"
+
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:57
 msgid "Farmer public key:"
-msgstr ""
+msgstr "Публічний ключ фермера:"
 
 #: src/components/Settings/SettingsApp.tsx:66
 msgid "Farming"
 msgstr "Фермерство"
 
-#: src/components/EstimatedFee/EstimatedFee.tsx:160
 #: src/components/EstimatedFee/EstimatedFee.tsx:192
+#: src/components/EstimatedFee/EstimatedFee.tsx:225
 #: src/components/Fee/Fee.tsx:52
 msgid "Fee"
 msgstr "Комісія"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:96
+msgid "Fingerprint does not match"
+msgstr "Fingerprint не збігається"
 
 #: src/components/Settings/SettingsApp.tsx:105
 msgid "Frequently Asked Questions"
@@ -144,175 +170,240 @@ msgstr "Допомога"
 msgid "Help translate"
 msgstr "Допомогти з перекладом"
 
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:147
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:178
+msgid "Hide"
+msgstr "Приховати"
+
 #: src/components/AdvancedOptions/AdvancedOptions.tsx:75
 msgid "Hide Advanced Options"
 msgstr "Приховати додаткові параметри"
 
-#: src/screens/SelectKey/SelectKey.tsx:198
+#: src/screens/SelectKey/SelectKey.tsx:199
 msgid "Import from Mnemonics (24 words)"
 msgstr "Імпортувати за допомогою мнемоніки (24 слова)"
 
 #: src/components/Fee/Fee.tsx:40
 msgid "Incorrect value"
-msgstr ""
+msgstr "Некоректне значення"
 
 #: src/components/Settings/SettingsApp.tsx:90
 msgid "Language"
-msgstr ""
+msgstr "Мова"
 
 #: src/components/Settings/SettingsApp.tsx:80
 msgid "Light"
-msgstr ""
+msgstr "Світлий"
 
-#: src/screens/SelectKey/SelectKey.tsx:122
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:48
+msgid "Loading details"
+msgstr "Завантаження подробиць"
+
+#: src/screens/SelectKey/SelectKey.tsx:124
 msgid "Loading list of the keys"
-msgstr ""
+msgstr "Завантаження списку ключів"
 
-#: src/components/LayoutDashboard/LayoutDashboard.tsx:141
 #: src/components/LayoutDashboard/LayoutDashboard.tsx:166
+#: src/components/LayoutDashboard/LayoutDashboard.tsx:191
 msgid "Log Out"
-msgstr ""
+msgstr "Вийти"
 
-#: src/components/LayoutDashboard/LayoutDashboard.tsx:162
+#: src/components/LayoutDashboard/LayoutDashboard.tsx:187
 msgid "Logout"
-msgstr ""
+msgstr "Вийти"
 
 #: src/hooks/useKeyringMigrationPrompt.tsx:16
 msgid "Migrate"
-msgstr ""
+msgstr "Мігрувати"
 
 #: src/hooks/useKeyringMigrationPrompt.tsx:15
 msgid "Migration required"
-msgstr ""
+msgstr "Необхідна міграція"
 
 #: src/components/Settings/SettingsApp.tsx:62
 msgid "Mode"
-msgstr ""
+msgstr "Режим роботи"
+
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:121
+msgid "NEVER SHARE THESE WITH ANYONE"
+msgstr "НІКОЛИ НІ З КИМ НЕ ДІЛІТЬСЯ ЦИМ"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:49
 msgid "New passphrase is the same as your current passphrase"
-msgstr ""
+msgstr "Новий пароль такий самий, як і ваш поточний пароль"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:93
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:93
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:83
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:165
 msgid "No 24 word seed, since this key is imported."
 msgstr "Відсутні 24 ключових слова, оскільки ключ імпортовано."
+
+#: src/screens/SelectKey/WalletStatus.tsx:58
+msgid "Not Synced"
+msgstr "Не синхронізовано"
 
 #: src/components/FormatConnectionStatus/FormatConnectionStatus.tsx:52
 msgid "Not connected"
 msgstr "Немає з'єднання"
 
+#: src/components/AlertDialog/AlertDialog.tsx:22
 #: src/components/ConfirmDialog/ConfirmDialog.tsx:33
 msgid "OK"
 msgstr "ОК"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:75
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:75
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:108
+msgid "Pool Public Key"
+msgstr "Публічний ключ пулу"
+
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:65
 msgid "Pool public key:"
-msgstr ""
+msgstr "Публічний ключ пулу:"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:142
-msgid "Private key with public fingerprint {fingerprint}"
-msgstr "Закритий ключ з публічним відбитком пальця {fingerprint}"
+#~ msgid "Private key with public fingerprint {fingerprint}"
+#~ msgstr "Private key with public fingerprint {fingerprint}"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:28
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:40
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:28
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:40
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:26
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:33
 msgid "Private key {fingerprint}"
-msgstr ""
+msgstr "Приватний ключ {fingerprint}"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:51
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:51
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:41
 msgid "Private key:"
 msgstr "Закритий ключ:"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:59
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:59
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:84
+msgid "Public Key"
+msgstr "Публічний ключ"
+
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:49
 msgid "Public key:"
 msgstr "Публічний ключ:"
 
 #: src/components/ErrorBoundary/ErrorBoundary.tsx:91
 msgid "Reload Application"
-msgstr ""
+msgstr "Перезавантажити додаток"
+
+#: src/screens/SelectKey/SelectKeyItem.tsx:97
+msgid "Rename"
+msgstr "Перейменувати"
 
 #: src/components/ErrorBoundary/ErrorBoundary.tsx:87
 msgid "Report an Issue"
-msgstr ""
+msgstr "Повідомити про помилку"
+
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:147
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:178
+msgid "Reveal"
+msgstr "Показати"
+
+#: src/screens/SelectKey/SelectKeyRenameForm.tsx:107
+msgid "Save"
+msgstr "Зберегти"
+
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:127
+msgid "Secret Key"
+msgstr "Секретний ключ"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:151
-msgid "See private key"
-msgstr "Переглянути приватний ключ"
+#~ msgid "See private key"
+#~ msgstr "See private key"
 
-#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:85
-#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:85
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:154
+msgid "Seed Phrase"
+msgstr "Мнемонічна фраза"
+
+#: src/screens/SelectKey/SelectKeyDeleteKeyDialog.tsx:75
 msgid "Seed:"
 msgstr "Фраза:"
 
-#: src/screens/SelectKey/SelectKey.tsx:139
+#: src/screens/SelectKey/SelectKey.tsx:141
 msgid "Select Key"
 msgstr "Вибрати ключ"
 
 #: src/components/Dropdown/Dropdown.tsx:85
 msgid "Select..."
-msgstr ""
+msgstr "Обрати..."
 
 #: src/components/Settings/SettingsApp.tsx:108
 msgid "Send Feedback"
-msgstr ""
+msgstr "Надіслати відгук"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:61
 msgid "Setting a passphrase is strongly recommended to protect your keys. Are you sure you want to skip setting a passphrase?"
-msgstr ""
+msgstr "Встановлення пароля рекомендується для захисту ваших ключів. Ви впевнені, що хочете вимкнути захист паролем?"
 
 #: src/components/Settings/Settings.tsx:48
 #: src/components/Settings/Settings.tsx:58
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #: src/components/AdvancedOptions/AdvancedOptions.tsx:74
 msgid "Show Advanced Options"
 msgstr "Показати розширені параметри"
 
-#: src/screens/SelectKey/SelectKey.tsx:144
+#: src/screens/SelectKey/SelectKey.tsx:146
 msgid "Sign In"
 msgstr "Увійти"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:59
 msgid "Skip"
-msgstr ""
+msgstr "Пропустити"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:58
 msgid "Skip Passphrase Protection"
-msgstr ""
+msgstr "Пропустити захист паролем"
 
 #: src/components/ErrorBoundary/ErrorBoundary.tsx:73
 msgid "Something went wrong"
-msgstr ""
+msgstr "Сталася помилка"
+
+#: src/screens/SelectKey/WalletStatus.tsx:70
+msgid "Synced"
+msgstr "Синхронізовано"
+
+#: src/screens/SelectKey/WalletStatus.tsx:82
+msgid "Syncing"
+msgstr "Синхронізація"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:31
 msgid "The provided passphrase and confirmation do not match"
-msgstr ""
+msgstr "Паролі не співпадають"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:145
+msgid "This key is used for a wallet that may have a non-zero balance. By deleting this key you may lose access to this wallet"
+msgstr "Цей ключ використовується для гаманця, який може мати ненульовий баланс. Видаливши цей ключ, ви можете втратити доступ до цього гаманця"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:125
+msgid "This key is used for your farming rewards address. By deleting this key you may lose access to any future farming rewards"
+msgstr "Цей ключ використовується для адреси фермерських винагород. Видаляючи цей ключ, ви можете втратити доступ до майбутніх фермерських винагород"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:135
+msgid "This key is used for your pool rewards address. By deleting this key you may lose access to any future pool rewards"
+msgstr "Цей ключ використовується для вашої адреси винагород пулу. Видаливши цей ключ, ви можете втратити доступ до майбутніх винагород пулу"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:158
+msgid "This will permanently remove the key from your computer, make sure you have your mnemonic phrase backed up."
+msgstr "Це назавжди видалить ключ із вашого комп’ютера, переконайтеся, що у вас є резервна копія мнемонічної фрази."
 
 #: src/utils/getTransactionResult.ts:15
 msgid "Transaction has not been sent to node yet"
-msgstr ""
+msgstr "Транзакція ще не була відправлена до вузла"
 
 #: src/utils/getTransactionResult.ts:33
 msgid "Transaction has sent to a full node and is pending inclusion into the mempool. {0}"
-msgstr ""
+msgstr "Транзакція була відправлена на повний вузол і очікує включення до mempool. {0}"
 
 #: src/utils/getTransactionResult.ts:24
 msgid "Transaction has successfully been sent to a full node and included in the mempool."
-msgstr ""
+msgstr "Транзакція успішно відправлена до повного вузла та була включена в mempool."
 
-#: src/screens/SelectKey/SelectKey.tsx:129
+#: src/screens/SelectKey/SelectKey.tsx:131
 msgid "Try Again"
-msgstr ""
+msgstr "Спробувати ще раз"
 
-#: src/screens/SelectKey/SelectKey.tsx:133
+#: src/screens/SelectKey/SelectKey.tsx:135
 msgid "Unable to load the list of the keys"
-msgstr ""
+msgstr "Не вдалося завантажити список ключів"
 
 #: src/components/LocaleToggle/LocaleToggle.tsx:48
 msgid "Unknown"
@@ -321,54 +412,64 @@ msgstr "Невідомо"
 #: src/components/Back/Back.tsx:34
 #: src/components/FormBackButton/FormBackButton.tsx:26
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Незбережені зміни"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:70
 msgid "Using a passphrase is strongly recommended to protect your keys. Are you sure you want to disable passphrase protection?"
-msgstr ""
+msgstr "Рекомендовано використовувати пароль для захисту ваших ключів. Ви впевнені, що хочете вимкнути захист паролем?"
 
 #: src/components/Fee/Fee.tsx:32
 msgid "Value seems high"
-msgstr ""
+msgstr "Значення здається високим"
 
-#: src/components/LayoutDashboard/LayoutDashboard.tsx:109
+#: src/components/LayoutDashboard/LayoutDashboard.tsx:132
 #: src/components/Settings/SettingsApp.tsx:69
 msgid "Wallet"
-msgstr ""
+msgstr "Гаманець"
+
+#: src/screens/SelectKey/WalletDeleteDialog.tsx:172
+msgid "Wallet Fingerprint"
+msgstr "Fingerprint Гаманця"
+
+#: src/screens/SelectKey/SelectKeyDetailDialog.tsx:65
+#: src/screens/SelectKey/SelectKeyItem.tsx:82
+msgid "Wallet {0}"
+msgstr "Гаманець {0}"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:117
-msgid "Warning: This key is used for a wallet that may have a non-zero balance. By deleting this key you may lose access to this wallet"
-msgstr ""
+#~ msgid "Warning: This key is used for a wallet that may have a non-zero balance. By deleting this key you may lose access to this wallet"
+#~ msgstr "Warning: This key is used for a wallet that may have a non-zero balance. By deleting this key you may lose access to this wallet"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:99
-msgid "Warning: This key is used for your farming rewards address. By deleting this key you may lose access to any future farming rewards"
-msgstr ""
+#~ msgid "Warning: This key is used for your farming rewards address. By deleting this key you may lose access to any future farming rewards"
+#~ msgstr "Warning: This key is used for your farming rewards address. By deleting this key you may lose access to any future farming rewards"
 
 #: src/screens/SelectKey/SelectKeyItem.tsx:108
-msgid "Warning: This key is used for your pool rewards address. By deleting this key you may lose access to any future pool rewards"
-msgstr ""
+#~ msgid "Warning: This key is used for your pool rewards address. By deleting this key you may lose access to any future pool rewards"
+#~ msgstr "Warning: This key is used for your pool rewards address. By deleting this key you may lose access to any future pool rewards"
 
-#: src/screens/SelectKey/SelectKey.tsx:147
+#: src/screens/SelectKey/SelectKey.tsx:149
 msgid "Welcome to Littlelambocoin. Please log in with an existing key, or create a new key."
 msgstr "Ласкаво просимо в Littlelambocoin. Будь ласка, увійдіть за допомогою існуючого ключа або створіть новий ключ."
 
 #: src/components/Back/Back.tsx:38
 #: src/components/FormBackButton/FormBackButton.tsx:30
 msgid "You have made changes. Do you want to discard them?"
-msgstr ""
+msgstr "У вас є незбережені зміни. Скасувати їх?"
 
 #: src/hooks/useKeyringMigrationPrompt.tsx:20
 msgid "Your keys have not been migrated to a new keyring. You will be unable to create new keys or delete existing keys until migration completes. Would you like to migrate your keys now?"
-msgstr ""
+msgstr "Ваші ключі не були перенесені до нової системи ключів. Ви не зможете створювати нові ключі або видаляти існуючі ключі, доки не завершиться міграція. Бажаєте перенести ваші ключі зараз?"
 
 #: src/components/Amount/Amount.tsx:85
 msgid "{0, plural, one {mojo} other {mojos}}"
-msgstr ""
+msgstr "{0, plural, one {mojo} other {mojos}}"
 
-#: src/components/EstimatedFee/EstimatedFee.tsx:128
+#: src/components/EstimatedFee/EstimatedFee.tsx:159
 msgid "{0} TLLC"
-msgstr ""
+msgstr "{0} TLLC"
 
 #: src/hooks/useValidateChangePassphraseParams.tsx:39
 msgid "{minPassphraseLength, plural, one {Passphrases must be at least # character in length} other {Passphrases must be at least # characters in length}}"
-msgstr ""
+msgstr "{minPassphraseLength, plural, one {Пароль повинен містити щонайменше # символ} few {Пароль повинен містити щонайменше # символи} many {Пароль повинен містити щонайменше # символів} other {Пароль повинен містити щонайменше # символів}}"
+

@@ -1,16 +1,15 @@
-import React from 'react';
-import { Trans } from '@lingui/macro';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
-import { IconButton, Flex, Loading } from '@littlelambocoin/core';
-import { MoreVert } from '@mui/icons-material';
-import styled from 'styled-components';
-import NFTPreview from './NFTPreview';
 import { type NFTInfo } from '@littlelambocoin/api';
-import NFTContextualActions, {
-  NFTContextualActionTypes,
-} from './NFTContextualActions';
+import { IconButton, Flex, Loading } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import { MoreVert } from '@mui/icons-material';
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
 import useNFTMetadata from '../../hooks/useNFTMetadata';
+import NFTContextualActions, { NFTContextualActionTypes } from './NFTContextualActions';
+import NFTPreview from './NFTPreview';
 
 const StyledCardContent = styled(CardContent)`
   //padding-top: ${({ theme }) => theme.spacing(1)};
@@ -34,16 +33,11 @@ export type NFTCardProps = {
 };
 
 export default function NFTCard(props: NFTCardProps) {
-  const {
-    nft,
-    canExpandDetails = true,
-    availableActions = NFTContextualActionTypes.None,
-    isOffer,
-  } = props;
+  const { nft, canExpandDetails = true, availableActions = NFTContextualActionTypes.None, isOffer } = props;
 
   const navigate = useNavigate();
 
-  const { metadata, isLoading, error } = useNFTMetadata(nft);
+  const { metadata, isLoading, error } = useNFTMetadata([nft]);
 
   function handleClick() {
     if (canExpandDetails) {
@@ -53,7 +47,7 @@ export default function NFTCard(props: NFTCardProps) {
 
   return (
     <Flex flexDirection="column" flexGrow={1}>
-      <Card sx={{ borderRadius: '8px' }}>
+      <Card sx={{ borderRadius: '8px' }} variant="outlined">
         {isLoading ? (
           <StyledLoadingCardContent>
             <Loading center />
@@ -66,20 +60,16 @@ export default function NFTCard(props: NFTCardProps) {
                 fit="cover"
                 isPreview
                 metadata={metadata}
+                isLoadingMetadata={isLoading}
                 disableThumbnail={isOffer}
                 metadataError={error}
               />
             </CardActionArea>
-            <CardActionArea
-              onClick={() => canExpandDetails && handleClick()}
-              component="div"
-            >
+            <CardActionArea onClick={() => canExpandDetails && handleClick()} component="div">
               <StyledCardContent>
                 <Flex justifyContent="space-between" alignItems="center">
                   <Flex gap={1} alignItems="center" minWidth={0}>
-                    <Typography noWrap>
-                      {metadata?.name ?? <Trans>Title Not Available</Trans>}
-                    </Typography>
+                    <Typography noWrap>{metadata?.name ?? <Trans>Title Not Available</Trans>}</Typography>
                   </Flex>
                   {availableActions !== NFTContextualActionTypes.None && (
                     <NFTContextualActions

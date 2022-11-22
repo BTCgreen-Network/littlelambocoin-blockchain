@@ -6,9 +6,172 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does not yet adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 for setuptools_scm/PEP 440 reasons.
 
-## [Unreleased]
+## 1.6.1 Littlelambocoin blockchain 2022-11-03
 
-### What's Changed
+### Added
+
+- New node RPC for fee estimates `/get_fee_estimate`
+- Added support for labeling (naming) wallets (keys)
+- Added CLI option `littlelambocoin keys label`
+- Added REMARK to `ConditionOpcodes`
+- Prevent creation of offers with 100% royalties
+- Added `littlelambocoin peer` command to replace `littlelambocoin show -c`
+- New wallet RPC `/nft_mint_bulk` and preliminary support for bulk minting
+- New wallet RPC `/nft_calculate_royalties`
+- New wallet signing RPCs `/sign_message_by_address`, `/sign_message_by_id`
+- New wallet CLI option `littlelambocoin wallet sign_message`
+- New wallet RPC `/push_transactions` (thanks @stmharry)
+- New daemon command `running_services` to list all running services
+- Code coverage is now generated
+- Added on-chain wallet notification mechanism with CLI
+- Added log warning when inserting into the mempool takes longer than 2 seconds
+
+### Changed
+
+- RPC incompatibility: `/get_routes` and `/healthz` now return a boolean for success (previously was a string)
+- New Windows installer created with `electron-builder`
+- Blsspy updated to 1.0.16
+- Littlelambocoinvdf updated to 1.0.7
+- Littlelambocoinpos updated to 1.0.11
+- Clvm_tools updated to 0.4.5
+- Littlelambocoin_rs updated to 0.1.14
+- Clvm-tools-rs updated to 0.1.24
+- Aiohttp updated to 3.8.3
+- Colorlog updated to 6.7.0
+- Concurrent-log-handler updated to 0.9.20
+- Cryptography updated to 36.0.2
+- Filelock updated to 3.8.0
+- Keyring updated to 23.6.0
+- Click updated to 8.1.3
+- Dnspython updated to 2.2.1
+- Dnslib updated to 0.9.22
+- Zstd updated to 1.5.2.6
+- Updated various DataLayer CLI commands to accept root hash parameter
+- Pool config is updated after the wallet is fully synced (#12631)
+- Prior to adding DID coins, ensure coin is valid
+- Adding submodule branch override to Install-gui.ps1
+- Reverted `change` to `change OR REPLACE -> OR FAIL` in `wallet_coin_store`
+- Changed log level to `INFO` in `Receiver.reset` for plot sync
+- Modified `/nft_get_info` to include `p2_address`
+- Simplified `WalletStateManager.coin_added()`
+- Minor change to DataLayer mirror sync
+- Removed unnecessary split when starting daemon
+- Removed mostly unused wallet action store (wallet_action_store.py) and rearrange code as needed
+- Removed unused `all_puzzle_hashes` from `wallet_puzzle_store`
+- Removed "Total iterations since start" from `littlelambocoin show -s`
+- Removed rate-limited wallet
+- Removed the beta program link from the warning in the CLI
+- Removed `--enable-data-server` from `littlelambocoin configure` CLI
+- Improved RPC server start/stop
+- Drop partially implemented BIP39 passphrase support
+- Simplify key deletion in `Keychain`
+- Simplify public key getters in `Keychain`
+- Cleanup and reuse of wallet code
+- Return before fetching weight proof if a secondary sync task is running (Thanks @olivernyc!)
+- Dropped unused `littlelambocoin_minor_release_number`
+- Just `raise`, not `raise e` when reraising
+- Optimized `simple_solution_generator()`
+- Allow developers to easily use standard Littlelambocoin `clvm` puzzles and libraries
+- Skipped validating `GTElement` in mempool
+- Improved logging for `littlelambocoin plotters version` errors
+- Performance improvements in `subscribe_to_phs` using CoinState from chia_rs
+- Performance improvements in wallet syncing by doing bulk coin record lookups
+- Performance improvements in wallet syncing by caching the last derivation path
+- Performance improvements in offer parsing by implementing a more efficient Program.uncurry()
+- Performance improvements in puzzle parsing by using rust parser (`chia_rs`) for Program.from_bytes()
+- Performance improvements in wallet by caching the uncurried puzzle in UncurriedPuzzle class
+- Implement generator_for_single_coin() in python instead of `clvm`
+- Optimize get_block_store by not parsing the full block
+- Avoid creating a list and enable short circuit behavior in `bundle_suitable_for_compression()`
+- Performance improvements when dealing with lots of trades (offers) by using a lookup table and not loading all trades from disk upfront
+- Minimized a chance where `sudo` prompts users for password in `install.sh`
+- Full_node: Dropped unused ultra priority lock
+- Full_node: Set defaults in `SyncStore`
+- Various performance and code cleanup in mempool handling
+- Significant scalability improvements in NFT handling
+- Minter DID now shown in output of `littlelambocoin wallet nft get_info` and in GUI
+- Treehash optimization for DID wallet
+- Performance improvements by using `get_puzzle_and_solution_for_coin()` from `chia_rs`
+- Adds handling for daemon not sending `initial_target_state` (thanks @bolshoytoster) (#10058)
+- Reduced log noise during wallet syncing
+- Run `get_puzzle_and_solution_for_coin` and `get_block_header` expensive API requests in separate thread
+- Do not trigger the pending tx handler in some cases. Eliminates multiple ALREADY_INCLUDING_TRANSACTION errors for some operations, notably claiming self-pooling rewards
+- Defined a shared API for all wallet via a WalletProtocol class
+- Recompress CLVM generators
+- Removed unnecessary logging during plot creation
+- Made `IP` section in connections table 1 character wider to handle IPV6
+- Deprecated `littlelambocoin plotters install` command
+- Improved handling of unfinished block messages
+- Stripped leading and trailing whitespace before `bech32` decoding in various places
+- Fixed issues in the GUI with sending CAT transactions with a fee
+- Changed `ctx.exit` -> `raise click.ClickException` in CLI
+- Improved harvester logging
+
+### Fixed
+
+- Fixed a few instances of coin name logging
+- Fixed littlelambocoin farm summary if using a remote full node (thanks @yan74)
+- Fixed comments in initial config where puzzle hash should be receive address (thanks @hugepants)
+- Fixed locking of main thread in `validate_weight_proof_inner`
+- Fixed several bugs with untrusted sync, and correct sync status
+- Fixed performance issue in wallet with offers
+- Minor fixes for related to running serialized programs
+- Fixed bug in remove_plot_directory when removing a directory not currently in the plot directory list (thanks @joshpainter)
+- Fixed the run_block utility to use littlelambocoinlisp_deserialization
+- Minor comment typo, hinting, and fixture cleanup
+- Fixed a crash that happens when plot directory config is empty
+- Set log levels per handler / Fix the log level in beta mode
+- Minimal fixup for daemon signal handling regression
+- Fixed CAT offer aggregation edge case (#13464)
+- Fixed memos & minter DID
+- Fixed logo URL in readme.md (thanks @SametBasturkk)
+- Fixed typo in wallet code `puzlle` -> `puzzle` (thanks @wizicer)
+- Fixed `littlelambocoin show -s` with other options as well
+- Fixed issue with the wallet not syncing in untrusted mode, if connected to a trusted peer that is not synced
+- Improve handling of not synced peers
+- Sped up creation of puzzle hashes in the wallet
+- Replaced several handled tracebacks with standard log messages
+- Show Usage when running `littlelambocoin plotters` (#13690)
+- Fixed marking the successfully added spend bundles to the reinitialized mempool when a new peak is available
+- Fixed errors output when stopping the daemon on CLI
+- Fixed incompatibility with Python 3.10.8 around accessing the `_waiters` private attribute of asyncio Semaphore class (#13636)
+- Fixed DataLayer issues with subscribing after unsubscribing to the same store/singleton (#13589)
+- Report to GUI when DID wallet is created
+- Check if offer file is present before trying to take offer
+- Properly catch and handle errors during shutdown while syncing
+- Fixed proof lookup and plot caching with bladebit plots that have dropped entries (#13084)
+- Fixed issues with accepting Datalayer offers where the offer inclusions has matching key/value data for both maker and taker inclusions
+- Fixed issues where LittlelambocoinLisp was compiled during import requiring write access to the directory (#11257) (thanks @lourkeur). To force compilation, developers can set environment variable `LITTLELAMBOCOIN_DEV_COMPILE_CLVM_ON_IMPORT`
+- Removed tracking of dropped transactions `dropped_tx` (thanks @roseiliend)
+- Fixed a breaking change in `get_puzzle_and_solution` RPC
+
+## 1.6.0 Littlelambocoin blockchain 2022-9-20
+
+### Added
+
+- DataLayer
+- LLC Spam Filter
+- GUI Settings `Auto-Login` toggle (GUI only)
+- GUI Settings section for `DataLayer`
+  - `Enable DataLayer` toggle
+  - `Enable File Propagation Server` toggle
+
+### Changed
+
+- Delayed pool config update until after sync
+- Minor change to handling sync height to avoid race condition with blockchain DB
+- Ignore `FileNotFoundError` when checking SSL file permissions if the file doesn’t exist
+
+### Fixed
+
+- Fixed missing wallet `state_changed` events for GUI
+- Fixed several bugs related to wallet sync status
+- Fixed GUI issue for CAT offers where the CAT Tail would not show in the tooltip for `Unknown CAT`s (https://github.com/BTCgreen-Network/littlelambocoin-blockchain-gui/issues/950)
+
+### Known Issues
+
+- The CLI command `littlelambocoin configure --enable-data-server`, and the `config.yaml` parameter at `data_layer.run_server` have no effect, and will be removed in the future
+- DataLayer offers cannot be accepted (`take_offer`) if the offer has inclusions for the exact same key/value data for both maker and taker inclusions.
 
 ## 1.5.1 Littlelambocoin blockchain 2022-8-23
 
@@ -582,7 +745,7 @@ We have some great improvements in this release: We launched our migration of ke
 ### Added
 
 - Added RPC updates to support keyring migration and to support adding a passphrase for wallets in an upcoming release.
-- Added plot memo llching in PlotManager, speeding initial loading and cached loading, by enabling harvester to save the parsed plot memo on disk on shutdown, then load it back into memory on startup so that it can skip key parsing calculations for all already known plots.
+- Added plot memo caching in PlotManager, speeding initial loading and cached loading, by enabling harvester to save the parsed plot memo on disk on shutdown, then load it back into memory on startup so that it can skip key parsing calculations for all already known plots.
 - Added a debug option to log all SQL commands.
 - Added support for DID, our decentralized identity solution, as a building block toward Littlelambocoin's broader set of DID capabilities.
 - Thanks @olivernyc for the addition of a query in CoinStore to special case height 0 to avoid querying all unspent coins.
@@ -1278,7 +1441,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Comments to Littlelambocoinlisp and clvm source have been updated for all of the Littlelambocoinlisp changes over the proceeding three weeks.
 - And thanks yet again to @jespino for a host of PRs to add more detailed typing to various components in littlelambocoin-blockchain.
 - aiohttp was updated to 3.7.4 to address a low severity [security issue](https://github.com/advisories/GHSA-v6wp-4m6f-gcjg).
-- calccrypto/uint128_t was updated in the Windows chiapos implementation. Chiapos required some changes its build process to support MacOS ARM64.
+- calccrypto/uint128_t was updated in the Windows chiapos implementation. Littlelambocoinpos required some changes its build process to support MacOS ARM64.
 
 ### Fixed
 
@@ -1439,7 +1602,7 @@ all fields that referred to sub blocks are changed to blocks.
 ### Changed
 
 - Significant improvements have been made to how the full node handles the mempool. This generally cuts CPU usage of node by 2x or more. Part of this increase is that we have temporarily limited the size of transactions. If you want to test sending a transaction you should keep the value of your transaction below 20 TLLC as new consensus will cause you to use a lot of inputs. This will be returned to the expected level as soon as the integration of [clvm rust](https://github.com/BTCgreen-Network/clvm_rs) is complete.
-- We have changed the way TLS between nodes and between littlelambocoin services work. Each node now has two certificate authorities. One is a public, shared CA that signs the TLS certificates that every node uses to connect to other nodes on 4575 or 58444. You now also have a self generated private CA that must sign e.g. farmer and harvester's certificates. To run a remote harvester you need a new harvester key that is then signed by your private CA. We know this is not easy for remote harvester in this release but will address it quickly.
+- We have changed the way TLS between nodes and between littlelambocoin services work. Each node now has two certificate authorities. One is a public, shared CA that signs the TLS certificates that every node uses to connect to other nodes on 8444 or 58444. You now also have a self generated private CA that must sign e.g. farmer and harvester's certificates. To run a remote harvester you need a new harvester key that is then signed by your private CA. We know this is not easy for remote harvester in this release but will address it quickly.
 - We have changed the way we compile the proof of space plotter and added one additional optimization. On many modern processors this will mean that using the plotter with the `-e` flag will be 2-3% faster than the Beta 17 plotter on the same CPU. We have found this to be very sensitive to different CPUs but are now confident that, at worst, the Beta 24 plotter with `-e` will be the same speed as Beta 17 if not slightly faster on the same hardware. Huge thanks to @xorinox for meticulously tracking down and testing this.
 - If a peer is not responsive during sync, node will disconnect it.
 - Peers that have not sent data in the last hour are now disconnected.
@@ -1599,7 +1762,7 @@ all fields that referred to sub blocks are changed to blocks.
 - The plotter supports the new bitfield back propagation method and the old method from Beta 17. To choose the old method add a `-e` to the command line or choose "Disable bitfield plotting" in "Show Advanced Options" of the Plots tab. Bitfield back propagation writes about 13% less total writes and can be faster on some slower hard drive temp spaces. For now, SSD temp space will likely plot faster with bitfield back propagation disabled. We will be returning to speed enhancements to the plotter as we approach and pass our mainnet launch.
 - The Farm tab in the GUI is significantly enhanced. Here you have a dashboard overview of your farm and your activity in response to challenges blockchain challnegs, how long it will take you - on average - to win a block, and how much TLLC you've won so far. Harvester and Full Node connections have moved to Advanced Options.
 - Harvester and farmer will start when the GUI starts instead of waiting for key selection if there are already keys available. This means you will start farming on reboot if you have the Littlelambocoin application set to launch on start.
-- Testnet is now running at the primary port of 58444. Update your routers appropriately. This opens 4575 for mainnet.
+- Testnet is now running at the primary port of 58444. Update your routers appropriately. This opens 8444 for mainnet.
 - All networking code has been refactored and mostly moved to websockets.
 - RPCs and daemon now communicate over TLS with certificates that are generated into `~/.littlelambocoin/VERSION/config/`
 - We have moved to taproot across all of our transactions and smart transactions.
@@ -1737,7 +1900,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 - Temporary space required for each k size was updated with more accurate estimates.
 - Tables in the README.MD were not rendering correctly on Pypi. Thanks again @altendky.
-- Chiapos issue where memory was spiking and increasing
+- Littlelambocoinpos issue where memory was spiking and increasing
 - Fixed working space estimates so they are exact
 - Log all errors in chiapos
 - Fixed a bug that was causing Bluebox vdfs to fail.
@@ -1947,7 +2110,7 @@ farmer and full node protocols.
 - Use real plot sizes in UI instead of a formula/
 - HD keys now use EIP 2333 format instead of BIP32, for compatibility with
 other chains.
-- Keys are now derived with the EIP 2334 (m/12381/4575/a/b).
+- Keys are now derived with the EIP 2334 (m/12381/8444/a/b).
 - Removed the ability to pass in sk_seed to plotting, to increase security.
 - Linux builds of chiavdf and blspy now use a fresh build of gmp 6.2.1.
 
@@ -2216,7 +2379,7 @@ relic. We will make a patch available for these systems shortly.
 - You can now provide an index to create_plots using the -i flag to create an arbitrary new plot derived from an existing plot key. Thanks @xorinox.
 - There is a new restart_harvester.sh in scripts/ to easily restart a harvester when you want to add a newly completed plot to the farm without restarting farmer, fullnode, timelord, etc.
 - Harvesters now log errors if they encounter a malformed or corrupted plot file. Again thanks @xorinox.
-- New AJAX based full node UI. To access go to [http://127.0.0.1:18714/index.html](http://127.0.0.1:18714/index.html) with any modern web browser on the same machine as the full node.
+- New AJAX based full node UI. To access go to [http://127.0.0.1:8555/index.html](http://127.0.0.1:8555/index.html) with any modern web browser on the same machine as the full node.
 - If you want to benchmark your CPU as a VDF you can use vdf_bench square_asm 500000 for the assembly optimized test or just vdf_bench square 500000 for the plain C++ code path. This tool is found in lib/chiavdf/fast_vdf/.
 - Improvements to shutting down services in all of the scripts in scripts/. Another @xorinox HT.
 
@@ -2330,7 +2493,7 @@ relic. We will make a patch available for these systems shortly.
 
 ### Added
 
-- Introducer now makes sure it only sends peer addresses to peers of peers that it can reach on port 4575 or their UPnP port.
+- Introducer now makes sure it only sends peer addresses to peers of peers that it can reach on port 8444 or their UPnP port.
 - We are now using setuptools_scm for versioning.
 
 ### Changed

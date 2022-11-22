@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, Tuple
 
 SSL_TEST_PRIVATE_CA_CRT = b"""-----BEGIN CERTIFICATE-----
@@ -167,7 +169,7 @@ cmHDZVOrQqpmOdygP+q/JRFoX9jF6X0nR17DBfDedgBz1ghax993nXwGJswvs1K+
 1DsTIKxO2HJefd/5iur6mxLFF8RXdku9as1tfNx7CZMm9WcML3XJu/u1/E+JRUFT
 +QdoAX3+GnZGY6g+2MUSo11+3Ide9aaHvRUVDIXxqxDOZgLvy+EpIoQU4lkL7cuJ
 CuFB0LYM9FMih1BX1uEu3wnCRhJq2nJuIObMEU8wQj8MmgPZTcJh5tyVR8OeDZ73
-LLCnvjXydwYvFmcB/NCMLpolQxxgrpYKrz8dx1NN8mZRNb+HUrM2tiLsWKAdFEid
+CACnvjXydwYvFmcB/NCMLpolQxxgrpYKrz8dx1NN8mZRNb+HUrM2tiLsWKAdFEid
 -----END CERTIFICATE-----
 """
 
@@ -645,7 +647,7 @@ RMvDmnXC8HoejS1DxSG3IQKBgQDM+b/nw7kD77lrKqCv696tpYwGm7uX6xwNq3Lk
 vbGkjd6HlmMyjwR0n12X8nR8asocWev2vwQXhGiMQw72TpxNCdvwFTQfynNEh+BM
 ljsmUm9k9v+42roTu70ExowCuZhHycW7bntHF5wHjAJNbZIUcB28MDOM7Pyb8bD0
 R2oY8QKBgAJUUkmpgpNz4oNNv+mztAElg5LKEX6fNRqrKHF6H/rHmuI5zTrTsjPc
-UwBCIG6KBlcmpAsTUpxJ03VrazZMcuyaw+sXXpT8PAllcSTHf5CYY/mEEA4lTcZt
+UwBCIG6KBlcmpAsTUpxJ03VrazZMcuyaw+sXXpT8PAcacSTHf5CYY/mEEA4lTcZt
 iPfa9TABxtW6v3r2l5tO9Yz+Yb0v3nfGtaxDgp3U4+0/QzUwX2Jd
 -----END RSA PRIVATE KEY-----
 """

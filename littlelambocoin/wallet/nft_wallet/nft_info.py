@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -7,9 +9,9 @@ from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.ints import uint16, uint32, uint64
 from littlelambocoin.util.streamable import Streamable, streamable
 from littlelambocoin.wallet.lineage_proof import LineageProof
-from littlelambocoin.wallet.puzzles.load_clvm import load_clvm
+from littlelambocoin.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
 
-LAUNCHER_PUZZLE = load_clvm("singleton_launcher.clvm")
+LAUNCHER_PUZZLE = load_clvm_maybe_recompile("singleton_launcher.clvm")
 IN_TRANSACTION_STATUS = "IN_TRANSACTION"
 DEFAULT_STATUS = "DEFAULT"
 

@@ -3,5 +3,4 @@
 
 set -e
 
-ln -s /usr/lib/littlelambocoin-blockchain/resources/app.asar.unpacked/daemon/littlelambocoin /usr/bin/littlelambocoin || true
-ln -s /usr/lib/littlelambocoin-blockchain/resources/app.asar.unpacked/daemon /opt/littlelambocoin || true
+ln -s /opt/littlelambocoin/resources/app.asar.unpacked/daemon/littlelambocoin /usr/bin/littlelambocoin || true

@@ -1,4 +1,6 @@
-from typing import List, Callable
+from __future__ import annotations
+
+from typing import Callable, List
 
 from littlelambocoin.consensus.blockchain_interface import BlockchainInterface
 from littlelambocoin.util.ints import uint32

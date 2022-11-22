@@ -1,5 +1,6 @@
-from typing import Any, Dict, List, Optional
+from __future__ import annotations
 
+from typing import Any, Dict, List, Optional
 
 from littlelambocoin.cmds.cmds_util import get_any_service_client
 from littlelambocoin.cmds.units import units
@@ -7,8 +8,7 @@ from littlelambocoin.consensus.block_record import BlockRecord
 from littlelambocoin.rpc.farmer_rpc_client import FarmerRpcClient
 from littlelambocoin.rpc.full_node_rpc_client import FullNodeRpcClient
 from littlelambocoin.rpc.wallet_rpc_client import WalletRpcClient
-from littlelambocoin.util.misc import format_bytes
-from littlelambocoin.util.misc import format_minutes
+from littlelambocoin.util.misc import format_bytes, format_minutes
 from littlelambocoin.util.network import is_localhost
 
 SECONDS_PER_BLOCK = (24 * 3600) / 4608

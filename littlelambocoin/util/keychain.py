@@ -1,29 +1,31 @@
 from __future__ import annotations
-import pkg_resources
+
 import sys
 import unicodedata
-
-from bitstring import BitArray  # pyright: reportMissingImports=false
-from blspy import AugSchemeMPL, G1Element, PrivateKey  # pyright: reportMissingImports=false
-from littlelambocoin.util.errors import (
-    KeychainNotSet,
-    KeychainKeyDataMismatch,
-    KeychainFingerprintExists,
-    KeychainFingerprintNotFound,
-    KeychainSecretsMissing,
-    KeychainUserNotFound,
-)
-from littlelambocoin.util.hash import std_hash
-from littlelambocoin.util.ints import uint32
-from littlelambocoin.util.keyring_wrapper import KeyringWrapper
-from littlelambocoin.util.streamable import streamable, Streamable
 from dataclasses import dataclass
 from hashlib import pbkdf2_hmac
 from pathlib import Path
 from secrets import token_bytes
 from typing import Any, Dict, List, Optional, Tuple
 
+import pkg_resources
+from bitstring import BitArray  # pyright: reportMissingImports=false
+from blspy import AugSchemeMPL, G1Element, PrivateKey  # pyright: reportMissingImports=false
 from typing_extensions import final
+
+from littlelambocoin.util.errors import (
+    KeychainException,
+    KeychainFingerprintExists,
+    KeychainFingerprintNotFound,
+    KeychainKeyDataMismatch,
+    KeychainNotSet,
+    KeychainSecretsMissing,
+    KeychainUserNotFound,
+)
+from littlelambocoin.util.hash import std_hash
+from littlelambocoin.util.ints import uint32
+from littlelambocoin.util.keyring_wrapper import KeyringWrapper
+from littlelambocoin.util.streamable import Streamable, streamable
 
 CURRENT_KEY_VERSION = "1.8"
 DEFAULT_USER = f"user-littlelambocoin-{CURRENT_KEY_VERSION}"  # e.g. user-littlelambocoin-1.8
@@ -438,6 +440,11 @@ class Keychain:
                 key_data = self._get_key_data(index, include_secrets=False)
                 if key_data.fingerprint == fingerprint:
                     try:
+                        self.keyring_wrapper.delete_label(key_data.fingerprint)
+                    except (KeychainException, NotImplementedError):
+                        # Just try to delete the label and move on if there wasn't one
+                        pass
+                    try:
                         self.keyring_wrapper.delete_passphrase(self.service, get_private_key_user(self.user, index))
                         removed += 1
                     except Exception:
@@ -465,9 +472,9 @@ class Keychain:
         """
         for index in range(MAX_KEYS + 1):
             try:
-                self.keyring_wrapper.delete_passphrase(self.service, get_private_key_user(self.user, index))
-            except Exception:
-                # Some platforms might throw on no existing key
+                key_data = self._get_key_data(index)
+                self.delete_key_by_fingerprint(key_data.fingerprint)
+            except KeychainUserNotFound:
                 pass
 
     @staticmethod

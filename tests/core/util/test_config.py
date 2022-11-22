@@ -209,12 +209,12 @@ class TestConfig:
         config: Dict = load_config(root_path=root_path, filename="config.yaml")
         assert config is not None
         # Expect: config values should match the defaults (from a small sampling)
-        assert config["daemon_port"] == default_config_dict["daemon_port"] == 44453
+        assert config["daemon_port"] == default_config_dict["daemon_port"] == 55400
         assert config["self_hostname"] == default_config_dict["self_hostname"] == "localhost"
         assert (
             config["farmer"]["network_overrides"]["constants"]["mainnet"]["GENESIS_CHALLENGE"]
             == default_config_dict["farmer"]["network_overrides"]["constants"]["mainnet"]["GENESIS_CHALLENGE"]
-            == "ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb"
+            == "ba0bc02c0063fe3b24b00892ce6289aa558342b3069cd9aaf81f0578d86273df"
         )
 
     def test_load_config_exit_on_error(self, tmp_path: Path):

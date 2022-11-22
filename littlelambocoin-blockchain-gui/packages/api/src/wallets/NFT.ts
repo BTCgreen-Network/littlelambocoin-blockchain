@@ -1,3 +1,4 @@
+import { CalculateRoyaltiesRequest } from '../@types';
 import Wallet from '../services/Wallet';
 
 export default class NFTWallet extends Wallet {
@@ -23,12 +24,7 @@ export default class NFTWallet extends Wallet {
     });
   }
 
-  async transferNft(
-    walletId: number,
-    nftCoinId: string,
-    targetAddress: string,
-    fee: string
-  ) {
+  async transferNft(walletId: number, nftCoinId: string, targetAddress: string, fee: string) {
     return this.command('nft_transfer_nft', {
       walletId,
       nftCoinId,
@@ -37,12 +33,7 @@ export default class NFTWallet extends Wallet {
     });
   }
 
-  async setNftDid(
-    walletId: number,
-    nftCoinId: string,
-    did: string,
-    fee: string
-  ) {
+  async setNftDid(walletId: number, nftCoinId: string, did: string, fee: string) {
     return this.command('nft_set_nft_did', {
       walletId,
       nftCoinId,
@@ -51,11 +42,7 @@ export default class NFTWallet extends Wallet {
     });
   }
 
-  async setNftStatus(
-    walletId: number,
-    nftCoinId: string,
-    inTransaction: boolean
-  ) {
+  async setNftStatus(walletId: number, nftCoinId: string, inTransaction: boolean) {
     return this.command('nft_set_nft_status', {
       walletId,
       coinId: nftCoinId,
@@ -69,5 +56,9 @@ export default class NFTWallet extends Wallet {
       spendBundle,
       fee,
     });
+  }
+
+  async calculateRoyalties(req: CalculateRoyaltiesRequest): Promise<Record<string, any>> {
+    return this.command('nft_calculate_royalties', req);
   }
 }

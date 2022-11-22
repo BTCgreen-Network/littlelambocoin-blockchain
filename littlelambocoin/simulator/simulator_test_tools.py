@@ -1,27 +1,29 @@
+from __future__ import annotations
+
 import asyncio
 import sys
-import tempfile
 from pathlib import Path
 from typing import Any, AsyncGenerator, Dict, Optional, Tuple
 
 from blspy import PrivateKey
 
-from littlelambocoin.cmds.init_funcs import create_all_ssl
 from littlelambocoin.consensus.coinbase import create_puzzlehash_for_pk
 from littlelambocoin.daemon.server import WebSocketServer, daemon_launch_lock_path
 from littlelambocoin.simulator.full_node_simulator import FullNodeSimulator
 from littlelambocoin.simulator.socket import find_available_listen_port
 from littlelambocoin.simulator.ssl_certs import (
-    SSLTestLLCertAndPrivateKey,
+    SSLTestCACertAndPrivateKey,
     SSLTestCollateralWrapper,
     SSLTestNodeCertsAndKeys,
     get_next_nodes_certs_and_keys,
     get_next_private_ca_cert_and_key,
 )
 from littlelambocoin.simulator.start_simulator import async_main as start_simulator_main
+from littlelambocoin.ssl.create_ssl import create_all_ssl
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.bech32m import encode_puzzle_hash
 from littlelambocoin.util.config import create_default_littlelambocoin_config, load_config, save_config
+from littlelambocoin.util.errors import KeychainFingerprintExists
 from littlelambocoin.util.ints import uint32
 from littlelambocoin.util.keychain import Keychain
 from littlelambocoin.util.lock import Lockfile
@@ -32,20 +34,23 @@ These functions are used to test the simulator.
 """
 
 
-def mnemonic_fingerprint() -> Tuple[str, int]:
+def mnemonic_fingerprint(keychain: Keychain) -> Tuple[str, int]:
     mnemonic = (
         "today grape album ticket joy idle supreme sausage "
         "oppose voice angle roast you oven betray exact "
         "memory riot escape high dragon knock food blade"
     )
     # add key to keychain
-    sk = Keychain().add_private_key(mnemonic)
+    try:
+        sk = keychain.add_private_key(mnemonic)
+    except KeychainFingerprintExists:
+        pass
     fingerprint = sk.get_g1().get_fingerprint()
     return mnemonic, fingerprint
 
 
-def get_puzzle_hash_from_key(fingerprint: int, key_id: int = 1) -> bytes32:
-    priv_key_and_entropy = Keychain().get_private_key_by_fingerprint(fingerprint)
+def get_puzzle_hash_from_key(keychain: Keychain, fingerprint: int, key_id: int = 1) -> bytes32:
+    priv_key_and_entropy = keychain.get_private_key_by_fingerprint(fingerprint)
     if priv_key_and_entropy is None:
         raise Exception("Fingerprint not found")
     private_key = priv_key_and_entropy[0]
@@ -59,6 +64,7 @@ def create_config(
     fingerprint: int,
     private_ca_crt_and_key: Tuple[bytes, bytes],
     node_certs_and_keys: Dict[str, Dict[str, Dict[str, bytes]]],
+    keychain: Keychain,
 ) -> Dict[str, Any]:
     # create littlelambocoin directories
     create_default_littlelambocoin_config(littlelambocoin_root)
@@ -93,7 +99,7 @@ def create_config(
     config["full_node"]["rpc_port"] = find_available_listen_port("Node RPC")
     # simulator overrides
     config["simulator"]["key_fingerprint"] = fingerprint
-    config["simulator"]["farming_address"] = encode_puzzle_hash(get_puzzle_hash_from_key(fingerprint), "tllc")
+    config["simulator"]["farming_address"] = encode_puzzle_hash(get_puzzle_hash_from_key(keychain, fingerprint), "tllc")
     config["simulator"]["plot_directory"] = "test-simulator/plots"
     # save config
     save_config(littlelambocoin_root, "config.yaml", config)
@@ -112,42 +118,53 @@ async def start_simulator(littlelambocoin_root: Path, automated_testing: bool = 
 
 
 async def get_full_littlelambocoin_simulator(
-    automated_testing: bool = False, littlelambocoin_root: Optional[Path] = None, config: Optional[Dict[str, Any]] = None
-) -> AsyncGenerator[Tuple[FullNodeSimulator, Path, Dict[str, Any], str, int], None]:
+    littlelambocoin_root: Path,
+    keychain: Optional[Keychain] = None,
+    automated_testing: bool = False,
+    config: Optional[Dict[str, Any]] = None,
+) -> AsyncGenerator[Tuple[FullNodeSimulator, Path, Dict[str, Any], str, int, Keychain], None]:
     """
-    A littlelambocoin root directory can be provided, otherwise a temporary one is created.
+    A littlelambocoin root Path is required.
+    The littlelambocoin root Path can be a temporary directory (tempfile.TemporaryDirectory)
+    Passing in a Keychain prevents test keys from being added to the default key location
     This test can either be run in automated mode or not, which determines which mode block tools run in.
     This test is fully interdependent and can be used without the rest of the littlelambocoin test suite.
     Please refer to the documentation for more information.
     """
-    # Create and setup temporary littlelambocoin directories.
-    if littlelambocoin_root is None:
-        littlelambocoin_root = Path(tempfile.TemporaryDirectory().name)
-    mnemonic, fingerprint = mnemonic_fingerprint()
-    ssl_ca_cert_and_key_wrapper: SSLTestCollateralWrapper[
-        SSLTestLLCertAndPrivateKey
-    ] = get_next_private_ca_cert_and_key()
-    ssl_nodes_certs_and_keys_wrapper: SSLTestCollateralWrapper[
-        SSLTestNodeCertsAndKeys
-    ] = get_next_nodes_certs_and_keys()
-    if config is None:
-        config = create_config(
-            littlelambocoin_root,
-            fingerprint,
-            ssl_ca_cert_and_key_wrapper.collateral.cert_and_key,
-            ssl_nodes_certs_and_keys_wrapper.collateral.certs_and_keys,
-        )
-    crt_path = littlelambocoin_root / config["daemon_ssl"]["private_crt"]
-    key_path = littlelambocoin_root / config["daemon_ssl"]["private_key"]
-    ca_crt_path = littlelambocoin_root / config["private_ssl_ca"]["crt"]
-    ca_key_path = littlelambocoin_root / config["private_ssl_ca"]["key"]
+
+    if keychain is None:
+        keychain = Keychain()
+
     with Lockfile.create(daemon_launch_lock_path(littlelambocoin_root)):
+
+        mnemonic, fingerprint = mnemonic_fingerprint(keychain)
+
+        ssl_ca_cert_and_key_wrapper: SSLTestCollateralWrapper[
+            SSLTestCACertAndPrivateKey
+        ] = get_next_private_ca_cert_and_key()
+        ssl_nodes_certs_and_keys_wrapper: SSLTestCollateralWrapper[
+            SSLTestNodeCertsAndKeys
+        ] = get_next_nodes_certs_and_keys()
+        if config is None:
+            config = create_config(
+                littlelambocoin_root,
+                fingerprint,
+                ssl_ca_cert_and_key_wrapper.collateral.cert_and_key,
+                ssl_nodes_certs_and_keys_wrapper.collateral.certs_and_keys,
+                keychain,
+            )
+        crt_path = littlelambocoin_root / config["daemon_ssl"]["private_crt"]
+        key_path = littlelambocoin_root / config["daemon_ssl"]["private_key"]
+        ca_crt_path = littlelambocoin_root / config["private_ssl_ca"]["crt"]
+        ca_key_path = littlelambocoin_root / config["private_ssl_ca"]["key"]
+
         shutdown_event = asyncio.Event()
         ws_server = WebSocketServer(littlelambocoin_root, ca_crt_path, ca_key_path, crt_path, key_path, shutdown_event)
-        await ws_server.start()  # type: ignore[no-untyped-call]
+        await ws_server.setup_process_global_state()
+        await ws_server.start()
 
         async for simulator in start_simulator(littlelambocoin_root, automated_testing):
-            yield simulator, littlelambocoin_root, config, mnemonic, fingerprint
+            yield simulator, littlelambocoin_root, config, mnemonic, fingerprint, keychain
 
         await ws_server.stop()
         await shutdown_event.wait()  # wait till shutdown is complete

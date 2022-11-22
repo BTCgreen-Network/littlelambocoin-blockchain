@@ -4,6 +4,8 @@
 # Converts to proper symver format so NPM doesn't complain
 # Adds the version info to the package.json file
 #
+from __future__ import annotations
+
 import json
 import os
 import subprocess
@@ -44,7 +46,7 @@ def make_semver(version_str: str) -> str:
     if local:
         version += "+{0}".format(local)
 
-    return "1.5.2"
+    return version
 
 
 def get_littlelambocoin_version() -> str:

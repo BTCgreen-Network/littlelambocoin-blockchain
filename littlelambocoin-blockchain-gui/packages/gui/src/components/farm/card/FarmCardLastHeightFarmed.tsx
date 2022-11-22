@@ -1,7 +1,7 @@
-import React from 'react';
-import { Trans } from '@lingui/macro';
-import { FormatLargeNumber, CardSimple } from '@littlelambocoin/core';
 import { useGetFarmedAmountQuery } from '@littlelambocoin/api-react';
+import { FormatLargeNumber, CardSimple } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import React from 'react';
 
 export default function FarmCardLastHeightFarmed() {
   const { data, isLoading, error } = useGetFarmedAmountQuery();

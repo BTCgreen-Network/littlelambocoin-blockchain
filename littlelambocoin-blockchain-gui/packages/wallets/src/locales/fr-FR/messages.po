@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr_FR\n"
 "Project-Id-Version: littlelambocoin-blockchain\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-04 10:12\n"
+"PO-Revision-Date: 2022-10-24 18:17\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -42,14 +42,14 @@ msgstr "Ajouter un identifiant de secours"
 
 #: src/components/hero/WalletHeroAdd.tsx:99
 #~ msgid "Add Custom Token"
-#~ msgstr "Ajouter un Jeton Personnalisé"
+#~ msgstr "Add Custom Token"
 
 #: src/components/WalletsList.tsx:54
 #: src/components/WalletsManageTokens.tsx:174
 #: src/components/cat/WalletCATCreateExistingSimple.tsx:61
 #: src/components/cat/WalletCATCreateSimple.tsx:70
 msgid "Add Token"
-msgstr "Ajouter un Type de Jetons"
+msgstr "Ajouter un Type de Jeton"
 
 #: src/components/cat/WalletCATCreateSimple.tsx:94
 msgid "Adding {0} token"
@@ -88,7 +88,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer les transactions non confirmées ?"
 #: src/components/cat/WalletCATTAILDialog.tsx:46
 #: src/components/cat/WalletCATTAILDialog.tsx:56
 msgid "Asset Id"
-msgstr "Id de l'actif"
+msgstr "ID de l'actif"
 
 #: src/constants/WalletName.ts:11
 msgid "Atomic Swap Wallet"
@@ -104,12 +104,6 @@ msgstr "Portefeuille des bénéficiaires autorisés"
 msgid "Balance"
 msgstr "Solde"
 
-#: src/components/cat/WalletCATSelect.tsx:24
-#: src/components/create/WalletCreateList.tsx:35
-#: src/constants/WalletName.ts:23
-msgid "Littlelambocoin Asset Token"
-msgstr "Littlelambocoin Asset Token"
-
 #: src/components/PasteMnemonic.tsx:78
 #: src/components/WalletRenameDialog.tsx:90
 msgid "Cancel"
@@ -123,6 +117,12 @@ msgstr "Impossible d'envoyer des littlelambocoins à une adresse colorée. Merci
 #: src/components/WalletsSidebar.tsx:145
 msgid "Check my snapshot balance"
 msgstr "Vérifier le solde du snapshot"
+
+#: src/components/cat/WalletCATSelect.tsx:24
+#: src/components/create/WalletCreateList.tsx:35
+#: src/constants/WalletName.ts:23
+msgid "Littlelambocoin Asset Token"
+msgstr "Littlelambocoin Asset Token"
 
 #: src/components/WalletsSidebar.tsx:160
 msgid "Click here to download an older version of the wallet"
@@ -147,7 +147,7 @@ msgstr "Confirmé à la Hauteur"
 
 #: src/components/WalletStatusHeader.tsx:40
 #~ msgid "Connected ({0})"
-#~ msgstr "Connectés ({0})"
+#~ msgstr "Connected ({0})"
 
 #: src/components/WalletConnections.tsx:62
 msgid "Connection type"
@@ -155,7 +155,7 @@ msgstr "Type de connexion"
 
 #: src/components/WalletConnections.tsx:80
 #~ msgid "Connections"
-#~ msgstr "Connexions"
+#~ msgstr "Connections"
 
 #: src/components/rateLimited/WalletRateLimited.jsx:305
 #: src/components/rateLimited/WalletRateLimited.jsx:427
@@ -177,7 +177,7 @@ msgstr "Créer un Paquet d’Attestation"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:76
 #~ msgid "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
-#~ msgstr "Créer un portefeuille de jetons CAT à partir d'une TAIL existante"
+#~ msgstr "Create Littlelambocoin Asset Token Wallet from Existing TAIL"
 
 #: src/components/did/WalletDIDCreate.tsx:113
 msgid "Create Distributed Identity Wallet"
@@ -213,7 +213,7 @@ msgstr "Créer une transaction"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:75
 #~ msgid "Create custom CAT Wallet"
-#~ msgstr "Créer un portefeuille CAT personnalisé"
+#~ msgstr "Create custom CAT Wallet"
 
 #: src/constants/WalletName.ts:20
 msgid "Custody Wallet"
@@ -267,7 +267,7 @@ msgstr "Glisser-déposer le(s) paquet(s) d'attestation"
 msgid "Drag and drop your recovery backup file"
 msgstr "Glisser-déposer votre fichier de sauvegarde de récupération"
 
-#: src/components/WalletImport.tsx:133
+#: src/components/WalletImport.tsx:151
 msgid "Enter the 24 word mnemonic that you have saved in order to restore your Littlelambocoin wallet."
 msgstr "Entrez les 24 mots mnémotechniques que vous avez sauvegardé afin de restaurer votre portefeuille Littlelambocoin."
 
@@ -310,7 +310,7 @@ msgstr "Si vous souhaitez accélérer la transaction, veuillez supprimer les tra
 msgid "Import"
 msgstr "Importer"
 
-#: src/components/WalletImport.tsx:130
+#: src/components/WalletImport.tsx:148
 msgid "Import Wallet from Mnemonics"
 msgstr "Importer un portefeuille depuis une phrase mnémonique"
 
@@ -394,12 +394,12 @@ msgstr "Nom"
 msgid "New Address"
 msgstr "Nouvelle Adresse"
 
-#: src/components/WalletAdd.tsx:73
+#: src/components/WalletAdd.tsx:91
 msgid "New Wallet"
 msgstr "Nouveau portefeuille"
 
-#: src/components/WalletAdd.tsx:107
-#: src/components/WalletImport.tsx:164
+#: src/components/WalletAdd.tsx:151
+#: src/components/WalletImport.tsx:189
 msgid "Next"
 msgstr "Suivant"
 
@@ -422,7 +422,7 @@ msgstr "Non Disponible"
 
 #: src/components/WalletStatusHeader.tsx:38
 #~ msgid "Not Connected"
-#~ msgstr "Non connecté"
+#~ msgstr "Not Connected"
 
 #: src/components/WalletStatus.tsx:57
 msgid "Not Synced"
@@ -449,7 +449,7 @@ msgstr "Seul un fichier de sauvegarde est autorisé."
 msgid "Outgoing"
 msgstr "Sortant"
 
-#: src/components/WalletImport.tsx:95
+#: src/components/WalletImport.tsx:101
 msgid "Paste Mnemonic"
 msgstr "Coller la phrase mnémonique"
 
@@ -469,7 +469,7 @@ msgstr "Solde en attente"
 #: src/components/card/WalletCardPendingChange.tsx:37
 #: src/components/rateLimited/WalletRateLimited.jsx:577
 msgid "Pending Change"
-msgstr "Monnaie personnelle en attente"
+msgstr "Change en attente"
 
 #: src/components/card/WalletCardPendingTotalBalance.tsx:37
 #: src/components/rateLimited/WalletRateLimited.jsx:567
@@ -504,7 +504,7 @@ msgstr "Veuillez indiquer un hash de puzzle"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:40
 #~ msgid "Please enter a valid CAT name"
-#~ msgstr "Veuillez saisir un nom de jeton valide"
+#~ msgstr "Please enter a valid CAT name"
 
 #: src/components/cat/WalletCATCreateExistingSimple.tsx:41
 msgid "Please enter a valid asset id"
@@ -805,7 +805,7 @@ msgstr "À"
 
 #: src/components/cat/WalletCATCreateExisting.tsx:85
 #~ msgid "Token and Asset Issuance Limitations"
-#~ msgstr "Limites de l'Émission de Jetons et d'Actifs"
+#~ msgstr "Token and Asset Issuance Limitations"
 
 #: src/components/cat/WalletCATCreateSimple.tsx:45
 msgid "Token has empty asset id"
@@ -826,7 +826,7 @@ msgstr "Solde total"
 
 #: src/components/WalletSendTransactionResultDialog.tsx:27
 msgid "Transaction has successfully been sent to a full node and included in the mempool."
-msgstr "La transaction a été envoyée avec succès à un nœud complet et est incluse dans la mempool."
+msgstr "La transaction a été transmise au réseau et est maintenant incluse dans la mempool."
 
 #: src/components/WalletHistory.tsx:311
 msgid "Transactions"
@@ -843,6 +843,11 @@ msgstr "Voir le solde en attente"
 
 #: src/components/WalletConnections.tsx:80
 msgid "Wallet Connections"
+msgstr "Portefeuilles connectés"
+
+#: src/components/WalletAdd.tsx:128
+#: src/components/WalletImport.tsx:176
+msgid "Wallet Name"
 msgstr ""
 
 #: src/components/cat/WalletCAT.tsx:75
@@ -867,7 +872,7 @@ msgstr "Vous voulez voir votre ancien solde par vous-même ?"
 msgid "We've made an upgrade to the CAT standard which requires all CATs to be re-issued. You will be airdropped your new tokens as they are re-issued by the original issuers. The airdropped tokens will be based on the balance as of block height:<0/><1/><2/>(Approximate time: July 26th, 2022 @ 17:00 UTC)"
 msgstr "Nous avons fait une mise à jour de la norme CAT qui exige que tous les CAT soient réémis. Vous recevrez vos nouveaux jetons une fois réémis par les créateurs initiaux. Le montant sera basé sur le solde au bloc :<0/><1/><2/>(Date approximative : 26 juillet 2022 @ 17:00 UTC)"
 
-#: src/components/WalletAdd.tsx:76
+#: src/components/WalletAdd.tsx:94
 msgid "Welcome! The following words are used for your wallet backup. Without them, you will lose access to your wallet, keep them safe! Write down each word along with the order number next to them. (Order is important)"
 msgstr "Bienvenue ! Les mots suivants sont utilisés pour la sauvegarde de votre portefeuille. Sans eux, vous perdrez l'accès à votre portefeuille, gardez-les en sécurité ! Notez chaque mot avec le numéro de commande à côté d'eux. (L'ordre est important)"
 
@@ -884,6 +889,7 @@ msgstr "Vos jetons CAT ont été mis à jour !"
 msgid "Your DID requires at least {dids_num_req} attestation file{0} for recovery. Please upload additional files."
 msgstr "Votre identité décentralisée nécessite au moins {dids_num_req} fichier d'attestation{0} pour être récupéré. Veuillez importer des fichiers supplémentaires."
 
-#: src/components/WalletImport.tsx:71
+#: src/components/WalletImport.tsx:77
 msgid "Your pasted list does not include 24 valid mnemonic words."
 msgstr "Votre liste collée ne contient pas 24 mots mnémoniques valides."
+

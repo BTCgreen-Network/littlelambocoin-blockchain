@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import asyncio
 import contextlib
 import json
+import os
 import signal
 import subprocess
 import sys
@@ -16,7 +19,7 @@ from littlelambocoin.util.config import lock_and_load_config
 def get_optional_beta_plot_log_file(root_path: Path, plotter: str) -> Iterator[Optional[TextIO]]:
     beta_log_path: Optional[Path] = None
     with lock_and_load_config(root_path, "config.yaml") as config:
-        if "beta" in config:
+        if config.get("beta", {}).get("enabled", False):
             file_name = f"{plotter}_{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.log"
             beta_log_path = Path(config["beta"]["path"]) / littlelambocoin_full_version_str() / "plotting" / file_name
             beta_log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -105,3 +108,20 @@ def run_command(args, exc_description, *, check=True, **kwargs) -> subprocess.Co
     except Exception as e:
         raise RuntimeError(f"{exc_description} {e}")
     return proc
+
+
+def reset_loop_policy_for_windows():
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
+
+def get_venv_bin():
+    venv_dir = os.environ.get("VIRTUAL_ENV", None)
+    if not venv_dir:
+        return None
+
+    venv_path = Path(venv_dir)
+
+    if sys.platform == "win32":
+        return venv_path / "Scripts"
+    else:
+        return venv_path / "bin"

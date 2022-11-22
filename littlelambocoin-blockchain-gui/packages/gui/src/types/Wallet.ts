@@ -1,4 +1,5 @@
 import { WalletType } from '@littlelambocoin/api';
+
 import type Transaction from './Transaction';
 import WalletBalance from './WalletBalance';
 

@@ -11,7 +11,6 @@ from littlelambocoin.protocols.protocol_message_types import ProtocolMessageType
 from littlelambocoin.protocols.shared_protocol import Handshake
 from littlelambocoin.server.outbound_message import make_msg, Message
 from littlelambocoin.server.rate_limits import RateLimiter
-from littlelambocoin.server.server import ssl_context_for_client
 from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.types.peer_info import PeerInfo
 from littlelambocoin.util.errors import Err
@@ -48,9 +47,7 @@ class TestDos:
         session = ClientSession(timeout=timeout)
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
-        ssl_context = ssl_context_for_client(
-            server_2.littlelambocoin_ca_crt_path, server_2.littlelambocoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
-        )
+        ssl_context = server_2.ssl_client_context
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
         )
@@ -97,9 +94,7 @@ class TestDos:
         session = ClientSession(timeout=timeout)
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
-        ssl_context = ssl_context_for_client(
-            server_2.littlelambocoin_ca_crt_path, server_2.littlelambocoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
-        )
+        ssl_context = server_2.ssl_client_context
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
         )
@@ -143,9 +138,7 @@ class TestDos:
         session = ClientSession(timeout=timeout)
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
-        ssl_context = ssl_context_for_client(
-            server_2.littlelambocoin_ca_crt_path, server_2.littlelambocoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
-        )
+        ssl_context = server_2.ssl_client_context
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
         )

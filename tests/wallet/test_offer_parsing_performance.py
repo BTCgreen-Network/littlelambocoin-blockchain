@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import cProfile
 from contextlib import contextmanager
 from typing import Iterator
@@ -134,7 +136,7 @@ test_offer = str(
     "7401ffff826d68a01f462ea72e639eca6ebe792caeb296491177454fe2c763cb"
     "9b08e52e85c02712ffff826c68a0b794d0dfa36ac60ff17b0b3649adbc44a703"
     "8713bf8acfeaf4bb57dd276dd7ec80ffff04ffff01a0fe8a4b4e27a2e29a4d3f"
-    "c7ce9d527adbllccbab6ada3903ccf3ba9a769d2d78bffff04ffff01ff02ffff"
+    "c7ce9d527adbcaccbab6ada3903ccf3ba9a769d2d78bffff04ffff01ff02ffff"
     "01ff02ffff01ff02ff26ffff04ff02ffff04ff05ffff04ff17ffff04ff0bffff"
     "04ffff02ff2fff5f80ff80808080808080ffff04ffff01ffffff82ad4cff0233"
     "ffff3e04ff81f601ffffff0102ffff02ffff03ff05ffff01ff02ff2affff04ff"

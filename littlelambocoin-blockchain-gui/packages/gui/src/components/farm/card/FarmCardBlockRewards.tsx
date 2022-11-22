@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import { useGetFarmedAmountQuery } from '@littlelambocoin/api-react';
+import { useCurrencyCode, mojoToLittlelambocoinLocaleString, CardSimple, useLocale } from '@littlelambocoin/core';
 import { Trans } from '@lingui/macro';
 import BigNumber from 'bignumber.js';
-import { useCurrencyCode, mojoToLittlelambocoinLocaleString, CardSimple, useLocale } from '@littlelambocoin/core';
-import { useGetFarmedAmountQuery } from '@littlelambocoin/api-react';
+import React, { useMemo } from 'react';
 
 export default function FarmCardBlockRewards() {
   const currencyCode = useCurrencyCode();

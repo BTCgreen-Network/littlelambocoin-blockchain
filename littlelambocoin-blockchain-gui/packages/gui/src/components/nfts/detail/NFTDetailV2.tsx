@@ -1,91 +1,83 @@
-import React, { useMemo, useEffect, useRef } from 'react';
-import { Trans } from '@lingui/macro';
-import styled from 'styled-components';
-import {
-  Back,
-  Flex,
-  LayoutDashboardSub,
-  Loading,
-  useOpenDialog,
-} from '@littlelambocoin/core';
 import type { NFTInfo } from '@littlelambocoin/api';
-import { useGetNFTWallets, useGetNFTInfoQuery } from '@littlelambocoin/api-react';
-import {
-  Box,
-  Grid,
-  Typography,
-  IconButton,
-  Dialog,
-  Paper,
-  Button,
-} from '@mui/material';
+import { useGetNFTInfoQuery, useGetNFTWallets, useLocalStorage } from '@littlelambocoin/api-react';
+import { Back, Flex, LayoutDashboardSub, Loading, useOpenDialog } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
 import { MoreVert } from '@mui/icons-material';
+import { Box, Grid, Typography, IconButton, Button } from '@mui/material';
+import { IpcRenderer } from 'electron';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import NFTPreview from '../NFTPreview';
-import NFTProperties from '../NFTProperties';
-import NFTRankings from '../NFTRankings';
-import NFTDetails from '../NFTDetails';
+import styled from 'styled-components';
+import isURL from 'validator/lib/isURL';
+
+import useFetchNFTs from '../../../hooks/useFetchNFTs';
 import useNFTMetadata from '../../../hooks/useNFTMetadata';
-import NFTContextualActions, {
-  NFTContextualActionTypes,
-} from '../NFTContextualActions';
+import { launcherIdFromNFTId } from '../../../util/nfts';
+import { isImage } from '../../../util/utils.js';
+import NFTContextualActions, { NFTContextualActionTypes } from '../NFTContextualActions';
+import NFTDetails from '../NFTDetails';
+import NFTPreview from '../NFTPreview';
 import NFTPreviewDialog from '../NFTPreviewDialog';
 import NFTProgressBar from '../NFTProgressBar';
-import { launcherIdFromNFTId } from '../../../util/nfts';
-
-const ipcRenderer = (window as any).ipcRenderer;
+import NFTProperties from '../NFTProperties';
+import NFTRankings from '../NFTRankings';
 
 export default function NFTDetail() {
   const { nftId } = useParams();
-  const openDialog = useOpenDialog();
-
-  const [progressBarWidth, setProgressBarWidth] = React.useState(-1);
-  const [validated, setValidated] = React.useState(0);
-  const nftRef = React.useRef(null);
-
-  useEffect(() => {
-    validateSha256Remote(false); // false parameter means only validate files smaller than MAX_FILE_SIZE
-    ipcRenderer.on('sha256DownloadProgress', progressListener);
-    ipcRenderer.on('sha256hash', gotHash);
-    return () => {
-      ipcRenderer.off('sha256DownloadProgress', progressListener);
-      ipcRenderer.off('sha256hash', gotHash);
-    };
-  }, []);
-
-  const launcherId = launcherIdFromNFTId(nftId ?? '');
-  const { data: nft, isLoading: isLoadingNFTInfo } = useGetNFTInfoQuery({
-    coinId: launcherId,
+  const { data: nft, isLoading: isLoadingNFT } = useGetNFTInfoQuery({
+    coinId: launcherIdFromNFTId(nftId ?? ''),
   });
+  const { wallets: nftWallets, isLoading: isLoadingWallets } = useGetNFTWallets();
+  const { nfts, isLoading: isLoadingNFTs } = useFetchNFTs(
+    nftWallets.map((wallet) => wallet.id),
+    { skip: !!isLoadingWallets }
+  );
+
+  const localNFT = useMemo(() => {
+    if (!nfts || isLoadingNFTs) {
+      return undefined;
+    }
+    return nfts.find((nft: NFTInfo) => nft.$nftId === nftId);
+  }, [nfts, nftId, isLoadingNFTs]);
+
+  const isLoading = isLoadingNFT;
+
+  return isLoading ? <Loading center /> : <NFTDetailLoaded nft={localNFT ?? nft} />;
+}
+
+type NFTDetailLoadedProps = {
+  nft: NFTInfo;
+};
+
+function NFTDetailLoaded(props: NFTDetailLoadedProps) {
+  const { nft } = props;
+  const nftId = nft.$nftId;
+  const openDialog = useOpenDialog();
+  const [validationProcessed, setValidationProcessed] = useState(false);
+  const nftRef = React.useRef(null);
+  const [, setIsValid] = useState(false);
+
+  const uri = nft?.dataUris?.[0];
+  const [contentCache] = useLocalStorage(`content-cache-${nftId}`, {});
+  const [validateNFT, setValidateNFT] = useState(false);
 
   nftRef.current = nft;
 
-  function progressListener(_event, progressObject: any) {
-    const nft = nftRef.current;
-    if (
-      nft &&
-      nft.dataUris &&
-      Array.isArray(nft.dataUris) &&
-      nft.dataUris[0] === progressObject.uri
-    ) {
-      setProgressBarWidth(progressObject.progress);
-      if (progressObject.progress === 1) {
-        setProgressBarWidth(-1);
-      }
-    }
-  }
+  const { metadata, error } = useNFTMetadata([nft]);
 
-  function gotHash(_event, hash) {
-    if (nftRef.current) {
-      if (`0x${hash}` === nftRef.current.dataHash) {
-        setValidated(1);
-      } else {
-        setValidated(-1);
-      }
-    }
-  }
+  useEffect(
+    () => () => {
+      const { ipcRenderer } = window as any;
+      ipcRenderer.invoke('abortFetchingBinary', uri);
+    },
+    []
+  );
 
-  const { metadata, isLoading: isLoadingMetadata, error } = useNFTMetadata(nft);
+  // useEffect(() => {
+  //   if (metadata) {
+  //     console.log(JSON.stringify(metadata, null, 2));
+  //   }
+  // }, [metadata]);
 
   const ValidateContainer = styled.div`
     padding-top: 25px;
@@ -96,64 +88,43 @@ export default function NFTDetail() {
     color: red;
   `;
 
-  const isLoading = isLoadingNFTInfo || isLoadingMetadata;
-
-  if (isLoading) {
-    return <Loading center />;
-  }
-
   function handleShowFullScreen() {
-    openDialog(<NFTPreviewDialog nft={nft} />);
-  }
-
-  function validateSha256Remote(force: boolean) {
-    const ipcRenderer = (window as any).ipcRenderer;
-    if (nft && Array.isArray(nft.dataUris) && nft.dataUris[0]) {
-      ipcRenderer.invoke('validateSha256Remote', {
-        uri: nft.dataUris[0],
-        force,
-      });
+    if (isImage(uri)) {
+      openDialog(<NFTPreviewDialog nft={nft} />);
     }
   }
 
   function renderValidationState() {
-    if (progressBarWidth > 0 && progressBarWidth < 1) {
+    if (!isURL(uri)) return null;
+    if (validateNFT && !validationProcessed) {
       return <Trans>Validating hash...</Trans>;
-    } else if (validated === 1) {
+    }
+    if (contentCache.valid) {
       return <Trans>Hash is validated.</Trans>;
-    } else if (validated === -1) {
+    }
+    if (contentCache.valid === false) {
       return (
         <ErrorMessage>
           <Trans>Hash mismatch.</Trans>
         </ErrorMessage>
       );
-    } else {
-      return (
-        <Button
-          onClick={() => validateSha256Remote(true)}
-          variant="outlined"
-          size="large"
-        >
-          <Trans>Validate SHA256 SUM</Trans>
-        </Button>
-      );
     }
+    return (
+      <Button onClick={() => setValidateNFT(true)} variant="outlined" size="large">
+        <Trans>Validate SHA256 SUM</Trans>
+      </Button>
+    );
+  }
+
+  function fetchBinaryContentDone(valid: boolean) {
+    setValidationProcessed(true);
+    setIsValid(valid);
   }
 
   return (
     <Flex flexDirection="column" gap={2}>
-      <Flex
-        sx={{ bgcolor: 'background.paper' }}
-        justifyContent="center"
-        py={{ xs: 2, sm: 3, md: 7 }}
-        px={3}
-      >
-        <Flex
-          position="relative"
-          maxWidth="1200px"
-          width="100%"
-          justifyContent="center"
-        >
+      <Flex sx={{ bgcolor: 'background.paper' }} justifyContent="center" py={{ xs: 2, sm: 3, md: 7 }} px={3}>
+        <Flex position="relative" maxWidth="1200px" width="100%" justifyContent="center">
           <Box
             overflow="hidden"
             alignItems="center"
@@ -171,10 +142,16 @@ export default function NFTDetail() {
                     width="100%"
                     height="412px"
                     fit="contain"
+                    validateNFT={validateNFT}
+                    metadataError={error}
                   />
                 </Box>
                 <ValidateContainer>{renderValidationState()}</ValidateContainer>
-                <NFTProgressBar percentage={progressBarWidth} />
+                <NFTProgressBar
+                  nftIdUrl={`${nft.$nftId}_${uri}`}
+                  setValidateNFT={setValidateNFT}
+                  fetchBinaryContentDone={fetchBinaryContentDone}
+                />
               </Flex>
             )}
           </Box>
@@ -184,14 +161,7 @@ export default function NFTDetail() {
         </Flex>
       </Flex>
       <LayoutDashboardSub>
-        <Flex
-          flexDirection="column"
-          gap={2}
-          maxWidth="1200px"
-          width="100%"
-          alignSelf="center"
-          mb={3}
-        >
+        <Flex flexDirection="column" gap={2} maxWidth="1200px" width="100%" alignSelf="center" mb={3}>
           <Flex alignItems="center" justifyContent="space-between">
             <Typography variant="h4" overflow="hidden">
               {metadata?.name ?? <Trans>Title Not Available</Trans>}
@@ -226,9 +196,7 @@ export default function NFTDetail() {
                     </Typography>
 
                     <Typography overflow="hidden">
-                      {metadata?.collection?.name ?? (
-                        <Trans>Not Available</Trans>
-                      )}
+                      {metadata?.collection?.name ?? <Trans>Not Available</Trans>}
                     </Typography>
                   </Flex>
                 )}

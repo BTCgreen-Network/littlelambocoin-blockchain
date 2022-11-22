@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 import pytest
 
 from littlelambocoin.plot_sync.exceptions import AlreadyStartedError, InvalidConnectionTypeError
 from littlelambocoin.plot_sync.sender import ExpectedResponse, Sender
 from littlelambocoin.plot_sync.util import Constants
 from littlelambocoin.protocols.harvester_protocol import PlotSyncIdentifier, PlotSyncResponse
-from littlelambocoin.server.ws_connection import NodeType, ProtocolMessageTypes
+from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.server.outbound_message import NodeType
 from littlelambocoin.simulator.block_tools import BlockTools
 from littlelambocoin.util.ints import int16, uint64
 from tests.plot_sync.util import get_dummy_connection, plot_sync_identifier

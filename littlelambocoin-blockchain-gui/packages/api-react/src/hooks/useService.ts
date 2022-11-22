@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
 import { ServiceName } from '@littlelambocoin/api';
+import { useEffect, useState, useMemo } from 'react';
+
 import { useClientStartServiceMutation } from '../services/client';
-import {
-  useIsServiceRunningQuery,
-  useStopServiceMutation,
-} from '../services/daemon';
+import { useStopServiceMutation, useRunningServicesQuery } from '../services/daemon';
 
 export type ServiceState = 'starting' | 'running' | 'stopping' | 'stopped';
 
@@ -16,10 +14,11 @@ type Options = {
 
 export default function useService(
   service: ServiceName,
-  options: Options
+  options: Options = {}
 ): {
   isLoading: boolean;
   isProcessing: boolean;
+  isRunning: boolean;
   state: ServiceState;
   start: () => Promise<void>;
   stop: () => Promise<void>;
@@ -32,32 +31,38 @@ export default function useService(
   const [isStopping, setIsStopping] = useState<boolean>(false);
   const [startService] = useClientStartServiceMutation();
   const [stopService] = useStopServiceMutation();
+  const [latestIsProcessing, setLatestIsProcessing] = useState<boolean>(false);
 
   // isRunning is not working when stopService is called (backend issue)
   const {
-    data: isRunning,
+    data: runningServices,
     isLoading,
     refetch,
     error,
-  } = useIsServiceRunningQuery(
+  } = useRunningServicesQuery(
+    {},
     {
-      service,
-    },
-    {
-      pollingInterval: 1000,
+      pollingInterval: latestIsProcessing ? 1_000 : 10_000,
       skip: disabled,
-      selectFromResult: (state) => {
-        return {
-          data: state.data,
-          refetch: state.refetch,
-          error: state.error,
-          isLoading: state.isLoading,
-        };
-      },
+      selectFromResult: (state) => ({
+        data: state.data,
+        refetch: state.refetch,
+        error: state.error,
+        isLoading: state.isLoading,
+      }),
     }
   );
 
+  const isRunning = useMemo(
+    () => !!(runningServices && runningServices?.includes(service)),
+    [runningServices, service]
+  );
+
   const isProcessing = isStarting || isStopping;
+
+  useEffect(() => {
+    setLatestIsProcessing(isProcessing);
+  }, [isProcessing]);
 
   let state: ServiceState = 'stopped';
   if (isStarting) {
@@ -108,19 +113,9 @@ export default function useService(
       return;
     }
 
-    if (
-      keepState === 'running' &&
-      keepState !== state &&
-      !isProcessing &&
-      isRunning === false
-    ) {
+    if (keepState === 'running' && keepState !== state && !isProcessing && isRunning === false) {
       handleStart();
-    } else if (
-      keepState === 'stopped' &&
-      keepState !== state &&
-      !isProcessing &&
-      isRunning === true
-    ) {
+    } else if (keepState === 'stopped' && keepState !== state && !isProcessing && isRunning === true) {
       handleStop();
     }
   }, [keepState, state, isProcessing, disabled, isRunning]);
@@ -129,6 +124,7 @@ export default function useService(
     state,
     isLoading,
     isProcessing,
+    isRunning,
     error,
     start: handleStart,
     stop: handleStop,

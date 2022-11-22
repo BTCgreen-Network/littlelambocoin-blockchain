@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -9,7 +11,11 @@ from chiapos import DiskPlotter
 
 from littlelambocoin.daemon.keychain_proxy import KeychainProxy, connect_to_keychain_and_validate, wrap_local_keychain
 from littlelambocoin.plotting.util import stream_plot_info_ph, stream_plot_info_pk
-from littlelambocoin.types.blockchain_format.proof_of_space import ProofOfSpace
+from littlelambocoin.types.blockchain_format.proof_of_space import (
+    calculate_plot_id_ph,
+    calculate_plot_id_pk,
+    generate_plot_public_key,
+)
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32
 from littlelambocoin.util.bech32m import decode_puzzle_hash
 from littlelambocoin.util.keychain import Keychain
@@ -199,11 +205,11 @@ async def create_plots(
 
         # The plot id is based on the harvester, farmer, and pool keys
         if keys.pool_public_key is not None:
-            plot_id: bytes32 = ProofOfSpace.calculate_plot_id_pk(keys.pool_public_key, plot_public_key)
+            plot_id: bytes32 = calculate_plot_id_pk(keys.pool_public_key, plot_public_key)
             plot_memo: bytes32 = stream_plot_info_pk(keys.pool_public_key, keys.farmer_public_key, sk)
         else:
             assert keys.pool_contract_puzzle_hash is not None
-            plot_id = ProofOfSpace.calculate_plot_id_ph(keys.pool_contract_puzzle_hash, plot_public_key)
+            plot_id = calculate_plot_id_ph(keys.pool_contract_puzzle_hash, plot_public_key)
             plot_memo = stream_plot_info_ph(keys.pool_contract_puzzle_hash, keys.farmer_public_key, sk)
 
         if args.plotid is not None:
@@ -213,10 +219,6 @@ async def create_plots(
         if args.memo is not None:
             log.info(f"Debug memo: {args.memo}")
             plot_memo = bytes32.fromhex(args.memo)
-
-        # Uncomment next two lines if memo is needed for dev debug
-        plot_memo_str: str = plot_memo.hex()
-        log.info(f"Memo: {plot_memo_str}")
 
         dt_string = datetime.now().strftime("%Y-%m-%d-%H-%M")
 

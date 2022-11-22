@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, List, Optional, Tuple
 
 from clvm.casts import int_from_bytes
@@ -7,9 +9,9 @@ from littlelambocoin.types.blockchain_format.program import Program, SerializedP
 from littlelambocoin.types.blockchain_format.sized_bytes import bytes32, bytes48
 from littlelambocoin.types.condition_opcodes import ConditionOpcode
 from littlelambocoin.types.condition_with_args import ConditionWithArgs
+from littlelambocoin.types.spend_bundle_conditions import SpendBundleConditions
 from littlelambocoin.util.errors import ConsensusError, Err
 from littlelambocoin.util.ints import uint64
-from littlelambocoin.types.spend_bundle_conditions import SpendBundleConditions
 
 # TODO: review each `assert` and consider replacing with explicit checks
 #       since asserts can be stripped with python `-OO` flag

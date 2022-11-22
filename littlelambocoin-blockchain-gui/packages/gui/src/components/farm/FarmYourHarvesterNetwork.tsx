@@ -1,15 +1,13 @@
-import React from 'react';
-import { Trans } from '@lingui/macro';
-import styled from 'styled-components';
-import { Typography, Tooltip, IconButton } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
-import { Table, FormatBytes, FormatConnectionStatus, Card } from '@littlelambocoin/core';
-import {
-  useIsServiceRunningQuery,
-  useGetHarvesterConnectionsQuery,
-} from '@littlelambocoin/api-react';
 import type { Connection } from '@littlelambocoin/api';
 import { ServiceName } from '@littlelambocoin/api';
+import { useService, useGetHarvesterConnectionsQuery } from '@littlelambocoin/api-react';
+import { Table, FormatBytes, FormatConnectionStatus, Card } from '@littlelambocoin/core';
+import { Trans } from '@lingui/macro';
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Typography, Tooltip, IconButton } from '@mui/material';
+import React from 'react';
+import styled from 'styled-components';
+
 import FarmCloseConnection from './FarmCloseConnection';
 
 const StyledIconButton = styled(IconButton)`
@@ -42,19 +40,9 @@ const cols = [
     field(row: Connection) {
       return (
         <>
-          <FormatBytes
-            value={row.bytesWritten}
-            unit="KiB"
-            removeUnit
-            fixedDecimals
-          />
+          <FormatBytes value={row.bytesWritten} unit="KiB" removeUnit fixedDecimals />
           /
-          <FormatBytes
-            value={row.bytesRead}
-            unit="KiB"
-            removeUnit
-            fixedDecimals
-          />
+          <FormatBytes value={row.bytesRead} unit="KiB" removeUnit fixedDecimals />
         </>
       );
     },
@@ -78,15 +66,7 @@ const cols = [
 
 export default function FarmYourHarvesterNetwork() {
   const { data: connections = [] } = useGetHarvesterConnectionsQuery();
-
-  const { data: isRunning, isLoading } = useIsServiceRunningQuery(
-    {
-      service: ServiceName.HARVESTER,
-    },
-    {
-      pollingInterval: 1000,
-    },
-  );
+  const { isRunning, isLoading } = useService(ServiceName.HARVESTER);
 
   return (
     <Card
@@ -95,10 +75,8 @@ export default function FarmYourHarvesterNetwork() {
       titleVariant="h6"
       tooltip={
         <Trans>
-          A harvester is a service running on a machine where plot(s) are
-          actually stored. A farmer and harvester talk to a full node to see the
-          state of the chain. View your network of connected harvesters below
-          Learn more
+          A harvester is a service running on a machine where plot(s) are actually stored. A farmer and harvester talk
+          to a full node to see the state of the chain. View your network of connected harvesters below Learn more
         </Trans>
       }
       transparent

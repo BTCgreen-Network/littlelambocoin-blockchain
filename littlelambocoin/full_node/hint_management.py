@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, List, Optional, Set, Tuple
 
 from littlelambocoin.consensus.blockchain import StateChangeSummary

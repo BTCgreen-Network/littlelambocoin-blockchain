@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 from pathlib import Path
+
 import click
+
+from littlelambocoin.cmds.db_backup_func import db_backup_func
 from littlelambocoin.cmds.db_upgrade_func import db_upgrade_func
 from littlelambocoin.cmds.db_validate_func import db_validate_func
-from littlelambocoin.cmds.db_backup_func import db_backup_func
 
 
 @click.group("db", short_help="Manage the blockchain database")

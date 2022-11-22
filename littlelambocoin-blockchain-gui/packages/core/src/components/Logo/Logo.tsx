@@ -1,7 +1,7 @@
+import { Littlelambocoin } from '@littlelambocoin/icons';
+import { Box, BoxProps } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
-import { Box, BoxProps } from '@mui/material';
-import { Littlelambocoin } from '@littlelambocoin/icons';
 
 const StyledLittlelambocoin = styled(Littlelambocoin)`
   max-width: 100%;

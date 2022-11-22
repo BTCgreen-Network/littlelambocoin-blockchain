@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional
 
@@ -24,7 +26,7 @@ class NewSignagePoint(Streamable):
     difficulty: uint64
     sub_slot_iters: uint64
     signage_point_index: uint8
-    timelord_reward_puzzle_hash: bytes32
+    timelord_puzzle_hash: bytes32
 
 
 @streamable

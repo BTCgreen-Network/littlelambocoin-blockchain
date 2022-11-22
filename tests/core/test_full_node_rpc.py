@@ -18,7 +18,7 @@ from littlelambocoin.util.ints import uint8
 from littlelambocoin.simulator.block_tools import get_signage_point
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 from tests.connection_utils import connect_and_get_peer
-from tests.setup_nodes import test_constants
+from littlelambocoin.simulator.block_tools import test_constants
 from littlelambocoin.simulator.time_out_assert import time_out_assert
 from tests.util.rpc import validate_get_routes
 from littlelambocoin.simulator.wallet_tools import WalletTool
@@ -157,7 +157,14 @@ class TestRpc:
 
             await full_node_api_1.farm_new_transaction_block(FarmNewBlockProtocol(ph_2))
 
-            assert (await client.get_coin_record_by_name(coin.name())).coin == coin
+            coin_record = await client.get_coin_record_by_name(coin.name())
+            assert coin_record.coin == coin
+            assert (
+                coin
+                in (
+                    await client.get_puzzle_and_solution(coin.parent_coin_info, coin_record.confirmed_block_index)
+                ).additions()
+            )
 
             assert len(await client.get_coin_records_by_puzzle_hash(ph_receiver)) == 1
             assert len(list(filter(lambda cr: not cr.spent, (await client.get_coin_records_by_puzzle_hash(ph))))) == 3

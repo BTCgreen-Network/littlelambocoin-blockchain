@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import dataclasses
 import io
@@ -9,7 +11,6 @@ import time
 import traceback
 from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
-from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 from chiavdf import create_discriminant, prove
 
@@ -17,8 +18,10 @@ from littlelambocoin.consensus.constants import ConsensusConstants
 from littlelambocoin.consensus.pot_iterations import calculate_sp_iters, is_overflow_block
 from littlelambocoin.protocols import timelord_protocol
 from littlelambocoin.protocols.protocol_message_types import ProtocolMessageTypes
+from littlelambocoin.rpc.rpc_server import default_get_connections
 from littlelambocoin.server.outbound_message import NodeType, make_msg
 from littlelambocoin.server.server import LittlelambocoinServer
+from littlelambocoin.server.ws_connection import WSLittlelambocoinConnection
 from littlelambocoin.timelord.iters_from_block import iters_from_block
 from littlelambocoin.timelord.timelord_state import LastState
 from littlelambocoin.timelord.types import Chain, IterationType, StateType
@@ -38,6 +41,7 @@ from littlelambocoin.util.config import process_config_start_method
 from littlelambocoin.util.ints import uint8, uint16, uint32, uint64, uint128
 from littlelambocoin.util.setproctitle import getproctitle, setproctitle
 from littlelambocoin.util.streamable import Streamable, streamable
+from littlelambocoin.util.bech32m import decode_puzzle_hash
 
 log = logging.getLogger(__name__)
 
@@ -62,6 +66,15 @@ def prove_bluebox_slow(payload):
 
 
 class Timelord:
+    @property
+    def server(self) -> LittlelambocoinServer:
+        # This is a stop gap until the class usage is refactored such the values of
+        # integral attributes are known at creation of the instance.
+        if self._server is None:
+            raise RuntimeError("server not assigned")
+
+        return self._server
+
     def __init__(self, root_path, config: Dict, constants: ConsensusConstants):
         self.config = config
         self.root_path = root_path
@@ -69,7 +82,7 @@ class Timelord:
         self._shut_down = False
         self.free_clients: List[Tuple[str, asyncio.StreamReader, asyncio.StreamWriter]] = []
         self.ip_whitelist = self.config["vdf_clients"]["ip"]
-        self.server: Optional[LittlelambocoinServer] = None
+        self._server: Optional[LittlelambocoinServer] = None
         self.chain_type_to_stream: Dict[Chain, Tuple[str, asyncio.StreamReader, asyncio.StreamWriter]] = {}
         self.chain_start_time: Dict = {}
         # Chains that currently don't have a vdf_client.
@@ -152,6 +165,12 @@ class Timelord:
                 self.main_loop = asyncio.create_task(self._manage_discriminant_queue_sanitizer())
         log.info(f"Started timelord, listening on port {self.get_vdf_server_port()}")
 
+    def get_connections(self, request_node_type: Optional[NodeType]) -> List[Dict[str, Any]]:
+        return default_get_connections(server=self.server, request_node_type=request_node_type)
+
+    async def on_connect(self, connection: WSLittlelambocoinConnection):
+        pass
+
     def get_vdf_server_port(self) -> Optional[uint16]:
         if self.vdf_server is not None:
             return self.vdf_server.sockets[0].getsockname()[1]
@@ -177,7 +196,7 @@ class Timelord:
             self.state_changed_callback(change, change_data)
 
     def set_server(self, server: LittlelambocoinServer):
-        self.server = server
+        self._server = server
 
     async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         async with self.lock:
@@ -462,20 +481,16 @@ class Timelord:
                     # This proof is on an outdated challenge, so don't use it
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
-                if "llc_target_address" not in self.config:
-                    log.warning("llc_target_address missing in the config, rewards will be lost")
-                    timelord_reward_puzzle_hash: bytes32 = self.constants.TIMELORD_PUZZLE_HASH
-                else:
-                    timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["llc_target_address"])
+                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
                     dataclasses.replace(cc_info, number_of_iterations=iters_from_sub_slot_start),
                     cc_proof,
                     rc_info,
                     rc_proof,
-                    timelord_reward_puzzle_hash
+                    timelord_reward_puzzle_hash,
                 )
-                if self.server is not None:
+                if self._server is not None:
                     msg = make_msg(ProtocolMessageTypes.new_signage_point_vdf, response)
                     await self.server.send_to_all([msg], NodeType.FULL_NODE)
                 # Cleanup the signage point from memory.
@@ -588,7 +603,7 @@ class Timelord:
                         icc_proof,
                     )
                     msg = make_msg(ProtocolMessageTypes.new_infusion_point_vdf, response)
-                    if self.server is not None:
+                    if self._server is not None:
                         await self.server.send_to_all([msg], NodeType.FULL_NODE)
 
                     self.proofs_finished = self._clear_proof_list(iteration)
@@ -796,7 +811,7 @@ class Timelord:
                 rc_sub_slot,
                 SubSlotProofs(cc_proof, icc_ip_proof, rc_proof),
             )
-            if self.server is not None:
+            if self._server is not None:
                 msg = make_msg(
                     ProtocolMessageTypes.new_end_of_sub_slot_vdf,
                     timelord_protocol.NewEndOfSubSlotVDF(eos_bundle),
@@ -1055,7 +1070,7 @@ class Timelord:
                     response = timelord_protocol.RespondCompactProofOfTime(
                         vdf_info, vdf_proof, header_hash, height, field_vdf
                     )
-                    if self.server is not None:
+                    if self._server is not None:
                         message = make_msg(ProtocolMessageTypes.respond_compact_proof_of_time, response)
                         await self.server.send_to_all([message], NodeType.FULL_NODE)
                     self.state_changed(
@@ -1174,7 +1189,7 @@ class Timelord:
                         picked_info.height,
                         picked_info.field_vdf,
                     )
-                    if self.server is not None:
+                    if self._server is not None:
                         message = make_msg(ProtocolMessageTypes.respond_compact_proof_of_time, response)
                         await self.server.send_to_all([message], NodeType.FULL_NODE)
                 except Exception as e:
